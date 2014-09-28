@@ -3,4 +3,8 @@ Testfile for Project Part 1
 Modified By:
 - Tamara Bain
 - Maciej Ogrocki
+<<<<<<< HEAD
 - Benjamin Lavin
+=======
+- Ross Cockburn
+>>>>>>> d7e7e2f85eacdf683338fceb9e7b03e25e9c4c9c

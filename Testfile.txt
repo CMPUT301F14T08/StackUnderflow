@@ -3,5 +3,6 @@ Testfile for Project Part 1
 Modified By:
 - Tamara Bain
 - Maciej Ogrocki
+- Benjamin Lavin
 - Ross Cockburn
 - Michael Williams

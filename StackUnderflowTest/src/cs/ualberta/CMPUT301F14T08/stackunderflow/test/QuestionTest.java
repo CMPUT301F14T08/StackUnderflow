@@ -12,8 +12,8 @@ import android.test.ActivityInstrumentationTestCase2;
 
 public class QuestionTest extends ActivityInstrumentationTestCase2<StackUnderflowActivity> {
 
-	public QuestionTest(Class<StackUnderflowActivity> activityClass) {
-		super(activityClass);
+	public QuestionTest() {
+		super(StackUnderflowActivity.class);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -28,7 +28,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<StackUnderflo
 		Question q1 = new Question();
 		Reply r1 = new Reply();
 		q1.addReply(r1);
-		assertTrue(q1.getAnswers().contains(r1));
+		assertTrue(q1.getmReplies().contains(r1));
 	}
 	
 	public void testAccessors(){
@@ -54,7 +54,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<StackUnderflo
 		
 		assertTrue(q1.getmID().equals(id));
 		assertTrue(q1.getmText().equals(text));		
-		assertTrue(q1.getmAuthor().equals(text));
+		assertTrue(q1.getmAuthor().equals(author));
 		assertTrue(q1.getmUpvotes() == upvotes);
 		assertTrue(q1.getmPhoto().equals(image));
 		assertTrue(q1.getmDate().equals(date));

@@ -13,15 +13,15 @@ import java.util.Date;
 
 public class Reply {
 	
+
+
 	private Date mDate;
 	private String mText;
 	private	String mAuthor;
 	
-	public Reply(Date mDate, String mText, String mAuthor) {
+	public Reply() {
 		super();
-		this.mDate = mDate;
-		this.mText = mText;
-		this.mAuthor = mAuthor;
+		// TODO Auto-generated constructor stub
 	}
 
 	public Date getmDate() {

@@ -31,4 +31,8 @@ public class Answer extends Post {
 		this.mQuestion = mQuestion;
 	}
 	
+	public void addReply(Reply reply){
+		this.getmReplies().add(reply);
+	}
+	
 }

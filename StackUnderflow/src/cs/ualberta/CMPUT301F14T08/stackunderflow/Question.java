@@ -26,5 +26,12 @@ public class Question extends Post {
 	public void setAnswers(ArrayList<Answer> answers) {
 		this.answers = answers;
 	}
-
+	
+	public void addAnswer(Answer answer){
+		answers.add(answer);
+	}
+	
+	public void addReply(Reply reply){
+		this.getmReplies().add(reply);
+	}
 }

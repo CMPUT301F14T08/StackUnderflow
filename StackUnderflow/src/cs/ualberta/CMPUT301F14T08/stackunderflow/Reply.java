@@ -2,6 +2,15 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.Date;
 
+/**
+ * 
+ * StackUnderflow application
+ * Reply class (utilized by Post class)
+ * 
+ * @author Michael Williams
+ * 
+ */
+
 public class Reply {
 	
 	private Date mDate;

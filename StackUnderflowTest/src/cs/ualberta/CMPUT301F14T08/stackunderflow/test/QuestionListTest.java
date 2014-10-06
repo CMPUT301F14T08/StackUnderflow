@@ -12,7 +12,7 @@ import android.test.ActivityInstrumentationTestCase2;
 
 /**
  * 
- * StackUnderflow
+ * StackUnderflow application
  * Class created for testing QuestionList model
  * 
  * 

@@ -5,6 +5,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * 
+ * StackUnderflow application
+ * Post base class
+ * 
+ * @author Michael Williams
+ * 
+ */
+
 public class Post {
 	
 	private ArrayList<Reply> mReplies;

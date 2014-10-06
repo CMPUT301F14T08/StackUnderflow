@@ -2,6 +2,15 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.ArrayList;
 
+/**
+ * 
+ * StackUnderflow application
+ * QuestionList class
+ * 
+ * @author Michael Williams
+ * 
+ */
+
 public class QuestionList { //this could also be renamed PostList?
 	
 	private ArrayList<Question> questions;

@@ -10,7 +10,11 @@ import java.util.ArrayList;
  * 
  */
 
+
 public class Question extends Post {
+	
+	private boolean mIsFavorite;
+	private boolean mIsRead;
 	
 	private ArrayList<Answer> answers;
 
@@ -30,8 +34,22 @@ public class Question extends Post {
 	public void addAnswer(Answer answer){
 		answers.add(answer);
 	}
-	
-	public void addReply(Reply reply){
-		this.getmReplies().add(reply);
+
+	public boolean getmIsFavorite() {
+		return mIsFavorite;
 	}
+
+	public void setmIsFavorite(boolean mIsFavorite) {
+		this.mIsFavorite = mIsFavorite;
+	}
+
+	public boolean getmIsRead() {
+		return mIsRead;
+	}
+
+	public void setmIsRead(boolean mIsRead) {
+		this.mIsRead = mIsRead;
+	}
+	
+
 }

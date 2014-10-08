@@ -17,13 +17,14 @@ import java.util.UUID;
 public class Post {
 	
 	private ArrayList<Reply> mReplies;
-	private UUID mID;
+	private UUID mID; //TODO do we want random UUID or another method?
 	private String mText;
 	private String mAuthor;
 	private int mUpvotes;
 	private Date mDate;
 	private String mPhoto; // placeholder: need image format, likely BitmapFactory implementation
 	
+	/*
 	public Post(ArrayList<Reply> mReplies, UUID mID, String mText,
 			String mAuthor, int mUpvotes, Date mDate, String mPhoto) {
 		super();
@@ -35,9 +36,11 @@ public class Post {
 		this.mDate = mDate;
 		this.mPhoto = mPhoto;
 	}
+	*/
 
 	public Post() {
-		UUID mID = UUID.randomUUID(); //do we want random or another method?
+		mReplies = new ArrayList<Reply>();
+		UUID mID = UUID.randomUUID(); //TODO do we want random UUID or another method?
 	}
 
 	public ArrayList<Reply> getmReplies() {
@@ -77,7 +80,7 @@ public class Post {
 	}
 
 	public void setmUpvotes(int mUpvotes) {
-		this.mUpvotes = mUpvotes;
+		this.mUpvotes += mUpvotes;
 	}
 
 	public Date getmDate() {
@@ -94,6 +97,10 @@ public class Post {
 
 	public void setmPhoto(String mPhoto) {
 		this.mPhoto = mPhoto;
+	}
+	
+	public void addReply(Reply reply){
+		mReplies.add(reply);
 	}
 	
 	

@@ -1,5 +1,9 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
+
 /**
  * 
  * StackUnderflow application
@@ -23,6 +27,13 @@ public class Answer extends Post {
 		super();
 	}
 
+	public Answer(ArrayList<Reply> mReplies, UUID mID, String mText,
+			String mAuthor, int mUpvotes, Date mDate, String mPhoto,
+			Question mQuestion) {
+		super();
+		this.mQuestion = mQuestion;
+	}
+
 	public Question getmQuestion() {
 		return mQuestion;
 	}
@@ -31,8 +42,5 @@ public class Answer extends Post {
 		this.mQuestion = mQuestion;
 	}
 	
-	public void addReply(Reply reply){
-		this.getmReplies().add(reply);
-	}
 	
 }

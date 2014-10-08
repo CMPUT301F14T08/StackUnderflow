@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Question;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Reply;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.StackUnderflowActivity;
@@ -16,14 +17,20 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<StackUnderflo
 		super(StackUnderflowActivity.class);
 		// TODO Auto-generated constructor stub
 	}
-	
+	/**
+	 *  Add an answer to a question
+	 *  
+	 */
 	public void testAddAnswer(){
 		Question q1 = new Question();
 		Answer a1 = new Answer();
 		q1.addAnswer(a1);
 		assertTrue(q1.getAnswers().contains(a1));
 	}
-	
+	/**
+	 *  Add a reply to a question
+	 *  Use Case 7:submitReply
+	 */
 	public void testAddReply(){
 		Question q1 = new Question();
 		Reply r1 = new Reply();
@@ -31,6 +38,45 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<StackUnderflo
 		assertTrue(q1.getmReplies().contains(r1));
 	}
 	
+	/**
+	 *  Mark a question as a favorite
+	 *  Use Case 4: markQuestionAsFavorite
+	 */
+	public void testMarkQuestionAsFavorite(){
+		Question q1 = new Question();
+		q1.setmIsFavorite(true);
+		assertTrue(q1.getmIsFavorite() == true);
+	}
+	
+	/**
+	 *  Unmark a question as a favorite
+	 *  Use Case 5: unMarkQuestionAsFavorite
+	 */
+	public void testUnMarkQuestionAsFavorite(){
+		Question q1 = new Question();
+		q1.setmIsFavorite(false);
+		assertTrue(q1.getmIsFavorite() == false);
+	}
+	
+	
+	
+	/**
+	 *  Test Post accessor methods (getters and setters)
+	 */
+	public void testDownvotePost(){
+		Post p1 = new Post();
+		p1.setmUpvotes(3);
+		assertTrue(p1.getmUpvotes() == 3);
+		p1.setmUpvotes(-1);
+		assertTrue(p1.getmUpvotes() == 2);
+		p1.setmUpvotes(-1);
+		assertTrue(p1.getmUpvotes() == 1);	
+		
+	}
+	
+	/**
+	 *  Test Question accessor methods (getters and setters)
+	 */
 	public void testAccessors(){
 		Question q1 = new Question();
 		
@@ -40,7 +86,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<StackUnderflo
 		String author = "author 1";
 		int upvotes = 0;
 		Date date = new Date();
-		String image = "placeholder"; //team to determine image format
+		String image = "placeholder"; //TODO team to determine image format
 		ArrayList<Reply> replies = new ArrayList<Reply>();
 		//assign Question attributes
 		ArrayList<Answer> answers = new ArrayList<Answer>();

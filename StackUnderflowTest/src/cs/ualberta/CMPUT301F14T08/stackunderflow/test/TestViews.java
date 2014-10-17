@@ -1,9 +1,6 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.test;
 
 /*
- * Author: Jonathan Emery
- * Modified by: 
- * 
  * Simulates the controller saving a post a user has performed an action on.
  * Could change this to use the actual controller class later on to achieve
  * the same end goal, and test that functionality. Saves, then loads, then
@@ -23,6 +20,10 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.Sort;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.StackUnderflowActivity;
 import junit.framework.TestCase;
 
+/*
+ * Author: Jonathan Emery
+ * Modified by: 
+ */
 public class TestViews extends ActivityInstrumentationTestCase2<StackUnderflowActivity> {
 
 	public TestViews() {
@@ -41,11 +42,11 @@ public class TestViews extends ActivityInstrumentationTestCase2<StackUnderflowAc
 		testList.addQuestion(q1);
 		
 		//some save function, change later
-		Save.saveBookmarked(q1);
-		Save.saveBookmarked(q2);
+		Save.saveReadLater(q1);
+		Save.saveReadLater(q2);
 		
 		//some load function, change later
-		bookList = Load.Bookmarked();
+		bookList = Load.loadReadLater();
 		bookList = sorter.sortQuestionDate(bookList);
 		
 		assertEquals(bookList, testList);

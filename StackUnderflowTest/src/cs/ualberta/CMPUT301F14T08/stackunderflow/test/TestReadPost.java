@@ -1,9 +1,6 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.test;
 
 /*
- * Author: Jonathan Emery
- * Modified by: 
- * 
  * Test class to test some basic functionality about what we expect to happen
  * when viewing a new post, or a series of new posts. Tests the save, load, and
  * sort functionality again, in sequential order. 
@@ -20,6 +17,10 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.Sort;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.StackUnderflowActivity;
 import junit.framework.TestCase;
 
+/*
+ * Author: Jonathan Emery
+ * Modified by: 
+ */
 public class TestReadPost extends ActivityInstrumentationTestCase2<StackUnderflowActivity> {
 
 	public TestReadPost() {

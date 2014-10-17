@@ -1,9 +1,6 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.test;
 
 /*
- * Author: Jonathan Emery
- * Modified by: 
- * 
  * Test class for sorting based on various conditions & expected results.
  * Each test calls the corresponding method in Sort.class located in 
  * StackUnderflow. Makes use of hard-coded sorted lists to compare the
@@ -21,6 +18,10 @@ import android.test.ActivityInstrumentationTestCase2;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.*;
 import junit.framework.TestCase;
 
+/*
+ * Author: Jonathan Emery
+ * Modified by: 
+ */
 public class TestSort extends ActivityInstrumentationTestCase2<StackUnderflowActivity> {
 
 	public TestSort() {

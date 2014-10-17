@@ -17,7 +17,7 @@ import junit.framework.TestCase;
  * Search may be for questions, answers, or posts containing pictures
  * 
  *  
- * @Author: Jonathan Emery/Michael Williams
+ * @Author: Michael Williams
  * Modified by: 
  */
 public class TestSearch extends ActivityInstrumentationTestCase2<StackUnderflowActivity> {

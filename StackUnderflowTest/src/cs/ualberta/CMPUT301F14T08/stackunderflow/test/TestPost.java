@@ -12,10 +12,10 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.StackUnderflowActivity;
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
+ * 
+ * Class created for testing Post model
  *  
  * @author Michael Williams
- * 
- * Note, partially implemented JUnit tests for project part 2
  *
  */
 public class TestPost extends ActivityInstrumentationTestCase2<StackUnderflowActivity> {
@@ -30,24 +30,40 @@ public class TestPost extends ActivityInstrumentationTestCase2<StackUnderflowAct
 	 */
 	public void testUpvotePost(){
 		Post p1 = new Post();
-		p1.setmUpvotes(1);
-		assertTrue(p1.getmUpvotes() == 1);
-		p1.setmUpvotes(1);
-		assertTrue(p1.getmUpvotes() == 2);
+		p1.setVotes(1);
+		assertTrue(p1.getVotes() == 1);
+		p1.setVotes(1);
+		assertTrue(p1.getVotes() == 2);
 	}
 	
 	/**
-	 * Tests downvoting a Post
+	 * Tests downvoting a Post (removing upvote)
 	 */
 	public void testDownvotePost(){
 		Post p1 = new Post();
-		p1.setmUpvotes(3);
-		assertTrue(p1.getmUpvotes() == 3);
-		p1.setmUpvotes(-1);
-		assertTrue(p1.getmUpvotes() == 2);
-		p1.setmUpvotes(-1);
-		assertTrue(p1.getmUpvotes() == 1);	
+		p1.setVotes(3);
+		assertTrue(p1.getVotes() == 3);
+		p1.setVotes(-1);
+		assertTrue(p1.getVotes() == 2);
+		p1.setVotes(-1);
+		assertTrue(p1.getVotes() == 1);	
 		
+	}
+	
+	/**
+	 * 
+	 *  Test attach a picture to a post
+	 *  
+	 */
+	public void testAttachPicture(){
+		Post p1 = new Post();
+		
+		// attach photo method, to be implemented
+		String image = "placeholder"; //placeholder for image
+		p1.setPicture(image);
+
+		assertTrue(p1.getPicture().equals(image));
+
 	}
 	
 	
@@ -66,19 +82,19 @@ public class TestPost extends ActivityInstrumentationTestCase2<StackUnderflowAct
 		String image = "placeholder"; //TODO team to determine image format
 		ArrayList<Reply> replies = new ArrayList<Reply>();
 
-		p1.setmID(id);
-		p1.setmText(text);
-		p1.setmAuthor(author);
-		p1.setmUpvotes(upvotes);
-		p1.setmDate(date); 
-		p1.setmPhoto(image);
+		p1.setID(id);
+		p1.setText(text);
+		p1.setAuthor(author);
+		p1.setVotes(upvotes);
+		p1.setDate(date); 
+		p1.setPicture(image);
 		
-		assertTrue(p1.getmID().equals(id));
-		assertTrue(p1.getmText().equals(text));		
-		assertTrue(p1.getmAuthor().equals(author));
-		assertTrue(p1.getmUpvotes() == upvotes);
-		assertTrue(p1.getmPhoto().equals(image));
-		assertTrue(p1.getmDate().equals(date));
+		assertTrue(p1.getID().equals(id));
+		assertTrue(p1.getText().equals(text));		
+		assertTrue(p1.getAuthor().equals(author));
+		assertTrue(p1.getVotes() == upvotes);
+		assertTrue(p1.getPicture().equals(image));
+		assertTrue(p1.getDate().equals(date));
 		
 	}
 	

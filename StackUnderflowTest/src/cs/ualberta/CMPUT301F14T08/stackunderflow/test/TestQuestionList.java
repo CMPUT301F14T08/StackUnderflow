@@ -13,7 +13,6 @@ import android.test.ActivityInstrumentationTestCase2;
 
 /**
  * 
- * StackUnderflow application
  * Class created for testing QuestionList model
  * 
  * 
@@ -24,7 +23,7 @@ public class TestQuestionList extends ActivityInstrumentationTestCase2<StackUnde
 
 	public TestQuestionList() {
 		super(StackUnderflowActivity.class);
-		// TODO Auto-generated constructor stub
+
 	}
 	
 	public void testQuestionList(){
@@ -46,11 +45,11 @@ public class TestQuestionList extends ActivityInstrumentationTestCase2<StackUnde
 		Date date = new Date();
 		String image = "placeholder"; //team to determine image format
 		
-		q1.setmText(text);
-		q1.setmAuthor(author);
-		q1.setmUpvotes(upvotes);
-		q1.setmDate(date); 
-		q1.setmPhoto(image);
+		q1.setText(text);
+		q1.setAuthor(author);
+		q1.setVotes(upvotes);
+		q1.setDate(date); 
+		q1.setPicture(image);
 		
 		qlist.addQuestion(q1);
 		
@@ -60,10 +59,6 @@ public class TestQuestionList extends ActivityInstrumentationTestCase2<StackUnde
 	
 	/**
 	 *  Test viewing of favorite posts
-	 *  Use Case 8: viewFavoritedPosts
-	 *  	TODO partial test implementation: 
-	 *  		populates list and favorites posts
-	 *  		requires UI activity and view 
 	 *  
 	 */
 	public void testViewFavoritedPosts(){
@@ -71,20 +66,22 @@ public class TestQuestionList extends ActivityInstrumentationTestCase2<StackUnde
 		Question q1 = new Question();
 		Question q2 = new Question();
 		Question q3 = new Question();
-		q1.setmIsFavorite(true);
-		q3.setmIsFavorite(true);
+		q1.setIsFavorite(true);
+		q3.setIsFavorite(true);
 		qlist.addQuestion(q1);
 		qlist.addQuestion(q2);
 		qlist.addQuestion(q3);
 		ArrayList<Question> qfavoritelist = new ArrayList<Question>();
+		
+		//simulates populating of a ListView
 		for (Question q : qlist.getQuestions()){
-			if (q.getmIsFavorite()) {
+			if (q.getIsFavorite()) {
 				qfavoritelist.add(q);
 			}
 		}
+		//simulates check that ListView contains favorited posts
 		assertFalse(qfavoritelist.contains(q2));
-		//TODO pass qfavoritelist to ListView adapter of activity		
-		//TODO implement activity/fragment and ListView for UI testing
+
 		
 		
 	}

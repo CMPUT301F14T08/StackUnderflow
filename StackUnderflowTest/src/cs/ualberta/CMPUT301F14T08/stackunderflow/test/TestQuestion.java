@@ -11,6 +11,13 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.Reply;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.StackUnderflowActivity;
 import android.test.ActivityInstrumentationTestCase2;
 
+/**
+ * 
+ * Class created for testing Question model
+ *  
+ * @author Michael Williams
+ *
+ */
 public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflowActivity> {
 
 	public TestQuestion() {
@@ -29,7 +36,7 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflo
 	}
 	/**
 	 *  Add a reply to a question
-	 *  Use Case 7:submitReply (picture attachment tested separately TODO indicate method)
+	 *  
 	 */
 	public void testAddReply(){
 		Question q1 = new Question();
@@ -39,12 +46,19 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflo
 	}
 	
 	/**
-	 *  TODO Implement this method
+	 * 
 	 *  Attach a picture to a question
-	 *  Use Case 7:submitReply (picture attachment )
+	 *  
 	 */
 	public void testAttachPicture(){
-		//TODO Implement this method
+		Question q1 = new Question();
+		
+		// attach photo method, to be implemented
+		String image = "placeholder"; //placeholder for image
+		q1.setPicture(image);
+
+		assertTrue(q1.getPicture().equals(image));
+
 	}
 		
 	/**
@@ -53,8 +67,8 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflo
 	 */
 	public void testMarkQuestionAsFavorite(){
 		Question q1 = new Question();
-		q1.setmIsFavorite(true);
-		assertTrue(q1.getmIsFavorite() == true);
+		q1.setIsFavorite(true);
+		assertTrue(q1.getIsFavorite() == true);
 	}
 	
 	/**
@@ -63,8 +77,8 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflo
 	 */
 	public void testUnMarkQuestionAsFavorite(){
 		Question q1 = new Question();
-		q1.setmIsFavorite(false);
-		assertTrue(q1.getmIsFavorite() == false);
+		q1.setIsFavorite(false);
+		assertTrue(q1.getIsFavorite() == false);
 	}
 	
 	
@@ -83,22 +97,23 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflo
 		Date date = new Date();
 		String image = "placeholder"; //TODO team to determine image format
 		ArrayList<Reply> replies = new ArrayList<Reply>();
+		
 		//assign Question attributes
 		ArrayList<Answer> answers = new ArrayList<Answer>();
 		
-		q1.setmID(id);
-		q1.setmText(text);
-		q1.setmAuthor(author);
-		q1.setmUpvotes(upvotes);
-		q1.setmDate(date); 
-		q1.setmPhoto(image);
+		q1.setID(id);
+		q1.setText(text);
+		q1.setAuthor(author);
+		q1.setVotes(upvotes);
+		q1.setDate(date); 
+		q1.setPicture(image);
 		
-		assertTrue(q1.getmID().equals(id));
-		assertTrue(q1.getmText().equals(text));		
-		assertTrue(q1.getmAuthor().equals(author));
-		assertTrue(q1.getmUpvotes() == upvotes);
-		assertTrue(q1.getmPhoto().equals(image));
-		assertTrue(q1.getmDate().equals(date));
+		assertTrue(q1.getID().equals(id));
+		assertTrue(q1.getText().equals(text));		
+		assertTrue(q1.getAuthor().equals(author));
+		assertTrue(q1.getVotes() == upvotes);
+		assertTrue(q1.getPicture().equals(image));
+		assertTrue(q1.getDate().equals(date));
 		assertTrue(q1.getAnswers() != null);
 
 		

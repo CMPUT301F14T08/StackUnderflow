@@ -35,11 +35,11 @@ public class Question extends Post {
 		answers.add(answer);
 	}
 
-	public boolean getmIsFavorite() {
+	public boolean getIsFavorite() {
 		return mIsFavorite;
 	}
 
-	public void setmIsFavorite(boolean mIsFavorite) {
+	public void setIsFavorite(boolean mIsFavorite) {
 		this.mIsFavorite = mIsFavorite;
 	}
 

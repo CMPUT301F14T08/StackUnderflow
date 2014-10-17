@@ -24,9 +24,9 @@ public class TestAnswer extends ActivityInstrumentationTestCase2<StackUnderflowA
 		String author = "author 1";
 		Date date = new Date();
 		
-		r1.setmText(text);
-		r1.setmAuthor(author);
-		r1.setmDate(date); 
+		r1.setText(text);
+		r1.setAuthor(author);
+		r1.setDate(date); 
 
 		a1.addReply(r1);
 		//assertTrue(a1.getmReplies().contains(r1));

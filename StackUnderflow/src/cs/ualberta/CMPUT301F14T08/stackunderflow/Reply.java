@@ -24,27 +24,27 @@ public class Reply {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Date getmDate() {
+	public Date getDate() {
 		return mDate;
 	}
 
-	public void setmDate(Date mDate) {
+	public void setDate(Date mDate) {
 		this.mDate = mDate;
 	}
 
-	public String getmText() {
+	public String getText() {
 		return mText;
 	}
 
-	public void setmText(String mText) {
+	public void setText(String mText) {
 		this.mText = mText;
 	}
 
-	public String getmAuthor() {
+	public String getAuthor() {
 		return mAuthor;
 	}
 
-	public void setmAuthor(String mAuthor) {
+	public void setAuthor(String mAuthor) {
 		this.mAuthor = mAuthor;
 	}
 	

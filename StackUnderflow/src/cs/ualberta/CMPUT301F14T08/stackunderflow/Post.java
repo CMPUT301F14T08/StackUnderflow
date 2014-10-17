@@ -24,19 +24,6 @@ public class Post {
 	private Date mDate;
 	private String mPhoto; // placeholder: need image format, likely BitmapFactory implementation
 	
-	/*
-	public Post(ArrayList<Reply> mReplies, UUID mID, String mText,
-			String mAuthor, int mUpvotes, Date mDate, String mPhoto) {
-		super();
-		this.mReplies = mReplies;
-		this.mID = mID;
-		this.mText = mText;
-		this.mAuthor = mAuthor;
-		this.mUpvotes = mUpvotes;
-		this.mDate = mDate;
-		this.mPhoto = mPhoto;
-	}
-	*/
 
 	public Post() {
 		mReplies = new ArrayList<Reply>();
@@ -51,51 +38,51 @@ public class Post {
 		this.mReplies = mReplies;
 	}
 
-	public UUID getmID() {
+	public UUID getID() {
 		return mID;
 	}
 
-	public void setmID(UUID mID) {
+	public void setID(UUID mID) {
 		this.mID = mID;
 	}
 
-	public String getmText() {
+	public String getText() {
 		return mText;
 	}
 
-	public void setmText(String mText) {
+	public void setText(String mText) {
 		this.mText = mText;
 	}
 
-	public String getmAuthor() {
+	public String getAuthor() {
 		return mAuthor;
 	}
 
-	public void setmAuthor(String mAuthor) {
+	public void setAuthor(String mAuthor) {
 		this.mAuthor = mAuthor;
 	}
 
-	public int getmUpvotes() {
+	public int getVotes() {
 		return mUpvotes;
 	}
 
-	public void setmUpvotes(int mUpvotes) {
+	public void setVotes(int mUpvotes) {
 		this.mUpvotes += mUpvotes;
 	}
 
-	public Date getmDate() {
+	public Date getDate() {
 		return mDate;
 	}
 
-	public void setmDate(Date mDate) {
+	public void setDate(Date mDate) {
 		this.mDate = mDate;
 	}
 
-	public String getmPhoto() {
+	public String getPicture() {
 		return mPhoto;
 	}
 
-	public void setmPhoto(String mPhoto) {
+	public void setPicture(String mPhoto) {
 		this.mPhoto = mPhoto;
 	}
 	

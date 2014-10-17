@@ -16,29 +16,21 @@ public class Answer extends Post {
 	
 	private Question mQuestion;
 	
-	/*
+	
 	public Answer(Question mQuestion) {
-		super();
-		this.mQuestion = mQuestion.;
-	}
-	*/
-
-	public Answer() {
-		super();
-	}
-
-	public Answer(ArrayList<Reply> mReplies, UUID mID, String mText,
-			String mAuthor, int mUpvotes, Date mDate, String mPhoto,
-			Question mQuestion) {
 		super();
 		this.mQuestion = mQuestion;
 	}
-
-	public Question getmQuestion() {
+	
+	public Answer() {
+		super();
+	}
+	
+	public Question getQuestion() {
 		return mQuestion;
 	}
 
-	public void setmQuestion(Question mQuestion) {
+	public void setQuestion(Question mQuestion) {
 		this.mQuestion = mQuestion;
 	}
 	

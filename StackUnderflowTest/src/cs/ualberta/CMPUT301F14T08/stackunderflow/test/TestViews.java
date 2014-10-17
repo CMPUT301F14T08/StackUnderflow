@@ -14,8 +14,10 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.test;
  */
 
 import android.test.ActivityInstrumentationTestCase2;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Question;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.QuestionList;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.Reply;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Sort;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.StackUnderflowActivity;
 import junit.framework.TestCase;
@@ -94,6 +96,23 @@ public class TestViews extends ActivityInstrumentationTestCase2<StackUnderflowAc
 		postedList = sorter.sortQuestionDate(postedList);
 		
 		assertEquals(postedList, testList);
+	}
+	
+	// Basic test to ensure replies to posts are stored & can be read
+	public void testViewReply() {
+		QuestionList ql = new QuestionList();
+		Question q1 = new Question();
+		Answer a1 = new Answer();
+		Reply r1 = new Reply();
+		
+		a1.addReply(r1);
+		q1.addAnswer(a1);
+		q1.addReply(r1);
+		ql.addQuestion(q1);
+		
+		assertEquals(q1.getmReplies().get(0), r1);
+		assertEquals(q1.getAnswers().get(0).getmReplies().get(0), r1);
+		
 	}
 	
 	

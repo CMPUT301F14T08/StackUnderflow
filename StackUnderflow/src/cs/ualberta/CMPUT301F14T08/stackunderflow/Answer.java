@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+package cs.ualberta.CMPUT301F14T08.stackunderflow;
+
+
+>>>>>>> Implemented all model classes expect UserProfile according to UML specs
 /**
  * Answer class, extends Post class
  */

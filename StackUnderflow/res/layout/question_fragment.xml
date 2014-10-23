@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/question_fragment_top_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -44,7 +44,7 @@
                     android:id="@+id/question_fragment_textview_upvotes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/upvote_count" /> />
+                    android:text="@string/upvote_count" />
 
                 <ImageButton
                     android:id="@+id/question_fragment_button_favorite"
@@ -56,7 +56,7 @@
                     android:id="@+id/question_fragment_textview_favorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/favorite" /> />
+                    android:text="@string/favorite" />
 
             </LinearLayout>	
 
@@ -90,7 +90,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/linearLayout1"
+        android:layout_below="@+id/question_fragment_top_linearlayout"
         android:orientation="vertical" >
 
         <ListView

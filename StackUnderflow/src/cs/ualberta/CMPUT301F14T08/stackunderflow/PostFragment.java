@@ -29,6 +29,9 @@ public class PostFragment extends Fragment {
 	protected TextView mFavoriteTextView;
 	protected ImageButton mPictureButton;
 	protected TextView mUsername;
+	protected LinearLayout mLinearLayoutBottom;
+	protected ImageButton mAnswersButton;
+	protected TextView mAnswersTextView;
 	
 	protected int mBlackColor;
 	protected int mWhiteColor;

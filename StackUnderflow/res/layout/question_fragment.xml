@@ -85,6 +85,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/question_fragment_bottom_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:layout_alignParentBottom="true"

@@ -135,7 +135,40 @@ public class QuestionFragment extends PostFragment {
 		mUsername = (TextView)v.findViewById(R.id.question_fragment_textview_username);
 		mUsername.setText(mQuestion.getSignature());
 		mUsername.setTextColor(mWhiteColor);
-	
-		return v;
+		
+		mLinearLayoutBottom = (LinearLayout)v.findViewById(R.id.question_fragment_bottom_linearlayout);
+		mLinearLayoutTop.setBackgroundColor(mWhiteColor);
+		
+		mAnswersButton = (ImageButton)v.findViewById(R.id.question_fragment_button_answers);
+		if(mQuestion.getAnswers().size() > 0){
+			
+			mAnswersButton.setEnabled(true);
+			mAnswersButton.setVisibility(View.VISIBLE);
+			mAnswersButton.setImageResource(R.drawable.box_arrow_right_large);
+			mAnswersButton.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					Intent i = new Intent(getActivity(), AnswerActivity.class);
+					i.putExtra(PostFragment.EXTRA_POST_ID, mQuestion.getAnswers().get(0).getID());
+					startActivity(i);
+				}
+			});
+		}
+		else{
+			mAnswersButton.setEnabled(false);
+			mAnswersButton.setVisibility(View.GONE);
+		}
+		
+		mAnswersTextView = (TextView)v.findViewById(R.id.question_fragment_textview_answers);
+		mAnswersTextView.setTextColor(mBlackColor);
+		switch(mQuestion.countAnswers()){
+		case 0:
+			mAnswersTextView.setText("0 Answers");
+		case 1:
+			mAnswersTextView.setText("1 Answer");
+		default:
+			mAnswersTextView.setText(mQuestion.countAnswers() + " Answers");	
+		}
+		
+		return v;		
 	}
 }

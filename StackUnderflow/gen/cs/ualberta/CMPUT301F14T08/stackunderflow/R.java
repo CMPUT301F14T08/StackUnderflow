@@ -43,15 +43,16 @@ public final class R {
     }
     public static final class id {
         public static final int base_container=0x7f080000;
-        public static final int menu_item_back_to_question=0x7f08000f;
-        public static final int menu_item_new_answer=0x7f08000d;
-        public static final int menu_item_new_reply=0x7f08000e;
-        public static final int question_fragment_button_answers=0x7f08000c;
+        public static final int menu_item_back_to_question=0x7f080010;
+        public static final int menu_item_new_answer=0x7f08000e;
+        public static final int menu_item_new_reply=0x7f08000f;
+        public static final int question_fragment_bottom_linearlayout=0x7f08000a;
+        public static final int question_fragment_button_answers=0x7f08000d;
         public static final int question_fragment_button_favorite=0x7f080006;
         public static final int question_fragment_button_photo=0x7f080008;
         public static final int question_fragment_button_upvote=0x7f080004;
-        public static final int question_fragment_listview_replies=0x7f08000a;
-        public static final int question_fragment_textview_answers=0x7f08000b;
+        public static final int question_fragment_listview_replies=0x7f08000b;
+        public static final int question_fragment_textview_answers=0x7f08000c;
         public static final int question_fragment_textview_body=0x7f080003;
         public static final int question_fragment_textview_favorite=0x7f080007;
         public static final int question_fragment_textview_title=0x7f080002;

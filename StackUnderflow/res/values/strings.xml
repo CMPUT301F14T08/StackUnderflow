@@ -2,8 +2,17 @@
 <resources>
 
     <string name="app_name">StackUnderflow</string>
-    <string name="title_activity_stack_underflow">StackUnderflowActivity</string>
+    <string name="title_activity_stack_underflow">StackUnderflow</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    
+    <!--  Main Fragment Menu -->
+    <string name="search">Search</string>
+    <string name="ask_question">Ask a Question</string>
+    <string name="user_profile">User Profile</string>
+    <string name="mark_read">Mark as Read Later</string>
+    <!-- Main Fragment Tabs -->
+    <string name="newest">Newest</string>
+    <string name="popular">Popular</string>
 
 </resources>

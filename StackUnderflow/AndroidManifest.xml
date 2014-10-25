@@ -14,8 +14,12 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".StackUnderflowActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_stack_underflow" >
+            <intent-filter>
+	            <action android:name="android.intent.action.MAIN" />
+	            <category android:name="android.intent.category.LAUNCHER" />
+        	</intent-filter>
         </activity>
     </application>
 

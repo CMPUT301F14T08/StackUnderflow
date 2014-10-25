@@ -6,7 +6,10 @@ public class MainActivity extends BaseFragmentActivity {
 
 	@Override
 	protected Fragment newFragmentType() {
+		//return new MainFragment();
 		return new MainFragment();
 	}
 	
+    /** Called when the activity is first created. */
+
 }

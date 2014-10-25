@@ -5,5 +5,9 @@
     <string name="title_activity_stack_underflow">StackUnderflowActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="answer_black_box">Number of Answers</string>
+    <string name="answer_text">Answers</string>
+    <string name="zero_answers">0</string>
+    <string name="default_text">Default</string>
 
 </resources>

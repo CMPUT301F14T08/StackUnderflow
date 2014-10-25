@@ -1,43 +1,55 @@
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
-
 /**
- * 
- * StackUnderflow application PostController. Used to check if the phone is
- * connected to online. Also used to get instances of PostController and
- * PostManager
- * 
- * @author Maciej Ogrocki
- * 
+ * StackUnderflow application PostController. Point of access for post manager - handles
+ * differences between online/cached post manager automatically. Determines whether
+ * to provide online or cache manager based on online/offline status.
  */
 
+package cs.ualberta.CMPUT301F14T08.stackunderflow;
+import android.content.Context;
+
+
+// TODO: Currently this just controls the CachedPostManager. 
+// Update during Project Part 3, Week 2 to include OnlineCachedManager.
+
 public class PostController {
-	private PostController sPostController;
+	private static PostController sPostController;
 	private PostManager mPostManager;
 
-	private PostController() {
-
+	// Keep this private!
+	private PostController(Context context) {
+		//TODO: assign different post manager if isOnline is true
+		mPostManager = CachedPostManager.getInstance(context);
 	}
-
-	private boolean pollIfOnline() {
-		// TODO: Check if the app in connect to the Internet
+	
+	// TODO: Implement in Project Part 3, Week 2
+	private boolean isOnline() {
 		return false;
 	}
 
-	public PostController getInstance() {
-		// TODO: knowing the online status of the app choose which
-		// postcontroller to use
+	// TODO: Implement in Project Part 3, Week 2
+	private void pollIfOnline() {
+		return;
+	}
+
+	// Static initializer, use this to get the active instance.
+	public PostController getInstance(Context context) {
+		if (sPostController == null) {
+			sPostController = new PostController(context.getApplicationContext());
+		}
+
 		return sPostController;
 	}
 
 	public PostManager getPostManager() {
-		// TODO: knowing the online status of the app choose which postmanger to
-		// use
 		return mPostManager;
 	}
-
+	
+	// Type Checking
+	// -- Use this to tell if we're online or offline
 	public boolean usingOnlinePostManager() {
-		// TODO: Decide which post manager to use depending on online status
-		return false;
+		if(mPostManager instanceof CachedPostManager) 
+			return false;
+		return true;
 	}
 }
 

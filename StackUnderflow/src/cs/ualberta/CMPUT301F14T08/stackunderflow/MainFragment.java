@@ -146,7 +146,7 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 			String tmp = sdf.format(q.getDate());
 			
 			final String formattedSubTitle = String.format("by %s | %s | %s votes", 
-					q.getAuthor(), 
+					q.getSignature(), 
 					tmp, q.getVotes()
 				);
 			subtitleTextView.setText(formattedSubTitle);
@@ -183,22 +183,23 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	//TODO JUST FOR TESTING, Remove. Creates list of questions for testing
     private ArrayList<Question> getQuestions() {
 	  	
-    	final ArrayList<Question> entries = new ArrayList<Question>();
+    	ArrayList<Question> entries = new ArrayList<Question>();
     	
     	for(int i = 1; i < 50; i++) {
-    		Question q = new Question();
-    		q.setAuthor("Author "+i);
-    		q.setText("Q: " + i + " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  ");
-    		Date date = Calendar.getInstance().getTime();
-    		q.setDate(date);
+    		
+    		String author = "Author "+i;
+    		String text = "Q: " + i + " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  ";
+    		Question q = new Question(text, author, "Title"+i);
+    		mQandA.add(q);
     		
     		
     		Random rand = new Random();
     		int rn = rand.nextInt(10) + 1;
     		for (int j = 0; j < rn; ++j){
-    			Answer a = new Answer();
-    			q.setVotes(i*j);
+    			Answer a = new Answer("text"+j, "user"+j);
+    			q.incrementVotes();
     			q.addAnswer(a);
+    			mQandA.add(a);
     		}
     		
     		entries.add(q);

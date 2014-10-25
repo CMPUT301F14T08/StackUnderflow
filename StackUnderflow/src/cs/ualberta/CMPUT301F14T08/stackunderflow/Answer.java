@@ -1,10 +1,8 @@
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
-
-
 /**
- * StackUnderflow application
  * Answer class, extends Post class
  */
+
+package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 public class Answer extends Post {
 	

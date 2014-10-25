@@ -1,14 +1,14 @@
+/** 
+ * Post base class
+ */
+
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
-
-/* 
- * StackUnderflow application
- * Post base class
- */
 
 public class Post {
 	

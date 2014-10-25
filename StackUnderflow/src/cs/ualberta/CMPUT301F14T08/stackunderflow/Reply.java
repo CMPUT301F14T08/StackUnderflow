@@ -1,12 +1,11 @@
+/**
+ * Reply class (utilized by Post class)
+ */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.Date;
 import java.util.UUID;
-
-/**
- * StackUnderflow application
- * Reply class (utilized by Post class)
- */
 
 public class Reply {
 	

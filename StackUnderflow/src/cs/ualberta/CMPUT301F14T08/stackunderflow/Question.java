@@ -1,12 +1,10 @@
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
-
-import java.util.ArrayList;
-
 /**
- * StackUnderflow application
  * Question class, extends Post class
  */
 
+package cs.ualberta.CMPUT301F14T08.stackunderflow;
+
+import java.util.ArrayList;
 
 public class Question extends Post {
 	

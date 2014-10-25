@@ -1,10 +1,11 @@
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
-
 /*
  * An adaptor to return the desired view of a post, for use in a list view.
  * Called by profile fragment and mainfragment to populate the list views.
  * 
  */
+
+package cs.ualberta.CMPUT301F14T08.stackunderflow;
+
 import java.util.ArrayList;
 import java.util.Date;
 import android.content.Context;
@@ -15,19 +16,15 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
-/*
- * Author: Jonathan Emery
- * Modified by: 
- * 
- */
-
 public class PostAdapter extends ArrayAdapter<Post> {
 	// Boolean to see if the post is a question or not, to simplify logic
 	private Boolean isQuestion = false;
 	
 	// uses the passed in controller to create an ArrayAdapter of Posts
-	public PostAdapter(Context context, PostController controller) {
-		super(context, 0, controller.getPostManager().getPosts());
+	// Once merged with PostController, edit out ArrayList<Post> for
+	// PostController, and add controller.getPostManager().getPosts());
+	public PostAdapter(Context context, ArrayList<Post> controller) {
+		super(context, 0, controller);
 	}
 	
 	// set up the required view, or uses a recycled view instead
@@ -52,16 +49,17 @@ public class PostAdapter extends ArrayAdapter<Post> {
 		
 		postTitle = (TextView) view.findViewById(R.id.postTitleView);
 		if (isQuestion) {
+			Question tmp = (Question)currPost;
 			postDetails = (TextView) view.findViewById(R.id.postQuesDetailsView);
 			numberOfAns = (TextView) view.findViewById(R.id.numberOfAnswers);
 			
-			postTitle.setText("Q: "+ currPost.getTitle());
-			numberOfAns.setText(currPost.countAnswers());
+			postTitle.setText("Q: "+ tmp.getTitle());
+			numberOfAns.setText(tmp.countAnswers());
 		}
 		else {
 			postDetails = (TextView) view.findViewById(R.id.postAnsDetailsView);
 			
-			postTitle.setText("A: "+ currPost.getTitle());
+			postTitle.setText("A: "+ currPost.getText());
 		}
 
 		postDetails.setText(templateDetails(currPost));
@@ -71,7 +69,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
 	// returns a properly formatted string for displaying post details
 	private String templateDetails(Post post) {
-		String author = post.getAuthor();
+		String author = post.getSignature();
 		Date date = post.getDate();
 		Integer votes = post.getVotes();
 				

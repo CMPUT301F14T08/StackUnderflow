@@ -6,8 +6,9 @@
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Locale;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,7 +71,8 @@ public class PostAdapter extends ArrayAdapter<Post> {
 	// returns a properly formatted string for displaying post details
 	private String templateDetails(Post post) {
 		String author = post.getSignature();
-		Date date = post.getDate();
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
+		String date = format.format(post.getDate());
 		Integer votes = post.getVotes();
 				
 		return "by "+ author + " | " + date + " | " + votes + " votes";

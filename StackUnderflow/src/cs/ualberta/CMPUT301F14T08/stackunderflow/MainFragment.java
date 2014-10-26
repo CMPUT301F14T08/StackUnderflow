@@ -1,21 +1,12 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Random;
-
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.RelativeSizeSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,15 +14,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainFragment extends ListFragment implements ActionBar.TabListener{
-	
-	private ArrayList<Question> mQuestions;
-	private ArrayList<Post> mQandA;
+	// TODO: This will be changed into a PostController once merged.
+	private ArrayList<Post> mQandA = new ArrayList<Post>();
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,15 +32,11 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	            .setTabListener(this));
 	    actionBar.addTab(actionBar.newTab().setText(R.string.popular)
 	            .setTabListener(this));
-	    
-		mQuestions = getQuestions();
-		//ArrayList<Answer> mAnswers = mQuestions.getQuestions().;
-		//ArrayList<Post> m
-		//for (Question q : mQuestions){
-		//	mQandA.addAll(q.getAnswers());
-		//}
-		QuestionAdapter adapter = new QuestionAdapter(mQuestions);
-				setListAdapter(adapter);
+
+	    getQuestions();
+	    // TODO: mQandA will change to be a PostController
+		PostAdapter adapter = new PostAdapter(getActivity(), mQandA);
+		setListAdapter(adapter);
 	    
 	}
 	
@@ -62,7 +46,6 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.fragment_main_menu, menu);
-
 	}
 		
 	@Override
@@ -109,15 +92,65 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	}
 	  
 
-	//List click listener
-	//uses ListFragment extension of class
+	/*
+	 * List click listener
+	 * uses ListFragment extension of class 
+	 * 
+	 * Will be used to send a question to the QuestionActivity
+	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Question q = ((QuestionAdapter)getListAdapter()).getItem(position);
+		//Question q = ((QuestionAdapter)getListAdapter()).getItem(position);
 
 	}
 	
-	//ListView Adapter (move to PostAdapter class, or use Jon's)
+	
+	//TEST CODE BELOW *************************************************************
+	
+	//TODO JUST FOR TESTING, Remove. Test sections for tab switching
+	public static class DummySectionFragment extends Fragment {
+		public static final String ARG_SECTION_NUMBER = "placeholder_text";
+		
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+		    Bundle savedInstanceState) {
+		  TextView textView = new TextView(getActivity());
+		  textView.setGravity(Gravity.CENTER);
+		  textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+		  return textView;
+		}
+	}
+	
+	
+	//TODO JUST FOR TESTING, Remove. Creates list of questions for testing
+    private void getQuestions() {
+	  	
+    	ArrayList<Question> entries = new ArrayList<Question>();
+    	
+    	for(int i = 1; i < 50; i++) {
+    		
+    		String author = "Author "+i;
+    		String text = "Q: " + i + " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  ";
+    		Question q = new Question(text, author, "Title"+i);
+    		mQandA.add(q);
+    		
+    		
+    		Random rand = new Random();
+    		int rn = rand.nextInt(10) + 1;
+    		for (int j = 0; j < rn; ++j){
+    			Answer a = new Answer("text"+j, "user"+j);
+    			q.incrementVotes();
+    			q.addAnswer(a);
+    			mQandA.add(a);
+    		}
+    		
+    		entries.add(q);
+    	} 	
+    }
+    
+    /*
+     * 
+    //ListView Adapter (move to PostAdapter class, or use Jon's)
 	private class QuestionAdapter extends ArrayAdapter<Question> {
 		
 		public QuestionAdapter(ArrayList<Question> questions) {
@@ -162,50 +195,6 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 			return convertView;
 		}
 	}
-	
-	//TEST CODE BELOW *************************************************************
-	
-	//TODO JUST FOR TESTING, Remove. Test sections for tab switching
-	public static class DummySectionFragment extends Fragment {
-		public static final String ARG_SECTION_NUMBER = "placeholder_text";
-		
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-		    Bundle savedInstanceState) {
-		  TextView textView = new TextView(getActivity());
-		  textView.setGravity(Gravity.CENTER);
-		  textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-		  return textView;
-		}
-	}
-	
-	
-	//TODO JUST FOR TESTING, Remove. Creates list of questions for testing
-    private ArrayList<Question> getQuestions() {
-	  	
-    	ArrayList<Question> entries = new ArrayList<Question>();
-    	
-    	for(int i = 1; i < 50; i++) {
-    		
-    		String author = "Author "+i;
-    		String text = "Q: " + i + " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  ";
-    		Question q = new Question(text, author, "Title"+i);
-    		mQandA.add(q);
-    		
-    		
-    		Random rand = new Random();
-    		int rn = rand.nextInt(10) + 1;
-    		for (int j = 0; j < rn; ++j){
-    			Answer a = new Answer("text"+j, "user"+j);
-    			q.incrementVotes();
-    			q.addAnswer(a);
-    			mQandA.add(a);
-    		}
-    		
-    		entries.add(q);
-    	}
-    	
-    	return entries;
-    }
+     */
     
 }

@@ -10,6 +10,7 @@ public class Question extends Post {
 	
 	private String mTitle;
 	private ArrayList<Answer> mAnswers = new ArrayList<Answer>();
+	
 
 	public Question(String text, String signature, String title){
 		this(text, signature, null, title);

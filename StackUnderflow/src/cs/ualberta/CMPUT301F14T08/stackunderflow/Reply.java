@@ -1,53 +1,43 @@
+/**
+ * Reply class (utilized by Post class)
+ */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.Date;
-
-/**
- * 
- * StackUnderflow application
- * Reply class (utilized by Post class)
- * 
- * @author Michael Williams
- * 
- */
+import java.util.UUID;
 
 public class Reply {
 	
-
-
-	private Date mDate;
+	private UUID mUUID;
 	private String mText;
-	private	String mAuthor;
+	private Date mDate;
+	private	String mSignature;
+	//private Post mParent; Is this needed?
 	
-	public Reply() {
-		super();
-		// TODO Auto-generated constructor stub
+	public Reply(String text, String signature) {
+		mText = text;
+		mSignature = signature;
+		mUUID = UUID.randomUUID();
+		mDate = new Date();
+		//mParent = null; Is this needed?
 	}
 
-	public Date getDate() {
-		return mDate;
+	public UUID getUUID(){
+		return mUUID;
 	}
-
-	public void setDate(Date mDate) {
-		this.mDate = mDate;
-	}
-
+	
 	public String getText() {
 		return mText;
 	}
-
-	public void setText(String mText) {
-		this.mText = mText;
+	
+	public Date getDate() {
+		return mDate;
 	}
-
-	public String getAuthor() {
-		return mAuthor;
-	}
-
-	public void setAuthor(String mAuthor) {
-		this.mAuthor = mAuthor;
+	
+	public String getSignature() {
+		return mSignature;
 	}
 	
 }	
-	
 	

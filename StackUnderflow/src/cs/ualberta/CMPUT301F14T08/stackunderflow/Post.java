@@ -1,3 +1,8 @@
+/** 
+ * Post base class
+ */
+
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 
@@ -5,91 +10,99 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-/**
- * 
- * StackUnderflow application
- * Post base class
- * 
- * @author Michael Williams
- * 
- */
-
 public class Post {
 	
-	private ArrayList<Reply> mReplies;
 	private UUID mID; //TODO do we want random UUID or another method?
 	private String mText;
-	private String mAuthor;
-	private int mUpvotes;
+	private int mVotes = 0;
+	private String mPicture;  // placeholder: need image format, likely BitmapFactory implementation
+	private String mSignature;
 	private Date mDate;
-	private String mPhoto; // placeholder: need image format, likely BitmapFactory implementation
+	private ArrayList<Reply> mReplies = new ArrayList<Reply>();
+	private boolean mIsSelected;
+	private boolean mIsFiltered;
+	private UserAttributes mUserAttributes;
 	
 
-	public Post() {
+	public Post(String text, String signature) {
+		this(text, signature, null);
+	}
+	
+	public Post(String text, String signature, String picture){
+		mID = UUID.randomUUID(); //TODO do we want random UUID or another method?
+		mText = text;
+		mVotes = 0;
+		mPicture = picture;
+		mSignature = signature;
+		mDate = new Date();
 		mReplies = new ArrayList<Reply>();
-		UUID mID = UUID.randomUUID(); //TODO do we want random UUID or another method?
+		mIsSelected = false;
+		mIsFiltered = false;
+		mUserAttributes = new UserAttributes();
 	}
-
-	public ArrayList<Reply> getmReplies() {
-		return mReplies;
-	}
-
-	public void setmReplies(ArrayList<Reply> mReplies) {
-		this.mReplies = mReplies;
-	}
-
+	
 	public UUID getID() {
 		return mID;
 	}
-
-	public void setID(UUID mID) {
-		this.mID = mID;
-	}
-
+	
 	public String getText() {
 		return mText;
 	}
-
-	public void setText(String mText) {
-		this.mText = mText;
+	
+	public String getSignature() {
+		return mSignature;
 	}
-
-	public String getAuthor() {
-		return mAuthor;
+	
+	public String getPicture() {
+		return mPicture;
 	}
-
-	public void setAuthor(String mAuthor) {
-		this.mAuthor = mAuthor;
-	}
-
-	public int getVotes() {
-		return mUpvotes;
-	}
-
-	public void setVotes(int mUpvotes) {
-		this.mUpvotes += mUpvotes;
-	}
-
+	
 	public Date getDate() {
 		return mDate;
 	}
-
-	public void setDate(Date mDate) {
-		this.mDate = mDate;
-	}
-
-	public String getPicture() {
-		return mPhoto;
-	}
-
-	public void setPicture(String mPhoto) {
-		this.mPhoto = mPhoto;
+	
+	public int getVotes() {
+		return mVotes;
 	}
 	
-	public void addReply(Reply reply){
-		mReplies.add(reply);
+	public void incrementVotes(){
+		mVotes += 1;
 	}
 	
+	public void decrementVotes(){
+		if(mVotes > 0) mVotes -= 1;
+	}
+
+	public ArrayList<Reply> getReplies() {
+		return mReplies;
+	}
 	
+	public void addReply(Reply newReply){
+		mReplies.add(newReply);
+	}
+	
+	public boolean getIsSelected(){
+		return mIsSelected;
+	}
+	
+	public void setIsSelected(boolean isSelected){
+		mIsSelected = isSelected;
+	}
+	
+	public boolean hasPicture(){
+		return mPicture != null ? true : false;
+	}
+	
+	public boolean getIsFiltered(){
+		return mIsFiltered;
+	}
+	
+	public void setIsFiltered(boolean isFiltered){
+		mIsFiltered = isFiltered;
+	}
+	
+	public UserAttributes getUserAttributes(){
+		return mUserAttributes;
+	}
 	
 }

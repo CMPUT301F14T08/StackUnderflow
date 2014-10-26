@@ -21,7 +21,7 @@ public class AnswerFragment extends PostFragment {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.question_title);
-		mAnswer = (Answer)mPost;
+		mAnswer = (Answer)sPostController.getPostManager().getPost(mPostId);
 	}
 	
 	@Override
@@ -33,17 +33,17 @@ public class AnswerFragment extends PostFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 			case R.id.menu_item_new_answer:
-				if(sPostController.getPostManager().getUserProfileManager().getUserProfile().getUsername.equals(null)){
-	        		FragmentManager fm = getActivity().getFragmentManager();
-					UsernameFragment dialog = new UsernameFragment();
-					dialog.setTargetFragment(AnswerFragment.this, REQUEST_USERNAME);
-					dialog.show(fm, DIALOG_USERNAME);
-				}
-				else{
-					Intent i = new Intent(getActivity(), NewAnswerActivity.class);
-					i.putExtra(NewAnswerFragment.EXTRA_PARENT_QUESTION_ID, mAnswer.getParentQuestion().getID());
-					startActivity(i);
-				}
+//				if(sPostController.getPostManager().getUserProfileManager().getUserProfile().getUsername.equals(null)){
+//	        		FragmentManager fm = getActivity().getFragmentManager();
+//					UsernameFragment dialog = new UsernameFragment();
+//					dialog.setTargetFragment(AnswerFragment.this, REQUEST_USERNAME);
+//					dialog.show(fm, DIALOG_USERNAME);
+//				}
+//				else{
+//					Intent i = new Intent(getActivity(), NewAnswerActivity.class);
+//					i.putExtra(NewAnswerFragment.EXTRA_PARENT_QUESTION_ID, mAnswer.getParentQuestion().getID());
+//					startActivity(i);
+//				}
 			    return true;
 			case R.id.menu_item_back_to_question:
 					//Code to go back to question
@@ -56,8 +56,6 @@ public class AnswerFragment extends PostFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 		View v = inflater.inflate(R.layout.question_fragment, parent, false);
 		
-		mLinearLayoutTop = (LinearLayout)v.findViewById(R.id.question_fragment_top_linearlayout);
-		mLinearLayoutTop.setBackgroundColor(getResources().getColor(R.color.blue));
 		
 		mPostBody = (TextView)v.findViewById(R.id.question_fragment_textview_body);
 		mPostBody.setText(mAnswer.getText() + " " + mAnswer.getDate().toString());

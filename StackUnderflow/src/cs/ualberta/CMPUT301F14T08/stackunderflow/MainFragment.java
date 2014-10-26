@@ -2,15 +2,12 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -24,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,6 +28,7 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	
 	private ArrayList<Question> mQuestions;
 	private ArrayList<Post> mQandA;
+	public PostController sPostController;
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +42,10 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	    actionBar.addTab(actionBar.newTab().setText(R.string.popular)
 	            .setTabListener(this));
 	    
-		mQuestions = getQuestions();
+	    sPostController = PostController.getInstance(getActivity());
+	    
+	    mQuestions = sPostController.getPostManager().castToQuestions();
+		//mQuestions = getQuestions();
 		//ArrayList<Answer> mAnswers = mQuestions.getQuestions().;
 		//ArrayList<Post> m
 		//for (Question q : mQuestions){
@@ -114,6 +114,9 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Question q = ((QuestionAdapter)getListAdapter()).getItem(position);
+		Intent i = new Intent(getActivity(), QuestionActivity.class);
+		i.putExtra(PostFragment.EXTRA_POST_ID, q.getID());
+		startActivity(i);
 
 	}
 	
@@ -136,7 +139,7 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 			// Question text
 			TextView titleTextView =
 					(TextView)convertView.findViewById(R.id.main_question_text);
-			titleTextView.setText(q.getText());
+			titleTextView.setText(q.getTitle());
 			
 			// Subtitle: author, date, upvotes text
 			TextView subtitleTextView =
@@ -146,7 +149,7 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 			String tmp = sdf.format(q.getDate());
 			
 			final String formattedSubTitle = String.format("by %s | %s | %s votes", 
-					q.getAuthor(), 
+					q.getSignature(), 
 					tmp, q.getVotes()
 				);
 			subtitleTextView.setText(formattedSubTitle);
@@ -186,20 +189,14 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
     	final ArrayList<Question> entries = new ArrayList<Question>();
     	
     	for(int i = 1; i < 50; i++) {
-    		Question q = new Question();
-    		q.setAuthor("Author "+i);
-    		q.setText("Q: " + i + " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  ");
-    		Date date = Calendar.getInstance().getTime();
-    		q.setDate(date);
+    		Question q = new Question("Q: " + i + " Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Author "+i, "Title" + i);    		
     		
-    		
-    		Random rand = new Random();
-    		int rn = rand.nextInt(10) + 1;
-    		for (int j = 0; j < rn; ++j){
-    			Answer a = new Answer();
-    			q.setVotes(i*j);
-    			q.addAnswer(a);
-    		}
+//    		Random rand = new Random();
+//    		int rn = rand.nextInt(10) + 1;
+//    		for (int j = 0; j < rn; ++j){
+//    			Answer a = new Answer("1","1");
+//    			q.addAnswer(a);
+//    		}
     		
     		entries.add(q);
     	}

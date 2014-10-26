@@ -1,7 +1,11 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +27,7 @@ public class QuestionFragment extends PostFragment {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.question_title);
-		mQuestion = (Question)mPost;
+		mQuestion = (Question)sPostController.getPostManager().getPost(mPostId);
 		
 	}
 	
@@ -42,17 +47,17 @@ public class QuestionFragment extends PostFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 			case R.id.menu_item_new_answer:
-				if(sPostController.getPostManager().getUserProfileManager().getUserProfile().getUsername.equals(null)){
-	        		FragmentManager fm = getActivity().getFragmentManager();
-					UsernameFragment dialog = new UsernameFragment();
-					dialog.setTargetFragment(QuestionFragment.this, REQUEST_USERNAME);
-					dialog.show(fm, DIALOG_USERNAME);
-				}
-				else{
-					Intent i = new Intent(getActivity(), NewAnswerActivity.class);
-					i.putExtra(NewAnswerFragment.EXTRA_PARENT_QUESTION_ID, mQuestion.getID());
-					startActivity(i);
-				}
+//				if(sPostController.getPostManager().getUserProfileManager().getUserProfile().getUsername.equals(null)){
+//	        		FragmentManager fm = getActivity().getFragmentManager();
+//					UsernameFragment dialog = new UsernameFragment();
+//					dialog.setTargetFragment(QuestionFragment.this, REQUEST_USERNAME);
+//					dialog.show(fm, DIALOG_USERNAME);
+//				}
+//				else{
+//					Intent i = new Intent(getActivity(), NewAnswerActivity.class);
+//					i.putExtra(NewAnswerFragment.EXTRA_PARENT_QUESTION_ID, mQuestion.getID());
+//					startActivity(i);
+//				}
 			    return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -62,15 +67,14 @@ public class QuestionFragment extends PostFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 		View v = inflater.inflate(R.layout.question_fragment, parent, false);
 		
-		mLinearLayoutTop = (LinearLayout)v.findViewById(R.id.question_fragment_top_linearlayout);
-		mLinearLayoutTop.setBackgroundColor(mBlackColor);
-		
 		mQuestionTitle = (TextView)v.findViewById(R.id.question_fragment_textview_title);
 		mQuestionTitle.setText(mQuestion.getTitle());
 		mQuestionTitle.setTextColor(mWhiteColor);
 		
 		mPostBody = (TextView)v.findViewById(R.id.question_fragment_textview_body);
-		mPostBody.setText(mQuestion.getText() + " " + mQuestion.getDate().toString());
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
+		String date = sdf.format(mQuestion.getDate());
+		mPostBody.setText(mQuestion.getText() + " (" + date + ")");
 		mPostBody.setTextColor(mWhiteColor);
 		
 		mUpvoteButton = (ImageButton)v.findViewById(R.id.question_fragment_button_upvote);
@@ -88,23 +92,23 @@ public class QuestionFragment extends PostFragment {
 					mQuestion.decrementVotes();
 					mUpvoteButton.setImageResource(R.drawable.upvote_empty);
 				}		
-				mUpvoteCountTextView.setText(mQuestion.getVotes());
+				mUpvoteCountTextView.setText(""+mQuestion.getVotes());
 			}
 		});
 		
 		
 		mUpvoteCountTextView = (TextView)v.findViewById(R.id.question_fragment_textview_upvotes);
-		mUpvoteCountTextView.setText(mQuestion.getVotes());
+		mUpvoteCountTextView.setText(""+ mQuestion.getVotes());
 		mUpvoteCountTextView.setTextColor(mWhiteColor);
 		
 		mFavoriteButton = (ImageButton)v.findViewById(R.id.question_fragment_button_favorite);
-		mFavoriteButton.setImageResource(mQuestion.getUserAttributes().getIsFavorited() ? R.drawable.star_full_small : R.drawable.star_empty_small);
+		mFavoriteButton.setImageResource(mQuestion.getUserAttributes().getIsFavorited() ? R.drawable.star_full : R.drawable.star_empty);
 		mFavoriteButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				mQuestion.getUserAttributes().toggleIsFavorited();
-				mFavoriteButton.setImageResource(mQuestion.getUserAttributes().getIsFavorited() ? R.drawable.star_full_small : R.drawable.star_empty_small);
+				mFavoriteButton.setImageResource(mQuestion.getUserAttributes().getIsFavorited() ? R.drawable.star_full : R.drawable.star_empty);
 			}
 		});
 		
@@ -115,6 +119,7 @@ public class QuestionFragment extends PostFragment {
 		if(mQuestion.hasPicture()){
 			mPictureButton.setImageResource(R.drawable.picture_white);
 			mPictureButton.setEnabled(true);
+			mPictureButton.setVisibility(View.VISIBLE);
 			mPictureButton.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
@@ -129,6 +134,7 @@ public class QuestionFragment extends PostFragment {
 		else{
 			mPictureButton.setImageResource(R.drawable.picture_dark);
 			mPictureButton.setEnabled(false);
+			mPictureButton.setVisibility(View.GONE);
 		}
 		
 		
@@ -136,8 +142,6 @@ public class QuestionFragment extends PostFragment {
 		mUsername.setText(mQuestion.getSignature());
 		mUsername.setTextColor(mWhiteColor);
 		
-		mLinearLayoutBottom = (LinearLayout)v.findViewById(R.id.question_fragment_bottom_linearlayout);
-		mLinearLayoutTop.setBackgroundColor(mWhiteColor);
 		
 		mAnswersButton = (ImageButton)v.findViewById(R.id.question_fragment_button_answers);
 		if(mQuestion.getAnswers().size() > 0){
@@ -161,12 +165,12 @@ public class QuestionFragment extends PostFragment {
 		mAnswersTextView = (TextView)v.findViewById(R.id.question_fragment_textview_answers);
 		mAnswersTextView.setTextColor(mBlackColor);
 		switch(mQuestion.countAnswers()){
-		case 0:
-			mAnswersTextView.setText("0 Answers");
 		case 1:
 			mAnswersTextView.setText("1 Answer");
+			break;
 		default:
-			mAnswersTextView.setText(mQuestion.countAnswers() + " Answers");	
+			mAnswersTextView.setText(mQuestion.countAnswers() + " Answers");
+			break;
 		}
 		
 		return v;		

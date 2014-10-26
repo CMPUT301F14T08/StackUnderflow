@@ -76,7 +76,7 @@ public abstract class PostManager {
 	public Post getPost(UUID uuid) {
 		for (int i=0; i< mPosts.size(); i++) {
 			Post item = mPosts.get(i);
-			if (item.getID() == uuid)
+			if (item.getID().equals(uuid))
 				return item;
 		}
 		return null;
@@ -94,7 +94,7 @@ public abstract class PostManager {
 	
 	// adds an answer to our list of posts
 	public void addAnswer(Answer newAnswer){
-		Question parent = newAnswer.getQuestion();
+		Question parent = newAnswer.getParentQuestion();
 		
 		parent.addAnswer(newAnswer);
 		mPosts.add(newAnswer);

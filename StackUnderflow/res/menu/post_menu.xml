@@ -2,15 +2,11 @@
 
     <item
         android:id="@+id/menu_item_new_answer"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="@string/new_answer"
-        android:showAsAction="ifRoom|withText"/>
+        android:title="@string/new_answer"/>
     <item android:id="@+id/menu_item_new_reply"
-        android:title="@string/new_reply"
-        android:showAsAction="ifRoom"/>
+        android:title="@string/new_reply"/>
     <item
         android:id="@+id/menu_item_back_to_question"
-        android:title="@string/back_to_question"
-        android:showAsAction="ifRoom|withText"/>
+        android:title="@string/back_to_question"/>
 
 </menu>

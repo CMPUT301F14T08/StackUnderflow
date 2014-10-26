@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +20,8 @@ public class PostFragment extends Fragment {
     protected static final int REQUEST_USERNAME = 0;
     
 	protected PostController sPostController;
+	protected UUID mPostId;
 	
-	protected Post mPost;
-	protected LinearLayout mLinearLayoutTop;
 	protected TextView mPostBody;
 	protected ImageButton mUpvoteButton;
 	protected TextView mUpvoteCountTextView;
@@ -29,7 +29,6 @@ public class PostFragment extends Fragment {
 	protected TextView mFavoriteTextView;
 	protected ImageButton mPictureButton;
 	protected TextView mUsername;
-	protected LinearLayout mLinearLayoutBottom;
 	protected ImageButton mAnswersButton;
 	protected TextView mAnswersTextView;
 	
@@ -41,9 +40,8 @@ public class PostFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		sPostController = new PostController();
-		UUID postId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
-		mPost = sPostController.getPostManager().getPost(postId);
+		sPostController = PostController.getInstance(getActivity());
+		mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
 		
 		mBlackColor = getResources().getColor(R.color.black);
 		mWhiteColor = getResources().getColor(R.color.white);
@@ -65,18 +63,18 @@ public class PostFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem menuItem){
 	    switch (menuItem.getItemId()) {
         case R.id.menu_item_new_reply:
-        	if(sPostController.getPostManager().getUserProfileManager().getUserProfile().getUsername.equals(null)){
-        		FragmentManager fm = getActivity().getFragmentManager();
-        		UsernameFragment dialog = new UsernameFragment();
-        		dialog.setTargetFragment(PostFragment.this, REQUEST_USERNAME);
-        		dialog.show(fm, DIALOG_USERNAME);
-        	}
-        	else{
-        		//new reply
-        		String toastString = "Someone needs to implement code to show add replies";
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_LONG);
-                toast.show(); 
-        	}
+//        	if(sPostController.getPostManager().getUserProfileManager().getUserProfile().getUsername.equals(null)){
+//        		FragmentManager fm = getActivity().getFragmentManager();
+//        		UsernameFragment dialog = new UsernameFragment();
+//        		dialog.setTargetFragment(PostFragment.this, REQUEST_USERNAME);
+//        		dialog.show(fm, DIALOG_USERNAME);
+//        	}
+//        	else{
+//        		//new reply
+//        		String toastString = "Someone needs to implement code to show add replies";
+//                Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_LONG);
+//                toast.show(); 
+//        	}
         	return true;
         default:
             return super.onOptionsItemSelected(menuItem);

@@ -32,7 +32,7 @@ public class PostController {
 	}
 
 	// Static initializer, use this to get the active instance.
-	public PostController getInstance(Context context) {
+	public static PostController getInstance(Context context) {
 		if (sPostController == null) {
 			sPostController = new PostController(context.getApplicationContext());
 		}

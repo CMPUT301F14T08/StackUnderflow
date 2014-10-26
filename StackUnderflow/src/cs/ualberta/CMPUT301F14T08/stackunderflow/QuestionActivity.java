@@ -1,17 +1,12 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
-import android.os.Bundle;
+import android.app.Fragment;
 
 public class QuestionActivity extends BaseFragmentActivity {
 
+	@Override
+	protected Fragment newFragmentType() {
 	
-	public QuestionActivity(){
-		
-		@Override
-		public void onCreate(Bundle savedInstanceState){
-			super.onCreate(savedInstanceState);
-			setHasOptionsMenu(true);
-			
-		}
+		return new QuestionFragment();
 	}
 }

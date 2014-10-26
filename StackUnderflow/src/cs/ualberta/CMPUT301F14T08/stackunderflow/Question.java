@@ -17,7 +17,12 @@ public class Question extends Post {
 	
 	public Question(String text, String signature, String picture, String title){
 		super(text, signature, picture);
-		mTitle = title;	
+		mTitle = title;
+		mAnswers = new ArrayList<Answer>();
+	}
+	
+	public void setTitle(String title){
+		mTitle = title;
 	}
 	
 	public String getTitle(){
@@ -37,4 +42,7 @@ public class Question extends Post {
 		mAnswers.add(newAnswer);
 	}
 
+	public void initializeAnswers(){
+		mAnswers = new ArrayList<Answer>();
+	}
 }

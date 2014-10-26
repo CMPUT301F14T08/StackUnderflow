@@ -1,5 +1,7 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.util.UUID;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -22,6 +24,10 @@ public abstract class BaseFragmentActivity extends Activity {
 
 		if (saved_state == null) {
 			fragment = newFragmentType();
+			UUID test = (UUID)getIntent().getSerializableExtra(PostFragment.EXTRA_POST_ID);
+			Bundle args = new Bundle();
+			args.putSerializable(PostFragment.EXTRA_POST_ID, test);
+			fragment.setArguments(args);
 			fragment_manager.beginTransaction()
 					.add(R.id.base_container, fragment).commit();
 		}

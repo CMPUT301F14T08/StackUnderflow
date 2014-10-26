@@ -42,6 +42,7 @@ public class CachedPostManager extends PostManager{
 		Question q1 = new Question(  
 				"LOL I don't actually have a question, I just wanted to post.",
 				"gregthegreg",
+				"pic1",
 				"MY FIRST QUESTION GUIS!!!11");
 		
 		Answer a1 = new Answer("LOL I AM ANSWERING MY OWN QUESTION!", "gregthegreg");

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -10,13 +11,16 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:orientation="vertical" >
+        android:orientation="vertical" 
+        android:background="@color/black">
 
         <TextView
             android:id="@+id/question_fragment_textview_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:paddingBottom="5dp"
+            android:text="TextView"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/question_fragment_textview_body"
@@ -38,24 +42,32 @@
                     android:id="@+id/question_fragment_button_upvote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:padding="5dp"
                     android:src="@drawable/upvote_empty" />
 
                 <TextView
                     android:id="@+id/question_fragment_textview_upvotes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:padding="5dp"
                     android:text="@string/upvote_count" />
 
                 <ImageButton
                     android:id="@+id/question_fragment_button_favorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:padding="5dp"
                     android:src="@drawable/star_empty" />
 
                 <TextView
                     android:id="@+id/question_fragment_textview_favorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:padding="5dp"
                     android:text="@string/favorite" />
 
             </LinearLayout>	
@@ -70,12 +82,16 @@
                     android:id="@+id/question_fragment_button_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:padding="5dp"
                     android:src="@drawable/picture_dark" />
 
                 <TextView
                     android:id="@+id/question_fragment_textview_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:padding="5dp"
                     android:text="@string/username" />
 
             </LinearLayout>
@@ -111,13 +127,20 @@
                 android:id="@+id/question_fragment_textview_answers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/answer_count" />
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="5dp"
+                android:padding="10dp"
+                android:text="@string/answer_count"
+                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/question_fragment_button_answers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/box_arrow_right_large" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/box_arrow_right_large" />
+
         </LinearLayout>
 
     </LinearLayout>

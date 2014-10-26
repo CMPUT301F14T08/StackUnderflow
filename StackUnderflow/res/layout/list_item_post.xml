@@ -22,7 +22,8 @@
         android:layout_alignLeft="@+id/postViewTitle"
         android:layout_below="@+id/postViewTitle"
         android:text="@string/default_text"
-        android:textColor="@color/black" />
+        android:textColor="@color/black" 
+    	android:textSize="16sp" />
 
     <ImageView
         android:id="@+id/answerViewBox"

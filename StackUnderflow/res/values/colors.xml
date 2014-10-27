@@ -6,4 +6,8 @@
     <color name="black">#363636</color>
 	<color name="cancel_button_grey">#595959</color>
 	<color name="watermark_grey">#999999</color>
+<<<<<<< HEAD
 </resources>
+=======
+</resources>
+>>>>>>> MainFragment

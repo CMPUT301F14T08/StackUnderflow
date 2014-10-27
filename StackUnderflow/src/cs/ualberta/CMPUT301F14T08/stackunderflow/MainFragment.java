@@ -1,18 +1,13 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Random;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.RelativeSizeSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +24,9 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	private ArrayList<Question> mQuestions;
 	private ArrayList<Post> mQandA;
 	public PostController sPostController;
+
+	// TODO: This will be changed into a PostController once merged.
+	private ArrayList<Post> mQandA = new ArrayList<Post>();
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,17 +40,15 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	    actionBar.addTab(actionBar.newTab().setText(R.string.popular)
 	            .setTabListener(this));
 	    
+//TODO: Update
 	    sPostController = PostController.getInstance(getActivity());
-	    
 	    mQuestions = sPostController.getPostManager().castToQuestions();
-		//mQuestions = getQuestions();
-		//ArrayList<Answer> mAnswers = mQuestions.getQuestions().;
-		//ArrayList<Post> m
-		//for (Question q : mQuestions){
-		//	mQandA.addAll(q.getAnswers());
-		//}
-		QuestionAdapter adapter = new QuestionAdapter(mQuestions);
-				setListAdapter(adapter);
+
+
+	    getQuestions();
+	    // TODO: mQandA will change to be a PostController
+		PostAdapter adapter = new PostAdapter(getActivity(), sPostController);
+		setListAdapter(adapter);
 	    
 	}
 	
@@ -62,7 +58,6 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.fragment_main_menu, menu);
-
 	}
 		
 	@Override
@@ -86,8 +81,10 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 		// container view.
 		
 		//TODO: implement switching/filtering of list view
+		//TODO: verify with group that change of tab colour is 
+		// required: requires heavy theme modification
 		  
-		/*TODO Remove: Testing Dummy section
+		/*TODO JUST FOR TESTING, Remove: testing Dummy sections for tabs
 		Fragment fragment = new DummySectionFragment();
 		Bundle args = new Bundle();
 		args.putInt(DummySectionFragment.ARG_SECTION_NUMBER,
@@ -107,64 +104,23 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 		//TODO implement
 	}
-	  
 
-	//List click listener
-	//uses ListFragment extension of class
+	/*
+	 * List click listener
+	 * uses ListFragment extension of class 
+	 * 
+	 * Will be used to send a question to the QuestionActivity
+	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
+// TODO: Update
 		Question q = ((QuestionAdapter)getListAdapter()).getItem(position);
 		Intent i = new Intent(getActivity(), QuestionActivity.class);
 		i.putExtra(PostFragment.EXTRA_POST_ID, q.getID());
 		startActivity(i);
-
 	}
-	
-	//ListView Adapter (move to PostAdapter class, or use Jon's)
-	private class QuestionAdapter extends ArrayAdapter<Question> {
-		
-		public QuestionAdapter(ArrayList<Question> questions) {
-			super(getActivity(), 0, questions);
-		}
-		
-		public View getView(int position, View convertView, ViewGroup parent) {
-			// If we weren't given a view, inflate one
-			if (convertView == null) {
-				convertView = getActivity().getLayoutInflater()
-				.inflate(R.layout.fragment_main_list_item, null);
-			}
-			// Configure the view for this Question
-			Question q = getItem(position);
-			
-			// Question text
-			TextView titleTextView =
-					(TextView)convertView.findViewById(R.id.main_question_text);
-			titleTextView.setText(q.getTitle());
-			
-			// Subtitle: author, date, upvotes text
-			TextView subtitleTextView =
-					(TextView)convertView.findViewById(R.id.main_question_subtitle_text);	
 
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-			String tmp = sdf.format(q.getDate());
-			
-			final String formattedSubTitle = String.format("by %s | %s | %s votes", 
-					q.getSignature(), 
-					tmp, q.getVotes()
-				);
-			subtitleTextView.setText(formattedSubTitle);
 
-			// Answer count text (requires drawable/rounded_corners.xml)
-			TextView answerCountTextView =
-					(TextView)convertView.findViewById(R.id.main_answer_count_text);
-			final String formattedAnswerCount = String.format("%s\nAnswers", Integer.toString(q.getAnswers().size()));
-			Spannable ss1 = new SpannableString(formattedAnswerCount);
-			ss1.setSpan(new RelativeSizeSpan(0.4f), q.getAnswers().size()/10+1, ss1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			answerCountTextView.setText(ss1);
-
-			return convertView;
-		}
-	}
 	
 	//TEST CODE BELOW *************************************************************
 	
@@ -184,11 +140,12 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	
 	
 	//TODO JUST FOR TESTING, Remove. Creates list of questions for testing
-    private ArrayList<Question> getQuestions() {
+    private void getQuestions() {
 	  	
-    	final ArrayList<Question> entries = new ArrayList<Question>();
+    	ArrayList<Question> entries = new ArrayList<Question>();
     	
     	for(int i = 1; i < 50; i++) {
+
     		Question q = new Question("Q: " + i + " Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Author "+i, "Title" + i);    		
     		
 //    		Random rand = new Random();
@@ -197,11 +154,25 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 //    			Answer a = new Answer("1","1");
 //    			q.addAnswer(a);
 //    		}
+=======
+    		
+    		String author = "Author "+i;
+    		String text = "Q: " + i + " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  ";
+    		Question q = new Question(text, author, "Title"+i);
+    		mQandA.add(q);
+    		
+    		
+    		Random rand = new Random();
+    		int rn = rand.nextInt(10) + 1;
+    		for (int j = 0; j < rn; ++j){
+    			Answer a = new Answer("text"+j, "user"+j);
+    			q.incrementVotes();
+    			q.addAnswer(a);
+    			mQandA.add(a);
+    		}
     		
     		entries.add(q);
-    	}
-    	
-    	return entries;
+    	} 	
     }
     
 }

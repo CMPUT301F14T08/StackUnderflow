@@ -56,13 +56,9 @@ public class PostAdapter extends ArrayAdapter<Post> {
 		}
 		
 		currPost = getItem(position);
-		postTitle = (TextView) view.findViewById(R.id.main_question_text);//postViewTitle);
-		postDetails = (TextView) view.findViewById(R.id.main_question_subtitle_text);//postViewDetails);
-		//numberOfAns = (TextView) view.findViewById(R.id.numberOfAnswersView);
-		//answerBox = (ImageView) view.findViewById(R.id.answerViewBox);
-		
-		//answerBoxText is essentially a combination of numberOfAns and answerBox
-		answerBoxText = (TextView) view.findViewById(R.id.main_answer_count_text);//answersTextView);
+		postTitle = (TextView) view.findViewById(R.id.main_question_text);
+		postDetails = (TextView) view.findViewById(R.id.main_question_subtitle_text);
+		answerBoxText = (TextView) view.findViewById(R.id.main_answer_count_text);
 		
 		if (isQuestion) {
 			Question tmp = (Question)currPost;
@@ -70,42 +66,19 @@ public class PostAdapter extends ArrayAdapter<Post> {
 			postTitle.setText("Q: "+ tmp.getTitle());
 			
 			String string = String.format("%s\nAnswers", String.valueOf(tmp.countAnswers()));		
-			//String string = String.format(format, args)String.valueOf(tmp.countAnswers());	
-			//numberOfAns.setText(string);			
-			//String formattedAnswerBoxText = String.format("%s\nAnswers", string);
 			Spannable formattedString = new SpannableString(string);
 			formattedString.setSpan(new RelativeSizeSpan(0.4f), tmp.countAnswers()/10+1, formattedString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			answerBoxText.setText(formattedString);
-			
-			/*
-			answerBox.setEnabled(true);
-			answerBox.setVisibility(View.VISIBLE);
-			answerBox.setImageResource(R.drawable.answer_box_large);
-			*/
 			answerBoxText.setEnabled(true);
 			answerBoxText.setVisibility(View.VISIBLE);
 			
-			/*
-			numberOfAns.setEnabled(true);
-			numberOfAns.setVisibility(View.VISIBLE);
-			*/
 		}
 		else {
 			postTitle.setText("A: "+ currPost.getText());
 			
-			/*
-			answerBox.setEnabled(false);
-			answerBox.setVisibility(View.GONE);
-			answerBox.setImageResource(R.drawable.answer_box_large);
-			*/
-			
 			answerBoxText.setEnabled(false);
 			answerBoxText.setVisibility(View.GONE);
-			
-			/*
-			numberOfAns.setEnabled(false);
-			numberOfAns.setVisibility(View.GONE);		
-			*/
+
 		}
 
 		postDetails.setText(templateDetails(currPost));

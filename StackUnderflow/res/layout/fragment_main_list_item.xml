@@ -5,7 +5,7 @@
     android:padding = "10dip" >
     
     
-    
+    <!-- Utilized by MainFragment -->
     <!-- Answer Count -->
 	<TextView
         android:id="@+id/main_answer_count_text"

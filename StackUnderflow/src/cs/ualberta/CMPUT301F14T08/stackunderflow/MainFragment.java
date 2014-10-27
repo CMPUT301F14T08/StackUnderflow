@@ -69,8 +69,10 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 		// container view.
 		
 		//TODO: implement switching/filtering of list view
+		//TODO: verify with group that change of tab colour is 
+		// required: requires heavy theme modification
 		  
-		/*TODO Remove: Testing Dummy section
+		/*TODO JUST FOR TESTING, Remove: testing Dummy sections for tabs
 		Fragment fragment = new DummySectionFragment();
 		Bundle args = new Bundle();
 		args.putInt(DummySectionFragment.ARG_SECTION_NUMBER,
@@ -90,7 +92,6 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 		//TODO implement
 	}
-	  
 
 	/*
 	 * List click listener
@@ -100,7 +101,6 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		//Question q = ((QuestionAdapter)getListAdapter()).getItem(position);
 
 	}
 	
@@ -147,54 +147,5 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
     		entries.add(q);
     	} 	
     }
-    
-    /*
-     * 
-    //ListView Adapter (move to PostAdapter class, or use Jon's)
-	private class QuestionAdapter extends ArrayAdapter<Question> {
-		
-		public QuestionAdapter(ArrayList<Question> questions) {
-			super(getActivity(), 0, questions);
-		}
-		
-		public View getView(int position, View convertView, ViewGroup parent) {
-			// If we weren't given a view, inflate one
-			if (convertView == null) {
-				convertView = getActivity().getLayoutInflater()
-				.inflate(R.layout.fragment_main_list_item, null);
-			}
-			// Configure the view for this Question
-			Question q = getItem(position);
-			
-			// Question text
-			TextView titleTextView =
-					(TextView)convertView.findViewById(R.id.main_question_text);
-			titleTextView.setText(q.getText());
-			
-			// Subtitle: author, date, upvotes text
-			TextView subtitleTextView =
-					(TextView)convertView.findViewById(R.id.main_question_subtitle_text);	
-
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-			String tmp = sdf.format(q.getDate());
-			
-			final String formattedSubTitle = String.format("by %s | %s | %s votes", 
-					q.getSignature(), 
-					tmp, q.getVotes()
-				);
-			subtitleTextView.setText(formattedSubTitle);
-
-			// Answer count text (requires drawable/rounded_corners.xml)
-			TextView answerCountTextView =
-					(TextView)convertView.findViewById(R.id.main_answer_count_text);
-			final String formattedAnswerCount = String.format("%s\nAnswers", Integer.toString(q.getAnswers().size()));
-			Spannable ss1 = new SpannableString(formattedAnswerCount);
-			ss1.setSpan(new RelativeSizeSpan(0.4f), q.getAnswers().size()/10+1, ss1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			answerCountTextView.setText(ss1);
-
-			return convertView;
-		}
-	}
-     */
     
 }

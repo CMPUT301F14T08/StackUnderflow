@@ -57,16 +57,23 @@ public class CachedPostManager extends PostManager{
 				"djhindle", 
 				"UML Diagrams");
 		
+		// Q3 tests the concatenating of long titles/text
 		Question q3 = new Question(
 				"Hey DJ Hindle help me out?? I deleted my System 32 folder like you said,"
 				+ "but now I'm getting this weird blue screen when I start"
 				+ "my computer??? What's going on? How do I fix it. Is this a"
 				+ "virus or what?",
 				"gregthegreg", 
-				"Weird Blue Screen");
+				"Weird Blue ScreenWeird Blue ScreenWeird Blue ScreenWeird "
+				+" Blue ScreenWeird Blue ScreenWeird Blue Screen");
 		
 		Answer a3 = new Answer("Don't call me DJ Hindle :/", "djhindle");
+		Answer a4 = new Answer("Don't call me DJ Hindle :/ Don't call me DJ Hindle :/ Don't "
+				+ "call me DJ Hindle :/ Don't call me DJ Hindle :/ Don't call me DJ Hindle :/ ",
+				"djhindle");
+		
 		q3.addAnswer(a3);
+		q3.addAnswer(a4);
 		
 		mPosts.add(q1);
 		mPosts.add(a1);
@@ -74,6 +81,7 @@ public class CachedPostManager extends PostManager{
 		mPosts.add(q2);
 		mPosts.add(q3);
 		mPosts.add(a3);
+		mPosts.add(a4);
 	}
 
 	// Save Questions using Gson

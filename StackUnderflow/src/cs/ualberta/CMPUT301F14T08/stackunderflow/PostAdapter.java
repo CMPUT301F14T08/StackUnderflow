@@ -7,7 +7,6 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Locale;
 import android.content.Context;
 import android.text.Spannable;
@@ -17,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -29,8 +27,8 @@ public class PostAdapter extends ArrayAdapter<Post> {
 	 * PostController, and add controller.getPostManager().getPosts());
 	 */
 	// TODO: read above
-	public PostAdapter(Context context, ArrayList<Post> controller) {
-		super(context, 0, controller);
+	public PostAdapter(Context context, PostController controller) {
+		super(context, 0, controller.getPostManager().getPosts());
 	}
 	
 	// set up the required view, or uses a recycled view instead
@@ -38,9 +36,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
 		TextView postDetails;
 		TextView postTitle;
-		TextView numberOfAns;
 		TextView answerBoxText;
-		ImageView answerBox;
 		Boolean isQuestion;
 		Post currPost;
 		

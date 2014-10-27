@@ -1,7 +1,5 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
-import java.util.ArrayList;
-import java.util.Random;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -15,18 +13,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainFragment extends ListFragment implements ActionBar.TabListener{
-	
-	private ArrayList<Question> mQuestions;
-	private ArrayList<Post> mQandA;
-	public PostController sPostController;
 
-	// TODO: This will be changed into a PostController once merged.
-	private ArrayList<Post> mQandA = new ArrayList<Post>();
+	private PostController sPostController;
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,13 +32,8 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	    actionBar.addTab(actionBar.newTab().setText(R.string.popular)
 	            .setTabListener(this));
 	    
-//TODO: Update
 	    sPostController = PostController.getInstance(getActivity());
-	    mQuestions = sPostController.getPostManager().castToQuestions();
-
-
-	    getQuestions();
-	    // TODO: mQandA will change to be a PostController
+	    
 		PostAdapter adapter = new PostAdapter(getActivity(), sPostController);
 		setListAdapter(adapter);
 	    
@@ -114,10 +101,20 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 // TODO: Update
-		Question q = ((QuestionAdapter)getListAdapter()).getItem(position);
-		Intent i = new Intent(getActivity(), QuestionActivity.class);
-		i.putExtra(PostFragment.EXTRA_POST_ID, q.getID());
-		startActivity(i);
+		Intent i;
+		
+		Post p = ((PostAdapter)getListAdapter()).getItem(position);
+		
+		// Move the putExtra & startActivity out once AnswerActivity is created
+		if (p instanceof Question) {
+			i = new Intent(getActivity(), QuestionActivity.class);
+			i.putExtra(PostFragment.EXTRA_POST_ID, p.getID());
+			startActivity(i);
+		}
+		else {
+			i = new Intent(getActivity(), AnswerActivity.class);
+		}
+		// place putExtra and start activity down here, remove braces on statements
 	}
 
 
@@ -137,42 +134,5 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 		  return textView;
 		}
 	}
-	
-	
-	//TODO JUST FOR TESTING, Remove. Creates list of questions for testing
-    private void getQuestions() {
-	  	
-    	ArrayList<Question> entries = new ArrayList<Question>();
-    	
-    	for(int i = 1; i < 50; i++) {
 
-    		Question q = new Question("Q: " + i + " Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Author "+i, "Title" + i);    		
-    		
-//    		Random rand = new Random();
-//    		int rn = rand.nextInt(10) + 1;
-//    		for (int j = 0; j < rn; ++j){
-//    			Answer a = new Answer("1","1");
-//    			q.addAnswer(a);
-//    		}
-=======
-    		
-    		String author = "Author "+i;
-    		String text = "Q: " + i + " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  ";
-    		Question q = new Question(text, author, "Title"+i);
-    		mQandA.add(q);
-    		
-    		
-    		Random rand = new Random();
-    		int rn = rand.nextInt(10) + 1;
-    		for (int j = 0; j < rn; ++j){
-    			Answer a = new Answer("text"+j, "user"+j);
-    			q.incrementVotes();
-    			q.addAnswer(a);
-    			mQandA.add(a);
-    		}
-    		
-    		entries.add(q);
-    	} 	
-    }
-    
 }

@@ -14,11 +14,11 @@ public class Post {
 	
 	private UUID mID; //TODO do we want random UUID or another method?
 	private String mText;
-	private int mVotes;
+	private int mVotes = 0;
 	private String mPicture;  // placeholder: need image format, likely BitmapFactory implementation
 	private String mSignature;
 	private Date mDate;
-	private ArrayList<Reply> mReplies;
+	private ArrayList<Reply> mReplies = new ArrayList<Reply>();
 	private boolean mIsSelected;
 	private boolean mIsFiltered;
 	private UserAttributes mUserAttributes;

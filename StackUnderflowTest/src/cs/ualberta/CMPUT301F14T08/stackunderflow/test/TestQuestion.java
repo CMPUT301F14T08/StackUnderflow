@@ -17,6 +17,7 @@ import android.test.ActivityInstrumentationTestCase2;
  *  
  * @author Michael Williams
  *
+ * Edited Oct 20 - Benjamin Lavin
  */
 public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflowActivity> {
 
@@ -29,20 +30,21 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflo
 	 *  
 	 */
 	public void testAddAnswer(){
-		Question q1 = new Question();
-		Answer a1 = new Answer();
+		Question q1 = new Question("post body", "author", "title");
+		Answer a1 = new Answer("post body", "author");
 		q1.addAnswer(a1);
 		assertTrue(q1.getAnswers().contains(a1));
+		assertTrue(a1.getParentQuestion().equals(q1));
 	}
 	/**
 	 *  Add a reply to a question
 	 *  
 	 */
 	public void testAddReply(){
-		Question q1 = new Question();
-		Reply r1 = new Reply();
+		Question q1 = new Question("post body", "author", "title");
+		Reply r1 = new Reply("post body", "author");
 		q1.addReply(r1);
-		assertTrue(q1.getmReplies().contains(r1));
+		assertTrue(q1.getReplies().contains(r1));
 	}
 	
 	/**
@@ -51,11 +53,9 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflo
 	 *  
 	 */
 	public void testAttachPicture(){
-		Question q1 = new Question();
-		
 		// attach photo method, to be implemented
 		String image = "placeholder"; //placeholder for image
-		q1.setPicture(image);
+		Question q1 = new Question("post body", "author", image, "title");
 
 		assertTrue(q1.getPicture().equals(image));
 
@@ -66,9 +66,9 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflo
 	 *  Use Case 4: markQuestionAsFavorite
 	 */
 	public void testMarkQuestionAsFavorite(){
-		Question q1 = new Question();
-		q1.setIsFavorite(true);
-		assertTrue(q1.getIsFavorite() == true);
+		Question q1 = new Question("post body", "author", "title");
+		q1.getUserAttributes().toggleIsFavorited();
+		assertTrue(q1.getUserAttributes().getIsFavorited() == true);
 	}
 	
 	/**
@@ -76,9 +76,11 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflo
 	 *  Use Case 5: unMarkQuestionAsFavorite
 	 */
 	public void testUnMarkQuestionAsFavorite(){
-		Question q1 = new Question();
-		q1.setIsFavorite(false);
-		assertTrue(q1.getIsFavorite() == false);
+		Question q1 = new Question("post body", "author", "title");
+		q1.getUserAttributes().toggleIsFavorited();
+		assertTrue(q1.getUserAttributes().getIsFavorited() == true);
+		q1.getUserAttributes().toggleIsFavorited();
+		assertTrue(q1.getUserAttributes().getIsFavorited() == false);
 	}
 	
 	
@@ -86,37 +88,42 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflo
 	/**
 	 *  Test Question accessor methods (getters and setters)
 	 */
-	public void testAccessors(){
-		Question q1 = new Question();
-		
-		//assign arbitrary Post attributes	
-		UUID id = UUID.randomUUID();
-		String text = "sample question 1";
-		String author = "author 1";
-		int upvotes = 0;
-		Date date = new Date();
-		String image = "placeholder"; //TODO team to determine image format
-		ArrayList<Reply> replies = new ArrayList<Reply>();
-		
-		//assign Question attributes
-		ArrayList<Answer> answers = new ArrayList<Answer>();
-		
-		q1.setID(id);
-		q1.setText(text);
-		q1.setAuthor(author);
-		q1.setVotes(upvotes);
-		q1.setDate(date); 
-		q1.setPicture(image);
-		
-		assertTrue(q1.getID().equals(id));
-		assertTrue(q1.getText().equals(text));		
-		assertTrue(q1.getAuthor().equals(author));
-		assertTrue(q1.getVotes() == upvotes);
-		assertTrue(q1.getPicture().equals(image));
-		assertTrue(q1.getDate().equals(date));
-		assertTrue(q1.getAnswers() != null);
-
-		
-	}
+	
+	
+	// Needed?? - Ben
+	
+	
+//	public void testAccessors(){
+//		Question q1 = new Question();
+//		
+//		//assign arbitrary Post attributes	
+//		UUID id = UUID.randomUUID();
+//		String text = "sample question 1";
+//		String author = "author 1";
+//		int upvotes = 0;
+//		Date date = new Date();
+//		String image = "placeholder"; //TODO team to determine image format
+//		ArrayList<Reply> replies = new ArrayList<Reply>();
+//		
+//		//assign Question attributes
+//		ArrayList<Answer> answers = new ArrayList<Answer>();
+//		
+//		q1.setID(id);
+//		q1.setText(text);
+//		q1.setAuthor(author);
+//		q1.setVotes(upvotes);
+//		q1.setDate(date); 
+//		q1.setPicture(image);
+//		
+//		assertTrue(q1.getID().equals(id));
+//		assertTrue(q1.getText().equals(text));		
+//		assertTrue(q1.getAuthor().equals(author));
+//		assertTrue(q1.getVotes() == upvotes);
+//		assertTrue(q1.getPicture().equals(image));
+//		assertTrue(q1.getDate().equals(date));
+//		assertTrue(q1.getAnswers() != null);
+//
+//		
+//	}
 	
 }

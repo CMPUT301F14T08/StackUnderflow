@@ -2,11 +2,11 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import android.app.Fragment;
 
-public class QuestionActivity extends BaseFragmentActivity {
+public class AnswerActivity extends BaseFragmentActivity {
 
 	@Override
 	protected Fragment newFragmentType() {
-	
-		return new QuestionFragment();
+		return new AnswerFragment();
 	}
+	
 }

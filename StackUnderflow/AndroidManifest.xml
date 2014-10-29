@@ -14,8 +14,22 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".StackUnderflowActivity"
-            android:label="@string/title_activity_stack_underflow" >
+            android:name=".MainActivity"
+            android:label="@string/title_activity_stack_underflow">
+            <intent-filter>
+	            <action android:name="android.intent.action.MAIN" />
+	            <category android:name="android.intent.category.LAUNCHER" />
+        	</intent-filter>
+        </activity>
+        <activity 
+            android:name=".QuestionActivity"
+            android:label="@string/question_title">
+            
+        </activity>
+        <activity 
+            android:name=".AnswerActivity"
+            android:label="@string/answer_title">
+            
         </activity>
     </application>
 

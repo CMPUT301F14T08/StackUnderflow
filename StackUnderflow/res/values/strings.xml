@@ -11,6 +11,7 @@
     <string name="answer_count">Answers</string>
     <string name="favorite">favorite</string>
     <string name="question_title">Question</string>
+    <string name="answer_title">Answer</string>
     <string name="new_answer">New Answer</string>
     <string name="new_reply">New Reply</string>
     <string name="back_to_question">Back to Question</string>

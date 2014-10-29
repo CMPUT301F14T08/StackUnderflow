@@ -16,7 +16,6 @@ import android.widget.Toast;
 public class QuestionFragment extends PostFragment {
 	
 	private Question mQuestion;
-	private TextView mQuestionTitle;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -60,19 +59,19 @@ public class QuestionFragment extends PostFragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
-		View v = inflater.inflate(R.layout.question_fragment, parent, false);
+		View v = inflater.inflate(R.layout.post_fragment, parent, false);
 		
-		mQuestionTitle = (TextView)v.findViewById(R.id.question_fragment_textview_title);
+		mQuestionTitle = (TextView)v.findViewById(R.id.post_fragment_textview_title);
 		mQuestionTitle.setText(mQuestion.getTitle());
 		mQuestionTitle.setTextColor(mWhiteColor);
 		
-		mPostBody = (TextView)v.findViewById(R.id.question_fragment_textview_body);
+		mPostBody = (TextView)v.findViewById(R.id.post_fragment_textview_body);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
 		String date = sdf.format(mQuestion.getDate());
 		mPostBody.setText(mQuestion.getText() + " (" + date + ")");
 		mPostBody.setTextColor(mWhiteColor);
 		
-		mUpvoteButton = (ImageButton)v.findViewById(R.id.question_fragment_button_upvote);
+		mUpvoteButton = (ImageButton)v.findViewById(R.id.post_fragment_button_upvote);
 		mUpvoteButton.setImageResource(mQuestion.getUserAttributes().getIsUpvoted() ? R.drawable.upvote_full : R.drawable.upvote_empty);
 		mUpvoteButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -92,11 +91,11 @@ public class QuestionFragment extends PostFragment {
 		});
 		
 		
-		mUpvoteCountTextView = (TextView)v.findViewById(R.id.question_fragment_textview_upvotes);
+		mUpvoteCountTextView = (TextView)v.findViewById(R.id.post_fragment_textview_upvotes);
 		mUpvoteCountTextView.setText(""+ mQuestion.getVotes());
 		mUpvoteCountTextView.setTextColor(mWhiteColor);
 		
-		mFavoriteButton = (ImageButton)v.findViewById(R.id.question_fragment_button_favorite);
+		mFavoriteButton = (ImageButton)v.findViewById(R.id.post_fragment_button_favorite);
 		mFavoriteButton.setImageResource(mQuestion.getUserAttributes().getIsFavorited() ? R.drawable.star_full : R.drawable.star_empty);
 		mFavoriteButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -107,10 +106,10 @@ public class QuestionFragment extends PostFragment {
 			}
 		});
 		
-		mFavoriteTextView = (TextView)v.findViewById(R.id.question_fragment_textview_favorite);
+		mFavoriteTextView = (TextView)v.findViewById(R.id.post_fragment_textview_favorite);
 		mFavoriteTextView.setTextColor(mWhiteColor);
 		
-		mPictureButton = (ImageButton)v.findViewById(R.id.question_fragment_button_photo);
+		mPictureButton = (ImageButton)v.findViewById(R.id.post_fragment_button_photo);
 		if(mQuestion.hasPicture()){
 			mPictureButton.setImageResource(R.drawable.picture_white);
 			mPictureButton.setEnabled(true);
@@ -133,12 +132,12 @@ public class QuestionFragment extends PostFragment {
 		}
 		
 		
-		mUsername = (TextView)v.findViewById(R.id.question_fragment_textview_username);
+		mUsername = (TextView)v.findViewById(R.id.post_fragment_textview_username);
 		mUsername.setText(mQuestion.getSignature());
 		mUsername.setTextColor(mWhiteColor);
 		
 		
-		mAnswersButton = (ImageButton)v.findViewById(R.id.question_fragment_button_answers);
+		mAnswersButton = (ImageButton)v.findViewById(R.id.post_fragment_button_answers);
 		if(mQuestion.getAnswers().size() > 0){
 			
 			mAnswersButton.setEnabled(true);
@@ -157,7 +156,7 @@ public class QuestionFragment extends PostFragment {
 			mAnswersButton.setVisibility(View.GONE);
 		}
 		
-		mAnswersTextView = (TextView)v.findViewById(R.id.question_fragment_textview_answers);
+		mAnswersTextView = (TextView)v.findViewById(R.id.post_fragment_textview_answers);
 		mAnswersTextView.setTextColor(mBlackColor);
 		switch(mQuestion.countAnswers()){
 		case 1:

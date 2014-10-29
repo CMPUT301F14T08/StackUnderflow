@@ -68,9 +68,7 @@ public class CachedPostManager extends PostManager{
 				+" Blue ScreenWeird Blue ScreenWeird Blue Screen");
 		
 		Answer a3 = new Answer("Don't call me DJ Hindle :/", "djhindle");
-		Answer a4 = new Answer("Don't call me DJ Hindle :/ Don't call me DJ Hindle :/ Don't "
-				+ "call me DJ Hindle :/ Don't call me DJ Hindle :/ Don't call me DJ Hindle :/ ",
-				"djhindle");
+		Answer a4 = new Answer("Attached is a picture of how much I don't want you to call me DJ Hindle", "djhindle", "hindlepic.jpg");
 		
 		q3.addAnswer(a3);
 		q3.addAnswer(a4);

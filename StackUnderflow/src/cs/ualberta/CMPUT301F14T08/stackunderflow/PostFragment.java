@@ -18,6 +18,7 @@ public class PostFragment extends Fragment {
 	protected PostController sPostController;
 	protected UUID mPostId;
 	
+	protected TextView mQuestionTitle;
 	protected TextView mPostBody;
 	protected ImageButton mUpvoteButton;
 	protected TextView mUpvoteCountTextView;

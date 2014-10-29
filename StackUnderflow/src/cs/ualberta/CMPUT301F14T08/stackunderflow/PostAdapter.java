@@ -11,6 +11,7 @@ import java.util.Locale;
 import android.content.Context;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 		postTitle = (TextView) view.findViewById(R.id.main_question_text);
 		postDetails = (TextView) view.findViewById(R.id.main_question_subtitle_text);
 		answerBoxText = (TextView) view.findViewById(R.id.main_answer_count_text);
+		postTitle.setEllipsize(TextUtils.TruncateAt.END); //Add ellipses if whole title doesn't fit
 		
 		if (isQuestion) {
 			Question tmp = (Question)currPost;

@@ -4,6 +4,7 @@
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+
 public class Answer extends Post {
 	
 	private Question mParentQuestion;
@@ -23,6 +24,10 @@ public class Answer extends Post {
 	
 	public Question getParentQuestion() {
 		return mParentQuestion;
+	}
+	
+	public int getPosition(){
+		return mParentQuestion.getPositionOfAnswer(this.getID());
 	}
 	
 }

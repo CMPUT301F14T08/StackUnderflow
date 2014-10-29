@@ -13,12 +13,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainFragment extends ListFragment implements ActionBar.TabListener{
 
 	private PostController sPostController;
+	private PostAdapter adapter;
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,9 +36,15 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	    
 	    sPostController = PostController.getInstance(getActivity());
 	    
-		PostAdapter adapter = new PostAdapter(getActivity(), sPostController);
+		adapter = new PostAdapter(getActivity(), sPostController);
 		setListAdapter(adapter);
 	    
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		adapter.notifyDataSetChanged();
 	}
 	
 	//Options Menu
@@ -108,12 +116,12 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 		// Move the putExtra & startActivity out once AnswerActivity is created
 		if (p instanceof Question) {
 			i = new Intent(getActivity(), QuestionActivity.class);
-			i.putExtra(PostFragment.EXTRA_POST_ID, p.getID());
-			startActivity(i);
 		}
 		else {
 			i = new Intent(getActivity(), AnswerActivity.class);
 		}
+		i.putExtra(PostFragment.EXTRA_POST_ID, p.getID());
+		startActivity(i);
 		// place putExtra and start activity down here, remove braces on statements
 	}
 

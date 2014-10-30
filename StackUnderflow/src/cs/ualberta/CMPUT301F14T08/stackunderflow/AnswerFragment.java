@@ -3,9 +3,9 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +19,7 @@ public class AnswerFragment extends PostFragment {
 	
 	private Answer mAnswer;
 	private Question mParent;
+	final Fragment frag = this;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -45,7 +46,7 @@ public class AnswerFragment extends PostFragment {
 //				}
 //				else{
 //					Intent i = new Intent(getActivity(), NewAnswerActivity.class);
-//					i.putExtra(NewAnswerFragment.EXTRA_PARENT_QUESTION_ID, mAnswer.getParentQuestion().getID());
+//					i.putExtra(NewAnswerFragment.EXTRA_PARENT_QUESTION_ID, mParent.getID());
 //					startActivity(i);
 //				}
 			    return true;
@@ -61,6 +62,29 @@ public class AnswerFragment extends PostFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 		View v = inflater.inflate(R.layout.post_fragment, parent, false);
+		final int position = sPostController.getPostManager().getPositionOfAnswer(mParent, mAnswer);
+		final int remainingAnswers = mParent.countAnswers() - position - 1;
+
+		v.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+			public void onSwipeLeft() {
+				if(remainingAnswers > 0){
+					mAnswer = mParent.getAnswers().get(position+1);
+					getFragmentManager().beginTransaction().detach(frag).attach(frag).commit();
+				}
+		    }
+			
+			public void onSwipeRight() {
+				if(position==0){
+					getActivity().onBackPressed();   
+					
+				}
+				else{
+					mAnswer = mParent.getAnswers().get(position-1);
+					getFragmentManager().beginTransaction().detach(frag).attach(frag).commit();
+				}
+		    }
+			
+    });
 		
 		LinearLayout linearLayout = (LinearLayout)v.findViewById(R.id.post_fragment_top_linearlayout);
 		linearLayout.setBackgroundColor(mBlueColor);
@@ -145,8 +169,9 @@ public class AnswerFragment extends PostFragment {
 		
 		mAnswersButton = (ImageButton)v.findViewById(R.id.post_fragment_button_answers);
 		
-		final int position = sPostController.getPostManager().getPositionOfAnswer(mParent, mAnswer);
-		int remainingAnswers = mParent.countAnswers() - position - 1;
+
+		
+
 		if(remainingAnswers > 0){
 			
 			mAnswersButton.setEnabled(true);
@@ -154,9 +179,10 @@ public class AnswerFragment extends PostFragment {
 			mAnswersButton.setImageResource(R.drawable.box_arrow_right_large);
 			mAnswersButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					Intent i = new Intent(getActivity(), AnswerActivity.class);
-					i.putExtra(PostFragment.EXTRA_POST_ID, mParent.getAnswers().get(position+1).getID());
-					startActivity(i);
+
+					mAnswer = mParent.getAnswers().get(position)+1);
+					getFragmentManager().beginTransaction().detach(frag).attach(frag).commit();
+
 				}
 			});
 		}

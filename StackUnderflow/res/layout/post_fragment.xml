@@ -5,7 +5,7 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
-        android:id="@+id/question_fragment_top_linearlayout"
+        android:id="@+id/post_fragment_top_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -15,7 +15,7 @@
         android:background="@color/black">
 
         <TextView
-            android:id="@+id/question_fragment_textview_title"
+            android:id="@+id/post_fragment_textview_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
@@ -23,9 +23,10 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/question_fragment_textview_body"
+            android:id="@+id/post_fragment_textview_body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
             android:text="TextView" />
 
         <LinearLayout
@@ -39,7 +40,7 @@
                 android:layout_height="wrap_content" >
 
                 <ImageButton
-                    android:id="@+id/question_fragment_button_upvote"
+                    android:id="@+id/post_fragment_button_upvote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/black"
@@ -47,7 +48,7 @@
                     android:src="@drawable/upvote_empty" />
 
                 <TextView
-                    android:id="@+id/question_fragment_textview_upvotes"
+                    android:id="@+id/post_fragment_textview_upvotes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -55,7 +56,7 @@
                     android:text="@string/upvote_count" />
 
                 <ImageButton
-                    android:id="@+id/question_fragment_button_favorite"
+                    android:id="@+id/post_fragment_button_favorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/black"
@@ -63,7 +64,7 @@
                     android:src="@drawable/star_empty" />
 
                 <TextView
-                    android:id="@+id/question_fragment_textview_favorite"
+                    android:id="@+id/post_fragment_textview_favorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -79,7 +80,7 @@
                 android:layout_height="match_parent" >
 
                 <ImageButton
-                    android:id="@+id/question_fragment_button_photo"
+                    android:id="@+id/post_fragment_button_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/black"
@@ -87,7 +88,7 @@
                     android:src="@drawable/picture_dark" />
 
                 <TextView
-                    android:id="@+id/question_fragment_textview_username"
+                    android:id="@+id/post_fragment_textview_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -101,17 +102,17 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/question_fragment_bottom_linearlayout"
+        android:id="@+id/post_fragment_bottom_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="260dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/question_fragment_top_linearlayout"
+        android:layout_below="@+id/post_fragment_top_linearlayout"
         android:orientation="vertical" >
 
         <ListView
-            android:id="@+id/question_fragment_listview_replies"
+            android:id="@+id/post_fragment_listview_replies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.0" >
@@ -124,7 +125,7 @@
             android:gravity="right" >
 
             <TextView
-                android:id="@+id/question_fragment_textview_answers"
+                android:id="@+id/post_fragment_textview_answers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -134,7 +135,7 @@
                 android:textStyle="bold" />
 
             <ImageButton
-                android:id="@+id/question_fragment_button_answers"
+                android:id="@+id/post_fragment_button_answers"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="10dp"

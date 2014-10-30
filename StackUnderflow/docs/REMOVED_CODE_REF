@@ -1,0 +1,23 @@
+	//TODO JUST FOR TESTING, Remove. Creates list of questions for testing
+    private void getQuestions() {
+	  	
+    	ArrayList<Question> entries = new ArrayList<Question>();
+    	
+    	for(int i = 1; i < 50; i++) {
+
+    		Question q = new Question("Q: " + i + " Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Author "+i, "Title" + i);    		
+    		mQandA.add(q);
+    		
+    		
+    		Random rand = new Random();
+    		int rn = rand.nextInt(10) + 1;
+    		for (int j = 0; j < rn; ++j){
+    			Answer a = new Answer("text"+j, "user"+j);
+    			q.incrementVotes();
+    			q.addAnswer(a);
+    			mQandA.add(a);
+    		}
+    		
+    		entries.add(q);
+    	} 	
+    }

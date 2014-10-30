@@ -24,10 +24,12 @@ public abstract class BaseFragmentActivity extends Activity {
 
 		if (saved_state == null) {
 			fragment = newFragmentType();
-			UUID test = (UUID)getIntent().getSerializableExtra(PostFragment.EXTRA_POST_ID);
-			Bundle args = new Bundle();
-			args.putSerializable(PostFragment.EXTRA_POST_ID, test);
-			fragment.setArguments(args);
+			UUID uuid = (UUID)getIntent().getSerializableExtra(PostFragment.EXTRA_POST_ID);
+			if(uuid != null){
+				Bundle args = new Bundle();
+				args.putSerializable(PostFragment.EXTRA_POST_ID, uuid);
+				fragment.setArguments(args);
+			}
 			fragment_manager.beginTransaction()
 					.add(R.id.base_container, fragment).commit();
 		}

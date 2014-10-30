@@ -3,16 +3,12 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 import java.util.UUID;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PostFragment extends Fragment {
 	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";
@@ -22,6 +18,7 @@ public class PostFragment extends Fragment {
 	protected PostController sPostController;
 	protected UUID mPostId;
 	
+	protected TextView mQuestionTitle;
 	protected TextView mPostBody;
 	protected ImageButton mUpvoteButton;
 	protected TextView mUpvoteCountTextView;

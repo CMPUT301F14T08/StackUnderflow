@@ -1,7 +1,7 @@
 StackUnderflow
 ==============
 
-Further Documentation: [Project Wiki](https://github.com/CMPUT301F14T08/StackUnderflow/wiki)  
+Documentation: [Project Wiki](https://github.com/CMPUT301F14T08/StackUnderflow/wiki)  
 
 Copyright 2014 Benjamin Lavin, Jonathan Emery, Maciej Ogrocki, Michael Williams, Ross Cockburn, Tamara Bain
 

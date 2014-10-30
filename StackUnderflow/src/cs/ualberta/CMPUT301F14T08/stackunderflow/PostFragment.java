@@ -40,6 +40,7 @@ public class PostFragment extends Fragment {
 	protected ListView mListView;
 	protected ImageButton mAnswersButton;
 	protected TextView mAnswersTextView;
+	protected ImageButton mBackButton;
 	
 	protected int mBlackColor;
 	protected int mWhiteColor;

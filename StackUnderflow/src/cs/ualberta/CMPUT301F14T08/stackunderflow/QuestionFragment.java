@@ -107,6 +107,10 @@ public class QuestionFragment extends PostFragment {
 			break;
 		}
 		
+		mBackButton = (ImageButton)v.findViewById(R.id.post_fragment_button_back);
+		mBackButton.setEnabled(false);
+		mBackButton.setVisibility(View.GONE);
+		
 		return v;		
 	}
 }

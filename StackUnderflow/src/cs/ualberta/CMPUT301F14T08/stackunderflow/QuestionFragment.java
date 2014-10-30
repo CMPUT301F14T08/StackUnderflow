@@ -2,6 +2,7 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +62,31 @@ public class QuestionFragment extends PostFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 		View v = inflater.inflate(R.layout.post_fragment, parent, false);
+		
+		v.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+			public void onSwipeLeft() {
+		        if(mQuestion.getAnswers().size() > 0){
+				Intent i = new Intent(getActivity(), AnswerActivity.class);
+				i.putExtra(PostFragment.EXTRA_POST_ID, mQuestion.getAnswers().get(0).getID());
+				startActivity(i);
+				getActivity().overridePendingTransition(0, R.anim.slide_out_left);
+		        }
+		    }
+			
+    });
+		
+		ListView lview = (ListView)v.findViewById(R.id.post_fragment_listview_replies);
+		lview.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+			public void onSwipeLeft() {
+		        if(mQuestion.getAnswers().size() > 0){
+				Intent i = new Intent(getActivity(), AnswerActivity.class);
+				i.putExtra(PostFragment.EXTRA_POST_ID, mQuestion.getAnswers().get(0).getID());
+				startActivity(i);
+				getActivity().overridePendingTransition(0, R.anim.slide_out_left);
+		        }
+		    }
+			
+    });
 		
 		mQuestionTitle = (TextView)v.findViewById(R.id.post_fragment_textview_title);
 		mQuestionTitle.setText(mQuestion.getTitle());

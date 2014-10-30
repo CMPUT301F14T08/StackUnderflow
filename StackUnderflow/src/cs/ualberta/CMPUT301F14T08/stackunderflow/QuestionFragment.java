@@ -1,5 +1,9 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -155,6 +159,10 @@ public class QuestionFragment extends PostFragment {
 			mAnswersTextView.setText(mQuestion.countAnswers() + " Answers");
 			break;
 		}
+		
+		mBackButton = (ImageButton)v.findViewById(R.id.post_fragment_button_back);
+		mBackButton.setEnabled(false);
+		mBackButton.setVisibility(View.GONE);
 		
 		return v;		
 	}

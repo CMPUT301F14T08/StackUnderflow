@@ -1,6 +1,16 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+
 import android.app.Fragment;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.UUID;
+
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -45,6 +55,7 @@ public class AnswerFragment extends PostFragment {
 			case R.id.menu_item_back_to_question:
 				getActivity().onBackPressed();
 				return true;
+
 			default:
 				return super.onOptionsItemSelected(item);
 	    } }
@@ -112,10 +123,8 @@ public class AnswerFragment extends PostFragment {
 			mAnswersButton.setImageResource(R.drawable.box_arrow_right_large);
 			mAnswersButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-
 					mAnswer = mParent.getAnswers().get(position)+1);
 					getFragmentManager().beginTransaction().detach(frag).attach(frag).commit();
-
 				}
 			});
 		}
@@ -124,6 +133,33 @@ public class AnswerFragment extends PostFragment {
 			mAnswersButton.setVisibility(View.GONE);
 		}
 		
+
+		mBackButton = (ImageButton)v.findViewById(R.id.post_fragment_button_back);
+		mBackButton.setImageResource(R.drawable.box_arrow_left_large);
+		boolean isFirstAnswer = mAnswer.getPosition() == 0;
+		
+
+		if(!isFirstAnswer){
+			mBackButton.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					Intent i = new Intent(getActivity(), AnswerActivity.class);
+					i.putExtra(PostFragment.EXTRA_POST_ID, mParent.getAnswers().get(position-1).getID());
+					startActivity(i);
+				}
+			});
+		}
+		//button navigates back to question
+		else{
+			mBackButton.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					getActivity().onBackPressed();
+				}
+			});
+		}
+		
+		mAnswersTextView = (TextView)v.findViewById(R.id.post_fragment_textview_answers);
+		mAnswersTextView.setTextColor(mBlackColor);
+
 		switch(remainingAnswers){
 		case 0:
 			mAnswersTextView.setText("No More Answers");

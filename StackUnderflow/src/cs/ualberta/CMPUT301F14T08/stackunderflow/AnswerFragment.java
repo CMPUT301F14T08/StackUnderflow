@@ -2,10 +2,12 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.UUID;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,10 +50,11 @@ public class AnswerFragment extends PostFragment {
 //				}
 			    return true;
 			case R.id.menu_item_back_to_question:
-				Intent i = new Intent(getActivity(), QuestionActivity.class);
-				i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentQuestion().getID());
-				startActivity(i);
-			    return true;
+//				Intent i = new Intent(getActivity(), QuestionActivity.class);
+//				i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentQuestion().getID());
+//				startActivity(i);
+//			    return true;
+				getActivity().onBackPressed();
 			default:
 				return super.onOptionsItemSelected(item);
 	    } }
@@ -153,12 +156,51 @@ public class AnswerFragment extends PostFragment {
 					Intent i = new Intent(getActivity(), AnswerActivity.class);
 					i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentQuestion().getAnswers().get(mAnswer.getPosition()+1).getID());
 					startActivity(i);
+//CONVERSION TO AVOID STACKING
+//					UUID nextID = mAnswer.getParentQuestion().getAnswers()
+//							.get(mAnswer.getPosition()+1).getID();
+//					
+//					Fragment fragOld = getFragmentManager().findFragmentByTag(EXTRA_POST_ID);
+//					Fragment fragNew = new AnswerFragment();
+//					
+//					Bundle args = new Bundle();
+//					args.putSerializable(EXTRA_POST_ID, nextID);
+//					fragNew.setArguments(args);
+//					
+//					FragmentTransaction ft = getFragmentManager().beginTransaction();
+//					ft.remove(fragOld);
+//					ft.add(R.id.base_container, fragNew);
+//					ft.commit();
 				}
 			});
 		}
 		else{
 			mAnswersButton.setEnabled(false);
 			mAnswersButton.setVisibility(View.GONE);
+		}
+		
+		mBackButton = (ImageButton)v.findViewById(R.id.post_fragment_button_back);
+		mBackButton.setImageResource(R.drawable.box_arrow_left_large);
+		boolean isFirstAnswer = mAnswer.getPosition() == 0;
+		
+		//button navigates to previous answer, needs to be refactored once stack avoidance
+		//is figured out
+		if(!isFirstAnswer){
+			mBackButton.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					Intent i = new Intent(getActivity(), AnswerActivity.class);
+					i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentQuestion().getAnswers().get(mAnswer.getPosition()-1).getID());
+					startActivity(i);
+				}
+			});
+		}
+		//button navigates back to question
+		else{
+			mBackButton.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					getActivity().onBackPressed();
+				}
+			});
 		}
 		
 		mAnswersTextView = (TextView)v.findViewById(R.id.post_fragment_textview_answers);

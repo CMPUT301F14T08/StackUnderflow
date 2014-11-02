@@ -11,8 +11,8 @@ public class UserAttributes {
 	private boolean mIsReadLater;
 	private boolean mIsUsers;
 	private boolean mIsRead;
-	private boolean mIsPushedToLive;
-	
+
+
 	public UserAttributes(){
 		this(false);
 	}
@@ -23,7 +23,6 @@ public class UserAttributes {
 		mIsFavorited = false;
 		mIsReadLater = false;
 		mIsRead = false;
-		mIsPushedToLive = false;
 	}
 
 	public boolean getIsFavorited() {
@@ -63,13 +62,7 @@ public class UserAttributes {
 		if (mIsReadLater) setIsReadLater(false);
 	}
 
-	public boolean getIsPushedToLive() {
-		return mIsPushedToLive;
-	}
 
-	public void setIsPushedToLive(boolean isPushedToLive) {
-		mIsPushedToLive = isPushedToLive;
-	}
 
 	
 }

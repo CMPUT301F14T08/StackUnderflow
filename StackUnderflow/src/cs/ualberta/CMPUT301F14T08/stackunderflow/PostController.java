@@ -44,6 +44,7 @@ public class PostController {
 		return mPostManager;
 	}
 	
+	
 	// Type Checking
 	// -- Use this to tell if we're online or offline
 	public boolean usingOnlinePostManager() {
@@ -51,5 +52,7 @@ public class PostController {
 			return false;
 		return true;
 	}
+	
+	
 }
 

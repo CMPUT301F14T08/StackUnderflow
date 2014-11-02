@@ -2,6 +2,7 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,17 +13,17 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 public class QuestionFragment extends PostFragment {
-	
 	private Question mQuestion;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.question_title);
+		// TODO: This should fail gracefully if getPost returns null
 		mQuestion = (Question)sPostController.getPostManager().getPost(mPostId);
-		
 	}
 	
 	@Override
@@ -60,11 +61,10 @@ public class QuestionFragment extends PostFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 		View v = inflater.inflate(R.layout.post_fragment, parent, false);
-		
 		mQuestionTitle = (TextView)v.findViewById(R.id.post_fragment_textview_title);
 		mQuestionTitle.setText(mQuestion.getTitle());
 		mQuestionTitle.setTextColor(mWhiteColor);
-		
+
 		mPostBody = (TextView)v.findViewById(R.id.post_fragment_textview_body);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
 		String date = sdf.format(mQuestion.getDate());
@@ -89,7 +89,6 @@ public class QuestionFragment extends PostFragment {
 				mUpvoteCountTextView.setText(""+mQuestion.getVotes());
 			}
 		});
-		
 		
 		mUpvoteCountTextView = (TextView)v.findViewById(R.id.post_fragment_textview_upvotes);
 		mUpvoteCountTextView.setText(""+ mQuestion.getVotes());

@@ -4,10 +4,12 @@
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.util.UUID;
+
 
 public class Answer extends Post {
-	
-	private Question mParentQuestion;
+    
+	private UUID mParentID;
 	
 	public Answer(String text, String signature) {
 		this(text, signature, null);
@@ -15,19 +17,14 @@ public class Answer extends Post {
 	
 	public Answer(String text, String signature, String photo) {
 		super(text, signature, photo);
-		mParentQuestion = null;
+		mParentID = null;
 	}
 	
 	public void setParentQuestion(Question parentQuestion){
-		mParentQuestion = parentQuestion;
+		mParentID = parentQuestion.getID();
 	}
 	
-	public Question getParentQuestion() {
-		return mParentQuestion;
-	}
-	
-	public int getPosition(){
-		return mParentQuestion.getPositionOfAnswer(this.getID());
-	}
-	
+	public UUID getParentID() {
+		return mParentID;
+	}	
 }

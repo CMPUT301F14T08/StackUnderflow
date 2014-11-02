@@ -35,6 +35,14 @@ public class Question extends Post {
 		return mAnswers;
 	}
 	
+   public Answer getAnswer(UUID uuid) {
+        for (Answer answer: mAnswers) {
+            if (answer.getID() == uuid)
+                return answer;
+        }
+        return null;
+    }
+	
 	public int getPositionOfAnswer(UUID answerUUID){
 		int position = 0;
 		for(int i = 0; i < mAnswers.size(); i++){

@@ -2,21 +2,12 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Post;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.StackUnderflowActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
 
-/**
- * 
- * Class created for testing Post model
- *  
- * @author Michael Williams
- * 
- * Edited Oct 20 - Benjamin Lavin
- *
- */
-public class TestPost extends ActivityInstrumentationTestCase2<StackUnderflowActivity> {
+public class TestPost extends ActivityInstrumentationTestCase2<MainActivity> {
 	
 	public TestPost(){
-		super(StackUnderflowActivity.class);
+		super(MainActivity.class);
 	}
 	
 	

@@ -8,21 +8,13 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Question;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Reply;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.StackUnderflowActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
 import android.test.ActivityInstrumentationTestCase2;
 
-/**
- * 
- * Class created for testing Question model
- *  
- * @author Michael Williams
- *
- * Edited Oct 20 - Benjamin Lavin
- */
-public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflowActivity> {
+public class TestQuestion extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	public TestQuestion() {
-		super(StackUnderflowActivity.class);
+		super(MainActivity.class);
 		// TODO Auto-generated constructor stub
 	}
 	/**
@@ -34,7 +26,7 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<StackUnderflo
 		Answer a1 = new Answer("post body", "author");
 		q1.addAnswer(a1);
 		assertTrue(q1.getAnswers().contains(a1));
-		assertTrue(a1.getParentQuestion().equals(q1));
+		assertTrue(a1.getParentID().equals(q1.getID()));
 	}
 	/**
 	 *  Add a reply to a question

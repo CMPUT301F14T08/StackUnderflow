@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -124,6 +125,7 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 		startActivity(i);
 		// place putExtra and start activity down here, remove braces on statements
 	}
+
 
 
 	

@@ -3,14 +3,13 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.test;
 import android.test.ActivityInstrumentationTestCase2;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Reply;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.StackUnderflowActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
 
-public class TestAnswer extends ActivityInstrumentationTestCase2<StackUnderflowActivity> {
+public class TestAnswer extends ActivityInstrumentationTestCase2<MainActivity> {
 	
 	
 	public TestAnswer() {
-		super(StackUnderflowActivity.class);
-		// TODO Auto-generated constructor stub
+		super(MainActivity.class);
 	}
 	
 	public void testAddReply(){

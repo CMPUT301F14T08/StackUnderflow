@@ -18,12 +18,14 @@ import android.widget.Toast;
 public class AnswerFragment extends PostFragment {
 	
 	private Answer mAnswer;
+	private Question mParent;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.answer_title);
 		mAnswer = (Answer)sPostController.getPostManager().getPost(mPostId);
+		mParent = (Question)sPostController.getPostManager().getPost(mAnswer.getParentID());
 	}
 	
 	@Override
@@ -49,7 +51,7 @@ public class AnswerFragment extends PostFragment {
 			    return true;
 			case R.id.menu_item_back_to_question:
 				Intent i = new Intent(getActivity(), QuestionActivity.class);
-				i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentQuestion().getID());
+				i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
 				startActivity(i);
 			    return true;
 			default:
@@ -142,7 +144,9 @@ public class AnswerFragment extends PostFragment {
 		
 		
 		mAnswersButton = (ImageButton)v.findViewById(R.id.post_fragment_button_answers);
-		int remainingAnswers = mAnswer.getParentQuestion().countAnswers()-mAnswer.getPosition()-1;
+		
+		final int position = sPostController.getPostManager().getPositionOfAnswer(mParent, mAnswer);
+		int remainingAnswers = mParent.countAnswers() - position - 1;
 		if(remainingAnswers > 0){
 			
 			mAnswersButton.setEnabled(true);
@@ -151,7 +155,7 @@ public class AnswerFragment extends PostFragment {
 			mAnswersButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					Intent i = new Intent(getActivity(), AnswerActivity.class);
-					i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentQuestion().getAnswers().get(mAnswer.getPosition()+1).getID());
+					i.putExtra(PostFragment.EXTRA_POST_ID, mParent.getAnswers().get(position+1).getID());
 					startActivity(i);
 				}
 			});

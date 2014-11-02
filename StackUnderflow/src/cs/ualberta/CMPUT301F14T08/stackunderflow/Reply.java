@@ -13,14 +13,15 @@ public class Reply {
 	private String mText;
 	private Date mDate;
 	private	String mSignature;
-	//private Post mParent; Is this needed?
+	// flag stating whether the reply exists online yet
+	private boolean mExistsOnline;
 	
 	public Reply(String text, String signature) {
 		mText = text;
 		mSignature = signature;
 		mUUID = UUID.randomUUID();
 		mDate = new Date();
-		//mParent = null; Is this needed?
+		mExistsOnline = false;
 	}
 
 	public UUID getUUID(){
@@ -38,6 +39,14 @@ public class Reply {
 	public String getSignature() {
 		return mSignature;
 	}
+
+    public boolean getExistsOnline() {
+        return mExistsOnline;
+    }
+
+    public void setExistsOnline(boolean isPushedToLive) {
+        mExistsOnline = mExistsOnline;
+    }
 	
 }	
 	

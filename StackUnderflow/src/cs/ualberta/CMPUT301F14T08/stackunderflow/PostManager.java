@@ -81,6 +81,21 @@ public abstract class PostManager {
 		}
 		return null;
 	}
+	
+   protected boolean updateIfExists(Post post) {
+       if (post == null) {
+           return false;
+       }
+       
+        for (int i=0; i< mPosts.size(); i++) {
+            Post item = mPosts.get(i);
+            if (item.getID() == post.getID()) {
+                mPosts.set(i, post);
+                return true;
+            }
+        }
+        return false;
+    }
 
 	public ArrayList<Post> getPosts(){
 		return mPosts;
@@ -89,23 +104,32 @@ public abstract class PostManager {
 	// adds a question to our list of posts
 	public void addQuestion(Question newQuestion){
 		mPosts.add(newQuestion);
-		save();
 	}
 	
 	// adds an answer to our list of posts
-	public void addAnswer(Answer newAnswer){
-		Question parent = newAnswer.getParentQuestion();
-		
+	public void addAnswer(Question parent, Answer newAnswer){
 		parent.addAnswer(newAnswer);
 		mPosts.add(newAnswer);
-		save();
 	}
 	
 	//TODO: Implement in Project Part 4
-	public  void addReply(Reply newReply) {
-		save();
+	public  void addReply(Question parent, Reply newReply) {
 	};
 	
+	//TODO: Implement with user attributes
+	public void toggleFavorite(Post post) {
+	}
+	
+	//TODO: Update with implementation of user attributes
+	// For now this will just increment votes
+	public void toggleUpvote(Post post) {
+	    post.incrementVotes();
+	}
+	
+	//TODO: Update with implementation of user attributes
+	public void toggleReadLater(Post post) {
+	    
+	}
 	
 	// Sorts posts by number of votes (Descending Order)
 	public void sortByScore() {
@@ -167,8 +191,7 @@ public abstract class PostManager {
 		return matchingPosts;
 	}
 	
-	// Abstract methods
-	public abstract boolean save();
-
-
+   public int getPositionOfAnswer(Question question, Answer answer) {
+        return question.getPositionOfAnswer(answer.getID());
+   }
 }

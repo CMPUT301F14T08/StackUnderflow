@@ -22,6 +22,8 @@ public class Post {
 	private boolean mIsSelected;
 	private boolean mIsFiltered;
 	private UserAttributes mUserAttributes;
+	private int mUpvotesChangedOffline;
+    private boolean mExistsOnline;
 	
 
 	public Post(String text, String signature) {
@@ -39,6 +41,8 @@ public class Post {
 		mIsSelected = false;
 		mIsFiltered = false;
 		mUserAttributes = new UserAttributes();
+		mUpvotesChangedOffline = 0;
+	    mExistsOnline = false;
 	}
 	
 	public UUID getID() {
@@ -72,6 +76,11 @@ public class Post {
 	public void decrementVotes(){
 		if(mVotes > 0) mVotes -= 1;
 	}
+	
+   public int setVotes(int votes) {
+        return mVotes = votes;
+    }
+	    
 
 	public ArrayList<Reply> getReplies() {
 		return mReplies;
@@ -104,5 +113,21 @@ public class Post {
 	public UserAttributes getUserAttributes(){
 		return mUserAttributes;
 	}
+	
+    public int getUpvotesChangedOffline() {
+        return mUpvotesChangedOffline;
+    }
+
+    public void setUpvotesChangedOffline(int upvotesChangedOffline) {
+        mUpvotesChangedOffline = upvotesChangedOffline;
+    }
+    
+    public boolean getExistsOnline() {
+        return mExistsOnline;
+    }
+
+    public void setExistsOnline(boolean existsOnline) {
+        this.mExistsOnline = existsOnline;
+    }
 	
 }

@@ -26,15 +26,14 @@ public class CachedPostManager extends PostManager{
 	// -- Loads posts from cache when created
 	private CachedPostManager(Context context) {
 		super(context);
-
 		try {
 			mPosts = loadFromFile();
 		} catch (Exception e) {
 			mPosts = new ArrayList<Post>();
 		}
 		
-		if (mPosts.size() == 0)
-			loadTestQuestions();
+		if (mPosts.size() == 0) {}
+			//loadTestQuestions();
 	}
 	
 	//TODO: Delete this later!
@@ -107,7 +106,7 @@ public class CachedPostManager extends PostManager{
 	}
 	
 	// Load posts from file using GSON
-	private ArrayList<Post> loadFromFile() throws IOException{
+	public ArrayList<Post> loadFromFile() throws IOException{
 
 		ArrayList<Question> questions = new ArrayList<Question>();
 		Reader reader = null;
@@ -141,7 +140,6 @@ public class CachedPostManager extends PostManager{
 	
 	// Public save method
 	// -- Returns true if successful
-	@Override
 	public boolean save(){
 		try {
 			sendToFile();
@@ -152,28 +150,33 @@ public class CachedPostManager extends PostManager{
 	}
 	
 
-	// If we are using the CachedPostManager we are OFFLINE
-	// So pushed-to-live should be set to false
 	@Override
 	public void addQuestion(Question newQuestion) {
-		//TODO when user attributes are enabled, setIsPushedToLive(false)
 		super.addQuestion(newQuestion);
+		save();
 	}
 	
 	@Override
-	public void addAnswer(Answer newAnswer) {
-		//TODO when user attributes are enabled, setIsPushedToLive(false)
-		super.addAnswer(newAnswer);
+	public void addAnswer(Question parent, Answer newAnswer) {
+		super.addAnswer(parent, newAnswer);
+		save();
 	}
 	
 	//TODO: Implement in Project Part 4
 	@Override
-	public void addReply(Reply newReply) {
-		super.addReply(newReply);
+	public void addReply(Question parent, Reply newReply) {
+		super.addReply(parent, newReply);
+		save();
 	}
 	
-	//TODO: Implement in Project Part 3, Week 2
-	public void pushToLive(){
-		return;
-	}
+	//TODO: Update with implementation of user attributes
+    // For now this will just increment votes
+	@Override
+    public void toggleUpvote(Post post) {
+        post.incrementVotes();
+        post.setUpvotesChangedOffline(1);
+        save();
+    }
+	
+
 }

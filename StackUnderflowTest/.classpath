@@ -8,7 +8,6 @@
 	<classpathentry kind="src" path="gen"/>
 
 	<classpathentry exported="true" kind="lib" path="libs/gson-2.3.jar"/>
-	<classpathentry kind="lib" path="/Applications/Eclipse/sdk/extras/android/support/v13/android-support-v13.jar"/>
 
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

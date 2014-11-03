@@ -20,9 +20,13 @@ public class PostController {
 
 	// Keep this private!
 	private PostController(Context context) {
-		//TODO: assign different post manager if isOnline is true
+		//Checks if the user is connected to the Internet it will use the online post manager other wise it
+		//will use a cached post manger that will later be pushed online when the user enters a network.
 		mContext = context;
-		mPostManager = OnlinePostManager.getInstance(context);
+		if(isOnline())
+			mPostManager = OnlinePostManager.getInstance(context);
+		else
+			mPostManager = OnlinePostManager.getInstance(context);	
 	}
 	
 	// check if we are online
@@ -37,25 +41,18 @@ public class PostController {
 		return ni.isConnected();
 	}
 
-	// TODO: Implement in Project Part 3, Week 2
-	private void pollIfOnline() {
-		return;
-	}
-
 	// Static initializer, use this to get the active instance.
 	public static PostController getInstance(Context context) {
 		if (sPostController == null) {
 			sPostController = new PostController(context.getApplicationContext());
 		}
-
 		return sPostController;
 	}
 
 	public PostManager getPostManager() {
 		return mPostManager;
 	}
-	
-	
+		
 	// Type Checking
 	// -- Use this to tell if we're online or offline
 	public boolean usingOnlinePostManager() {

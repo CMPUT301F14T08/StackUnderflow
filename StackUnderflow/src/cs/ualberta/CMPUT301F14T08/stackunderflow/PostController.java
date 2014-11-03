@@ -6,6 +6,8 @@
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 
 // TODO: Currently this just controls the CachedPostManager. 
@@ -14,16 +16,25 @@ import android.content.Context;
 public class PostController {
 	private static PostController sPostController;
 	private PostManager mPostManager;
+	private Context mContext;
 
 	// Keep this private!
 	private PostController(Context context) {
 		//TODO: assign different post manager if isOnline is true
-		mPostManager = CachedPostManager.getInstance(context);
+		mContext = context;
+		mPostManager = OnlinePostManager.getInstance(context);
 	}
 	
-	// TODO: Implement in Project Part 3, Week 2
-	private boolean isOnline() {
-		return false;
+	// check if we are online
+	// returns true if online returns false if off line 
+	public boolean isOnline() {
+		ConnectivityManager cm =(ConnectivityManager)mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
+		NetworkInfo ni = cm.getActiveNetworkInfo();
+		if (ni == null) {
+		    // There are no active networks.
+		    return false;
+		}
+		return ni.isConnected();
 	}
 
 	// TODO: Implement in Project Part 3, Week 2

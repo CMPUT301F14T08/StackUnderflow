@@ -32,8 +32,10 @@ public class CachedPostManager extends PostManager{
 			mPosts = new ArrayList<Post>();
 		}
 		
-		if (mPosts.size() == 0) {}
+		if (mPosts.size() == 0) {
 			//loadTestQuestions();
+		}
+
 	}
 	
 	//TODO: Delete this later!
@@ -49,12 +51,15 @@ public class CachedPostManager extends PostManager{
 		
 		q1.addAnswer(a1);
 		q1.addAnswer(a2);
+		q1.incrementVotes();
 		
 		Question q2 = new Question(
 				"What is the difference between a UML class diagram,"
 				+ "a UML Sequence diagram, and a UML state diagram?",
 				"djhindle", 
 				"UML Diagrams");
+		q2.incrementVotes();
+		q2.incrementVotes();
 		
 		// Q3 tests the concatenating of long titles/text
 		Question q3 = new Question(

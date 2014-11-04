@@ -1,5 +1,6 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.util.ArrayList;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -14,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +22,7 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 
 	private PostController sPostController;
 	private PostAdapter adapter;
+	private ArrayList<Post> sPostList;
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,10 +37,11 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	            .setTabListener(this));
 	    
 	    sPostController = PostController.getInstance(getActivity());
+	    sPostController.getPostManager().sortByDate();
+	    sPostList = sPostController.getPostManager().getPosts();
 	    
-		adapter = new PostAdapter(getActivity(), sPostController);
+		adapter = new PostAdapter(getActivity(), sPostList);
 		setListAdapter(adapter);
-	    
 	}
 	
 	@Override
@@ -89,6 +91,17 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 		getFragmentManager().beginTransaction()
 		    .replace(R.id.base_container, fragment).commit();
 		 */		  
+		if (tab.getText() == "NEWEST") {
+			sPostController.getPostManager().sortByDate();
+			sPostList = sPostController.getPostManager().getPosts();
+		}
+		else if (tab.getText() == "POPULAR") {
+			sPostController.getPostManager().sortByScore();
+			sPostList = sPostController.getPostManager().getPosts();
+		}
+		adapter = new PostAdapter(getActivity(), sPostList);
+		setListAdapter(adapter);
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -111,19 +124,16 @@ public class MainFragment extends ListFragment implements ActionBar.TabListener{
 	public void onListItemClick(ListView l, View v, int position, long id) {
 // TODO: Update
 		Intent i;
-		
 		Post p = ((PostAdapter)getListAdapter()).getItem(position);
 		
-		// Move the putExtra & startActivity out once AnswerActivity is created
-		if (p instanceof Question) {
+		if (p instanceof Question)
 			i = new Intent(getActivity(), QuestionActivity.class);
-		}
-		else {
+		
+		else
 			i = new Intent(getActivity(), AnswerActivity.class);
-		}
+		
 		i.putExtra(PostFragment.EXTRA_POST_ID, p.getID());
 		startActivity(i);
-		// place putExtra and start activity down here, remove braces on statements
 	}
 
 

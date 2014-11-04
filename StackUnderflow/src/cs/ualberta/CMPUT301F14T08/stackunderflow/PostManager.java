@@ -18,6 +18,7 @@ public abstract class PostManager {
 	
 	protected PostManager(Context context){
 		mContext = context;
+		mPosts = new ArrayList<Post>();
 	}
 	
 

@@ -13,15 +13,19 @@ import android.app.ActionBar.TabListener;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 import android.app.Activity;
+import android.content.Intent;
 
 
 public class MainActivity extends Activity implements TabListener {// implements ActionBar.TabListener{//BaseFragmentActivity implements ActionBar.TabListener {
 	
-	//ActionBar.Tab Tab, Tab2;
-	//Fragment mTestFragment = new TestFragment();
-    //Fragment mTest2Fragment = new TestFragment2();
-    //Fragment fragment;
 	/*
     @Override
 	protected Fragment newFragmentType() {
@@ -29,100 +33,81 @@ public class MainActivity extends Activity implements TabListener {// implements
 		return new TestFragment();
 	}
 	*/
-	List<Fragment> fragList = new ArrayList<Fragment>();
+	
+	private PostController sPostController;
+	private PostAdapter adapter;
+	List<Fragment> fragmentList = new ArrayList<Fragment>();
 	
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
-		//setContentView(R.layout.main_list_view);
 
-		//setHasOptionsMenu(true);
 	    ActionBar actionBar = getActionBar();
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 	    
-	   
-	    /*
-        Tab = actionBar.newTab().setText(R.string.newest);
-        Tab2 = actionBar.newTab().setText(R.string.popular);		
-        TabListener tl = new TabListener(this,
-        		getResources().getString(R.string.newest), TestFragment.class);
-
-        Tab.setTabListener(tl);
-        Tab2.setTabListener(this);
-        
-        actionBar.addTab(Tab);
-        actionBar.addTab(Tab2);
-        m
-        */
 		Tab tab = actionBar.newTab();
-		tab.setText("Newest");
+		tab.setText(R.string.newest);
 		tab.setTabListener(this);
 		actionBar.addTab(tab);
 		
 		Tab tab2 = actionBar.newTab();
-		tab2.setText("Popular");
+		tab2.setText(R.string.popular);
 		tab2.setTabListener(this);
 		actionBar.addTab(tab2);
-	    
-        //actionBar.addTab(actionBar.newTab().setText(R.string.newest).setTabListener(this));
-	    //actionBar.addTab(actionBar.newTab().setText(R.string.popular).setTabListener(this));
-	    
-        
-	    //sPostController = PostController.getInstance(getActivity());
-	    
-		//adapter = new PostAdapter(getActivity(), sPostController);
-		//setListAdapter(adapter);
-	    
+	      
 	}
+	
+	//Options Menu
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {//, MenuInflater inflater) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		//super.onCreateOptionsMenu(menu, inflater);
+		getMenuInflater().inflate(R.menu.fragment_main_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+				
+		//return super.onOptionsItemSelected(item);
+		return onOptionsItemSelected(item);
+	}
+	
 	
 	/*
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+	public void onResume(){
+		//super.onResume();
+		adapter.notifyDataSetChanged();
 	}
 	*/
 	
+	
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
-			// When the given tab is selected, show the tab contents in the
-			// container view.
-		//Fragment mTestFragment = new TestFragment();
-	    //Fragment mTest2Fragment = new TestFragment2();
-		//fragmentTransaction.replace(R.id.fragment_container, fragment);
-		
-		
-		//fragmentTransaction.replace(R.id.fragment_container, fragment);
-			//TODO: implement switching/filtering of list view
-			//TODO: verify with group that change of tab colour is 
-			// required: requires heavy theme modification
-			  
-			/*TODO JUST FOR TESTING, Remove: testing Dummy sections for tabs
-			Fragment fragment = new DummySectionFragment();
-			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER,
-			    tab.getPosition() + 1);
-			fragment.setArguments(args);
-			getFragmentManager().beginTransaction()
-			    .replace(R.id.base_container, fragment).commit();
-			 */		  
-		
+	
 		Fragment f = null;
-		TestFragment tf = null;
+		MainFragment tf = null;
 		
-		if (fragList.size() > tab.getPosition())
-				fragList.get(tab.getPosition());
+		if (fragmentList.size() > tab.getPosition())
+				fragmentList.get(tab.getPosition());
 		
 		if (f == null) {
-			tf = new TestFragment();
+			tf = new MainFragment();
 			Bundle data = new Bundle();
 			data.putInt("idx",  tab.getPosition());
 			tf.setArguments(data);
-			fragList.add(tf);
+			fragmentList.add(tf);
 		}
 		else
-			tf = (TestFragment) f;
+			tf = (MainFragment) f;
 		
 		fragmentTransaction.replace(android.R.id.content, tf);
 		
@@ -130,18 +115,19 @@ public class MainActivity extends Activity implements TabListener {// implements
 
 		@Override
 		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-			//TODO implement
 	        //if(mFragment!=null)
 	            //fragmentTransaction.detach(mFragment);
-			if (fragList.size() > tab.getPosition()) {
-				fragmentTransaction.remove(fragList.get(tab.getPosition()));
+			if (fragmentList.size() > tab.getPosition()) {
+				fragmentTransaction.remove(fragmentList.get(tab.getPosition()));
 			}
 		}
 
 		@Override
 		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-			//TODO implement
+			//No implementation required at present
 		}
+		
+
 	
     /** Called when the activity is first created. */
 

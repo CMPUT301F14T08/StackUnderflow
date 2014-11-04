@@ -33,7 +33,7 @@ public class CachedPostManager extends PostManager{
 		}
 		
 		if (mPosts.size() == 0) {}
-			//loadTestQuestions();
+			loadTestQuestions();
 	}
 	
 	//TODO: Delete this later!
@@ -65,6 +65,9 @@ public class CachedPostManager extends PostManager{
 				"gregthegreg", 
 				"Weird Blue ScreenWeird Blue ScreenWeird Blue ScreenWeird "
 				+" Blue ScreenWeird Blue ScreenWeird Blue Screen");
+		q2.setVotes(5);
+		q3.setVotes(15);
+		
 		
 		Answer a3 = new Answer("Don't call me DJ Hindle :/", "djhindle");
 		Answer a4 = new Answer("Attached is a picture of how much I don't want you to call me DJ Hindle", "djhindle", "hindlepic.jpg");

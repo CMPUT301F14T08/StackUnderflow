@@ -77,7 +77,11 @@ public class Post {
 		if(mVotes > 0) mVotes -= 1;
 	}
 	
-   public int setVotes(int votes) {
+public void setText(String mText) {
+		this.mText = mText;
+	}
+
+public int setVotes(int votes) {
         return mVotes = votes;
     }
 	    

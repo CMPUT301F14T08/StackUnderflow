@@ -34,7 +34,8 @@
     
      <!-- New Question  -->
     <string name="new_question_title">New Question</string>
-    
-
-
+	<string name="new_question_fragment_edittext_title">Place Title Text Here</string>
+	<string name="new_question_fragment_edittext_body">Place Question Text Here</string>	
+	<string name="new_question_fragment_submit_button">Submit</string>
+	<string name="new_question_fragment_upload_photo_textview">Upload Photo</string>
 </resources>

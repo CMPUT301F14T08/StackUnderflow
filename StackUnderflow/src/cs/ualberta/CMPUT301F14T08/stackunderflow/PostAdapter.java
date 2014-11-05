@@ -49,7 +49,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 		// If the view is null, inflate one
 		if (view == null) {
 			LayoutInflater inflator = LayoutInflater.from(this.getContext());
-			view = inflator.inflate(R.layout.fragment_main_list_item, parent, false); //list_item_post, parent, false);
+			view = inflator.inflate(R.layout.main_fragment_list_item, parent, false); //list_item_post, parent, false);
 		}
 		
 		currPost = getItem(position);

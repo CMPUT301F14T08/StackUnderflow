@@ -60,32 +60,22 @@ public class MainActivity extends Activity implements TabListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {//, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-
 		getMenuInflater().inflate(R.menu.fragment_main_menu, menu);
 		return true;
 	}
-	
-	
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-
-		/*
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		*/
 		
 	    switch (item.getItemId()) {
-			case R.id.ask_question:			
-
+			case R.id.ask_question:	
 				Intent intent = new Intent(this, NewQuestionActivity.class);
 				startActivity(intent);
 			    return true;
+			    
 			default:
 				
 				CharSequence text = "Implement menu item";
@@ -100,14 +90,6 @@ public class MainActivity extends Activity implements TabListener {
 	
 
 	}	
-	
-	/*
-	@Override
-	public void onResume(){
-		//super.onResume();
-		adapter.notifyDataSetChanged();
-	}
-	*/
 	
 	
 	public void onTabSelected(ActionBar.Tab tab,

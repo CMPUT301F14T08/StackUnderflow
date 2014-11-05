@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding = "10dip" >
+    
+    
+    <!-- Utilized by MainFragment -->
+    <!-- Answer Count -->
+	<TextView
+        android:id="@+id/main_answer_count_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+		android:textColor="@color/white"
+		android:background="@drawable/rounded_corners"
+		android:padding="10dip"		
+        android:lines = "2"/>
+    
+	<!-- Question text -->
+    <TextView
+        android:id="@+id/main_question_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/main_answer_count_text"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:lines = "2"/>
+    
+	<!-- Subtitle: Name, date, upvotes -->
+    <TextView
+        android:id="@+id/main_question_subtitle_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/main_answer_count_text"
+        android:layout_below="@id/main_question_text" 
+        android:textSize="14sp" 
+        android:lines = "1"/>
+    
+		
+</RelativeLayout>

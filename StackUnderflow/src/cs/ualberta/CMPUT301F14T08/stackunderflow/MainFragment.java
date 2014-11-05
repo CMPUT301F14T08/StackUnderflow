@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class MainFragment extends Fragment {
 		
 		View view = inflater.inflate(R.layout.list_fragment, null);
 		ListView listview = (ListView) view.findViewById(R.id.list_view);
-		
+
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			
 			// Opens Question or Answer Fragment based upon list item clicked 

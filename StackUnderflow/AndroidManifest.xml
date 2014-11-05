@@ -31,6 +31,11 @@
             android:label="@string/answer_title">
             
         </activity>
+        <activity 
+            android:name=".NewQuestionActivity"
+            android:label="@string/new_question_title">
+            
+        </activity>
     </application>
 
 </manifest>

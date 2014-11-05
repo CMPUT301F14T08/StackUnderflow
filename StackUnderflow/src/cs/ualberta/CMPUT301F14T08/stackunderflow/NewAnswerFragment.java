@@ -1,5 +1,7 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.util.UUID;
+
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import android.widget.ImageButton;
 
 public class NewAnswerFragment extends NewPostFragment {
 
+	
+	//String parentID = getActivity().getIntent().getExtras().get(EXTRA_PARENT_QUESTION_ID);
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -49,22 +53,29 @@ public class NewAnswerFragment extends NewPostFragment {
 		}
 		*/
         
+		
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {       	
             	
-            	
-            	String title = mPostTitle.getText().toString();
-            	String author = "user";
+            	/*
+            	String author = "user"; // Implement user profile
             	String body = mPostBody.getText().toString();
             	
-            	//Answer mAnswer = new Answer();
+            	Answer mAnswer = new Answer(body, author);
+            	//mAnswer.
             	//Question mQuestion = new Question(body, author, title);
-            	//sPostController.getPostManager().addAnswer(parent, mAnswer);
             	
-				Intent i = new Intent(getActivity(), MainActivity.class);
+            	UUID parent = (UUID)extras.get("ParentID");            	
+            	Question qparent = (Question) sPostController.getPostManager().getPost(parent);
+            	sPostController.getPostManager().addAnswer(qparent, mAnswer);
+            	//.addAnswer(parent, mAnswer);
+            	//get
+            	getActivity().finish();
+				
+            	//Intent i = new Intent(getActivity(), MainActivity.class);
 				//i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
-				startActivity(i);
-			   
+				//startActivity(i);
+			   */
             	
             }
         });
@@ -78,10 +89,9 @@ public class NewAnswerFragment extends NewPostFragment {
 			}
 		});
 		
-		
+			
         
         return v;
-		
 	}	
 	
 }

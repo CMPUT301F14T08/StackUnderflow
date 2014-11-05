@@ -31,6 +31,10 @@
     <string name="answer_text">Answers</string>
     <string name="zero_answers">0</string>
     <string name="default_text">Default</string>
+    
+     <!-- New Question  -->
+    <string name="new_question_title">New Question</string>
+    
 
 
 </resources>

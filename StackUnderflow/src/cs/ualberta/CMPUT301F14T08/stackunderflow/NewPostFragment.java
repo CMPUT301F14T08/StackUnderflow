@@ -13,7 +13,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class NewPostFragment extends Fragment {
-	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";
+	
+	
+	public static final String EXTRA_NEW_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.new_post_id";
 	protected static final String DIALOG_USERNAME = "username";
     protected static final int REQUEST_USERNAME = 0;
     
@@ -39,21 +41,22 @@ public class NewPostFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
+		//setHasOptionsMenu(true);
 		sPostController = PostController.getInstance(getActivity());
-		mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
+		//mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
 		
 		mBlackColor = getResources().getColor(R.color.black);
 		mWhiteColor = getResources().getColor(R.color.white);
 		mBlueColor = getResources().getColor(R.color.blue);
 	}
-	
+	/*
 	@Override
 	public void onPause(){
 		super.onPause();
 	}
+	*/
 	
-
+	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
 		super.onCreateOptionsMenu(menu, menuInflater);
@@ -64,7 +67,7 @@ public class NewPostFragment extends Fragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem){
 	    switch (menuItem.getItemId()) {
-		/*
+		
         case R.id.menu_item_new_reply:
 //        	if(sPostController.getPostManager().getUserProfileManager().getUserProfile().getUsername.equals(null)){
 //        		FragmentManager fm = getActivity().getFragmentManager();
@@ -79,7 +82,7 @@ public class NewPostFragment extends Fragment {
 //                toast.show(); 
 //        	}
         	return true;
-        	*/
+        	
         default:
             return super.onOptionsItemSelected(menuItem);
     	}

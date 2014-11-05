@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 public class NewPostFragment extends Fragment {
 	
-	
+	public static final String EXTRA_PARENT_QUESTION_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.parent_id";
 	public static final String EXTRA_NEW_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.new_post_id";
 	protected static final String DIALOG_USERNAME = "username";
     protected static final int REQUEST_USERNAME = 0;

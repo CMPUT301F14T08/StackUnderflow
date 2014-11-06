@@ -23,7 +23,6 @@ public class MainFragment extends Fragment {
 	
 	protected PostController sPostController;
 	protected PostAdapter adapter;
-	
 	private ArrayList<Post> actualList;
 	private ArrayList<Post> questionList;
 	private ListView listview;

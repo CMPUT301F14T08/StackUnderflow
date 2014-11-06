@@ -14,8 +14,7 @@ import android.widget.TextView;
 
 public class NewPostFragment extends Fragment {
 	
-	public static final String EXTRA_PARENT_QUESTION_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.parent_id";
-	public static final String EXTRA_NEW_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.new_post_id";
+	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";
 	protected static final String DIALOG_USERNAME = "username";
     protected static final int REQUEST_USERNAME = 0;
     
@@ -43,7 +42,9 @@ public class NewPostFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		//setHasOptionsMenu(true);
 		sPostController = PostController.getInstance(getActivity());
+		//if (EXTRA_POST_ID != 0){
 		//mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
+		//}
 		
 		mBlackColor = getResources().getColor(R.color.black);
 		mWhiteColor = getResources().getColor(R.color.white);

@@ -45,9 +45,8 @@ public class QuestionFragment extends PostFragment {
 	    switch (item.getItemId()) {
 			case R.id.menu_item_new_answer:
 				
-				// TODO implement proper UUID PASSING
 				Intent i = new Intent(getActivity(), NewAnswerActivity.class);
-				i.putExtra(NewPostFragment.EXTRA_PARENT_QUESTION_ID, "TEST"); //mQuestion.getID());
+				i.putExtra(PostFragment.EXTRA_POST_ID, mQuestion.getID()); 
 				startActivity(i);
 				
 //				if(sPostController.getPostManager().getUserProfileManager().getUserProfile().getUsername.equals(null)){

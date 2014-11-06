@@ -29,6 +29,8 @@ public class MainActivity extends Activity implements TabListener {
 	
 	private List<Fragment> fragmentList = new ArrayList<Fragment>();
 	protected MainFragment tf = null;
+	static final int PICK_QUESTION = 0;
+	static final int PICK_ANSWER = 1;
 	
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,6 @@ public class MainActivity extends Activity implements TabListener {
 	@Override
 	public void onResume(){
 		super.onResume();
-		tf.adapter.notifyDataSetChanged();
 	}
 	
 	//Options Menu
@@ -68,8 +69,10 @@ public class MainActivity extends Activity implements TabListener {
 		
 	    switch (item.getItemId()) {
 			case R.id.ask_question:	
-				Intent intent = new Intent(this, NewQuestionActivity.class);
-				startActivity(intent);				
+
+				Intent intent = new Intent(this, NewQuestionActivity.class);				
+				startActivityForResult(intent, PICK_QUESTION);
+
 			    return true;
 			    
 			default:				
@@ -114,5 +117,22 @@ public class MainActivity extends Activity implements TabListener {
 		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 			//No implementation required at present
 		}
+
+		
+		protected void onActivityResult(int requestCode, int resultCode,
+	             Intent data) {
+	         if (requestCode == PICK_QUESTION) {
+	             if (resultCode == RESULT_OK) {
+	            	 String title = data.getStringExtra("question.title");
+	            	 String body = data.getStringExtra("question.body");
+	            	 String author = data.getStringExtra("question.author");
+	            	 Question q = new Question(body, author, title);
+	                 tf.sPostController.getPostManager().addQuestion(q);
+	                 //tf.adapter.notifyDataSetChanged();
+	             }
+	         }
+	     }
+
+
 	
 }

@@ -14,13 +14,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 public class NewAnswerFragment extends NewPostFragment {
-
 	
-	//String parentID = getActivity().getIntent().getExtras().get(EXTRA_PARENT_QUESTION_ID);
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.new_answer_title);
+		mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
+		
 	}	
 	
 	/*
@@ -38,44 +38,25 @@ public class NewAnswerFragment extends NewPostFragment {
 		// (DISABLED extends NewPostFragment, while Jon has a look at MainActivity issues)
 		mPostBody = (EditText)v.findViewById(R.id.new_answer_fragment_edittext_body);
 		mPostBody.setText(getResources().getString(R.string.new_answer_fragment_edittext_body));
+		//mPostBody.setSelectAllOnFocus(true);
 		
 		mUploadPictureButton = (ImageButton) v.findViewById(R.id.new_answer_fragment_upload_photo_button);
-       
         mUploadPictureButton.setImageResource(R.drawable.picture_dark);
         
         mSubmitButton = (Button) v.findViewById(R.id.new_answer_fragment_submit_button);
         
-        
-        /*
-		if(mQuestion.hasPicture()){
-			mUploadPictureButton.setImageResource(R.drawable.picture_white);
-			mUploadPictureButton.setEnabled(true);			
-		}
-		*/
-        
-		
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {       	
             	
-            	/*
+            	
             	String author = "user"; // Implement user profile
             	String body = mPostBody.getText().toString();
             	
-            	Answer mAnswer = new Answer(body, author);
-            	//mAnswer.
-            	//Question mQuestion = new Question(body, author, title);
-            	
-            	UUID parent = (UUID)extras.get("ParentID");            	
-            	Question qparent = (Question) sPostController.getPostManager().getPost(parent);
+            	Answer mAnswer = new Answer(body, author);      	
+            	Question qparent = (Question) sPostController.getPostManager().getPost(mPostId);
             	sPostController.getPostManager().addAnswer(qparent, mAnswer);
-            	//.addAnswer(parent, mAnswer);
-            	//get
+
             	getActivity().finish();
-				
-            	//Intent i = new Intent(getActivity(), MainActivity.class);
-				//i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
-				//startActivity(i);
-			   */
             	
             }
         });
@@ -89,6 +70,13 @@ public class NewAnswerFragment extends NewPostFragment {
 			}
 		});
 		
+        mPostBody.setOnClickListener(new View.OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				// Implement picture dialog
+				mPostBody.setText("");
+			}
+		});
 			
         
         return v;

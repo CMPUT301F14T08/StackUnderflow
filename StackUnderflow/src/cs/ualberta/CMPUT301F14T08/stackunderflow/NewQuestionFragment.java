@@ -1,5 +1,7 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.util.UUID;
+
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,16 +14,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 public class NewQuestionFragment extends NewPostFragment {
-	// (TEMPORARILY DISABLED extends NewPostFragment, while Jon has a look at MainActivity issues)
-
-	//TODO: Implement Fragment: currently just a layout/view 
-	//private Question mQuestion;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		//getActivity().setTitle(R.string.new_question_title);
+		
 	}	
-	
+		
 	/*
 	@Override
 	public void onPause(){
@@ -35,10 +35,12 @@ public class NewQuestionFragment extends NewPostFragment {
 		
 		// (DISABLED extends NewPostFragment, while Jon has a look at MainActivity issues)
         mPostTitle = (EditText) v.findViewById(R.id.new_question_fragment_edittext_title);
-        
 		mPostTitle.setText(getResources().getString(R.string.new_question_fragment_edittext_title));
+		//mPostTitle.setSelectAllOnFocus(true);
+		
 		mPostBody = (EditText)v.findViewById(R.id.new_question_fragment_edittext_body);
 		mPostBody.setText(getResources().getString(R.string.new_question_fragment_edittext_body));
+		//mPostBody.setSelectAllOnFocus(true);
 		
 		mUploadPictureButton = (ImageButton) v.findViewById(R.id.new_question_fragment_upload_photo_button);
        
@@ -83,6 +85,21 @@ public class NewQuestionFragment extends NewPostFragment {
 			}
 		});
 		
+        mPostBody.setOnClickListener(new View.OnClickListener() {			
+ 			@Override
+ 			public void onClick(View v) {
+ 				// Implement picture dialog
+ 				mPostBody.setText("");
+ 			}
+ 		});
+        
+        mPostTitle.setOnClickListener(new View.OnClickListener() {			
+ 			@Override
+ 			public void onClick(View v) {
+ 				// Implement picture dialog
+ 				mPostTitle.setText("");
+ 			}
+ 		});
 		
         
         return v;

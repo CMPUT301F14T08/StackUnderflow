@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="@string/new_answer_fragment_edittext_body" />
+        android:text="@string/new_answer_fragment_edittext_body" 
+        android:selectAllOnFocus="true"/>
 
     <ImageButton
         android:id="@+id/new_answer_fragment_upload_photo_button"

@@ -37,6 +37,11 @@ public class AnswerFragment extends PostFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 			case R.id.menu_item_new_answer:
+				
+				Intent intent = new Intent(getActivity(), NewAnswerActivity.class);
+				intent.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID()); 
+				startActivity(intent);
+				
 //				if(sPostController.getPostManager().getUserProfileManager().getUserProfile().getUsername.equals(null)){
 //	        		FragmentManager fm = getActivity().getFragmentManager();
 //					UsernameFragment dialog = new UsernameFragment();
@@ -52,7 +57,7 @@ public class AnswerFragment extends PostFragment {
 			case R.id.menu_item_back_to_question:
 				Intent i = new Intent(getActivity(), QuestionActivity.class);
 				i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
-				startActivity(i);
+				startActivity(i);				 
 			    return true;
 			default:
 				return super.onOptionsItemSelected(item);

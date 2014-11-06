@@ -79,9 +79,8 @@ public class MainActivity extends Activity implements TabListener {
 		
 	    switch (item.getItemId()) {
 			case R.id.ask_question:	
-				Intent intent = new Intent(this, NewQuestionActivity.class);				
-				startActivity(intent);
-				
+				Intent intent = new Intent(this, NewQuestionActivity.class);
+				startActivity(intent);				
 			    return true;
 			    
 			default:
@@ -89,10 +88,7 @@ public class MainActivity extends Activity implements TabListener {
 				CharSequence text = "Implement menu item";
 				int duration = Toast.LENGTH_SHORT;
 				Toast toast = Toast.makeText(this, text, duration);
-				toast.show();
-				
-				//return onOptionsItemSelected(item);
-				
+				toast.show();			
 				return false;
 	    } 
 	
@@ -116,18 +112,14 @@ public class MainActivity extends Activity implements TabListener {
 			data.putInt("idx",  tab.getPosition());
 			tf.setArguments(data);
 			fragmentList.add(tf);
-		}
-		else
+		} else {
 			tf = (MainFragment) f;
-		
-		fragmentTransaction.replace(android.R.id.content, tf);
-		
+		}
+		fragmentTransaction.replace(android.R.id.content, tf);		
 		}
 
 		@Override
 		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-	        //if(mFragment!=null)
-	            //fragmentTransaction.detach(mFragment);
 			if (fragmentList.size() > tab.getPosition()) {
 				fragmentTransaction.remove(fragmentList.get(tab.getPosition()));
 			}

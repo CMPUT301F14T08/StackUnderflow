@@ -1,5 +1,6 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -62,9 +63,12 @@ public class NewQuestionFragment extends NewPostFragment {
             	String author = "user";
             	String body = mPostBody.getText().toString();
             	
+            	Intent msg = new Intent();
+            	msg.putExtra("question.title", title);
+            	msg.putExtra("question.author", author);
+            	msg.putExtra("question.body", body);
             			
-            	Question mQuestion = new Question(body, author, title);
-            	sPostController.getPostManager().addQuestion(mQuestion);
+            	getActivity().setResult(Activity.RESULT_OK, msg);
             	getActivity().finish();
             	
 				//Intent i = new Intent(getActivity(), MainActivity.class);

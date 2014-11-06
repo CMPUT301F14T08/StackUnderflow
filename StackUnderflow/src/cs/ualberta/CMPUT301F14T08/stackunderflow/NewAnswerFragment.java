@@ -23,22 +23,13 @@ public class NewAnswerFragment extends NewPostFragment {
 		
 	}	
 	
-	/*
-	@Override
-	public void onPause(){
-		super.onPause();
-	}
-	*/
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 		
 		View v = inflater.inflate(R.layout.new_answer_fragment, parent, false);		
 		
-		
-		// (DISABLED extends NewPostFragment, while Jon has a look at MainActivity issues)
 		mPostBody = (EditText)v.findViewById(R.id.new_answer_fragment_edittext_body);
 		mPostBody.setText(getResources().getString(R.string.new_answer_fragment_edittext_body));
-		//mPostBody.setSelectAllOnFocus(true);
 		
 		mUploadPictureButton = (ImageButton) v.findViewById(R.id.new_answer_fragment_upload_photo_button);
         mUploadPictureButton.setImageResource(R.drawable.picture_dark);
@@ -77,9 +68,7 @@ public class NewAnswerFragment extends NewPostFragment {
 				mPostBody.setText("");
 			}
 		});
-			
         
         return v;
 	}	
-	
 }

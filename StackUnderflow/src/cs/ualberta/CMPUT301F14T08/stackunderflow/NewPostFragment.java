@@ -23,14 +23,7 @@ public class NewPostFragment extends Fragment {
 	
 	protected EditText mPostTitle;
 	protected EditText mPostBody;
-	//protected ImageButton mUpvoteButton;
-	//protected TextView mUpvoteCountTextView;
-	//protected ImageButton mFavoriteButton;
-	//protected TextView mFavoriteTextView;
 	protected ImageButton mUploadPictureButton;
-	//protected TextView mUsername;
-	//protected ImageButton mAnswersButton;
-	//protected TextView mAnswersTextView;
 	protected Button mSubmitButton;
 	
 	protected int mBlackColor;
@@ -40,30 +33,18 @@ public class NewPostFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		//setHasOptionsMenu(true);
 		sPostController = PostController.getInstance(getActivity());
-		//if (EXTRA_POST_ID != 0){
-		//mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
-		//}
 		
 		mBlackColor = getResources().getColor(R.color.black);
 		mWhiteColor = getResources().getColor(R.color.white);
 		mBlueColor = getResources().getColor(R.color.blue);
 	}
-	/*
-	@Override
-	public void onPause(){
-		super.onPause();
-	}
-	*/
-	
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
 		super.onCreateOptionsMenu(menu, menuInflater);
 		menuInflater.inflate(R.menu.post_menu, menu);
 	}
-
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem){

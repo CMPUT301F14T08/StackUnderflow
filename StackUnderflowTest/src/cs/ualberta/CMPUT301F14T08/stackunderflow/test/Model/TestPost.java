@@ -1,8 +1,11 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.test.Model;
 
 import android.test.ActivityInstrumentationTestCase2;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.Reply;
 
 public class TestPost extends ActivityInstrumentationTestCase2<MainActivity> {
 	
@@ -48,6 +51,17 @@ public class TestPost extends ActivityInstrumentationTestCase2<MainActivity> {
 		Post p1 = new Post("post body", "author", image);
 
 		assertTrue(p1.getPicture().equals(image));
+	}
+	
+	public void testReplies() {
+		Reply r1 = new Reply("test", "author");
+		Question q1 = new Question("test", "author", "test");
+		Answer a1 = new Answer("test", "test");
+		
+		q1.addReply(r1);
+		a1.addReply(r1);
+		
+		assertEquals(q1.getReplies(), a1.getReplies());
 	}
 	
 }

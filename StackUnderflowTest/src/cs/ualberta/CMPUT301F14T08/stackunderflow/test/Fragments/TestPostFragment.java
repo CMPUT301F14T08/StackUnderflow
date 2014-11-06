@@ -14,20 +14,4 @@ public class TestPostFragment extends ActivityInstrumentationTestCase2<MainActiv
 	 * TODO: UI Tests to come
 	 */
 	
-	public void testOnPause() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnCreateBundle() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnCreateOptionsMenuMenuMenuInflater() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnOptionsItemSelectedMenuItem() {
-		//fail("Not yet implemented");
-	}
-
 }

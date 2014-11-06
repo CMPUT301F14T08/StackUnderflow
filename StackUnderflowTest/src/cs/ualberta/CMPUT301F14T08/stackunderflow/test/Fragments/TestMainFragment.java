@@ -13,36 +13,4 @@ public class TestMainFragment extends ActivityInstrumentationTestCase2<MainActiv
 	 * TODO: UI Tests to come
 	 */
 	
-	public void testOnResume() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnCreateBundle() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnCreateOptionsMenuMenuMenuInflater() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnOptionsItemSelectedMenuItem() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnTabSelected() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnTabUnselected() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnTabReselected() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnListItemClickListViewViewIntLong() {
-		//fail("Not yet implemented");
-	}
-
 }

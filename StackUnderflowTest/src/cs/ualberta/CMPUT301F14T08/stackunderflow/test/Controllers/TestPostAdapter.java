@@ -8,11 +8,8 @@ public class TestPostAdapter extends ActivityInstrumentationTestCase2<MainActivi
 	public TestPostAdapter() {
 		super(MainActivity.class);
 	}
+	
 	public void testPostAdapter() {
-		//fail("Not yet implemented");
-	}
-
-	public void testGetViewIntViewViewGroup() {
 		//fail("Not yet implemented");
 	}
 

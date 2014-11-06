@@ -21,6 +21,10 @@ public abstract class PostManager {
 		mPosts = new ArrayList<Post>();
 	}
 	
+	//TERRIBLE code, but required to run multiple tests, remove later
+	public void ClearManager() {
+		mPosts = new ArrayList<Post>();
+	}
 
 	// Strips 'selected' from post objects.
 	protected void clearSelected() {

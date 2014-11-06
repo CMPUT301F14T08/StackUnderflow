@@ -12,25 +12,5 @@ public class TestQuestionFragment extends ActivityInstrumentationTestCase2<MainA
 	/*
 	 * TODO: UI Tests to come
 	 */
-	
-	public void testOnPause() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnCreateBundle() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnOptionsItemSelectedMenuItem() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnPrepareOptionsMenuMenu() {
-		//fail("Not yet implemented");
-	}
-
-	public void testOnCreateViewLayoutInflaterViewGroupBundle() {
-		//fail("Not yet implemented");
-	}
 
 }

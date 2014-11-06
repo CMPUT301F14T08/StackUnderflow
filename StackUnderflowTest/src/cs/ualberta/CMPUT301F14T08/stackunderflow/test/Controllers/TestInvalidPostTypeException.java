@@ -8,8 +8,6 @@ public class TestInvalidPostTypeException extends ActivityInstrumentationTestCas
 	public TestInvalidPostTypeException() {
 		super(MainActivity.class);
 	}
-	public void testInvalidPostTypeException() {
-		//fail("Not yet implemented");
-	}
 
+	//TODO: Can this even be tested?
 }

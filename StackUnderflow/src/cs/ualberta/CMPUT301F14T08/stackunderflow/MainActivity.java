@@ -27,14 +27,6 @@ import android.content.Intent;
 
 public class MainActivity extends Activity implements TabListener {
 	
-	/*
-    @Override
-	protected Fragment newFragmentType() {
-		//return new MainFragment();
-		return new TestFragment();
-	}
-	*/
-	
 	private List<Fragment> fragmentList = new ArrayList<Fragment>();
 	protected MainFragment tf = null;
 	
@@ -73,9 +65,6 @@ public class MainActivity extends Activity implements TabListener {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		
 	    switch (item.getItemId()) {
 			case R.id.ask_question:	
@@ -83,16 +72,13 @@ public class MainActivity extends Activity implements TabListener {
 				startActivity(intent);				
 			    return true;
 			    
-			default:
-				
+			default:				
 				CharSequence text = "Implement menu item";
 				int duration = Toast.LENGTH_SHORT;
 				Toast toast = Toast.makeText(this, text, duration);
 				toast.show();			
 				return false;
 	    } 
-	
-
 	}	
 	
 	
@@ -107,7 +93,6 @@ public class MainActivity extends Activity implements TabListener {
 		
 		if (f == null) {
 			tf = new MainFragment();
-			//adapter = tf.adapter;
 			Bundle data = new Bundle();
 			data.putInt("idx",  tab.getPosition());
 			tf.setArguments(data);
@@ -129,9 +114,5 @@ public class MainActivity extends Activity implements TabListener {
 		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 			//No implementation required at present
 		}
-		
-
 	
-    /** Called when the activity is first created. */
-
 }

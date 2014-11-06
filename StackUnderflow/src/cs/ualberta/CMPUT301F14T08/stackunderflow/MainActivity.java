@@ -35,8 +35,9 @@ public class MainActivity extends Activity implements TabListener {
 	}
 	*/
 	
-	List<Fragment> fragmentList = new ArrayList<Fragment>();
-	int temp;
+	private List<Fragment> fragmentList = new ArrayList<Fragment>();
+	protected MainFragment tf = null;
+	
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
@@ -56,6 +57,12 @@ public class MainActivity extends Activity implements TabListener {
 	      
 	}
 	
+	@Override
+	public void onResume(){
+		super.onResume();
+		tf.adapter.notifyDataSetChanged();
+	}
+	
 	//Options Menu
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {//, MenuInflater inflater) {
@@ -72,8 +79,9 @@ public class MainActivity extends Activity implements TabListener {
 		
 	    switch (item.getItemId()) {
 			case R.id.ask_question:	
-				Intent intent = new Intent(this, NewQuestionActivity.class);
+				Intent intent = new Intent(this, NewQuestionActivity.class);				
 				startActivity(intent);
+				
 			    return true;
 			    
 			default:
@@ -96,13 +104,14 @@ public class MainActivity extends Activity implements TabListener {
 			FragmentTransaction fragmentTransaction) {
 	
 		Fragment f = null;
-		MainFragment tf = null;
+		//MainFragment tf = null;		
 		
 		if (fragmentList.size() > tab.getPosition())
 				fragmentList.get(tab.getPosition());
 		
 		if (f == null) {
 			tf = new MainFragment();
+			//adapter = tf.adapter;
 			Bundle data = new Bundle();
 			data.putInt("idx",  tab.getPosition());
 			tf.setArguments(data);

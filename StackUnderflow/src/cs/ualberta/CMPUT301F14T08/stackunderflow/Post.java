@@ -76,10 +76,6 @@ public class Post {
 	public void decrementVotes(){
 		if(mVotes > 0) mVotes -= 1;
 	}
-	
-public void setText(String mText) {
-		this.mText = mText;
-	}
 
 public int setVotes(int votes) {
         return mVotes = votes;

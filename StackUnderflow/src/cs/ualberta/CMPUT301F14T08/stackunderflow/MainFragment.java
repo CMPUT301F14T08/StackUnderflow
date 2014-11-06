@@ -1,8 +1,11 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.util.ArrayList;
+
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +18,14 @@ public class MainFragment extends Fragment {
 	private int index;
 	
 	private PostController sPostController;
-	//private ArrayAdapter<Post> adapter;
-	//private ArrayList<Post> ar;
-	private PostAdapter adapter;
+	protected PostAdapter adapter;
+	
+	private ArrayList<Post> actualList;
+	private ArrayList<Post> questionList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
-		//setHasOptionsMenu(true);
 		Bundle data = getArguments();
 		index = data.getInt("idx");
 	}
@@ -40,9 +43,10 @@ public class MainFragment extends Fragment {
 		
 		View view = inflater.inflate(R.layout.list_fragment, null);
 		ListView listview = (ListView) view.findViewById(R.id.list_view);
-		
+
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			
+			// Opens Question or Answer Fragment based upon list item clicked 
 			@Override
 			public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 				// TODO: Update
@@ -65,25 +69,23 @@ public class MainFragment extends Fragment {
 			
 		});		
 		
-		//sPostController = PostController.getInstance(getActivity());
+		// Implements tab-switching between sorted list views for "Newest" and "Popular" Main Activity tabs
 		switch(index){
 		case 0:
 			
 			sPostController = PostController.getInstance(getActivity());
-			// JON REMOVE COMMENTED LINE BELOW TO TEST ANSWER FILTERING
-			sPostController.getPostManager().filterOutAnswers();
 			sPostController.getPostManager().sortByDate();
-
-			/* JON REMOVE COMMENTS ON THIS BLOCK TO TEST ANSWER FILTERING
-			for (int i=0; i< sPostController.getPostManager().mPosts.size(); i++) {
-				Post item = sPostController.getPostManager().mPosts.get(i);
-				if (item.getIsFiltered()){
-					sPostController.getPostManager().mPosts.remove(item);
-				}
-			}
-			*/
 			
-			adapter = new PostAdapter(getActivity(), sPostController);
+			actualList = sPostController.getPostManager().getPosts();
+			questionList = new ArrayList<Post>();
+		
+			for (int i = 0; i < actualList.size(); i++) {
+			    Post p = actualList.get(i);
+			    if (p instanceof Question)
+			        questionList.add(p);
+			}
+			
+			adapter = new PostAdapter(getActivity(), questionList);
 			listview.setAdapter(adapter);
 			adapter.notifyDataSetChanged();			
 			break;
@@ -94,18 +96,18 @@ public class MainFragment extends Fragment {
 			sPostController.getPostManager().filterOutAnswers();
 			sPostController.getPostManager().sortByScore();
 			
-			/* JON REMOVE COMMENTS ON THIS BLOCK TO TEST ANSWER FILTERING
-			for (int i=0; i< sPostController.getPostManager().mPosts.size(); i++) {
-				Post item = sPostController.getPostManager().mPosts.get(i);
-				if (item.getIsFiltered()){
-					sPostController.getPostManager().mPosts.remove(item);
-				}
+			actualList = sPostController.getPostManager().getPosts();
+			questionList = new ArrayList<Post>();
+			
+			for (int i = 0; i < actualList.size(); i++) {
+			    Post p = actualList.get(i);
+			    if (p instanceof Question)
+			        questionList.add(p);
 			}
-			*/
-	
-			adapter = new PostAdapter(getActivity(), sPostController);			
+			
+			adapter = new PostAdapter(getActivity(), questionList);
 			listview.setAdapter(adapter);
-			adapter.notifyDataSetChanged();
+			adapter.notifyDataSetChanged();			
 			break;
 			
 		default:

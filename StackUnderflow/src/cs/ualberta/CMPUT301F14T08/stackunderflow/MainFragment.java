@@ -15,14 +15,19 @@ import android.widget.ListView;
 
 public class MainFragment extends Fragment {
 	
+	private static final String SORT_DATE = "DATE";
+
+	private static final String SORT_SCORE = "SCORE";
+
 	private int index;
 	
-	private PostController sPostController;
+	protected PostController sPostController;
 	protected PostAdapter adapter;
 	
 	private ArrayList<Post> actualList;
 	private ArrayList<Post> questionList;
-	
+	private ListView listview;
+	private String lastSort;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
@@ -34,6 +39,7 @@ public class MainFragment extends Fragment {
 	@Override
 	public void onResume(){
 		super.onResume();
+		createView(lastSort);
 		adapter.notifyDataSetChanged();
 	}
 	
@@ -42,7 +48,7 @@ public class MainFragment extends Fragment {
 			Bundle savedInstanceState) {
 		
 		View view = inflater.inflate(R.layout.list_fragment, null);
-		ListView listview = (ListView) view.findViewById(R.id.list_view);
+		listview = (ListView) view.findViewById(R.id.list_view);
 
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			
@@ -72,42 +78,13 @@ public class MainFragment extends Fragment {
 		// Implements tab-switching between sorted list views for "Newest" and "Popular" Main Activity tabs
 		switch(index){
 		case 0:
-			
-			sPostController = PostController.getInstance(getActivity());
-			sPostController.getPostManager().sortByDate();
-			
-			actualList = sPostController.getPostManager().getPosts();
-			questionList = new ArrayList<Post>();
-		
-			for (int i = 0; i < actualList.size(); i++) {
-			    Post p = actualList.get(i);
-			    if (p instanceof Question)
-			        questionList.add(p);
-			}
-			
-			adapter = new PostAdapter(getActivity(), questionList);
-			listview.setAdapter(adapter);
-			adapter.notifyDataSetChanged();			
+			createView(SORT_DATE);
+			lastSort = SORT_DATE;
 			break;
 			
 		case 1:
-
-			sPostController = PostController.getInstance(getActivity());
-			sPostController.getPostManager().filterOutAnswers();
-			sPostController.getPostManager().sortByScore();
-			
-			actualList = sPostController.getPostManager().getPosts();
-			questionList = new ArrayList<Post>();
-			
-			for (int i = 0; i < actualList.size(); i++) {
-			    Post p = actualList.get(i);
-			    if (p instanceof Question)
-			        questionList.add(p);
-			}
-			
-			adapter = new PostAdapter(getActivity(), questionList);
-			listview.setAdapter(adapter);
-			adapter.notifyDataSetChanged();			
+			createView(SORT_SCORE);
+			lastSort = SORT_SCORE;
 			break;
 			
 		default:
@@ -117,6 +94,26 @@ public class MainFragment extends Fragment {
 		
 		return view;
 	}
-	    
+	
+	public void createView(String sort) {
+		sPostController = PostController.getInstance(getActivity());
+		if (sort.equals(SORT_DATE))
+			sPostController.getPostManager().sortByDate();
+		else if (sort.equals(SORT_SCORE)) 
+			sPostController.getPostManager().sortByScore();
+		
+		actualList = sPostController.getPostManager().getPosts();
+		questionList = new ArrayList<Post>();
+		
+		for (int i = 0; i < actualList.size(); i++) {
+		    Post p = actualList.get(i);
+		    if (p instanceof Question)
+		        questionList.add(p);
+		}
+		
+		adapter = new PostAdapter(getActivity(), questionList);
+		listview.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
+	}
 
 }

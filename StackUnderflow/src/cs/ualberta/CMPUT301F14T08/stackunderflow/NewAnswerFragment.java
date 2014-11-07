@@ -28,21 +28,20 @@ public class NewAnswerFragment extends NewPostFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 		
 		View v = inflater.inflate(R.layout.new_answer_fragment, parent, false);		
-		
+		//Gathers information from user interface 
 		mPostBody = (EditText)v.findViewById(R.id.new_answer_fragment_edittext_body);
-		mPostBody.setText(getResources().getString(R.string.new_answer_fragment_edittext_body));
-		
+		mPostBody.setText(getResources().getString(R.string.new_answer_fragment_edittext_body));		
 		mUploadPictureButton = (ImageButton) v.findViewById(R.id.new_answer_fragment_upload_photo_button);
-        mUploadPictureButton.setImageResource(R.drawable.picture_dark);
-        
-        mSubmitButton = (Button) v.findViewById(R.id.new_answer_fragment_submit_button);
-        
+        mUploadPictureButton.setImageResource(R.drawable.picture_dark);        
+        mSubmitButton = (Button) v.findViewById(R.id.new_answer_fragment_submit_button);       
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {       	
             	
             	
             	String author = "Guest"; // Implement user profile
             	String body = mPostBody.getText().toString();
+            	
+            	//Checks if fields are left blank
             	if(body.equalsIgnoreCase("")){
             		Toast.makeText(getActivity().getApplicationContext(), "Please Enter a Answer", 
             				   Toast.LENGTH_LONG).show();

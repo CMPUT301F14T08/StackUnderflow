@@ -14,8 +14,7 @@ public class Reply {
 	private Date mDate;
     private int mTimeStamp;
 	private	String mSignature;
-	// flag stating whether the reply exists online yet
-	private boolean mExistsOnline;
+	private boolean mExistsOnline; // flag stating whether the reply exists online yet
 	
 	public Reply(String text, String signature) {
 		mText = text;

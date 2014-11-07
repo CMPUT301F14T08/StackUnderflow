@@ -25,24 +25,19 @@ public class NewQuestionFragment extends NewPostFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 
 		View v = inflater.inflate(R.layout.new_question_fragment, parent, false);		
-
 		mPostTitle = (EditText) v.findViewById(R.id.new_question_fragment_edittext_title);		
-
 		mPostBody = (EditText)v.findViewById(R.id.new_question_fragment_edittext_body);		
-
 		mUploadPictureButton = (ImageButton) v.findViewById(R.id.new_question_fragment_upload_photo_button);
-
 		mUploadPictureButton.setImageResource(R.drawable.picture_dark);
-
 		mSubmitButton = (Button) v.findViewById(R.id.new_question_fragment_submit_button);
-
 		mSubmitButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {       	
 				
 				String title = mPostTitle.getText().toString();
 				String author = "Guest";
 				String body = mPostBody.getText().toString();
-
+				
+				//Checks if fields are left blank
 				if(title.equalsIgnoreCase("")||body.equalsIgnoreCase("") || (title.equalsIgnoreCase("")&&body.equalsIgnoreCase(""))){
 					Toast.makeText(getActivity().getApplicationContext(), "Please Fill all Fields", 
 							Toast.LENGTH_LONG).show();

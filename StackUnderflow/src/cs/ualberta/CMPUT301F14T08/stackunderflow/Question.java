@@ -5,6 +5,7 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 public class Question extends Post {
@@ -19,6 +20,13 @@ public class Question extends Post {
 	
 	public Question(String text, String signature, String picture, String title){
 		super(text, signature, picture);
+		mTitle = title;
+		mAnswers = new ArrayList<Answer>();
+	}
+	
+	//Constructor for testing only, to properly test SortByDate()
+	public Question(String text, String signature, String picture, String title, Date date){
+		super(text, signature, picture, date);
 		mTitle = title;
 		mAnswers = new ArrayList<Answer>();
 	}

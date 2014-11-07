@@ -13,87 +13,81 @@ import android.app.ActionBar.TabListener;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.app.FragmentManager;
 
 
 public class MainActivity extends Activity implements TabListener {
-	
+
 	private List<Fragment> fragmentList = new ArrayList<Fragment>();
 	protected MainFragment tf = null;
 	static final int PICK_QUESTION = 0;
 	static final int PICK_ANSWER = 1;
-	
-	
+
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
 
-	    ActionBar actionBar = getActionBar();
-	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-	    
+		ActionBar actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
 		Tab tab = actionBar.newTab();
 		tab.setText(R.string.newest);
 		tab.setTabListener(this);
 		actionBar.addTab(tab);
-		
+
 		Tab tab2 = actionBar.newTab();
 		tab2.setText(R.string.popular);
 		tab2.setTabListener(this);
 		actionBar.addTab(tab2);
-	      
+
 	}
-	
+
 	@Override
 	public void onResume(){
 		super.onResume();
 	}
-	
-	//Options Menu
+
+	/** Called when the activity is first created. */
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {//, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.fragment_main_menu, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
-	    switch (item.getItemId()) {
-			case R.id.ask_question:	
 
-				Intent intent = new Intent(this, NewQuestionActivity.class);				
-				startActivityForResult(intent, PICK_QUESTION);
+		switch (item.getItemId()) {
+		case R.id.ask_question:	
 
-			    return true;
-			    
-			default:				
-				CharSequence text = "Implement menu item";
-				int duration = Toast.LENGTH_SHORT;
-				Toast toast = Toast.makeText(this, text, duration);
-				toast.show();			
-				return false;
-	    } 
+			Intent intent = new Intent(this, NewQuestionActivity.class);				
+			startActivityForResult(intent, PICK_QUESTION);
+
+			return true;
+
+		default:				
+			CharSequence text = "Implement menu item";
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(this, text, duration);
+			toast.show();			
+			return false;
+		} 
 	}	
-	
-	
+
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
-	
-		Fragment f = null;
-		//MainFragment tf = null;		
-		
+
+		Fragment f = null;	
+
 		if (fragmentList.size() > tab.getPosition())
-				fragmentList.get(tab.getPosition());
-		
+			fragmentList.get(tab.getPosition());
+
 		if (f == null) {
 			tf = new MainFragment();
 			Bundle data = new Bundle();
@@ -104,35 +98,42 @@ public class MainActivity extends Activity implements TabListener {
 			tf = (MainFragment) f;
 		}
 		fragmentTransaction.replace(android.R.id.content, tf);		
-		}
+	}    
 
-		@Override
-		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-			if (fragmentList.size() > tab.getPosition()) {
-				fragmentTransaction.remove(fragmentList.get(tab.getPosition()));
+	// Code to allow testing of Username Dialog, remove once copied over
+	// to other places that need to call it.
+	public void testDialogFragment(MenuItem menu) {
+		FragmentManager fm = getFragmentManager();
+		UsernameDialogFragment udf = new UsernameDialogFragment();
+		udf.show(fm, "Username Dialog Fragment");
+	}
+
+	@Override
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+		if (fragmentList.size() > tab.getPosition()) {
+			fragmentTransaction.remove(fragmentList.get(tab.getPosition()));
+		}
+	}
+
+	@Override
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+		//No implementation required at present
+	}
+
+
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent data) {
+		if (requestCode == PICK_QUESTION) {
+			if (resultCode == RESULT_OK) {
+				String title = data.getStringExtra("question.title");
+				String body = data.getStringExtra("question.body");
+				String author = data.getStringExtra("question.author");
+				Question q = new Question(body, author, title);
+				tf.sPostController.getPostManager().addQuestion(q);
 			}
 		}
-
-		@Override
-		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-			//No implementation required at present
-		}
-
-		
-		protected void onActivityResult(int requestCode, int resultCode,
-	             Intent data) {
-	         if (requestCode == PICK_QUESTION) {
-	             if (resultCode == RESULT_OK) {
-	            	 String title = data.getStringExtra("question.title");
-	            	 String body = data.getStringExtra("question.body");
-	            	 String author = data.getStringExtra("question.author");
-	            	 Question q = new Question(body, author, title);
-	                 tf.sPostController.getPostManager().addQuestion(q);
-	                 //tf.adapter.notifyDataSetChanged();
-	             }
-	         }
-	     }
+	}
 
 
-	
+
 }

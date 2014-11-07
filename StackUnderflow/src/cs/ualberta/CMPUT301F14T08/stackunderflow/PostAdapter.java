@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
 public class PostAdapter extends ArrayAdapter<Post> {
 	
 	
@@ -29,8 +28,8 @@ public class PostAdapter extends ArrayAdapter<Post> {
 	 * PostController, and add controller.getPostManager().getPosts());
 	 */
 	// TODO: read above
-	public PostAdapter(Context context, ArrayList<Post> post) {
-		super(context, 0, post);
+	public PostAdapter(Context context, ArrayList<Post> list) {
+		super(context, 0, list);
 	}
 	
 	// set up the required view, or uses a recycled view instead

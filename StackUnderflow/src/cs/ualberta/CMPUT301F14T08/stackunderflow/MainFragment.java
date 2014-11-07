@@ -1,6 +1,11 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import android.app.Fragment;
+import java.util.ArrayList;
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
+import android.app.FragmentManager;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +18,6 @@ import android.widget.ListView;
 public class MainFragment extends Fragment {
 	
 	private static final String SORT_DATE = "DATE";
-
 	private static final String SORT_SCORE = "SCORE";
 
 	private int index;
@@ -22,11 +26,13 @@ public class MainFragment extends Fragment {
 	protected PostAdapter adapter;
 	private ListView listview;
 	private String lastSort;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
 		Bundle data = getArguments();
 		index = data.getInt("idx");
+
 	}
 	
 	
@@ -40,7 +46,7 @@ public class MainFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+
 		View view = inflater.inflate(R.layout.list_fragment, null);
 		listview = (ListView) view.findViewById(R.id.list_view);
 
@@ -87,6 +93,7 @@ public class MainFragment extends Fragment {
 		}		
 		
 		return view;
+
 	}
 	
 	public void createView(String sort) {

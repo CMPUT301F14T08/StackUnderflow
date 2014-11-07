@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/dialogUsernameInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/usernameDialog"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/enterUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/dialogUsernameInfo"
+        android:layout_alignBottom="@+id/dialogUsernameInfo"
+        android:layout_toRightOf="@+id/dialogUsernameInfo"
+        android:ems="10"
+        android:inputType="text"
+        android:paddingLeft="5dp"
+        android:text="@string/username"
+        android:textSize="14sp" />
+
+</RelativeLayout>

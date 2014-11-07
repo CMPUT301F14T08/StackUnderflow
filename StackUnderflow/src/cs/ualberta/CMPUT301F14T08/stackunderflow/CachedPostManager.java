@@ -29,11 +29,6 @@ public class CachedPostManager extends PostManager{
 		} catch (Exception e) {
 		    mQuestions = new ArrayList<Post>();
 		}
-		
-		if (mQuestions.size() == 0) {
-			loadTestQuestions();
-		}
-
 	}
 	
 	//TODO: Delete this later!

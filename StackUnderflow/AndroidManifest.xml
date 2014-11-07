@@ -31,6 +31,7 @@
             android:name=".AnswerActivity"
             android:label="@string/answer_title"
             android:theme="@style/BlueTheme">
+
             
         </activity>
         <activity 
@@ -42,6 +43,7 @@
         <activity 
             android:name=".NewAnswerActivity"
             android:label="@string/new_question_title">
+
             
         </activity>
     </application>

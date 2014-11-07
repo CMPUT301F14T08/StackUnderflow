@@ -2,20 +2,20 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 
 import android.app.Fragment;
-
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.UUID;
-
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.Fragment;
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+
 
 public class AnswerFragment extends PostFragment {
 	
@@ -71,9 +71,6 @@ public class AnswerFragment extends PostFragment {
 		final int position = sPostController.getPostManager().getPositionOfAnswer(mParent, mAnswer);
 		final int remainingAnswers = mParent.countAnswers() - position - 1;
 
-		//might be needed?
-		//super.setPost(mAnswer);
-
 		v.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
 			public void onSwipeLeft() {
 				if(remainingAnswers > 0){
@@ -94,7 +91,6 @@ public class AnswerFragment extends PostFragment {
 		});
 		
 		mTopLinearLayout.setBackgroundColor(mBlueColor);
-		
 		mQuestionTitle.setVisibility(View.GONE);
 		
 		mUpvoteButton.setBackgroundColor(mBlueColor);
@@ -120,13 +116,13 @@ public class AnswerFragment extends PostFragment {
 			}	
 	    });
 		
-
 		if(remainingAnswers > 0){	
 			mAnswersButton.setEnabled(true);
 			mAnswersButton.setVisibility(View.VISIBLE);
 			mAnswersButton.setImageResource(R.drawable.box_arrow_right_large);
 			mAnswersButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
+
 					mAnswer = mParent.getAnswers().get(position)+1);
 					getFragmentManager().beginTransaction().detach(frag).attach(frag).commit();
 				}
@@ -136,12 +132,10 @@ public class AnswerFragment extends PostFragment {
 			mAnswersButton.setEnabled(false);
 			mAnswersButton.setVisibility(View.GONE);
 		}
-		
 
 		mBackButton = (ImageButton)v.findViewById(R.id.post_fragment_button_back);
 		mBackButton.setImageResource(R.drawable.box_arrow_left_large);
 		boolean isFirstAnswer = mAnswer.getPosition() == 0;
-		
 
 		if(!isFirstAnswer){
 			mBackButton.setOnClickListener(new View.OnClickListener() {

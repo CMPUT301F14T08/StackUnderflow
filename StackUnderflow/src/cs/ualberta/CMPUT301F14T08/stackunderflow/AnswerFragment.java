@@ -1,3 +1,7 @@
+/*
+ * AnswerFragment called from AnswerActivity. This is called when the user attempts to view and answer.
+ * 
+ */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.text.SimpleDateFormat;
@@ -179,7 +183,7 @@ public class AnswerFragment extends PostFragment {
 			mAnswersTextView.setText("1 More Answer");
 			break;
 		default:
-			mAnswersTextView.setText(remainingAnswers + "More Answers");
+			mAnswersTextView.setText(remainingAnswers + " More Answers");
 			break;
 		}
 		

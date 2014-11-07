@@ -1,3 +1,6 @@
+/*
+ * OnSwipeTouchListener - Does the math to see if the user has swiped so that users may swipe thru all answers to a question. 
+ */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import android.content.Context;

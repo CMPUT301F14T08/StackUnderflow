@@ -1,3 +1,7 @@
+/*
+ * NewQuestionFragment - Called from NewQuestionACtivity - User to allow a user to input a question. Takes input and saves
+ * the information to the correct post manager.  Will not allow a user to input blank fields. 
+ */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 

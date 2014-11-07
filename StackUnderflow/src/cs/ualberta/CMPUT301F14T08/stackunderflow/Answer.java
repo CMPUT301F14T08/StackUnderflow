@@ -1,5 +1,6 @@
 /*
-* Answer class, extends Post class
+* Answer class, extends Post class. Used to hold answers to questions. mPartent ID will like an answer to a question. 
+* Answers should never be called with out calling setparentQuestion or it will cause an answer that is not answering anything
  */
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;

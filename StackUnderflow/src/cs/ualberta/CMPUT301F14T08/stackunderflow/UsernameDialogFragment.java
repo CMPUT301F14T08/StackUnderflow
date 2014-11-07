@@ -1,3 +1,7 @@
+/*
+ * UsernameDiaglogFragment - When a user attempts to input a question or answer they will be prompted with a window asking for them for a user name that will
+ * then be saved on the device locatlly so that they may post with that same user name every time.
+ */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import android.app.AlertDialog;

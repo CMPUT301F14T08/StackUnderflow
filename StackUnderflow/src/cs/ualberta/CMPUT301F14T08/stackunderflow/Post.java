@@ -1,5 +1,7 @@
 /** 
- * Post base class
+ * Post base class only ever really used as a parent of question and answers. Saves all information about posts such as the id text votes pictures and so on
+ * This also allows setting and getting of of attributes of post. You should always use getters and setters. A basic post should never be called. It should always
+ * be called as a Question or an Answer.
  */
 
 

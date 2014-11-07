@@ -1,3 +1,6 @@
+/*
+ * BaseFragmentActivity simply a basic background fragment used to check if a fragment exists and if not create one. 
+ */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.UUID;

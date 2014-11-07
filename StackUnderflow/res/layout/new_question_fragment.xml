@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:text="@string/new_question_fragment_edittext_title"
+        android:hint="@string/new_question_fragment_edittext_title"
         android:ems="10" >
         <requestFocus />
     </EditText>    
@@ -22,7 +22,8 @@
         android:layout_alignLeft="@+id/new_question_fragment_edittext_title"
         android:layout_below="@+id/new_question_fragment_edittext_title"
         android:ems="10"
-        android:text="@string/new_question_fragment_edittext_body" />
+        android:text=""
+        android:hint="@string/new_question_fragment_edittext_body" />
 
     <ImageButton
         android:id="@+id/new_question_fragment_upload_photo_button"

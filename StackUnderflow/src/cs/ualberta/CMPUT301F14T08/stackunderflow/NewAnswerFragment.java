@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class NewAnswerFragment extends NewPostFragment {
 	
@@ -40,15 +41,19 @@ public class NewAnswerFragment extends NewPostFragment {
             public void onClick(View v) {       	
             	
             	
-            	String author = "user"; // Implement user profile
+            	String author = "Guest"; // Implement user profile
             	String body = mPostBody.getText().toString();
-            	
+            	if(body.equalsIgnoreCase("")){
+            		Toast.makeText(getActivity().getApplicationContext(), "Please Enter a Answer", 
+            				   Toast.LENGTH_LONG).show();
+            	}
+            	else{
             	Answer mAnswer = new Answer(body, author);      	
             	Question qparent = (Question) sPostController.getPostManager().getPost(mPostId);
             	sPostController.getPostManager().addAnswer(qparent, mAnswer);
 
             	getActivity().finish();
-            	
+            	}
             }
         });
         

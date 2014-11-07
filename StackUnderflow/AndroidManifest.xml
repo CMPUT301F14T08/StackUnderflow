@@ -13,11 +13,11 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.Stackoverflow" >
+        android:label="@string/app_name">
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_stack_underflow" >
+            android:label="@string/title_activity_stack_underflow"
+            android:theme="@style/BlackTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,11 +26,13 @@
         </activity>
         <activity
             android:name=".QuestionActivity"
-            android:label="@string/question_title" >
+            android:label="@string/question_title"
+            android:theme="@style/BlackTheme">
         </activity>
         <activity
             android:name=".AnswerActivity"
-            android:label="@string/answer_title" >
+            android:label="@string/answer_title"
+            android:theme="@style/BlueTheme">
         </activity>
         <activity 
             android:name=".NewQuestionActivity"
@@ -41,6 +43,7 @@
         <activity 
             android:name=".NewAnswerActivity"
             android:label="@string/new_question_title">
+
             
         </activity>
     </application>

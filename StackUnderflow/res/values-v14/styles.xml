@@ -8,5 +8,27 @@
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- API 14 theme customizations can go here. -->
     </style>
+    
+    <style name="BlueTheme"
+           parent="AppBaseTheme">
+           <item name="android:windowContentOverlay">@null</item>
+        <item name="android:actionBarStyle">@style/BlueActionBar</item>
+    </style>
 
+    <style name="BlackTheme"
+           parent="AppBaseTheme">
+        <item name="android:actionBarStyle">@style/BlackActionBar</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+    
+    <!-- ActionBar styles -->
+    <style name="BlueActionBar"
+           parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/blue</item>
+    </style>
+    
+    <style name="BlackActionBar"
+           parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/black</item>
+    </style>
 </resources>

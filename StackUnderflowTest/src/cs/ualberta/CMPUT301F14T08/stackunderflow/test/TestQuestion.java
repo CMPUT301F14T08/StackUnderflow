@@ -27,6 +27,9 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<MainActivity>
 		q1.addAnswer(a1);
 		assertTrue(q1.getAnswers().contains(a1));
 		assertTrue(a1.getParentID().equals(q1.getID()));
+		
+		assertEquals(q1.getText(),"post body");
+		assertEquals(q1.getSignature(),"author");
 	}
 	/**
 	 *  Add a reply to a question

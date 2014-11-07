@@ -5,6 +5,7 @@ import java.lang.reflect.*;
 import java.util.ArrayList;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.CachedPostManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
@@ -78,5 +79,15 @@ public class TestCachedPostManager extends ActivityInstrumentationTestCase2<Main
         manager.loadFromFile();
         
         assertEquals(manager.getPosts().size(), comparisonPosts.size());
+        
+        posts.clear();
+        assertEquals(manager.getPosts().size(), 0);
+        	
+		manager.addQuestion(new Question("Topic","Author", "Picture"));
+		assertEquals(manager.getPosts().size(),1);
+		assertEquals(manager.getPosts().get(0).getText(),"Topic");
+		assertEquals(manager.getPosts().get(0).getSignature(),"Author");
+        
+        
         }
 }

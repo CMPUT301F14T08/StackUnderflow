@@ -103,7 +103,7 @@ public class OnlinePostManager extends PostManager {
         mCachedPostManager.save();
     }
     
-    private void refreshAll() {
+    public void refreshAll() {
         try {
             mPosts = loadFromServer();
         } catch (Exception e) {
@@ -112,7 +112,7 @@ public class OnlinePostManager extends PostManager {
     }
     
     // Get Post with specific ES ID
-    private void refreshQuestion(Question question) {
+    public void refreshQuestion(Question question) {
         updateIfExists(getOnlineQuestion(question));
         boolean updated = mCachedPostManager.updateIfExists(getOnlineQuestion(question));
         if (updated)
@@ -120,7 +120,7 @@ public class OnlinePostManager extends PostManager {
     }
     
     // Get Post with specific ES ID
-    private Question getOnlineQuestion(Question question) {
+    public Question getOnlineQuestion(Question question) {
 
         Question onlineQuestion = null;
         HttpClient httpClient = new DefaultHttpClient();
@@ -383,6 +383,10 @@ public class OnlinePostManager extends PostManager {
         }
             
         return;
+    }
+    public CachedPostManager getCachedPostManager()
+    {
+    	return mCachedPostManager;
     }
     
 }

@@ -38,6 +38,12 @@
             android:label="@string/new_question_title">
             
         </activity>
+        
+        <activity 
+            android:name=".NewAnswerActivity"
+            android:label="@string/new_question_title">
+            
+        </activity>
     </application>
 
 </manifest>

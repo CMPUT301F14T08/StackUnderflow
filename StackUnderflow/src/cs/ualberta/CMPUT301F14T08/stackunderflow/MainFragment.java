@@ -1,15 +1,12 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
-//import com.survivingwithandroid.actionbartabnavigation.R;
+import java.util.ArrayList;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,56 +15,46 @@ import android.widget.AdapterView.OnItemClickListener;
 
 
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainFragment extends Fragment {
-	/*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.test_fragment_1, container, false);
-        return rootView;
-    }
-    */
 	
+	private static final String SORT_DATE = "DATE";
+
+	private static final String SORT_SCORE = "SCORE";
+
 	private int index;
 	
-	private PostController sPostController;
-	private PostAdapter adapter;
-	
+	protected PostController sPostController;
+	protected PostAdapter adapter;
+	private ArrayList<Post> actualList;
+	private ArrayList<Post> questionList;
+	private ListView listview;
+	private String lastSort;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
-		//setHasOptionsMenu(true);
 		Bundle data = getArguments();
 		index = data.getInt("idx");
 	}
 	
-	/*
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	    // TODO Add your menu entries here
-	    super.onCreateOptionsMenu(menu, inflater);
-	}
-	*/
 	
 	@Override
 	public void onResume(){
 		super.onResume();
+		createView(lastSort);
 		adapter.notifyDataSetChanged();
 	}
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		
 		View view = inflater.inflate(R.layout.list_fragment, null);
-		ListView listview = (ListView) view.findViewById(R.id.list_view);
-		
+		listview = (ListView) view.findViewById(R.id.list_view);
+
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			
+			// Opens Question or Answer Fragment based upon list item clicked 
 			@Override
 			public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 				// TODO: Update
@@ -88,29 +75,20 @@ public class MainFragment extends Fragment {
 						
 			}
 			
-		});
+		});		
 		
-		
-		
-		//sPostController = PostController.getInstance(getActivity());
+		// Implements tab-switching between sorted list views for "Newest" and "Popular" Main Activity tabs
 		switch(index){
 		case 0:
-			sPostController = PostController.getInstance(getActivity());
-			sPostController.getPostManager().sortByDate();
-			
-			adapter = new PostAdapter(getActivity(), sPostController);
-			listview.setAdapter(adapter);
-			adapter.notifyDataSetChanged();
-			
+			createView(SORT_DATE);
+			lastSort = SORT_DATE;
 			break;
+			
 		case 1:
-			sPostController = PostController.getInstance(getActivity());
-			sPostController.getPostManager().sortByScore();
-			
-			adapter = new PostAdapter(getActivity(), sPostController);
-			listview.setAdapter(adapter);
-			adapter.notifyDataSetChanged();
+			createView(SORT_SCORE);
+			lastSort = SORT_SCORE;
 			break;
+			
 		default:
 			break;
 		
@@ -118,6 +96,26 @@ public class MainFragment extends Fragment {
 		
 		return view;
 	}
-	    
+	
+	public void createView(String sort) {
+		sPostController = PostController.getInstance(getActivity());
+		if (sort.equals(SORT_DATE))
+			sPostController.getPostManager().sortByDate();
+		else if (sort.equals(SORT_SCORE)) 
+			sPostController.getPostManager().sortByScore();
+		
+		actualList = sPostController.getPostManager().getPosts();
+		questionList = new ArrayList<Post>();
+		
+		for (int i = 0; i < actualList.size(); i++) {
+		    Post p = actualList.get(i);
+		    if (p instanceof Question)
+		        questionList.add(p);
+		}
+		
+		adapter = new PostAdapter(getActivity(), questionList);
+		listview.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
+	}
 
 }

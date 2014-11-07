@@ -76,8 +76,8 @@ public class Post {
 	public void decrementVotes(){
 		if(mVotes > 0) mVotes -= 1;
 	}
-	
-   public int setVotes(int votes) {
+
+public int setVotes(int votes) {
         return mVotes = votes;
     }
 	    

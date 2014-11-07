@@ -27,16 +27,11 @@ import android.content.Intent;
 
 public class MainActivity extends Activity implements TabListener {
 	
-	/*
-    @Override
-	protected Fragment newFragmentType() {
-		//return new MainFragment();
-		return new TestFragment();
-	}
-	*/
+	private List<Fragment> fragmentList = new ArrayList<Fragment>();
+	protected MainFragment tf = null;
+	static final int PICK_QUESTION = 0;
+	static final int PICK_ANSWER = 1;
 	
-	List<Fragment> fragmentList = new ArrayList<Fragment>();
-	int temp;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
@@ -56,65 +51,45 @@ public class MainActivity extends Activity implements TabListener {
 	      
 	}
 	
+	@Override
+	public void onResume(){
+		super.onResume();
+	}
+	
 	//Options Menu
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {//, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-
 		getMenuInflater().inflate(R.menu.fragment_main_menu, menu);
 		return true;
 	}
 	
-	
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-
-		/*
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		*/
 		
 	    switch (item.getItemId()) {
-			case R.id.ask_question:			
+			case R.id.ask_question:	
 
-				Intent intent = new Intent(this, NewQuestionActivity.class);
-				startActivity(intent);
+				Intent intent = new Intent(this, NewQuestionActivity.class);				
+				startActivityForResult(intent, PICK_QUESTION);
+
 			    return true;
-			default:
-				
+			    
+			default:				
 				CharSequence text = "Implement menu item";
 				int duration = Toast.LENGTH_SHORT;
 				Toast toast = Toast.makeText(this, text, duration);
-				toast.show();
-				
-				//return onOptionsItemSelected(item);
-				
+				toast.show();			
 				return false;
 	    } 
-	
-
 	}	
-	
-	/*
-	@Override
-	public void onResume(){
-		//super.onResume();
-		adapter.notifyDataSetChanged();
-	}
-	*/
 	
 	
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	
 		Fragment f = null;
-		MainFragment tf = null;
+		//MainFragment tf = null;		
 		
 		if (fragmentList.size() > tab.getPosition())
 				fragmentList.get(tab.getPosition());
@@ -125,18 +100,14 @@ public class MainActivity extends Activity implements TabListener {
 			data.putInt("idx",  tab.getPosition());
 			tf.setArguments(data);
 			fragmentList.add(tf);
-		}
-		else
+		} else {
 			tf = (MainFragment) f;
-		
-		fragmentTransaction.replace(android.R.id.content, tf);
-		
+		}
+		fragmentTransaction.replace(android.R.id.content, tf);		
 		}
 
 		@Override
 		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-	        //if(mFragment!=null)
-	            //fragmentTransaction.detach(mFragment);
 			if (fragmentList.size() > tab.getPosition()) {
 				fragmentTransaction.remove(fragmentList.get(tab.getPosition()));
 			}
@@ -146,9 +117,22 @@ public class MainActivity extends Activity implements TabListener {
 		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 			//No implementation required at present
 		}
+
 		
+		protected void onActivityResult(int requestCode, int resultCode,
+	             Intent data) {
+	         if (requestCode == PICK_QUESTION) {
+	             if (resultCode == RESULT_OK) {
+	            	 String title = data.getStringExtra("question.title");
+	            	 String body = data.getStringExtra("question.body");
+	            	 String author = data.getStringExtra("question.author");
+	            	 Question q = new Question(body, author, title);
+	                 tf.sPostController.getPostManager().addQuestion(q);
+	                 //tf.adapter.notifyDataSetChanged();
+	             }
+	         }
+	     }
+
 
 	
-    /** Called when the activity is first created. */
-
 }

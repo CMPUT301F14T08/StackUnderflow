@@ -18,6 +18,8 @@ import android.widget.Toast;
 import android.util.Log;
 
 public class QuestionFragment extends PostFragment {
+	
+	
 	private Question mQuestion;
 
 	@Override
@@ -44,6 +46,11 @@ public class QuestionFragment extends PostFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 			case R.id.menu_item_new_answer:
+				
+				Intent i = new Intent(getActivity(), NewAnswerActivity.class);
+				i.putExtra(PostFragment.EXTRA_POST_ID, mQuestion.getID()); 
+				startActivity(i);
+				
 //				if(sPostController.getPostManager().getUserProfileManager().getUserProfile().getUsername.equals(null)){
 //	        		FragmentManager fm = getActivity().getFragmentManager();
 //					UsernameFragment dialog = new UsernameFragment();

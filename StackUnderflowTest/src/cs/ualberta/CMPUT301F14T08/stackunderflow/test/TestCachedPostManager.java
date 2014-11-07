@@ -3,9 +3,6 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.test;
 import java.io.IOException;
 import java.lang.reflect.*;
 import java.util.ArrayList;
-
-import org.junit.Test;
-
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
@@ -63,34 +60,32 @@ public class TestCachedPostManager extends ActivityInstrumentationTestCase2<Main
         posts.add(a4);
     }
     
-    @Test
     public void testPosts() throws IOException {
         ArrayList<Post> comparisonPosts = new ArrayList<Post>();
         CachedPostManager manager = CachedPostManager.getInstance(getActivity());
         
         assertNotNull(manager);
-        ArrayList<Post> posts = manager.getPosts();
+        ArrayList<Post> posts = manager.getQuestions();
         posts.clear();
         
-        assertEquals(manager.getPosts(), comparisonPosts);
+        assertEquals(manager.getQuestions(), comparisonPosts);
         
         loadTestQuestions(posts);
         loadTestQuestions(comparisonPosts);
-        assertEquals(manager.getPosts().size(), 7);
+        assertEquals(manager.getQuestions().size(), 7);
 
         manager.save();
         manager.loadFromFile();
         
-        assertEquals(manager.getPosts().size(), 7);
-        assertEquals("", manager.getPosts().toString());
+        assertEquals(manager.getQuestions().size(), 7);
         
         posts.clear();
-        assertEquals(manager.getPosts().size(), 0);
+        assertEquals(manager.getQuestions().size(), 0);
         	
 		manager.addQuestion(new Question("Topic","Author", "Picture"));
-		assertEquals(manager.getPosts().size(),1);
-		assertEquals(manager.getPosts().get(0).getText(),"Topic");
-		assertEquals(manager.getPosts().get(0).getSignature(),"Author");
+		assertEquals(manager.getQuestions().size(),1);
+		assertEquals(manager.getQuestions().get(0).getText(),"Topic");
+		assertEquals(manager.getQuestions().get(0).getSignature(),"Author");
         
         
         }

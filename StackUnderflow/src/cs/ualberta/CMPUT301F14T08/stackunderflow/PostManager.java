@@ -18,8 +18,8 @@ public abstract class PostManager {
 	
 	protected PostManager(Context context){
 		mContext = context;
+		mQuestions = new ArrayList<Post>();
 	}
-	
 
 	// Strips 'selected' from post objects.
 	protected void clearSelected() {
@@ -88,6 +88,16 @@ public abstract class PostManager {
 		return mQuestions;
 	}
 	
+	public ArrayList<Post> getUnFilteredPosts(){
+		ArrayList<Post> list = new ArrayList<Post>();
+		for (int i = 0; i < mQuestions.size(); i++){
+			Post p = mQuestions.get(i);
+			if (!p.getIsFiltered())
+				list.add(p);
+		}
+		return list;
+	}
+	
 	// adds a question to our list of posts
 	public void addQuestion(Question newQuestion){
 		mQuestions.add(newQuestion);
@@ -95,7 +105,7 @@ public abstract class PostManager {
 	
 	// adds an answer to our list of posts
 	public void addAnswer(Question parent, Answer newAnswer){
-		parent.addAnswer(newAnswer);
+		((Question)mQuestions.get(mQuestions.indexOf(parent))).addAnswer(newAnswer);
 	}
 	
 	//TODO: Implement in Project Part 4
@@ -130,7 +140,9 @@ public abstract class PostManager {
 	public void sortByDate(){
 		Collections.sort(mQuestions, new Comparator<Post>() {
 			  public int compare(Post lhs, Post rhs) {
-			      return (Integer.valueOf(rhs.getTimeStamp()).compareTo(Integer.valueOf(lhs.getTimeStamp())));
+			      //Doesn't sort properly
+				  //return (Integer.valueOf(rhs.getTimeStamp()).compareTo(Integer.valueOf(lhs.getTimeStamp())));
+				  return rhs.getDate().compareTo(lhs.getDate());
 			  }
 		});
 	}

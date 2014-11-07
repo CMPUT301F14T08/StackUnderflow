@@ -1,4 +1,4 @@
-package cs.ualberta.CMPUT301F14T08.stackunderflow.test;
+/*package cs.ualberta.CMPUT301F14T08.stackunderflow.test.Controllers;
 
 import java.io.IOException;
 
@@ -96,4 +96,4 @@ public class TestOnlinePostManager extends ActivityInstrumentationTestCase2<Main
 		assertEquals(q1, q1);
 		
 	}
-}
+}*/

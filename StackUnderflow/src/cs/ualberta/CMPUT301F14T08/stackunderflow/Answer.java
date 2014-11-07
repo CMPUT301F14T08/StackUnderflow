@@ -4,7 +4,10 @@
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+
 import java.util.UUID;
+import java.util.Date;
+
 
 
 public class Answer extends Post {
@@ -17,6 +20,12 @@ public class Answer extends Post {
 	
 	public Answer(String text, String signature, String photo) {
 		super(text, signature, photo);
+		mParentID = null;
+	}
+	
+	//Constructor for testing, to be able to properly test SortByDate()
+	public Answer(String text, String signature, String photo, Date date) {
+		super(text, signature, photo, date);
 		mParentID = null;
 	}
 	

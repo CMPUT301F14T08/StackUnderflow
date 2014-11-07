@@ -1,15 +1,17 @@
-package cs.ualberta.CMPUT301F14T08.stackunderflow.test;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.test.Model;
 
 import android.test.ActivityInstrumentationTestCase2;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.Reply;
 
 public class TestPost extends ActivityInstrumentationTestCase2<MainActivity> {
 	
 	public TestPost(){
 		super(MainActivity.class);
 	}
-	
 	
 	/**
 	 * Tests upvoting a Post 
@@ -51,39 +53,15 @@ public class TestPost extends ActivityInstrumentationTestCase2<MainActivity> {
 		assertTrue(p1.getPicture().equals(image));
 	}
 	
-	
-	/**
-	 *  Test Post access methods (getters and setters)
-	 */
-	
-// Do we need this? - Ben
-	
-//	public void testAccessors(){
-//		Post p1 = new Post("title", "author");
-//
-//		//assign arbitrary Post attributes	
-//		UUID id = UUID.randomUUID();
-//		String text = "sample question 1";
-//		String author = "author 1";
-//		int upvotes = 0;
-//		Date date = new Date();
-//		String image = "placeholder"; //TODO team to determine image format
-//		ArrayList<Reply> replies = new ArrayList<Reply>();
-//
-//		p1.setID(id);
-//		p1.setText(text);
-//		p1.setAuthor(author);
-//		p1.setVotes(upvotes);
-//		p1.setDate(date); 
-//		p1.setPicture(image);
-//
-//		assertTrue(p1.getID().equals(id));
-//		assertTrue(p1.getText().equals(text));		
-//		assertTrue(p1.getAuthor().equals(author));
-//		assertTrue(p1.getVotes() == upvotes);
-//		assertTrue(p1.getPicture().equals(image));
-//		assertTrue(p1.getDate().equals(date));
-//
-//	}
+	public void testReplies() {
+		Reply r1 = new Reply("test", "author");
+		Question q1 = new Question("test", "author", "test");
+		Answer a1 = new Answer("test", "test");
+		
+		q1.addReply(r1);
+		a1.addReply(r1);
+		
+		assertEquals(q1.getReplies(), a1.getReplies());
+	}
 	
 }

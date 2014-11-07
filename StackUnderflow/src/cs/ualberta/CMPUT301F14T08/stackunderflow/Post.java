@@ -136,4 +136,20 @@ public int setVotes(int votes) {
         this.mExistsOnline = existsOnline;
     }
 	
+
+	
+	//Constructor used to properly test SortByDate()
+	public Post(String text, String signature, String picture, Date date){
+		mID = UUID.randomUUID(); //TODO do we want random UUID or another method?
+		mText = text;
+		mVotes = 0;
+		mPicture = picture;
+		mSignature = signature;
+		mDate = date;
+		mReplies = new ArrayList<Reply>();
+		mIsSelected = false;
+		mIsFiltered = false;
+		mUserAttributes = new UserAttributes();
+	}
+
 }

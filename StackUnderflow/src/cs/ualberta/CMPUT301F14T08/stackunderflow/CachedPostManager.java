@@ -45,15 +45,10 @@ public class CachedPostManager extends PostManager{
 				"MY FIRST QUESTION GUIS!!!11");
 		
 		Answer a1 = new Answer("LOL I AM ANSWERING MY OWN QUESTION!", "gregthegreg");
-		a1.addReply(new Reply("Here's another reply", "gregthegreg"));
 		Answer a2 = new Answer("Please just stop posting.", "djhindle");
 		
 		q1.addAnswer(a1);
 		q1.addAnswer(a2);
-		
-		for(int i = 0; i < 10; i++){
-			q1.addReply(new Reply("Need to fix formatting for replies", "Ben"));
-		}
 		
 		Question q2 = new Question(
 				"What is the difference between a UML class diagram,"

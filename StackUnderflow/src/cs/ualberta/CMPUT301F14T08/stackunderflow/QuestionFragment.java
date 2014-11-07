@@ -1,9 +1,8 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
-
-
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,11 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
-
 
 public class QuestionFragment extends PostFragment {
 	
@@ -70,29 +67,7 @@ public class QuestionFragment extends PostFragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
-		View v = super.onCreateView(inflater, parent, savedInstanceState);
-		
-		v.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
-			public void onSwipeLeft() {
-		        if(mQuestion.getAnswers().size() > 0){
-				Intent i = new Intent(getActivity(), AnswerActivity.class);
-				i.putExtra(PostFragment.EXTRA_POST_ID, mQuestion.getAnswers().get(0).getID());
-				startActivity(i);
-		        }
-		    }
-		});
-		
-		mListView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
-			public void onSwipeLeft() {
-		        if(mQuestion.getAnswers().size() > 0){
-				Intent i = new Intent(getActivity(), AnswerActivity.class);
-				i.putExtra(PostFragment.EXTRA_POST_ID, mQuestion.getAnswers().get(0).getID());
-				startActivity(i);
-		        }
-		    }
-			
-    });
-		
+		View v = inflater.inflate(R.layout.post_fragment, parent, false);
 		mQuestionTitle = (TextView)v.findViewById(R.id.post_fragment_textview_title);
 		mQuestionTitle.setText(mQuestion.getTitle());
 		mQuestionTitle.setTextColor(mWhiteColor);
@@ -135,14 +110,42 @@ public class QuestionFragment extends PostFragment {
 				mQuestion.getUserAttributes().toggleIsFavorited();
 				mFavoriteButton.setImageResource(mQuestion.getUserAttributes().getIsFavorited() ? R.drawable.star_full : R.drawable.star_empty);
 			}
-
 		});
 		
-		mQuestionTitle.setText(mQuestion.getTitle());
+		mFavoriteTextView = (TextView)v.findViewById(R.id.post_fragment_textview_favorite);
+		mFavoriteTextView.setTextColor(mWhiteColor);
+		
+		mPictureButton = (ImageButton)v.findViewById(R.id.post_fragment_button_photo);
+		if(mQuestion.hasPicture()){
+			mPictureButton.setImageResource(R.drawable.picture_white);
+			mPictureButton.setEnabled(true);
+			mPictureButton.setVisibility(View.VISIBLE);
+			mPictureButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// Show the picture
+					String toastString = "Someone needs to implement code to show the picture";
+	                Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_LONG);
+	                toast.show();    
+				}
+			});
+		}
+		else{
+			mPictureButton.setImageResource(R.drawable.picture_dark);
+			mPictureButton.setEnabled(false);
+			mPictureButton.setVisibility(View.GONE);
+		}
+		
+		
+		mUsername = (TextView)v.findViewById(R.id.post_fragment_textview_username);
+		mUsername.setText(mQuestion.getSignature());
+		mUsername.setTextColor(mWhiteColor);
+		
 		
 		mAnswersButton = (ImageButton)v.findViewById(R.id.post_fragment_button_answers);
-		
-		if(mQuestion.getAnswers().size() > 0){	
+		if(mQuestion.getAnswers().size() > 0){
+			
 			mAnswersButton.setEnabled(true);
 			mAnswersButton.setVisibility(View.VISIBLE);
 			mAnswersButton.setImageResource(R.drawable.box_arrow_right_large);
@@ -159,6 +162,8 @@ public class QuestionFragment extends PostFragment {
 			mAnswersButton.setVisibility(View.GONE);
 		}
 		
+		mAnswersTextView = (TextView)v.findViewById(R.id.post_fragment_textview_answers);
+		mAnswersTextView.setTextColor(mBlackColor);
 		switch(mQuestion.countAnswers()){
 		case 1:
 			mAnswersTextView.setText("1 Answer");
@@ -167,10 +172,6 @@ public class QuestionFragment extends PostFragment {
 			mAnswersTextView.setText(mQuestion.countAnswers() + " Answers");
 			break;
 		}
-		
-		mBackButton = (ImageButton)v.findViewById(R.id.post_fragment_button_back);
-		mBackButton.setEnabled(false);
-		mBackButton.setVisibility(View.GONE);
 		
 		return v;		
 	}

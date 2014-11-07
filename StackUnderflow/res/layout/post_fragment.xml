@@ -11,10 +11,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="@color/black"
-        android:orientation="vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp" >
+        android:orientation="vertical" 
+        android:background="@color/black">
 
         <TextView
             android:id="@+id/post_fragment_textview_title"
@@ -22,7 +20,6 @@
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
             android:text="TextView"
-            android:textColor="@color/white"
             android:textStyle="bold" />
 
         <TextView
@@ -30,8 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
-            android:text="TextView"
-            android:textColor="@color/white" />
+            android:text="TextView" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,9 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/black"
-                    android:paddingBottom="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="5dp"
+                    android:padding="5dp"
                     android:src="@drawable/upvote_empty" />
 
                 <TextView
@@ -98,9 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="5dp"
+                    android:padding="5dp"
                     android:text="@string/username" />
 
             </LinearLayout>
@@ -129,46 +121,26 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="right" >
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/post_fragment_textview_answers"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="5dp"
+                android:padding="10dp"
+                android:text="@string/answer_count"
+                android:textStyle="bold" />
 
-                <ImageButton
-                    android:id="@+id/post_fragment_button_back"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/box_arrow_left_large" />
-                
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" 
-                android:gravity="right"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/post_fragment_textview_answers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:padding="10dp"
-                    android:text="@string/answer_count"
-                    android:textStyle="bold" />
-
-                <ImageButton
-                    android:id="@+id/post_fragment_button_answers"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/box_arrow_right_large" />
-
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/post_fragment_button_answers"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/box_arrow_right_large" />
 
         </LinearLayout>
 

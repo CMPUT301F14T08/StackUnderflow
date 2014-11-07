@@ -26,16 +26,17 @@
         </activity>
         <activity
             android:name=".QuestionActivity"
-            android:label="@string/question_title" >
+            android:label="@string/question_title" 
+            android:theme="@style/BlackTheme">
         </activity>
         <activity
             android:name=".AnswerActivity"
-            android:label="@string/answer_title" >
+            android:label="@string/answer_title" 
+            android:theme="@style/BlueTheme">
         </activity>
         <activity 
             android:name=".NewQuestionActivity"
             android:label="@string/new_question_title">
-            
         </activity>
         
         <activity 
@@ -43,6 +44,7 @@
             android:label="@string/new_question_title">
             
         </activity>
+        
     </application>
 
 </manifest>

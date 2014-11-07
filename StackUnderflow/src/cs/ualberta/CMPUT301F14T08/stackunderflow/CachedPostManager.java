@@ -178,8 +178,8 @@ public class CachedPostManager extends PostManager{
     // For now this will just increment votes
 	@Override
     public void toggleUpvote(Post post) {
-        post.incrementVotes();
-        post.setUpvotesChangedOffline(1);
+        mPosts.get(mPosts.indexOf(post)).incrementVotes();
+        mPosts.get(mPosts.indexOf(post)).setUpvotesChangedOffline(1);
         save();
     }
 	

@@ -1,12 +1,10 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.test.Controllers;
 
 import java.io.IOException;
-import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-
 import android.test.ActivityInstrumentationTestCase2;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.CachedPostManager;
@@ -20,32 +18,68 @@ public class TestCachedPostManager extends ActivityInstrumentationTestCase2<Main
         super(MainActivity.class);
     }
     
-    public void testPosts() throws IOException {
+    public void testPosts() {
         ArrayList<Post> comparisonPosts = new ArrayList<Post>();
         PostController.getInstance(getActivity()).getPostManager().ClearManager();
         CachedPostManager manager = CachedPostManager.getInstance(getActivity());
         
         assertNotNull(manager);
-        //assertEquals(manager.getPosts(), comparisonPosts);
+        assertEquals(manager.getPosts(), comparisonPosts);
         
-        comparisonPosts = loadTestQuestions(manager);
+        comparisonPosts = createNewPosts(manager);
 
-        assertEquals(comparisonPosts.size(), manager.getPosts().size());
-
-        //saving/loading breaks below tests, review implementation
-        //manager.save();
-        //manager.loadFromFile();
-        
+        assertEquals(comparisonPosts.size(), manager.getPosts().size());     
         assertEquals(comparisonPosts, manager.getPosts());
         
         manager.sortByDate();
-        
         Collections.reverse(comparisonPosts);
         
         assertEquals(comparisonPosts, manager.getPosts());
     }
     
-	private ArrayList<Post> loadTestQuestions(CachedPostManager manager) {
+    public void testLoadFromFile() {
+    	ArrayList<Post> comparisonPosts = new ArrayList<Post>();
+    	ArrayList<Post> loadedPosts = new ArrayList<Post>();
+        PostController.getInstance(getActivity()).getPostManager().ClearManager();
+        CachedPostManager manager = CachedPostManager.getInstance(getActivity());
+        
+        assertNotNull(manager);
+        assertEquals(manager.getPosts(), comparisonPosts);
+        
+        Question q = new Question("a", "a", "a");
+        comparisonPosts.add(q);
+        manager.addQuestion(q);
+        
+        try {
+        	loadedPosts = manager.loadFromFile();
+        } catch (IOException e) {
+        	fail("Could not load");
+        }
+        assertEquals(comparisonPosts.size(), loadedPosts.size()); 
+        assertEquals(comparisonPosts.get(0).getText(), loadedPosts.get(0).getText());
+        
+        PostController.getInstance(getActivity()).getPostManager().ClearManager();
+        comparisonPosts.clear();
+        
+        Answer a = new Answer("a", "a", "a");
+        q.addAnswer(a);
+        comparisonPosts.add(q);
+        comparisonPosts.add(a);
+        manager.addQuestion(q);
+        manager.addAnswer(q, a);
+        
+        try {
+        	loadedPosts = manager.loadFromFile();
+        } catch (IOException e) {
+        	fail("Could not load");
+        }
+        
+        //Fails, issue with loading more than what we should be.
+        //Error is either from loading or from saving.
+        assertEquals(comparisonPosts.size(), loadedPosts.size());
+    }
+    
+	private ArrayList<Post> createNewPosts(CachedPostManager manager) {
     	Calendar calendar = Calendar.getInstance();
 		Date createDate = new Date();
     	

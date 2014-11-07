@@ -12,6 +12,7 @@ public class TestPostController extends ActivityInstrumentationTestCase2<MainAct
 	}
 	
 	public void testGetPostManager() {
+		//Uncomment once online post manager is added/working.
 		/*CachedPostManager manInit = CachedPostManager.getInstance(getActivity());
 		OnlinePostManager manTest = OnlinePostManager.getInstance(getActivity());
 		

@@ -6,7 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <string name="username"> </string>
+    <string name="username"></string>
     <string name="upvote_count"> </string>
     <string name="answer_count">Answers</string>
     <string name="favorite">favorite</string>
@@ -31,6 +31,7 @@
     <string name="answer_text">Answers</string>
     <string name="zero_answers">0</string>
     <string name="default_text">Default</string>
-
+	<string name="dialogDescText">You need to choose a username! This is the name that users will see when you post a Question, Answer, or Reply.</string>
+	<string name="usernameDialog">Username:</string>
 
 </resources>

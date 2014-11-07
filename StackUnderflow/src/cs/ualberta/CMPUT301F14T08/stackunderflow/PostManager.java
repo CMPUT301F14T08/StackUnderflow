@@ -70,7 +70,7 @@ public abstract class PostManager {
 			ArrayList<Answer> answers = item.getAnswers();
 			posts.add(item);
 			
-			for (int j=0; j<answers.size(); ++j) {
+			for (int j=0; j<answers.size(); j++) {
 				posts.add(answers.get(j));
 			}
 		}
@@ -104,6 +104,16 @@ public abstract class PostManager {
 
 	public ArrayList<Post> getPosts(){
 		return mPosts;
+	}
+	
+	public ArrayList<Post> getUnFilteredPosts(){
+		ArrayList<Post> list = new ArrayList<Post>();
+		for (int i = 0; i < mPosts.size(); i++){
+			Post p = mPosts.get(i);
+			if (!p.getIsFiltered())
+				list.add(p);
+		}
+		return list;
 	}
 	
 	// adds a question to our list of posts

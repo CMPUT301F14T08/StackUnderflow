@@ -13,8 +13,4 @@ public class TestUserAttributes extends ActivityInstrumentationTestCase2<MainAct
 		//fail("Not yet implemented");
 	}
 
-	public void testUserAttributesBoolean() {
-		//fail("Not yet implemented");
-	}
-
 }

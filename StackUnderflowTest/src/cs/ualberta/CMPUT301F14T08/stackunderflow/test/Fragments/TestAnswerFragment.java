@@ -10,7 +10,7 @@ public class TestAnswerFragment extends ActivityInstrumentationTestCase2<MainAct
 	}
 
 	/*
-	 * TODO: UI Tests to come
+	 * Skeleton file. Should be accurately testable in QuestionActivity
 	 */
 	
 

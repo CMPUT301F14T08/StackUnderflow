@@ -11,7 +11,7 @@ public class TestPostFragment extends ActivityInstrumentationTestCase2<MainActiv
 	}
 
 	/*
-	 * TODO: UI Tests to come
+	 * Skeleton file. Should be accurately tested in all other Fragments
 	 */
 	
 }

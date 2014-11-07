@@ -55,34 +55,42 @@ public abstract class PostManager {
         return null;
     }
     
-    // Given a list of Questions returns a list of Posts
-    // Used for loading.
-    protected ArrayList<Post> castToPosts(ArrayList<Question> questions) {
-        ArrayList<Post> posts = new ArrayList<Post>();
-
-        for (int i=0; i<questions.size(); ++i) {
-            
-            Question item = questions.get(i);
-            posts.add(item);
-        }
-        
-        return posts;
-    }
-    
-   /*protected boolean updateIfExists(Post post) {
+   protected boolean updateIfExists(Post post) {
        if (post == null) {
            return false;
        }
        
         for (int i=0; i< mQuestions.size(); i++) {
-            Post item = mQuestions.get(i);
-            if (item.getID() == post.getID()) {
+            Question question = (Question)mQuestions.get(i);
+            
+            
+            if (question.getID().equals(post.getID())) {
                 mQuestions.set(i, post);
                 return true;
             }
+            
+            for (int j=0; j < question.getAnswers().size(); j++) {
+                Answer answer = question.getAnswers().get(j);
+                if (answer.getID().equals(post.getID())) {
+                    question.getAnswers().set(i, (Answer)post);
+                    return true;
+                }
+            }
         }
         return false;
-    }*/
+    }
+   
+   // Given a list of Questions returns a list of Posts
+   // Used for loading.
+   protected ArrayList<Post> castToPosts(ArrayList<Question> questions) {
+       ArrayList<Post> posts = new ArrayList<Post>();
+
+       for (int i=0; i<questions.size(); ++i) {
+           posts.add((Post)questions.get(i));
+       }
+       
+       return posts;
+   }
 
 	public ArrayList<Post> getQuestions(){
 		return mQuestions;
@@ -131,7 +139,7 @@ public abstract class PostManager {
 	public void sortByScore() {
 		Collections.sort(mQuestions, new Comparator<Post>() {
 			  public int compare(Post lhs, Post rhs) {
-			      return (Integer.valueOf(rhs.getVotes()).compareTo(Integer.valueOf(lhs.getVotes())));
+			      return (Long.valueOf(rhs.getVotes()).compareTo(Long.valueOf(lhs.getVotes())));
 			  }
 		});
 	}
@@ -140,8 +148,6 @@ public abstract class PostManager {
 	public void sortByDate(){
 		Collections.sort(mQuestions, new Comparator<Post>() {
 			  public int compare(Post lhs, Post rhs) {
-			      //Doesn't sort properly
-				  //return (Integer.valueOf(rhs.getTimeStamp()).compareTo(Integer.valueOf(lhs.getTimeStamp())));
 				  return rhs.getDate().compareTo(lhs.getDate());
 			  }
 		});

@@ -45,7 +45,7 @@ public class Question extends Post {
 	
    public Answer getAnswer(UUID uuid) {
         for (Answer answer: mAnswers) {
-            if (answer.getID() == uuid)
+            if (answer.getID().equals(uuid))
                 return answer;
         }
         return null;
@@ -72,4 +72,12 @@ public class Question extends Post {
 	public void initializeAnswers(){
 		mAnswers = new ArrayList<Answer>();
 	}
+	
+	@Override
+    public void setExistsOnline(boolean existsOnline) {
+        this.mExistsOnline = existsOnline;
+        for(int i = 0; i < mAnswers.size(); i++){
+            mAnswers.get(i).setExistsOnline(existsOnline);
+        }
+    }
 }

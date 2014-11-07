@@ -21,19 +21,21 @@ public class PostController {
 
 	// Keep this private!
 	private PostController(Context context) {
-		//Checks if the user is connected to the Internet it will use the online post manager other wise it
-		//will use a cached post manger that will later be pushed online when the user enters a network.
+		// Checks if the user is connected to the Internet it will use the online post manager otherwise it
+		// will use a cached post manger that will later be pushed online when the user enters a network.
 		mContext = context;
-		mPostManager = CachedPostManager.getInstance(context);    
-		//if(isOnline()) {
-		//    mPostManager = CachedPostManager.getInstance(context);    
-			//mPostManager = OnlinePostManager.getInstance(context);
-		//	Log.i("Debug", "Using Online Post Manager");
-		//}
-		//else {
-		//	mPostManager = CachedPostManager.getInstance(context);	
-		//	Log.i("Debug", "Using Offline Post Manager");
-		//}
+		//mPostManager = CachedPostManager.getInstance(context);
+		mPostManager = OnlinePostManager.getInstance(context);
+		/*
+		if(isOnline()) {
+			mPostManager = OnlinePostManager.getInstance(context);
+			Log.i("Debug", "Using Online Post Manager");
+		}
+		
+		else {
+		    mPostManager = CachedPostManager.getInstance(context);	
+		    Log.i("Debug", "Using Offline Post Manager");
+		}*/
 	}
 	
 	// check if we are online
@@ -53,7 +55,25 @@ public class PostController {
 		if (sPostController == null) {
 			sPostController = new PostController(context.getApplicationContext());
 		}
+		
+		// if we're using the online list, refresh it
+		else if (sPostController.usingOnlinePostManager() && sPostController.isOnline()) {
+		    // if for some reason we've failed to push any updates online while using
+		    // the online post manager, than push them before refreshing
+		    if (((OnlinePostManager)sPostController.mPostManager).hasAddedOffline()) {
+		        ((OnlinePostManager)sPostController.mPostManager).pushOfflineUpdates();
+		        ((OnlinePostManager)sPostController.mPostManager).setAddedOffline(false);
+		    }
+		    ((OnlinePostManager)sPostController.mPostManager).refreshAll();
+		}
+		
+		// if using cached list and we go online than switch to the online post manager
+		else if (!sPostController.usingOnlinePostManager() && sPostController.isOnline()) {
+		    sPostController.mPostManager = OnlinePostManager.getInstance(context);
+		}
+		
 		return sPostController;
+		
 	}
 
 	public PostManager getPostManager() {
@@ -67,6 +87,21 @@ public class PostController {
 			return false;
 		return true;
 	}
+	
+	/*
+    public void getRefreshedList() {
+        if(isOnline())
+        loadFromServer();
+    }
+    
+    // Get Post with specific ES ID
+    public void refreshQuestion(Question question) {
+        Question onlineQuestion = getESQuestion(question);
+        updateIfExists(onlineQuestion);
+        boolean updated = mCachedPostManager.updateIfExists(onlineQuestion);
+        if (updated)
+            mCachedPostManager.save();
+    }*/
 	
 	
 }

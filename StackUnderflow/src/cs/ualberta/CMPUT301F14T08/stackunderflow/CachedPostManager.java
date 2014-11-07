@@ -45,7 +45,9 @@ public class CachedPostManager extends PostManager{
 				"MY FIRST QUESTION GUIS!!!11");
 		
 		Answer a1 = new Answer("LOL I AM ANSWERING MY OWN QUESTION!", "gregthegreg");
+		a1.setExistsOnline(true);
 		Answer a2 = new Answer("Please just stop posting.", "djhindle");
+		a2.setExistsOnline(true);
 		
 		q1.addAnswer(a1);
 		q1.addAnswer(a2);
@@ -73,7 +75,9 @@ public class CachedPostManager extends PostManager{
 		
 		
 		Answer a3 = new Answer("Don't call me DJ Hindle :/", "djhindle");
+		a3.setExistsOnline(true);
 		Answer a4 = new Answer("Attached is a picture of how much I don't want you to call me DJ Hindle", "djhindle", "hindlepic.jpg");
+		a4.setExistsOnline(true);
 		
 		q3.addAnswer(a3);
 		q3.addAnswer(a4);
@@ -171,8 +175,14 @@ public class CachedPostManager extends PostManager{
     // For now this will just increment votes
 	@Override
     public void toggleUpvote(Post post) {
-        mQuestions.get(mQuestions.indexOf(post)).incrementVotes();
-        mQuestions.get(mQuestions.indexOf(post)).setUpvotesChangedOffline(1);
+        post.getUserAttributes().toggleIsUpvoted();
+        int incrementVotes = 1;
+        
+        if (!post.getUserAttributes().getIsUpvoted()) {
+            incrementVotes = -1;
+        }
+        
+        post.setUpvotesChangedOffline(incrementVotes);
         save();
     }
 	

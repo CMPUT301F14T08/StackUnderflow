@@ -12,7 +12,7 @@ public class Reply {
 	private UUID mUUID;
 	private String mText;
 	private Date mDate;
-    private int mTimeStamp;
+    private long mTimeStamp;
 	private	String mSignature;
 	private boolean mExistsOnline; // flag stating whether the reply exists online yet
 	
@@ -22,7 +22,7 @@ public class Reply {
 		mUUID = UUID.randomUUID();
 		mDate = new Date();
 		mExistsOnline = false;
-	    mTimeStamp = (int)System.currentTimeMillis();
+	    mTimeStamp = System.currentTimeMillis();
 	}
 
 	public UUID getUUID(){
@@ -43,6 +43,10 @@ public class Reply {
 
     public boolean getExistsOnline() {
         return mExistsOnline;
+    }
+    
+    public long getTimeStamp() {
+        return mTimeStamp;
     }
 
     public void setExistsOnline(boolean isPushedToLive) {

@@ -1,4 +1,4 @@
-/*package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,6 +30,7 @@ public class OnlinePostManager extends PostManager {
     private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301f14t08/question/_search";
     private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301f14t08/question/";
     private static final String TAG = "ELASTICSEARCH";
+    private boolean addedOffline;
     private CachedPostManager mCachedPostManager;
     private Gson gson;
     
@@ -37,15 +38,16 @@ public class OnlinePostManager extends PostManager {
         super(context);
         gson = new Gson();
         mCachedPostManager = CachedPostManager.getInstance(context);
+        this.setAddedOffline(false);
     }
-    
     
     // 1. Gets questions from online
     // 2. Updates cache
-    // TODO: Call strip/populate user attributes
-    private ArrayList<Post> loadFromServer() {
+    // TODO Part 3: Call strip/populate user attributes
+    private String loadFromServer() {
         ArrayList<Question> questions = new ArrayList<Question>();
         HttpClient httpClient = new DefaultHttpClient();
+        String status = null;
         
         try {
             HttpPost request = new HttpPost(SEARCH_URL);
@@ -55,8 +57,8 @@ public class OnlinePostManager extends PostManager {
             request.setEntity(new StringEntity(command.getJsonCommand()));
             HttpResponse response = httpClient.execute(request);
             
-            String status = response.getStatusLine().toString();
-            Log.i(TAG, status);
+            status = response.getStatusLine().toString();
+            Log.d("Debug", status);
             
             SearchResponse<Question> parsedResponse = parseSearchResponse(response);
             SearchHits<Question> searchHits = parsedResponse.getHits();
@@ -68,13 +70,22 @@ public class OnlinePostManager extends PostManager {
             }
             
         } catch (Exception e) {
-            e.printStackTrace();
+            status = "Exception " + e.getClass() + ": " + e.getMessage();
+            Log.d("Debug", status);
         }
         
-        ArrayList<Post> posts = castToPosts(questions);
+        this.mQuestions = castToPosts(questions);
         updateCache();
-        return posts;
+        return status;
     }
+    
+    private void updateCache() {
+        for (Post post : getQuestions()) {
+            mCachedPostManager.updateIfExists(post);
+        }
+        mCachedPostManager.save();
+    }
+    
     
     //TODO: implement when adding user attributes
     private void stripUserAttributes() {
@@ -90,55 +101,156 @@ public class OnlinePostManager extends PostManager {
     private void saveReadLaterToCachePostManager() {
         return;
     }
-    
+
     //TODO: implement when adding user attributes
     private void saveReadToCachePostManager() {
         return;
     }
     
-    private void updateCache() {
-        for (Post post : getPosts()) {
-            mCachedPostManager.updateIfExists(post);
-        }
-        mCachedPostManager.save();
-    }
-    
-    public void refreshAll() {
-        try {
-            mPosts = loadFromServer();
-        } catch (Exception e) {
-            mPosts = new ArrayList<Post>();
-        }
-    }
+    /** Elastic Search Methods **/
     
     // Get Post with specific ES ID
-    public void refreshQuestion(Question question) {
-        updateIfExists(getOnlineQuestion(question));
-        boolean updated = mCachedPostManager.updateIfExists(getOnlineQuestion(question));
-        if (updated)
-            mCachedPostManager.save();
-    }
-    
-    // Get Post with specific ES ID
-    public Question getOnlineQuestion(Question question) {
-
+    // -- returns null if no such question exists
+    private Question getESQuestion(Question question) {
         Question onlineQuestion = null;
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(RESOURCE_URL + question.getID());
-
-        HttpResponse response;
+        String status = null;
 
         try {
-            response = httpClient.execute(httpGet);
+            HttpResponse response = httpClient.execute(httpGet);
             Hit<Question> hit = parseGetResponse(response);
-            onlineQuestion = hit.getSource();
+            status = response.getStatusLine().toString();
+            Log.i(TAG, status);
+            
+            if (hit == null) {
+                return null;
+            }
+            
+            question = hit.getSource();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            status = "Exception: " + e.getMessage();
+            Log.i(TAG, status);
         }
-        return onlineQuestion;
+        
+        return question;
     }
     
+    // Inserts an question into the ES server
+    // -- returns a status string
+    private String insertEsQuestion(Question newQuestion) {
+        
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpPost addRequest = new HttpPost(RESOURCE_URL + newQuestion.getID());
+        String status = null;
+        
+        try {
+            StringEntity stringEntity = new StringEntity(gson.toJson(newQuestion));
+            addRequest.setEntity(stringEntity);
+            addRequest.setHeader("Accept", "application/json");
+    
+            HttpResponse response = httpClient.execute(addRequest);
+            status = response.getStatusLine().toString();
+            Log.i(TAG, status);
+
+        } catch (Exception e) {
+            status = "Exception: " + e.getMessage();
+            Log.i(TAG, status);
+        }
+        
+        return status;
+    }
+    
+    // Updates question on ES server
+    // -- returns a status string
+    private String updateESQuestion(Question existingQuestion, String updateString) {
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpPost updateRequest = new HttpPost(RESOURCE_URL + existingQuestion.getID() + "/_update");
+        String status = null;
+        
+        try {
+            StringEntity stringEntity = new StringEntity("{ \"doc\": {" + updateString + "}}");
+            updateRequest.setEntity(stringEntity);
+            updateRequest.setHeader("Accept", "application/json");
+    
+            HttpResponse response = httpClient.execute(updateRequest);
+            status = response.getStatusLine().toString();
+            Log.i(TAG, status);
+
+        } catch (Exception e) {
+            status = "Exception: " + e.getMessage();
+            Log.i(TAG, status);
+        }
+        return status;
+    }
+    
+    // Updates question votes on ES server
+    // -- returns a status string or null if fails
+    private String updateESQuestionVotes(Question existingQuestion, int voteChange) {
+        Question onlineQuestion = getESQuestion(existingQuestion); 
+        
+        if (onlineQuestion == null)
+            return null;
+        
+        onlineQuestion.setVotes(onlineQuestion.getVotes() + voteChange);
+        String updateString = "\"mVotes\":" + Integer.valueOf(onlineQuestion.getVotes()).toString();
+        // set the existing question to the refreshed online question
+        existingQuestion = onlineQuestion;
+        return updateESQuestion(existingQuestion, updateString);
+    }
+    
+    // Adds question answer on ES server
+    // - returns a status string or null if fails
+    private String updateESAnswer(Question updatedQuestion) {
+        String updateString = "\"mAnswers\": " + gson.toJson(updatedQuestion.getAnswers());
+        return updateESQuestion(updatedQuestion, updateString);
+    }
+    
+    // Updates an answers votes on ES server
+    // - returns a status string or null if fails
+    private String updateESAnswerVotes(Question existingQuestion, Answer answer, int voteChange) {
+        Question onlineQuestion = getESQuestion(existingQuestion); 
+        
+        if (onlineQuestion == null)
+            return null;
+
+        Answer onlineAnswer = onlineQuestion.getAnswer(answer.getID());
+        onlineAnswer.setVotes(onlineAnswer.getVotes() + voteChange);
+        
+        // set the existing question to the refreshed online question
+        existingQuestion = onlineQuestion;
+        return updateESAnswer(onlineQuestion);
+    }
+    
+    // Adds an answers to a question on ES server
+    // - returns a status string or null if fails
+    private String addESAnswer(Question existingQuestion, Answer answer) {
+        Question onlineQuestion = getESQuestion(existingQuestion); 
+        
+        if (onlineQuestion == null)
+            return null;
+
+        onlineQuestion.addAnswer(answer);
+        // set the existing question to the refreshed online question
+        existingQuestion = onlineQuestion;
+        return updateESAnswer(onlineQuestion);
+    }
+    
+    // TODO: Part 3 Implement Reply Update Logic
+    private void addESQuestionReply(Question existingQuestion, Reply reply) {
+        return;
+    }
+    
+    // TODO: Part 3 Implement Reply Update Logic
+    private void addESAnswerReply(Question existingQuestion, Reply reply) {
+        return;
+    }
+    
+    /** HTTP Parsing and Conversion **/
+    
+    
+    /** HTTP Parsing Methods **/
     
     private Hit<Question> parseGetResponse(HttpResponse response) {
         
@@ -155,8 +267,6 @@ public class OnlinePostManager extends PostManager {
         
         return null;
     }
-
-    // Parses the response of a search
     private SearchResponse<Question> parseSearchResponse(HttpResponse response) throws IOException {
         String json;
         json = getHttpResponseContent(response);
@@ -179,128 +289,15 @@ public class OnlinePostManager extends PostManager {
 
         return result.toString();
     }
-    
-    // Updates question on ES server
-    private void updateEsQuestion(Question existingQuestion, String updateString) {
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost updateRequest = new HttpPost(RESOURCE_URL + existingQuestion.getID() + "/_update");
-       
-        try {
-            StringEntity stringEntity = new StringEntity(updateString);
-            updateRequest.setEntity(stringEntity);
-            updateRequest.setHeader("Accept", "application/json");
-    
-            HttpResponse response = httpClient.execute(updateRequest);
-            String status = response.getStatusLine().toString();
-            Log.i(TAG, status);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private void updateEsQuestionVotes(Question existingQuestion, int voteChange) {
-        String update = "{ \"script\" : \"ctx._source.mVotes += count\","
-                + "\"params\" : { \"count\" : " + voteChange + "}}";
-        updateEsQuestion(existingQuestion, update);
-    }
-    
-    private void addEsQuestionReply(Question existingQuestion, Reply reply) {
-        String update = "{ \"script\" : \"ctx._source.mReplies += reply\","
-                + "\"params\" : { \"reply\" : "
-                + gson.toJson(reply) + "}}";
-        updateEsQuestion(existingQuestion, update);
-    }
-    
-    private void addEsQuestionAnswer(Question existingQuestion, Answer answer) {
-        String update = "{ \"script\" : \"ctx._source.mAnswers += answer\","
-                + "\"params\" : { \"answer\" : "
-                + gson.toJson(answer) + "}}";
-        updateEsQuestion(existingQuestion, update);
-    }
-    
-    // TODO
-    private void updateEsFullQuestion(Question existingQuestion) {
-        String update = gson.toJson(existingQuestion);
-        updateEsQuestion(existingQuestion, update);
-    }
-    
-    private void insertEsQuestion(Question newQuestion) {
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost addRequest = new HttpPost(RESOURCE_URL + newQuestion.getID());
-        
-        try {
-            StringEntity stringEntity = new StringEntity(gson.toJson(newQuestion));
-            addRequest.setEntity(stringEntity);
-            addRequest.setHeader("Accept", "application/json");
-    
-            HttpResponse response = httpClient.execute(addRequest);
-            String status = response.getStatusLine().toString();
-            Log.i(TAG, status);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private void pushOfflineUpdates() {
-        for (Post post : mCachedPostManager.getPosts()) {
-            if (!isQuestion(post))
-                continue;
-            
-            // if the question is new then all associated
-            // data including questions/replies are new and we
-            // just have to insert the new question
-            Question question = (Question) post;
-            if (!question.getExistsOnline()) {
-                question.setExistsOnline(true);
-                insertEsQuestion(question);
-                continue;
-            }
-            
-            if(question.getUpvotesChangedOffline() != 0) {
-                updateEsQuestionVotes(question, question.getUpvotesChangedOffline());
-                question.setUpvotesChangedOffline(0);
-            }
-
-            for (Reply reply : question.getReplies()) {
-                if (!reply.getExistsOnline()) { 
-                    Question onlineQuestion = getOnlineQuestion(question);
-                    if (onlineQuestion == null)
-                        continue;
-                    onlineQuestion.addReply(reply);
-                    updateEsFullQuestion(onlineQuestion);
-                    reply.setExistsOnline(true);
-                }
-            }
-            
-            for (Answer answer : question.getAnswers()) {
-                if (!answer.getExistsOnline()) { 
-                    Question onlineQuestion = getOnlineQuestion(question);
-                    if (onlineQuestion == null)
-                        continue;
-                    onlineQuestion.addAnswer(answer);
-                    updateEsFullQuestion(onlineQuestion);
-                    answer.setExistsOnline(true);
-                    continue;
-                }
-                if(answer.getUpvotesChangedOffline() != 0) {
-                    Question onlineQuestion = getOnlineQuestion(question);
-                    if (onlineQuestion == null)
-                        continue;
-                    Answer onlineAnswer = onlineQuestion.getAnswer(answer.getID());
-                    if (onlineAnswer == null)
-                        continue;
-                    onlineAnswer.setVotes(answer.getUpvotesChangedOffline());
-                    updateEsFullQuestion(onlineQuestion);
-                    answer.setUpvotesChangedOffline(0);
-                }
-            }
-        }
-    }
+    /** Public Methods **/
     
     // 1. pushes updates to server
     // 2. get posts from server
+    
+    
+    /** Public Methods **/
+    
     // TODO: 3. strips/loads user attributes
     // Static initializer, use this to get the active instance.
     // This insures we only ever have one copy going at once!
@@ -311,26 +308,35 @@ public class OnlinePostManager extends PostManager {
         
         // initialize instance
         sPostManager = new OnlinePostManager(context.getApplicationContext());
-
+        
         // push updates to server
         sPostManager.pushOfflineUpdates();
-        
+
         // get posts from server
         try {
-            sPostManager.mPosts = sPostManager.loadFromServer();
+            sPostManager.loadFromServer();
         } catch (Exception e) {
-            sPostManager.mPosts = new ArrayList<Post>();
+            sPostManager.mQuestions = new ArrayList<Post>();
         }
         
         return sPostManager;
     }
     
+    
     // Saves individual question
     @Override
     public void addQuestion(Question newQuestion) {
         newQuestion.setExistsOnline(true);
-        super.addQuestion(newQuestion);
-        insertEsQuestion(newQuestion);
+        
+        String result = insertEsQuestion(newQuestion);
+        if (result.equals("HTTP/1.1 201 Created")) {
+            super.addQuestion(newQuestion);
+        }
+        else {
+            setAddedOffline(true);
+            newQuestion.setExistsOnline(false);
+        }
+        
         mCachedPostManager.addQuestion(newQuestion);
     }
     
@@ -338,27 +344,53 @@ public class OnlinePostManager extends PostManager {
     @Override
     public void addAnswer(Question parent, Answer newAnswer) {
         newAnswer.setExistsOnline(true);
-        super.addAnswer(parent, newAnswer);
-        refreshQuestion(parent);
-        updateEsFullQuestion(parent);
+        
+        String result = addESAnswer(parent, newAnswer);
+        if (result.equals("HTTP/1.1 200 OK")) {
+            super.addAnswer(parent, newAnswer);
+        }
+            
+        else {
+            setAddedOffline(true);
+            newAnswer.setExistsOnline(false);
+        }
+        
         mCachedPostManager.addAnswer(parent, newAnswer);
     }
     
     //TODO: Implement in Project Part 4
     @Override
     public void addReply(Question parent, Reply newReply) {
-        newReply.setExistsOnline(true);
-        super.addReply(parent, newReply);
-        mCachedPostManager.addReply(parent, newReply);
+        return;
     }
     
-    //TODO: Update with implementation of user attributes
-    // For now this will just increment votes
     @Override
     public void toggleUpvote(Post post) {
-        post.incrementVotes();
-        Post cachedPost = mCachedPostManager.getPost(post.getID());
-        cachedPost.setVotes(post.getVotes());
+        post.getUserAttributes().toggleIsUpvoted();
+        int incrementVotes = 1;
+        
+        if (!post.getUserAttributes().getIsUpvoted()) {
+            incrementVotes = -1;
+        }
+        
+        
+        String result = null;
+        if (isQuestion(post)) {
+            result = updateESQuestionVotes((Question)post, incrementVotes);
+        }
+        else {
+            Question question = (Question)getPost(((Answer)post).getParentID());
+            result = updateESAnswerVotes(question, (Answer)post, incrementVotes);
+        }
+
+        if (result.equals("HTTP/1.1 200 OK")) {
+            post.setUpvotesChangedOffline(0);
+        }
+        else {
+            setAddedOffline(true);
+            post.setUpvotesChangedOffline(incrementVotes);
+        }
+
         mCachedPostManager.save();
     }
     
@@ -384,9 +416,80 @@ public class OnlinePostManager extends PostManager {
             
         return;
     }
-    public CachedPostManager getCachedPostManager()
-    {
-    	return mCachedPostManager;
+    
+    public void pushOfflineUpdates() {
+        
+        String result = null;
+        for (Post post : mCachedPostManager.getQuestions()) {
+            // if the question is new then all associated data including questions/replies are new 
+            // and we just have to insert the new question
+            Question question = (Question) post;
+            if (!question.getExistsOnline()) {
+                question.setExistsOnline(true);
+                result = insertEsQuestion(question);
+                if (!result.equals("HTTP/1.1 201 Created"))
+                    question.setExistsOnline(false);
+                continue;
+            }
+            
+            int votesOffline = question.getUpvotesChangedOffline(); 
+            if(votesOffline != 0) {
+                question.setUpvotesChangedOffline(0);
+                result = updateESQuestionVotes(question, votesOffline);
+                if (!result.equals("HTTP/1.1 200 OK"))
+                    question.setUpvotesChangedOffline(votesOffline);
+            }
+            
+            
+            // TODO: Implement Reply Logic for Week 4
+            /*
+            for (Reply reply : question.getReplies()) {
+                if (!reply.getExistsOnline()) { 
+                    // logic
+                }
+            }*/
+            
+            for (Answer answer : question.getAnswers()) {
+                if (!answer.getExistsOnline()) { 
+                    answer.setExistsOnline(true);
+                    result = addESAnswer(question, answer);
+                    if (!result.equals("HTTP/1.1 200 OK"))
+                        answer.setExistsOnline(false);
+                    continue;
+                }
+                
+                votesOffline = question.getUpvotesChangedOffline(); 
+                if(votesOffline != 0) {
+                    answer.setUpvotesChangedOffline(0);
+                    result = updateESAnswerVotes(question, answer, votesOffline);
+                    if (!result.equals("HTTP/1.1 200 OK"))
+                        answer.setUpvotesChangedOffline(votesOffline);
+                }
+                // TODO: Implement Reply Logic for Week 4
+            }
+        }
     }
     
-}*/
+    public void refreshAll() {
+        loadFromServer();
+    }
+    
+    // Get Post with specific ES ID
+    public void refreshQuestion(Question question) {
+        Question onlineQuestion = getESQuestion(question);
+        updateIfExists(onlineQuestion);
+        boolean updated = mCachedPostManager.updateIfExists(onlineQuestion);
+        if (updated)
+            mCachedPostManager.save();
+    }
+
+    
+    public boolean hasAddedOffline() {
+        return addedOffline;
+    }
+    
+
+    public void setAddedOffline(boolean addedOffline) {
+        this.addedOffline = addedOffline;
+    }
+}

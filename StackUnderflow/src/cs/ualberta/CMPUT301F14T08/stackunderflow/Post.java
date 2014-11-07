@@ -12,23 +12,35 @@ import java.util.UUID;
 
 public class Post {
 	
-	private UUID mID; //TODO do we want random UUID or another method?
-	private String mText;
-	private int mVotes = 0;
-	private String mPicture;  // placeholder: need image format, likely BitmapFactory implementation
-	private String mSignature;
-	private Date mDate;
-	private ArrayList<Reply> mReplies = new ArrayList<Reply>();
-	private boolean mIsSelected;
-	private boolean mIsFiltered;
-	private UserAttributes mUserAttributes;
-	private int mUpvotesChangedOffline;
-    private boolean mExistsOnline;
-    private int mTimeStamp;
+    protected UUID mID; //TODO do we want random UUID or another method?
+	protected String mText;
+	protected int mVotes = 0;
+	protected String mPicture;  // placeholder: need image format, likely BitmapFactory implementation
+	protected String mSignature;
+	protected Date mDate;
+	protected ArrayList<Reply> mReplies = new ArrayList<Reply>();
+	protected boolean mIsSelected;
+	protected boolean mIsFiltered;
+	protected UserAttributes mUserAttributes;
+	protected int mUpvotesChangedOffline;
+	protected boolean mExistsOnline;
+	protected long mTimeStamp;
 	
 
 	public Post(String text, String signature) {
-		this(text, signature, null);
+	    mID = UUID.randomUUID(); //TODO do we want random UUID or another method?
+        mText = text;
+        mVotes = 0;
+        mPicture = null;
+        mSignature = signature;
+        mDate = new Date();
+        mReplies = new ArrayList<Reply>();
+        mIsSelected = false;
+        mIsFiltered = false;
+        mUserAttributes = new UserAttributes();
+        mUpvotesChangedOffline = 0;
+        mExistsOnline = false;
+        mTimeStamp = System.currentTimeMillis();
 	}
 	
 	public Post(String text, String signature, String picture){
@@ -44,7 +56,7 @@ public class Post {
 		mUserAttributes = new UserAttributes();
 		mUpvotesChangedOffline = 0;
 	    mExistsOnline = false;
-	    mTimeStamp = (int)System.currentTimeMillis();
+	    mTimeStamp = System.currentTimeMillis();
 	}
 	
 	public UUID getID() {
@@ -67,7 +79,7 @@ public class Post {
 		return mDate;
 	}
 	
-   public int getTimeStamp() {
+   public long getTimeStamp() {
         return mTimeStamp;
     }
 	

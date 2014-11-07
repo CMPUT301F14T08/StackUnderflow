@@ -8,6 +8,7 @@ import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,6 +98,8 @@ public class MainFragment extends Fragment {
 	}
 	
 	public void createView(String sort) {
+	    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+	    StrictMode.setThreadPolicy(policy);
 		sPostController = PostController.getInstance(getActivity());
 		if (sort.equals(SORT_DATE))
 			sPostController.getPostManager().sortByDate();

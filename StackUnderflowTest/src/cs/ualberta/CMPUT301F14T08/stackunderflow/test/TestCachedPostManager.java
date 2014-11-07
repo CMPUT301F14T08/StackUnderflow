@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.lang.reflect.*;
 import java.util.ArrayList;
 
+import org.junit.Test;
+
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
@@ -61,6 +63,7 @@ public class TestCachedPostManager extends ActivityInstrumentationTestCase2<Main
         posts.add(a4);
     }
     
+    @Test
     public void testPosts() throws IOException {
         ArrayList<Post> comparisonPosts = new ArrayList<Post>();
         CachedPostManager manager = CachedPostManager.getInstance(getActivity());
@@ -73,12 +76,13 @@ public class TestCachedPostManager extends ActivityInstrumentationTestCase2<Main
         
         loadTestQuestions(posts);
         loadTestQuestions(comparisonPosts);
-        assertEquals(manager.getPosts().size(), comparisonPosts.size());
+        assertEquals(manager.getPosts().size(), 7);
 
         manager.save();
         manager.loadFromFile();
         
-        assertEquals(manager.getPosts().size(), comparisonPosts.size());
+        assertEquals(manager.getPosts().size(), 7);
+        assertEquals("", manager.getPosts().toString());
         
         posts.clear();
         assertEquals(manager.getPosts().size(), 0);

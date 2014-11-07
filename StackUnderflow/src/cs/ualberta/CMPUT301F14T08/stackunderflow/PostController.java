@@ -8,6 +8,7 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 
 // TODO: Currently this just controls the CachedPostManager. 
@@ -23,10 +24,16 @@ public class PostController {
 		//Checks if the user is connected to the Internet it will use the online post manager other wise it
 		//will use a cached post manger that will later be pushed online when the user enters a network.
 		mContext = context;
-		if(isOnline())
-			mPostManager = OnlinePostManager.getInstance(context);
-		else
-			mPostManager = OnlinePostManager.getInstance(context);	
+		mPostManager = CachedPostManager.getInstance(context);    
+		//if(isOnline()) {
+		//    mPostManager = CachedPostManager.getInstance(context);    
+			//mPostManager = OnlinePostManager.getInstance(context);
+		//	Log.i("Debug", "Using Online Post Manager");
+		//}
+		//else {
+		//	mPostManager = CachedPostManager.getInstance(context);	
+		//	Log.i("Debug", "Using Offline Post Manager");
+		//}
 	}
 	
 	// check if we are online

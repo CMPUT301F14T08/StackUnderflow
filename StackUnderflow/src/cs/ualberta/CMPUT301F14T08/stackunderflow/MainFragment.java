@@ -1,11 +1,8 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
-import java.util.ArrayList;
-
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +20,6 @@ public class MainFragment extends Fragment {
 	
 	protected PostController sPostController;
 	protected PostAdapter adapter;
-	private ArrayList<Post> actualList;
-	private ArrayList<Post> questionList;
 	private ListView listview;
 	private String lastSort;
 	@Override
@@ -101,16 +96,8 @@ public class MainFragment extends Fragment {
 		else if (sort.equals(SORT_SCORE)) 
 			sPostController.getPostManager().sortByScore();
 		
-		actualList = sPostController.getPostManager().getPosts();
-		questionList = new ArrayList<Post>();
 		
-		for (int i = 0; i < actualList.size(); i++) {
-		    Post p = actualList.get(i);
-		    if (p instanceof Question)
-		        questionList.add(p);
-		}
-		
-		adapter = new PostAdapter(getActivity(), questionList);
+		adapter = new PostAdapter(getActivity(), sPostController.getPostManager().getQuestions());
 		listview.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 	}

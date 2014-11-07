@@ -1,4 +1,4 @@
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+/*package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -389,4 +389,4 @@ public class OnlinePostManager extends PostManager {
     	return mCachedPostManager;
     }
     
-}
+}*/

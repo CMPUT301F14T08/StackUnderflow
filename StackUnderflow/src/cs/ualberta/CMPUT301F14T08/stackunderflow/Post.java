@@ -24,6 +24,7 @@ public class Post {
 	private UserAttributes mUserAttributes;
 	private int mUpvotesChangedOffline;
     private boolean mExistsOnline;
+    private int mTimeStamp;
 	
 
 	public Post(String text, String signature) {
@@ -43,6 +44,7 @@ public class Post {
 		mUserAttributes = new UserAttributes();
 		mUpvotesChangedOffline = 0;
 	    mExistsOnline = false;
+	    mTimeStamp = (int)System.currentTimeMillis();
 	}
 	
 	public UUID getID() {
@@ -64,6 +66,10 @@ public class Post {
 	public Date getDate() {
 		return mDate;
 	}
+	
+   public int getTimeStamp() {
+        return mTimeStamp;
+    }
 	
 	public int getVotes() {
 		return mVotes;

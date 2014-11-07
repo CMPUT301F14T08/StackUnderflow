@@ -27,13 +27,14 @@ public class CachedPostManager extends PostManager{
 	private CachedPostManager(Context context) {
 		super(context);
 		try {
-			mPosts = loadFromFile();
+			mQuestions = loadFromFile();
 		} catch (Exception e) {
-			mPosts = new ArrayList<Post>();
+		    mQuestions = new ArrayList<Post>();
 		}
 		
-		if (mPosts.size() == 0) {}
+		if (mQuestions.size() == 0) {
 			loadTestQuestions();
+		}
 	}
 	
 	//TODO: Delete this later!
@@ -75,13 +76,9 @@ public class CachedPostManager extends PostManager{
 		q3.addAnswer(a3);
 		q3.addAnswer(a4);
 		
-		mPosts.add(q1);
-		mPosts.add(a1);
-		mPosts.add(a2);
-		mPosts.add(q2);
-		mPosts.add(q3);
-		mPosts.add(a3);
-		mPosts.add(a4);
+		mQuestions.add(q1);
+		mQuestions.add(q2);
+		mQuestions.add(q3);
 	}
 
 	// Save Questions using Gson
@@ -90,16 +87,13 @@ public class CachedPostManager extends PostManager{
 		clearSelected();
 		clearFilters();
 		
-		// Gson has to know explicitly that it's saving questions
-		// We have to cast from Post to Question
-		ArrayList<Question> questions = castToQuestions();
 		Writer writer = null;
 		
 		try {
 			Gson gson = new Gson();
 			OutputStream answer_out = mContext.openFileOutput(QUESTION_CACHE_FILE, Context.MODE_PRIVATE);
 			writer = new OutputStreamWriter(answer_out);
-			gson.toJson(questions, writer);
+			gson.toJson(mQuestions, writer);
 		} 
 		// Cleanup our writers if anything fails
 		finally {
@@ -111,9 +105,8 @@ public class CachedPostManager extends PostManager{
 	// Load posts from file using GSON
 	public ArrayList<Post> loadFromFile() throws IOException{
 
-		ArrayList<Question> questions = new ArrayList<Question>();
 		Reader reader = null;
-		
+		ArrayList<Question> questions = new ArrayList<Question>();
 		try {
 			Gson gson = new Gson();
 			InputStream input = mContext.openFileInput(QUESTION_CACHE_FILE);

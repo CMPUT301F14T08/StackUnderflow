@@ -1,22 +1,14 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 import java.util.UUID;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PostFragment extends Fragment {
 	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";
@@ -24,11 +16,8 @@ public class PostFragment extends Fragment {
     protected static final int REQUEST_USERNAME = 0;
     
 	protected PostController sPostController;
-	protected ReplyAdapter adapter;
 	protected UUID mPostId;
-	private Post mPost;
 	
-	protected LinearLayout mTopLinearLayout;
 	protected TextView mQuestionTitle;
 	protected TextView mPostBody;
 	protected ImageButton mUpvoteButton;
@@ -37,11 +26,8 @@ public class PostFragment extends Fragment {
 	protected TextView mFavoriteTextView;
 	protected ImageButton mPictureButton;
 	protected TextView mUsername;
-	protected ListView mListView;
 	protected ImageButton mAnswersButton;
 	protected TextView mAnswersTextView;
-	protected ImageButton mBackButton;
-
 	
 	protected int mBlackColor;
 	protected int mWhiteColor;
@@ -53,8 +39,7 @@ public class PostFragment extends Fragment {
 		setHasOptionsMenu(true);
 		sPostController = PostController.getInstance(getActivity());
 		mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
-		mPost = sPostController.getPostManager().getPost(mPostId);
-
+		
 		mBlackColor = getResources().getColor(R.color.black);
 		mWhiteColor = getResources().getColor(R.color.white);
 		mBlueColor = getResources().getColor(R.color.blue);
@@ -69,10 +54,6 @@ public class PostFragment extends Fragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
 		super.onCreateOptionsMenu(menu, menuInflater);
 		menuInflater.inflate(R.menu.post_menu, menu);
-	}
-	
-	protected void setPost(Post post){
-		mPost = post;
 	}
 	
 	@Override
@@ -95,96 +76,5 @@ public class PostFragment extends Fragment {
         default:
             return super.onOptionsItemSelected(menuItem);
     	}
-	}
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
-		View v = inflater.inflate(R.layout.post_fragment, parent, false);
-		
-		mQuestionTitle = (TextView)v.findViewById(R.id.post_fragment_textview_title);
-		mQuestionTitle.setTextColor(mWhiteColor);
-		
-		mTopLinearLayout = (LinearLayout)v.findViewById(R.id.post_fragment_top_linearlayout);
-		
-		mPostBody = (TextView)v.findViewById(R.id.post_fragment_textview_body);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
-		String date = sdf.format(mPost.getDate());
-		mPostBody.setText(mPost.getText() + " (" + date + ")");
-		mPostBody.setTextColor(mWhiteColor);
-		
-		mUpvoteButton = (ImageButton)v.findViewById(R.id.post_fragment_button_upvote);
-		mUpvoteButton.setImageResource(mPost.getUserAttributes().getIsUpvoted() ? R.drawable.upvote_full : R.drawable.upvote_empty);
-		mUpvoteButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				mPost.getUserAttributes().toggleIsUpvoted();
-				if(mPost.getUserAttributes().getIsUpvoted()){
-					mPost.incrementVotes();
-					mUpvoteButton.setImageResource(R.drawable.upvote_full);
-				}
-				else{
-					mPost.decrementVotes();
-					mUpvoteButton.setImageResource(R.drawable.upvote_empty);
-				}		
-				mUpvoteCountTextView.setText(""+mPost.getVotes());
-			}
-		});
-		
-		
-		mUpvoteCountTextView = (TextView)v.findViewById(R.id.post_fragment_textview_upvotes);
-		mUpvoteCountTextView.setText(""+ mPost.getVotes());
-		mUpvoteCountTextView.setTextColor(mWhiteColor);
-		
-		mFavoriteButton = (ImageButton)v.findViewById(R.id.post_fragment_button_favorite);
-		mFavoriteButton.setImageResource(mPost.getUserAttributes().getIsFavorited() ? R.drawable.star_full : R.drawable.star_empty);
-		mFavoriteButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				mPost.getUserAttributes().toggleIsFavorited();
-				mFavoriteButton.setImageResource(mPost.getUserAttributes().getIsFavorited() ? R.drawable.star_full : R.drawable.star_empty);
-			}
-		});
-		
-		mFavoriteTextView = (TextView)v.findViewById(R.id.post_fragment_textview_favorite);
-		mFavoriteTextView.setTextColor(mWhiteColor);
-		
-		mPictureButton = (ImageButton)v.findViewById(R.id.post_fragment_button_photo);
-		if(mPost.hasPicture()){
-			mPictureButton.setImageResource(R.drawable.picture_white);
-			mPictureButton.setEnabled(true);
-			mPictureButton.setVisibility(View.VISIBLE);
-			mPictureButton.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// Show the picture
-					String toastString = "Someone needs to implement code to show the picture";
-	                Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_LONG);
-	                toast.show();    
-				}
-			});
-		}
-		else{
-			mPictureButton.setImageResource(R.drawable.picture_dark);
-			mPictureButton.setEnabled(false);
-			mPictureButton.setVisibility(View.GONE);
-		}
-		
-		
-		mUsername = (TextView)v.findViewById(R.id.post_fragment_textview_username);
-		mUsername.setText(mPost.getSignature());
-		mUsername.setTextColor(mWhiteColor);
-		
-		mListView = (ListView)v.findViewById(R.id.post_fragment_listview_replies);
-		adapter = new ReplyAdapter(getActivity(), mPost.getReplies());
-		mListView.setAdapter(adapter);
-		
-		mAnswersButton = (ImageButton)v.findViewById(R.id.post_fragment_button_answers);
-		
-		mAnswersTextView = (TextView)v.findViewById(R.id.post_fragment_textview_answers);
-		mAnswersTextView.setTextColor(mBlackColor);
-		
-		return v;		
 	}
 }

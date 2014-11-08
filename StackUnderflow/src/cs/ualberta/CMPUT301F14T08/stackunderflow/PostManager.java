@@ -113,7 +113,7 @@ public abstract class PostManager {
 	
 	// adds an answer to our list of posts
 	public void addAnswer(Question parent, Answer newAnswer){
-		((Question)mQuestions.get(mQuestions.indexOf(parent))).addAnswer(newAnswer);
+		parent.addAnswer(newAnswer);
 	}
 	
 	//TODO: Implement in Project Part 4

@@ -127,6 +127,15 @@ public int setVotes(int votes) {
 		return mUserAttributes;
 	}
 	
+   public void setUserAttributes(UserAttributes userAttribs){
+        this.mUserAttributes = userAttribs;
+    }
+   
+   public void clearUserAttributes(){
+       this.mUserAttributes = new UserAttributes();
+   }
+       
+	    
     public int getUpvotesChangedOffline() {
         return mUpvotesChangedOffline;
     }

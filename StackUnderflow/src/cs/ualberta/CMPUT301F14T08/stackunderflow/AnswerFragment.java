@@ -25,6 +25,8 @@ public class AnswerFragment extends PostFragment {
 		getActivity().setTitle(R.string.answer_title);
 		mAnswer = (Answer)mPost;
 		mParent = (Question)sPostController.getPostManager().getPost(mAnswer.getParentID());
+	    // We cache a post after viewing it
+        sPostController.addToCache(mParent);
 	}
 	
    @Override

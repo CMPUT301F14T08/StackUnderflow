@@ -15,7 +15,9 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+
 import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -174,7 +176,7 @@ public class CachedPostManager extends PostManager{
     // For now this will just increment votes
 	@Override
     public void toggleUpvote(Post post) {
-        post.getUserAttributes().toggleIsUpvoted();
+        super.toggleUpvote(post);
         int incrementVotes = 1;
         
         if (!post.getUserAttributes().getIsUpvoted()) {
@@ -182,6 +184,12 @@ public class CachedPostManager extends PostManager{
         }
         
         post.setUpvotesChangedOffline(incrementVotes);
+        save();
+    }
+	
+    @Override
+    public void toggleFavorite(Post post) {
+        super.toggleFavorite(post);
         save();
     }
 	

@@ -143,6 +143,12 @@ public class PostController {
             return false;
         return true;
     }
+    
+    public void addToCache(Question question) {
+        if (usingOnlinePostManager()) {
+            ((OnlinePostManager)mPostManager).addToCache(question);
+        }
+    }
 	
 	
     public PostManager getPostManager() {

@@ -135,22 +135,16 @@ public abstract class PostFragment extends Fragment {
         
         // Upvote Button
         mUpvoteButton = (Button)v.findViewById(R.id.post_fragment_button_upvote);
-        mUpvoteButton.setText(mPost.getVotes() + " votes");
+        setVoteText(mPost, mUpvoteButton);
         mUpvoteButton.setTextColor(mTextColor);
         setIconUpvote(mPost, mUpvoteButton);
         mUpvoteButton.setOnClickListener(new View.OnClickListener() {
             
             @Override
             public void onClick(View v) {
-                mPost.getUserAttributes().toggleIsUpvoted();
-                if(mPost.getUserAttributes().getIsUpvoted()){
-                    mPost.incrementVotes();
-                }
-                else{
-                    mPost.decrementVotes();
-                }
+                sPostController.getPostManager().toggleUpvote(mPost);
                 setIconUpvote(mPost, mUpvoteButton);
-                mUpvoteButton.setText(mPost.getVotes() + " votes");
+                setVoteText(mPost, mUpvoteButton);
             }
         });
         
@@ -162,7 +156,7 @@ public abstract class PostFragment extends Fragment {
             
             @Override
             public void onClick(View v) {
-                mPost.getUserAttributes().toggleIsFavorited();
+                sPostController.getPostManager().toggleFavorite(mPost);
                 setIconFavorited(mPost, mFavoriteButton);
             }
         });
@@ -204,7 +198,6 @@ public abstract class PostFragment extends Fragment {
 	}
 
     protected void setIconFavorited(Post post, Button button) {
-        Log.d("Debug", post.getUserAttributes().getIsFavorited() + " ");
         if (post.getUserAttributes().getIsFavorited())
             button.setCompoundDrawables(mFavoriteFull, null, null, null);
         else
@@ -216,6 +209,13 @@ public abstract class PostFragment extends Fragment {
             button.setCompoundDrawables(mUpvoteFull, null, null, null);
         else
             button.setCompoundDrawables(mUpvoteEmpty, null, null, null);
+    }
+    
+    protected void setVoteText(Post post, Button button) {
+        if (post.getVotes() == 0)
+            button.setText(mPost.getVotes() + " upvote");
+        else
+            button.setText(mPost.getVotes() + " upvotes");
     }
 
 }

@@ -141,17 +141,23 @@ public abstract class PostManager {
 	
 	//TODO: Implement with user attributes
 	public void toggleFavorite(Post post) {
+	    post.getUserAttributes().toggleIsFavorited();
 	}
 	
 	//TODO: Update with implementation of user attributes
 	// For now this will just increment votes
 	public void toggleUpvote(Post post) {
-	    post.incrementVotes();
+	    post.getUserAttributes().toggleIsUpvoted();
+	    if (post.getUserAttributes().getIsUpvoted())
+	        post.incrementVotes();
+	    else
+	        post.decrementVotes();
 	}
 	
+
 	//TODO: Update with implementation of user attributes
 	public void toggleReadLater(Post post) {
-	    
+	    post.getUserAttributes().setIsReadLater(true);
 	}
 	
 	// Sorts posts by number of votes (Descending Order)

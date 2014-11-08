@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relativeLayout1"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayoutPost"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:orientation="vertical">
 
 <LinearLayout
      android:id="@+id/post_fragment_top_linearlayout"
@@ -13,10 +14,7 @@
      android:layout_alignParentTop="true"
      android:background="@color/black"
      android:orientation="vertical"
-     android:paddingLeft="15dp"
-     android:paddingRight="15dp" 
-     android:paddingTop="15dp"
-     android:paddingBottom="15dp">
+     android:padding="15dp">
 
         <TextView
             android:id="@+id/post_fragment_textview_title"
@@ -51,129 +49,108 @@
               android:layout_gravity="bottom"
               android:paddingBottom="5dp"
               android:paddingTop="5dp"
-              android:text="@string/username" />
+              android:textColor="@color/white"
+              android:text="@string/username"
+              android:textStyle="italic" />
 
     </LinearLayout>
-        
+</LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <ImageButton
-              android:id="@+id/post_fragment_button_photo"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:background="@color/black"
-              android:padding="5dp"
-              android:src="@drawable/picture_dark" />
+<LinearLayout
+     android:id="@+id/post_fragment_middle_linearlayout"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:background="@color/white"
+     android:orientation="horizontal"
+     android:gravity="center_horizontal"
+     android:padding="5dp">
 
-            <ImageButton
-                android:id="@+id/post_fragment_button_upvote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:paddingBottom="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                android:src="@drawable/upvote_empty" />
-
-            <TextView
-                android:id="@+id/post_fragment_textview_upvotes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:padding="5dp"
-                android:text="@string/upvote_count" />
-            
-            <ImageButton
-                android:id="@+id/post_fragment_button_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:padding="5dp"
-                android:src="@drawable/star_empty" />
-
-            <TextView
-                android:id="@+id/post_fragment_textview_favorite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:padding="5dp"
-                android:text="@string/favorite" />
-                
-                
-	</LinearLayout>
-
-
+        <Button
+            android:id="@+id/post_fragment_button_photo"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+            android:text=" view photo"
+            android:textColor="@color/black"
+            android:drawableLeft="@drawable/picture_dark"
+            android:textSize="14sp"
+            android:background="@android:color/transparent"/>
+       
+        <Button
+            android:id="@+id/post_fragment_button_upvote"
+            android:layout_marginRight="10dp"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+            android:text=" upvotes"
+            android:textColor="@color/black"
+            android:drawableLeft="@drawable/upvote_empty_black"
+            android:background="@android:color/transparent"/>
+       
+       <Button
+            android:id="@+id/post_fragment_button_favorite"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+            android:text=" favorite"
+            android:textColor="@color/black"
+            android:drawableLeft="@drawable/star_empty_black"
+            android:background="@android:color/transparent"/>
+       
 
 </LinearLayout>
 
+<ListView
+    android:id="@+id/post_fragment_listview_replies"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1.0" >
+
+</ListView>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp">
+
+  <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+ 
+         <Button
+            android:id="@+id/post_fragment_button_back"
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/answer_count"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:drawableLeft="@drawable/box_arrow_left" 
+            android:background="@android:color/transparent"/>
+        
+    </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/post_fragment_bottom_linearlayout"
-        android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/post_fragment_top_linearlayout"
-        android:orientation="vertical" >
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" 
+        android:gravity="right"
+        android:layout_weight="1">
 
-        <ListView
-            android:id="@+id/post_fragment_listview_replies"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0" >
-
-        </ListView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <ImageButton
-                    android:id="@+id/post_fragment_button_back"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/box_arrow_left_large" />
-                
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" 
-                android:gravity="right"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/post_fragment_textview_answers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:padding="10dp"
-                    android:text="@string/answer_count"
-                    android:textStyle="bold" />
-
-                <ImageButton
-                    android:id="@+id/post_fragment_button_answers"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/box_arrow_right_large" />
-
-            </LinearLayout>
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/post_fragment_button_answers"
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:text="@string/answer_count"
+            android:drawableRight="@drawable/box_arrow_right" 
+            android:background="@android:color/transparent"/>
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
+</LinearLayout>

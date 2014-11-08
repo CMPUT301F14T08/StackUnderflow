@@ -8,7 +8,9 @@ import java.util.Locale;
 import java.util.UUID;
 
 import android.app.Fragment;
-import android.os.AsyncTask;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -18,13 +20,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PostFragment extends Fragment {
+public abstract class PostFragment extends Fragment {
 	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";
 	protected static final String DIALOG_USERNAME = "username";
     protected static final int REQUEST_USERNAME = 0;
@@ -37,21 +39,20 @@ public class PostFragment extends Fragment {
 	protected LinearLayout mTopLinearLayout;
 	protected TextView mQuestionTitle;
 	protected TextView mPostBody;
-	protected ImageButton mUpvoteButton;
-	protected TextView mUpvoteCountTextView;
-	protected ImageButton mFavoriteButton;
-	protected TextView mFavoriteTextView;
-	protected ImageButton mPictureButton;
+	protected Button mUpvoteButton;
+	protected Button mFavoriteButton;
+	protected Button mPictureButton;
 	protected TextView mUsername;
 	protected ListView mListView;
-	protected ImageButton mAnswersButton;
-	protected TextView mAnswersTextView;
-	protected ImageButton mBackButton;
-
+	protected Button mAnswersButton;
+	protected Button mBackButton;
 	
-	protected int mBlackColor;
-	protected int mWhiteColor;
-	protected int mBlueColor;
+	protected Drawable mUpvoteFull;
+	protected Drawable mUpvoteEmpty;
+	protected Drawable mFavoriteFull;
+	protected Drawable mFavoriteEmpty;
+	
+	protected int mTextColor;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -59,22 +60,37 @@ public class PostFragment extends Fragment {
 		setHasOptionsMenu(true);
 	    
 		mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
-		Log.d("Debug", "Opening Post view for: " + mPostId);
 		
+		// Don't let HTTP run in the background, we're just waiting for updates on
+		// one Post, not a list so we can wait until we receive them before rendering the view
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        
 		sPostController = PostController.getInstanceForID(getActivity(), mPostId);
-		
 		mPost = sPostController.getPostManager().getPost(mPostId);
 		
-	    Log.d("Debug", "Post UUID: " + mPostId);
-	    Log.d("Debug", "Posts: " + sPostController.getPostManager().getQuestions().toString());
-
-		mBlackColor = getResources().getColor(R.color.black);
-		mWhiteColor = getResources().getColor(R.color.white);
-		mBlueColor = getResources().getColor(R.color.blue);
+		// Set variables according to the resource IDs provided in subclasses
+		mTextColor = getResources().getColor(getTextColor());
+		
+		Context context = getActivity().getApplicationContext();
+		mUpvoteFull = context.getResources().getDrawable(getUpvoteFullID());
+		mUpvoteFull.setBounds(0, 0, 60, 60);
+		mUpvoteEmpty = context.getResources().getDrawable(getUpvoteEmptyID());
+		mUpvoteEmpty.setBounds(0, 0, 60, 60);
+		mFavoriteFull = context.getResources().getDrawable(getFavoriteFullID());
+		mFavoriteFull.setBounds(0, 0, 60, 60);
+		mFavoriteEmpty = context.getResources().getDrawable(getFavoriteEmptyID());
+		mFavoriteEmpty.setBounds(0, 0, 60, 60);
 	}
+	
+	// Subclasses (Question/Answer) will implement these to tell
+	// the super class what resources to use when drawing the view
+	abstract protected int getUpvoteFullID();
+	abstract protected int getUpvoteEmptyID();
+	abstract protected int getFavoriteFullID();
+	abstract protected int getFavoriteEmptyID();
+	abstract protected int getArrowLeftID();
+	abstract protected int getArrowRightID();
+	abstract protected int getTextColor();
 	
 	@Override
 	public void onPause(){
@@ -87,120 +103,116 @@ public class PostFragment extends Fragment {
 		menuInflater.inflate(R.menu.post_menu, menu);
 	}
 	
-	protected void setPost(Post post){
-		mPost = post;
-	}
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem){
+	    // Both Question/Answer have this Menu Item
 	    switch (menuItem.getItemId()) {
-        case R.id.menu_item_new_reply:
-//        	if(sPostController.getPostManager().getUserProfileManager().getUserProfile().getUsername.equals(null)){
-//        		FragmentManager fm = getActivity().getFragmentManager();
-//        		UsernameFragment dialog = new UsernameFragment();
-//        		dialog.setTargetFragment(PostFragment.this, REQUEST_USERNAME);
-//        		dialog.show(fm, DIALOG_USERNAME);
-//        	}
-//        	else{
-//        		//new reply
-//        		String toastString = "Someone needs to implement code to show add replies";
-//                Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_LONG);
-//                toast.show(); 
-//        	}
-        	return true;
-        default:
-            return super.onOptionsItemSelected(menuItem);
+            case R.id.menu_item_new_answer:
+                Intent i = new Intent(getActivity(), NewAnswerActivity.class);
+                i.putExtra(PostFragment.EXTRA_POST_ID, mPost.getID()); 
+                startActivity(i);
+            
+            default:
+                return super.onOptionsItemSelected(menuItem);
     	}
 	}
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
-		View v = inflater.inflate(R.layout.post_fragment, parent, false);
-		
-		mQuestionTitle = (TextView)v.findViewById(R.id.post_fragment_textview_title);
-		mQuestionTitle.setTextColor(mWhiteColor);
-		
-		mTopLinearLayout = (LinearLayout)v.findViewById(R.id.post_fragment_top_linearlayout);
-		
-		mPostBody = (TextView)v.findViewById(R.id.post_fragment_textview_body);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
-		String date = sdf.format(mPost.getDate());
-		mPostBody.setText(mPost.getText() + " (" + date + ")");
-		mPostBody.setTextColor(mWhiteColor);
-		
-		mUpvoteButton = (ImageButton)v.findViewById(R.id.post_fragment_button_upvote);
-		mUpvoteButton.setImageResource(mPost.getUserAttributes().getIsUpvoted() ? R.drawable.upvote_full : R.drawable.upvote_empty);
-		mUpvoteButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				mPost.getUserAttributes().toggleIsUpvoted();
-				if(mPost.getUserAttributes().getIsUpvoted()){
-					mPost.incrementVotes();
-					mUpvoteButton.setImageResource(R.drawable.upvote_full);
-				}
-				else{
-					mPost.decrementVotes();
-					mUpvoteButton.setImageResource(R.drawable.upvote_empty);
-				}		
-				mUpvoteCountTextView.setText(""+mPost.getVotes());
-			}
-		});
-		
-		
-		mUpvoteCountTextView = (TextView)v.findViewById(R.id.post_fragment_textview_upvotes);
-		mUpvoteCountTextView.setText(""+ mPost.getVotes());
-		mUpvoteCountTextView.setTextColor(mWhiteColor);
-		
-		mFavoriteButton = (ImageButton)v.findViewById(R.id.post_fragment_button_favorite);
-		mFavoriteButton.setImageResource(mPost.getUserAttributes().getIsFavorited() ? R.drawable.star_full : R.drawable.star_empty);
-		mFavoriteButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				mPost.getUserAttributes().toggleIsFavorited();
-				mFavoriteButton.setImageResource(mPost.getUserAttributes().getIsFavorited() ? R.drawable.star_full : R.drawable.star_empty);
-			}
-		});
-		
-		mFavoriteTextView = (TextView)v.findViewById(R.id.post_fragment_textview_favorite);
-		mFavoriteTextView.setTextColor(mWhiteColor);
-		
-		mPictureButton = (ImageButton)v.findViewById(R.id.post_fragment_button_photo);
-		if(mPost.hasPicture()){
-			mPictureButton.setImageResource(R.drawable.picture_white);
-			mPictureButton.setEnabled(true);
-			mPictureButton.setVisibility(View.VISIBLE);
-			mPictureButton.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// Show the picture
-					String toastString = "Someone needs to implement code to show the picture";
-	                Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_LONG);
-	                toast.show();    
-				}
-			});
-		}
-		else{
-			mPictureButton.setImageResource(R.drawable.picture_dark);
-			mPictureButton.setEnabled(false);
-			mPictureButton.setVisibility(View.GONE);
-		}
-		
-		
-		mUsername = (TextView)v.findViewById(R.id.post_fragment_textview_username);
-		mUsername.setText(mPost.getSignature());
-		mUsername.setTextColor(mWhiteColor);
-		
-		mListView = (ListView)v.findViewById(R.id.post_fragment_listview_replies);
-		adapter = new ReplyAdapter(getActivity(), mPost.getReplies());
-		mListView.setAdapter(adapter);
-		
-		mAnswersButton = (ImageButton)v.findViewById(R.id.post_fragment_button_answers);
-		
-		mAnswersTextView = (TextView)v.findViewById(R.id.post_fragment_textview_answers);
-		mAnswersTextView.setTextColor(mBlackColor);
-		
-		return v;		
+	
+	// Set all the stuff relevant to both Question and Answer Fragments here
+	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+	    View v = inflater.inflate(R.layout.post_fragment, parent, false);
+	    
+	    // Post Body
+	    mPostBody = (TextView)v.findViewById(R.id.post_fragment_textview_body);
+        mPostBody.setText(mPost.getText());
+        
+        // Author + Date
+        mUsername = (TextView)v.findViewById(R.id.post_fragment_textview_username);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
+        String date = "(" + sdf.format(mPost.getDate()) + ")";
+        mUsername.setText("- " + mPost.getSignature() + " " + date);
+        
+        // Upvote Button
+        mUpvoteButton = (Button)v.findViewById(R.id.post_fragment_button_upvote);
+        mUpvoteButton.setText(mPost.getVotes() + " votes");
+        mUpvoteButton.setTextColor(mTextColor);
+        setIconUpvote(mPost, mUpvoteButton);
+        mUpvoteButton.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                mPost.getUserAttributes().toggleIsUpvoted();
+                if(mPost.getUserAttributes().getIsUpvoted()){
+                    mPost.incrementVotes();
+                }
+                else{
+                    mPost.decrementVotes();
+                }
+                setIconUpvote(mPost, mUpvoteButton);
+                mUpvoteButton.setText(mPost.getVotes() + " votes");
+            }
+        });
+        
+        // Favorite Button
+        mFavoriteButton = (Button)v.findViewById(R.id.post_fragment_button_favorite);
+        mFavoriteButton.setTextColor(mTextColor);
+        setIconFavorited(mPost, mFavoriteButton);
+        mFavoriteButton.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                mPost.getUserAttributes().toggleIsFavorited();
+                setIconFavorited(mPost, mFavoriteButton);
+            }
+        });
+        
+        
+        // Picture Button
+        mPictureButton = (Button)v.findViewById(R.id.post_fragment_button_photo);
+        mPictureButton.setTextColor(mTextColor);
+
+        if(mPost.hasPicture()){
+            mPictureButton.setEnabled(true);
+            mPictureButton.setVisibility(View.VISIBLE);
+            mPictureButton.setOnClickListener(new View.OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    // TODO: Implement Code to show Pictures
+                    String toastString = "Someone needs to implement code to show the picture";
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_LONG);
+                    toast.show();    
+                }
+            });
+        }
+        else{
+            mPictureButton.setEnabled(false);
+            mPictureButton.setVisibility(View.GONE);
+        }
+        
+        // Set Backbutton/Forward Button invisible for now, Answer/Question can
+        // Choose to show them based on their individual requirements
+        mBackButton = (Button)v.findViewById(R.id.post_fragment_button_back);
+        mBackButton.setVisibility(View.GONE);
+        
+        mAnswersButton = (Button)v.findViewById(R.id.post_fragment_button_answers);
+        mAnswersButton.setVisibility(View.GONE);
+        
+        return v;
 	}
+
+    protected void setIconFavorited(Post post, Button button) {
+        Log.d("Debug", post.getUserAttributes().getIsFavorited() + " ");
+        if (post.getUserAttributes().getIsFavorited())
+            button.setCompoundDrawables(mFavoriteFull, null, null, null);
+        else
+            button.setCompoundDrawables(mFavoriteEmpty, null, null, null);
+    }
+	   
+    protected void setIconUpvote(Post post, Button button) {
+        if (post.getUserAttributes().getIsUpvoted())
+            button.setCompoundDrawables(mUpvoteFull, null, null, null);
+        else
+            button.setCompoundDrawables(mUpvoteEmpty, null, null, null);
+    }
+
 }

@@ -48,15 +48,10 @@ public class AnswerFragment extends PostFragment {
     }
     
     @Override
-    protected int getArrowLeftID() {
-        return R.drawable.box_arrow_left_blue;
+    protected int getImageIconID() {
+        return R.drawable.picture_blue;
     }
-    
-    @Override
-    protected int getArrowRightID() {
-        return R.drawable.box_arrow_right_blue;
-    }
-    
+
     @Override
     protected int getTextColor() {
         return R.color.blue;

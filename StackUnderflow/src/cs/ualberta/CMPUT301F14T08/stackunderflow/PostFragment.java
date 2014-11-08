@@ -51,6 +51,7 @@ public abstract class PostFragment extends Fragment {
 	protected Drawable mUpvoteEmpty;
 	protected Drawable mFavoriteFull;
 	protected Drawable mFavoriteEmpty;
+	protected Drawable mImageIcon;
 	
 	protected int mTextColor;
 	
@@ -80,6 +81,8 @@ public abstract class PostFragment extends Fragment {
 		mFavoriteFull.setBounds(0, 0, 60, 60);
 		mFavoriteEmpty = context.getResources().getDrawable(getFavoriteEmptyID());
 		mFavoriteEmpty.setBounds(0, 0, 60, 60);
+        mImageIcon = context.getResources().getDrawable(getImageIconID());
+        mImageIcon.setBounds(0, 0, 60, 60);
 	}
 	
 	// Subclasses (Question/Answer) will implement these to tell
@@ -88,8 +91,7 @@ public abstract class PostFragment extends Fragment {
 	abstract protected int getUpvoteEmptyID();
 	abstract protected int getFavoriteFullID();
 	abstract protected int getFavoriteEmptyID();
-	abstract protected int getArrowLeftID();
-	abstract protected int getArrowRightID();
+	abstract protected int getImageIconID();
 	abstract protected int getTextColor();
 	
 	@Override
@@ -168,6 +170,7 @@ public abstract class PostFragment extends Fragment {
         
         // Picture Button
         mPictureButton = (Button)v.findViewById(R.id.post_fragment_button_photo);
+        mPictureButton.setCompoundDrawables(mImageIcon, null, null, null);
         mPictureButton.setTextColor(mTextColor);
 
         if(mPost.hasPicture()){

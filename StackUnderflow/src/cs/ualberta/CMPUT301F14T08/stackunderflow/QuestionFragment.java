@@ -38,17 +38,12 @@ public class QuestionFragment extends PostFragment {
     protected int getFavoriteEmptyID() {
 	    return R.drawable.star_empty_black;
 	}
-	
+   
 	@Override
-    protected int getArrowLeftID() {
-	    return R.drawable.box_arrow_left;
-	}
-	
-	@Override
-    protected int getArrowRightID() {
-	    return R.drawable.box_arrow_right;
-	}
-	
+    protected int getImageIconID() {
+        return R.drawable.picture_dark;
+    }
+   
 	@Override
     protected int getTextColor() {
 	    return R.color.black;

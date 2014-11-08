@@ -4,13 +4,11 @@
  */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
-import android.app.Fragment;
 import java.util.ArrayList;
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
-import android.app.FragmentManager;
-import android.app.ListFragment;
+
+import android.app.Fragment;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.LayoutInflater;
@@ -19,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.util.Log;
 
 public class MainFragment extends Fragment {
 	
@@ -64,16 +63,20 @@ public class MainFragment extends Fragment {
 				Intent i;
 				
 				Post p = ((PostAdapter)adapter).getItem(position);
-				
 				// Move the putExtra & startActivity out once AnswerActivity is created
 				if (p instanceof Question) {
+				    Log.d("Debug", "Question Clicked: " + p.getID());
 					i = new Intent(getActivity(), QuestionActivity.class);
+					i.putExtra(PostFragment.EXTRA_POST_ID, p.getID());
+	                startActivity(i);
 				}
-				else {
+				else if (p instanceof Answer) {
+				    Log.d("Debug", "Answer Clicked: " + p.getID());
 					i = new Intent(getActivity(), AnswerActivity.class);
+		            i.putExtra(PostFragment.EXTRA_POST_ID, p.getID());
+		            startActivity(i);
 				}
-				i.putExtra(PostFragment.EXTRA_POST_ID, p.getID());
-				startActivity(i);
+
 				// place putExtra and start activity down here, remove braces on statements			
 						
 			}
@@ -102,18 +105,36 @@ public class MainFragment extends Fragment {
 	}
 	
 	public void createView(String sort) {
-	    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-	    StrictMode.setThreadPolicy(policy);
-		sPostController = PostController.getInstance(getActivity());
-		if (sort.equals(SORT_DATE))
-			sPostController.getPostManager().sortByDate();
-		else if (sort.equals(SORT_SCORE)) 
-			sPostController.getPostManager().sortByScore();
-		
-		
-		adapter = new PostAdapter(getActivity(), sPostController.getPostManager().getQuestions());
+		new DownloadPostsTask().execute();
+		adapter = new PostAdapter(getActivity(), new ArrayList<Post>());
 		listview.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
 	}
+
+	
+	private class DownloadPostsTask extends AsyncTask<Void, PostController, PostController> {
+	    
+	     protected PostController doInBackground(Void... params) {
+	         return PostController.getInstanceForList(getActivity());
+
+	         
+	     }
+	     
+	     protected void onPostExecute(PostController result) {
+	         sPostController = result;
+	         
+             if (lastSort.equals(SORT_DATE))
+                 sPostController.getPostManager().sortByDate();
+              else if (lastSort.equals(SORT_SCORE)) 
+                 sPostController.getPostManager().sortByScore();
+             
+	         adapter.clear();
+             for (Post post : sPostController.getPostManager().getQuestions()) {
+                 adapter.add(post);
+             }
+
+	         adapter.notifyDataSetChanged();
+	     }
+
+	 }
 
 }

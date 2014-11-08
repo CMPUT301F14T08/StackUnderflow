@@ -25,6 +25,7 @@ public class Question extends Post {
 		mAnswers = new ArrayList<Answer>();
 	}
 	
+	// TODO: Use java reflection in tests to set date, remove this
 	//Constructor for testing only, to properly test SortByDate()
 	public Question(String text, String signature, String picture, String title, Date date){
 		super(text, signature, picture, date);

@@ -16,7 +16,8 @@ public class Answer extends Post {
 	private UUID mParentID;
 	
 	public Answer(String text, String signature) {
-		this(text, signature, null);
+		super(text, signature);
+		mParentID = null;
 	}
 	
 	public Answer(String text, String signature, String photo) {

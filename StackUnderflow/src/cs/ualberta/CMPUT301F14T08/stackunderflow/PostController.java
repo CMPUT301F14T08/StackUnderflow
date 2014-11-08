@@ -5,9 +5,12 @@
  */
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
+import java.util.UUID;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.StrictMode;
 import android.util.Log;
 
 
@@ -24,7 +27,6 @@ public class PostController {
 		// Checks if the user is connected to the Internet it will use the online post manager otherwise it
 		// will use a cached post manger that will later be pushed online when the user enters a network.
 		mContext = context;
-
 
 		if(isOnline()) {
 			mPostManager = OnlinePostManager.getInstance(context);
@@ -48,44 +50,103 @@ public class PostController {
 		}
 		return ni.isConnected();
 	}
-
-	// Static initializer, use this to get the active instance.
-	public static PostController getInstance(Context context) {
+	
+	// retrieves the post controller or initializes it if it doesn't exits
+	// pushes offline updates online
+	private static PostController getInstance(Context context) {
+	    
 		if (sPostController == null) {
 			sPostController = new PostController(context.getApplicationContext());
+			return sPostController;
 		}
 		
-		// if we're using the online list, refresh it
-		else if (sPostController.usingOnlinePostManager() && sPostController.isOnline()) {
-		    // if for some reason we've failed to push any updates online while using
-		    // the online post manager, than push them before refreshing
-		    if (((OnlinePostManager)sPostController.mPostManager).hasAddedOffline()) {
-		        ((OnlinePostManager)sPostController.mPostManager).pushOfflineUpdates();
-		        ((OnlinePostManager)sPostController.mPostManager).setAddedOffline(false);
-		    }
-		    ((OnlinePostManager)sPostController.mPostManager).refreshAll();
-		}
-		
-		// if using cached list and we go online than switch to the online post manager
-		else if (!sPostController.usingOnlinePostManager() && sPostController.isOnline()) {
-		    sPostController.mPostManager = OnlinePostManager.getInstance(context);
-		}
-		
-		return sPostController;
-		
+        // if using cached list and we go online than switch to the online post manager
+        else if (!sPostController.usingOnlinePostManager() && sPostController.isOnline()) {
+            sPostController.mPostManager = OnlinePostManager.getInstance(context);
+        }
+        
+        return sPostController;
+	}
+	
+	// Static initializer, use this to get the active instance if 
+    // you're just concerned with refreshing a single post
+    public static PostController getInstanceNoRefresh(Context context, UUID postUUID) {
+        
+        getInstance(context);
+        return sPostController;
+    }
+	
+	// Static initializer, use this to get the active instance if 
+	// you're just concerned with refreshing a single post
+	public static PostController getInstanceForID(Context context, UUID postUUID) {
+	    
+        getInstance(context);
+
+        // if we're using the online list, refresh for the required post
+        if (sPostController.usingOnlinePostManager() && sPostController.isOnline()) {
+            
+            // if we've added anything that hasn't been pushed to live, try to push it now
+            if (((OnlinePostManager)sPostController.mPostManager).hasAddedOffline()) {
+                ((OnlinePostManager)sPostController.mPostManager).pushOfflineUpdates();
+                ((OnlinePostManager)sPostController.mPostManager).setAddedOffline(false);
+            }
+            
+            Question question = sPostController.getQuestion(postUUID);
+            ((OnlinePostManager)sPostController.mPostManager).refreshQuestion(question);
+        }
+        
+        return sPostController;
+	}
+	
+	// Static initializer, use this to get the active instance if 
+    // you're concerned with refreshing the entire list
+	public static PostController getInstanceForList(Context context) {
+	    getInstance(context);
+	    
+        // if we're using the online list, refresh it
+        if (sPostController.usingOnlinePostManager() && sPostController.isOnline()) {
+            ((OnlinePostManager)sPostController.mPostManager).refreshAll();
+        }
+        
+        return sPostController;
 	}
 
-	public PostManager getPostManager() {
-		return mPostManager;
+	// Given a answer/reply/or question returns the question related to the object
+	// For example, given an answer - returns answer's the parent question
+	// given an answer reply - returns the answer's parent question
+	public Question getRelatedQuestion(Object object) {
+	    
+	    if (object instanceof Question)
+	        return (Question)object;
+	    
+	    if (object instanceof Answer)
+	        return (Question)mPostManager.getPost(((Answer)object).getParentID());
+	    
+	    if (object instanceof Reply) {
+	        Reply reply = (Reply) object;
+	        return (Question)mPostManager.getPost(reply.getQuestionID());
+	    }
+	        
+	    throw new InvalidParentException();
 	}
-		
+	
+	// Given a UUID returns the corresponding question
+	// returns parent question if given an answer uuid
+    public Question getQuestion(UUID uuid) {
+        return mPostManager.getQuestion(uuid);
+    }
+   
 	// Type Checking
-	// -- Use this to tell if we're online or offline
-	public boolean usingOnlinePostManager() {
-		if(mPostManager instanceof CachedPostManager) 
-			return false;
-		return true;
-	}
-		
+    // -- Use this to tell if we're online or offline
+    public boolean usingOnlinePostManager() {
+        if(mPostManager instanceof CachedPostManager) 
+            return false;
+        return true;
+    }
+	
+	
+    public PostManager getPostManager() {
+        return mPostManager;
+    }
 }
 

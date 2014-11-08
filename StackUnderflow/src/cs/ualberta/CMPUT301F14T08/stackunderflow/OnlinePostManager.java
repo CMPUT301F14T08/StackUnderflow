@@ -482,7 +482,11 @@ public class OnlinePostManager extends PostManager {
     // Get Post with specific ES ID
     public void refreshQuestion(Question question) {
         Question onlineQuestion = getESQuestion(question);
-        updateIfExists(onlineQuestion);
+        
+        if (onlineQuestion == null)
+            return;
+        
+        question = onlineQuestion;
         boolean updated = mCachedPostManager.updateIfExists(onlineQuestion);
         if (updated)
             mCachedPostManager.save();

@@ -13,9 +13,10 @@ public class Reply {
 	private UUID mUUID;
 	private String mText;
 	private Date mDate;
-    private long mTimeStamp;
 	private	String mSignature;
 	private boolean mExistsOnline; // flag stating whether the reply exists online yet
+	private UUID mParentID; // immediate parent
+	private UUID mQuestionID;  // UUID of question containing this object (if this reply is to an answer, it will be the parent Question of that answer)
 	
 	public Reply(String text, String signature) {
 		mText = text;
@@ -23,7 +24,7 @@ public class Reply {
 		mUUID = UUID.randomUUID();
 		mDate = new Date();
 		mExistsOnline = false;
-	    mTimeStamp = System.currentTimeMillis();
+	    mParentID = null;
 	}
 
 	public UUID getUUID(){
@@ -46,13 +47,30 @@ public class Reply {
         return mExistsOnline;
     }
     
-    public long getTimeStamp() {
-        return mTimeStamp;
+    public void setExistsOnline(boolean isPushedToLive) {
+        mExistsOnline = isPushedToLive;
     }
 
-    public void setExistsOnline(boolean isPushedToLive) {
-        mExistsOnline = mExistsOnline;
+    public UUID getParentID() {
+        return mParentID;
     }
-	
+    
+    public UUID getQuestionID() {
+        return mQuestionID;
+    }
+
+    public void setParent(Post post) {
+        this.mParentID = post.getID();
+        
+        if (post instanceof Question) {
+            this.mQuestionID = post.getID();
+        }
+        else {
+            if (((Answer)post).getParentID() == null)
+                throw new InvalidParentException();
+            this.mQuestionID = ((Answer)post).getParentID();
+        }
+    }
+
 }	
 	

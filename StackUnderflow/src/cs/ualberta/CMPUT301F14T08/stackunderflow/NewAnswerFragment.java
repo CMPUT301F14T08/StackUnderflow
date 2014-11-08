@@ -26,7 +26,7 @@ public class NewAnswerFragment extends NewPostFragment {
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.new_answer_title);
 		mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
-		
+	    sPostController = PostController.getInstanceForID(getActivity(), mPostId);
 	}	
 	
 	@Override

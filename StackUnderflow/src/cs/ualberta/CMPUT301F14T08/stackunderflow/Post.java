@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class Post {
 	
-    protected UUID mID; //TODO do we want random UUID or another method?
+    protected UUID mID; 
 	protected String mText;
 	protected int mVotes = 0;
 	protected String mPicture;  // placeholder: need image format, likely BitmapFactory implementation
@@ -26,11 +26,9 @@ public class Post {
 	protected UserAttributes mUserAttributes;
 	protected int mUpvotesChangedOffline;
 	protected boolean mExistsOnline;
-	protected long mTimeStamp;
 	
-
 	public Post(String text, String signature) {
-	    mID = UUID.randomUUID(); //TODO do we want random UUID or another method?
+	    mID = UUID.randomUUID(); 
         mText = text;
         mVotes = 0;
         mPicture = null;
@@ -42,7 +40,6 @@ public class Post {
         mUserAttributes = new UserAttributes();
         mUpvotesChangedOffline = 0;
         mExistsOnline = false;
-        mTimeStamp = System.currentTimeMillis();
 	}
 	
 	public Post(String text, String signature, String picture){
@@ -58,7 +55,6 @@ public class Post {
 		mUserAttributes = new UserAttributes();
 		mUpvotesChangedOffline = 0;
 	    mExistsOnline = false;
-	    mTimeStamp = System.currentTimeMillis();
 	}
 	
 	public UUID getID() {
@@ -80,10 +76,6 @@ public class Post {
 	public Date getDate() {
 		return mDate;
 	}
-	
-   public long getTimeStamp() {
-        return mTimeStamp;
-    }
 	
 	public int getVotes() {
 		return mVotes;
@@ -107,6 +99,7 @@ public int setVotes(int votes) {
 	}
 	
 	public void addReply(Reply newReply){
+	    newReply.setParent(this);
 		mReplies.add(newReply);
 	}
 	
@@ -150,8 +143,8 @@ public int setVotes(int votes) {
         this.mExistsOnline = existsOnline;
     }
 	
-
-	
+    
+    // TODO: Remove this, use java reflection in tests to set date
 	//Constructor used to properly test SortByDate()
 	public Post(String text, String signature, String picture, Date date){
 		mID = UUID.randomUUID(); //TODO do we want random UUID or another method?

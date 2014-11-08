@@ -8,7 +8,10 @@ import java.util.Locale;
 import java.util.UUID;
 
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +32,7 @@ public class PostFragment extends Fragment {
 	protected PostController sPostController;
 	protected ReplyAdapter adapter;
 	protected UUID mPostId;
-	private Post mPost;
+	protected Post mPost;
 	
 	protected LinearLayout mTopLinearLayout;
 	protected TextView mQuestionTitle;
@@ -54,9 +57,19 @@ public class PostFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		sPostController = PostController.getInstance(getActivity());
+	    
 		mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
+		Log.d("Debug", "Opening Post view for: " + mPostId);
+		
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        
+		sPostController = PostController.getInstanceForID(getActivity(), mPostId);
+		
 		mPost = sPostController.getPostManager().getPost(mPostId);
+		
+	    Log.d("Debug", "Post UUID: " + mPostId);
+	    Log.d("Debug", "Posts: " + sPostController.getPostManager().getQuestions().toString());
 
 		mBlackColor = getResources().getColor(R.color.black);
 		mWhiteColor = getResources().getColor(R.color.white);

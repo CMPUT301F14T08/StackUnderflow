@@ -39,6 +39,7 @@ public abstract class PostManager {
 		throw new InvalidPostTypeException();
 	}
 	
+	// given a UUID returns the corresponding post object (question or answer)
     public Post getPost(UUID uuid) {
         for (int i=0; i< mQuestions.size(); i++) {
             Question question = (Question)mQuestions.get(i);
@@ -50,6 +51,24 @@ public abstract class PostManager {
                 Answer answer = question.getAnswers().get(j);
                 if (answer.getID().equals(uuid))
                     return answer;
+            }
+        }
+        return null;
+    }
+    
+    // given a question or answer UUID returns the
+    // corresponding question object (ex. for an answer the parent question)
+    public Question getQuestion(UUID uuid) {
+        for (int i=0; i< mQuestions.size(); i++) {
+            Question question = (Question)mQuestions.get(i);
+            
+            if (question.getID().equals(uuid))
+                return question;
+            
+            for (int j=0; j < question.getAnswers().size(); j++) {
+                Answer answer = question.getAnswers().get(j);
+                if (answer.getID().equals(uuid))
+                    return question;
             }
         }
         return null;

@@ -24,8 +24,7 @@ public class QuestionFragment extends PostFragment {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.question_title);
-		// TODO: This should fail gracefully if getPost returns null
-		mQuestion = (Question)sPostController.getPostManager().getPost(mPostId);
+		mQuestion = (Question)mPost;
 	}
 	
 	@Override
@@ -73,9 +72,7 @@ public class QuestionFragment extends PostFragment {
 		mQuestionTitle.setTextColor(mWhiteColor);
 
 		mPostBody = (TextView)v.findViewById(R.id.post_fragment_textview_body);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
-		String date = sdf.format(mQuestion.getDate());
-		mPostBody.setText(mQuestion.getText() + " (" + date + ")");
+		mPostBody.setText(mQuestion.getText());
 		mPostBody.setTextColor(mWhiteColor);
 		
 		mUpvoteButton = (ImageButton)v.findViewById(R.id.post_fragment_button_upvote);
@@ -93,12 +90,12 @@ public class QuestionFragment extends PostFragment {
 					mQuestion.decrementVotes();
 					mUpvoteButton.setImageResource(R.drawable.upvote_empty);
 				}		
-				mUpvoteCountTextView.setText(""+mQuestion.getVotes());
+				mUpvoteCountTextView.setText(mQuestion.getVotes() + " votes");
 			}
 		});
 		
 		mUpvoteCountTextView = (TextView)v.findViewById(R.id.post_fragment_textview_upvotes);
-		mUpvoteCountTextView.setText(""+ mQuestion.getVotes());
+		mUpvoteCountTextView.setText(mQuestion.getVotes() + " votes");
 		mUpvoteCountTextView.setTextColor(mWhiteColor);
 		
 		mFavoriteButton = (ImageButton)v.findViewById(R.id.post_fragment_button_favorite);
@@ -139,7 +136,9 @@ public class QuestionFragment extends PostFragment {
 		
 		
 		mUsername = (TextView)v.findViewById(R.id.post_fragment_textview_username);
-		mUsername.setText(mQuestion.getSignature());
+	    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
+	    String date = "(" + sdf.format(mQuestion.getDate()) + ")";
+		mUsername.setText("- " + mQuestion.getSignature() + " " + date);
 		mUsername.setTextColor(mWhiteColor);
 		
 		

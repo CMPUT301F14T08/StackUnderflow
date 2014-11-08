@@ -22,6 +22,7 @@ import android.widget.Toast;
 import android.app.Activity;
 import android.content.Intent;
 import android.app.FragmentManager;
+import android.util.Log;
 
 
 public class MainActivity extends Activity implements TabListener {

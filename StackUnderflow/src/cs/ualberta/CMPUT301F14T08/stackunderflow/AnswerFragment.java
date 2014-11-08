@@ -27,7 +27,7 @@ public class AnswerFragment extends PostFragment {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.answer_title);
-		mAnswer = (Answer)sPostController.getPostManager().getPost(mPostId);
+		mAnswer = (Answer)mPost;
 		mParent = (Question)sPostController.getPostManager().getPost(mAnswer.getParentID());
 	}
 	

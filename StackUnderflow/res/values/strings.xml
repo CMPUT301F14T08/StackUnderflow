@@ -8,7 +8,7 @@
 
     <string name="username"></string>
     <string name="upvote_count"> </string>
-    <string name="answer_count">Answers</string>
+    <string name="answer_count"> Answers</string>
     <string name="favorite">favorite</string>
     <string name="question_title">Question</string>
     <string name="answer_title">Answer</string>

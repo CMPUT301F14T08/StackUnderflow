@@ -24,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
 public class CachedPostManager extends PostManager{
 	private String QUESTION_CACHE_FILE = "cached_questions.json";
 	protected static CachedPostManager sPostManager;
+	protected boolean addedOffline;
 	
 	// Keep this private!
 	// -- Loads posts from cache when created
@@ -34,7 +35,7 @@ public class CachedPostManager extends PostManager{
 		} catch (Exception e) {
 		    mQuestions = new ArrayList<Post>();
 		}
-		
+		addedOffline = true;
 	}
 	
 	//TODO: Delete this later!
@@ -157,12 +158,14 @@ public class CachedPostManager extends PostManager{
 	public void addQuestion(Question newQuestion) {
 		super.addQuestion(newQuestion);
 		save();
+		addedOffline = true;
 	}
 	
 	@Override
 	public void addAnswer(Question parent, Answer newAnswer) {
 		super.addAnswer(parent, newAnswer);
 		save();
+		addedOffline = true;
 	}
 	
 	//TODO: Implement in Project Part 4
@@ -170,6 +173,7 @@ public class CachedPostManager extends PostManager{
 	public void addReply(Question parent, Reply newReply) {
 		super.addReply(parent, newReply);
 		save();
+		addedOffline = true;
 	}
 	
 	//TODO: Update with implementation of user attributes
@@ -185,13 +189,18 @@ public class CachedPostManager extends PostManager{
         
         post.setUpvotesChangedOffline(incrementVotes);
         save();
+        addedOffline = true;
     }
 	
     @Override
     public void toggleFavorite(Post post) {
         super.toggleFavorite(post);
         save();
+        addedOffline = true;
     }
 	
+    public boolean hasAddedOffline() {
+        return addedOffline;
+    }
 
 }

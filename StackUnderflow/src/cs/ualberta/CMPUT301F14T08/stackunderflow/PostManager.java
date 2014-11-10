@@ -223,4 +223,6 @@ public abstract class PostManager {
    public int getPositionOfAnswer(Question question, Answer answer) {
         return question.getPositionOfAnswer(answer.getID());
    }
+   
+
 }

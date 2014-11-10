@@ -35,7 +35,6 @@ public class OnlinePostManager extends PostManager {
     private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301f14t08/question/_search";
     private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301f14t08/question/";
     private static final String TAG = "ELASTICSEARCH";
-    private boolean addedOffline;
     private CachedPostManager mCachedPostManager;
     private Gson gson;
     
@@ -43,7 +42,6 @@ public class OnlinePostManager extends PostManager {
         super(context);
         gson = new Gson();
         mCachedPostManager = CachedPostManager.getInstance(context);
-        this.setAddedOffline(false);
     }
     
     // 1. Gets questions from online
@@ -321,12 +319,12 @@ public class OnlinePostManager extends PostManager {
 
     /** Public Methods **/
     
-    // 1. pushes updates to server
-    // 2. get posts from server
-    
+
     
     /** Public Methods **/
     
+    // 1. pushes updates to server
+    // 2. get posts from server 
     // TODO: 3. strips/loads user attributes
     // Static initializer, use this to get the active instance.
     // This insures we only ever have one copy going at once!
@@ -362,11 +360,12 @@ public class OnlinePostManager extends PostManager {
             super.addQuestion(newQuestion);
         }
         else {
-            setAddedOffline(true);
+            mCachedPostManager.addedOffline = true;
             newQuestion.setExistsOnline(false);
         }
         
         mCachedPostManager.addQuestion(newQuestion);
+        mCachedPostManager.save();
     }
     
     // Saves individual answer by updating associated question on ES server
@@ -380,11 +379,11 @@ public class OnlinePostManager extends PostManager {
         }
             
         else {
-            setAddedOffline(true);
+            mCachedPostManager.addedOffline = true;
             newAnswer.setExistsOnline(false);
         }
         
-        mCachedPostManager.addAnswer(parent, newAnswer);
+        mCachedPostManager.save();
     }
     
     //TODO: Implement in Project Part 4
@@ -419,7 +418,7 @@ public class OnlinePostManager extends PostManager {
             post.setUpvotesChangedOffline(0);
         }
         else {
-            setAddedOffline(true);
+            mCachedPostManager.addedOffline = true;
             post.setUpvotesChangedOffline(incrementVotes);
         }
         
@@ -458,6 +457,8 @@ public class OnlinePostManager extends PostManager {
     }
     
     public void pushOfflineUpdates() {
+        if (!mCachedPostManager.hasAddedOffline())
+            return;
         
         String result = null;
         for (Post post : mCachedPostManager.getQuestions()) {
@@ -508,6 +509,8 @@ public class OnlinePostManager extends PostManager {
                 // TODO: Implement Reply Logic for Week 4
             }
         }
+        mCachedPostManager.addedOffline = false;
+
     }
     
     public void refreshAll() {
@@ -528,19 +531,13 @@ public class OnlinePostManager extends PostManager {
             mCachedPostManager.save();
     }
 
-    
-    public boolean hasAddedOffline() {
-        return addedOffline;
-    }
-    
     public void addToCache(Question question) {
         if (mCachedPostManager.getPost(question.getID()) == null) {
             mCachedPostManager.addQuestion(question);
         }
     }
     
-
-    public void setAddedOffline(boolean addedOffline) {
-        this.addedOffline = addedOffline;
+    public boolean hasAddedOffline() {
+        return mCachedPostManager.addedOffline;
     }
 }

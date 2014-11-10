@@ -107,11 +107,7 @@ public class PostController {
         // if we're using the online list, refresh it
         if (sPostController.usingOnlinePostManager()) {
             // if we've added anything that hasn't been pushed to live, try to push it now
-            if (((OnlinePostManager)sPostController.mPostManager).hasAddedOffline()) {
-                ((OnlinePostManager)sPostController.mPostManager).pushOfflineUpdates();
-                ((OnlinePostManager)sPostController.mPostManager).setAddedOffline(false);
-            }
-            
+            ((OnlinePostManager)sPostController.mPostManager).pushOfflineUpdates();
             ((OnlinePostManager)sPostController.mPostManager).refreshAll();
         }
         

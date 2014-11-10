@@ -81,7 +81,7 @@ public abstract class PostFragment extends Fragment {
 		
 		mUpvoteEmpty = context.getResources().getDrawable(getUpvoteEmptyID());
 		mUpvoteEmpty.setBounds(0, 0, mUpvoteEmpty.getMinimumHeight(), mUpvoteEmpty.getMinimumWidth());
-		
+
 		mFavoriteFull = context.getResources().getDrawable(getFavoriteFullID());
 		mFavoriteFull.setBounds(0, 0, mFavoriteFull.getMinimumHeight(), mFavoriteFull.getMinimumWidth());
 		
@@ -219,7 +219,7 @@ public abstract class PostFragment extends Fragment {
     }
     
     protected void setVoteText(Post post, Button button) {
-        if (post.getVotes() == 0)
+        if (post.getVotes() == 1)
             button.setText(mPost.getVotes() + " upvote");
         else
             button.setText(mPost.getVotes() + " upvotes");

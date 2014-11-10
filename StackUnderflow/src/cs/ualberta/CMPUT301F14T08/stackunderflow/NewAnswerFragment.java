@@ -29,55 +29,60 @@ public class NewAnswerFragment extends NewPostFragment {
 	    sPostController = PostController.getInstanceForID(getActivity(), mPostId);
 	}	
 	
+    @Override
+    int getViewID() {
+        return R.layout.new_answer_fragment;
+    }
+    
+    @Override
+    int getBodyTextViewID() {
+        return R.id.new_answer_fragment_edittext_body;
+    }
+
+    @Override
+    int getAddPictureButtonID() {
+        return R.id.new_answer_fragment_upload_photo_button;
+    }
+
+    @Override
+    int getSubmitButtonID() {
+        return R.id.new_answer_fragment_submit_button;
+    }   
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+		// Call NewPostFragment onCreate View
+		View v = super.onCreateView(inflater, parent, savedInstanceState);
 		
-		View v = inflater.inflate(R.layout.new_answer_fragment, parent, false);		
-		//Gathers information from user interface 
-		mPostBody = (EditText)v.findViewById(R.id.new_answer_fragment_edittext_body);
-		mPostBody.setText(getResources().getString(R.string.new_answer_fragment_edittext_body));		
-		mUploadPictureButton = (ImageButton) v.findViewById(R.id.new_answer_fragment_upload_photo_button);
-        mUploadPictureButton.setImageResource(R.drawable.picture_dark);        
-        mSubmitButton = (Button) v.findViewById(R.id.new_answer_fragment_submit_button);       
+		
+		// Set up on click listener for submitting answers
+        // For adding images see the super class onCreateView
+        mPostBody = (EditText)v.findViewById(getBodyTextViewID());
+        mUploadPictureButton = (Button) v.findViewById(getAddPictureButtonID());
+        mSubmitButton = (Button) v.findViewById(getSubmitButtonID());
+        
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {       	
-            	
-            	
-            	String author = "Guest"; // Implement user profile
-            	String body = mPostBody.getText().toString();
-            	
-            	//Checks if fields are left blank
-            	if(body.equalsIgnoreCase("")){
-            		Toast.makeText(getActivity().getApplicationContext(), "Please Enter a Answer", 
-            				   Toast.LENGTH_LONG).show();
-            	}
-            	else{
-            	Answer mAnswer = new Answer(body, author);      	
-            	Question qparent = (Question) sPostController.getPostManager().getPost(mPostId);
-            	sPostController.getPostManager().addAnswer(qparent, mAnswer);
+            public void onClick(View v) {           
+                
+                // TODO: Change this to use usernames after implementing user profile
+                String author = "Guest"; 
+                String body = mPostBody.getText().toString();
+                
+                //Checks if fields are left blank
+                if(body.equalsIgnoreCase("")){
+                    Toast.makeText(getActivity().getApplicationContext(), "Please Enter a Answer", 
+                               Toast.LENGTH_LONG).show();
+                }
+                else{
+                Answer mAnswer = new Answer(body, author);          
+                Question qparent = (Question) sPostController.getPostManager().getPost(mPostId);
+                sPostController.getPostManager().addAnswer(qparent, mAnswer);
 
-            	getActivity().finish();
-            	}
+                getActivity().finish();
+                }
             }
         });
         
-        //TODO Implement picture dialog/upload
-        mUploadPictureButton.setOnClickListener(new View.OnClickListener() {			
-			@Override
-			public void onClick(View v) {
-				// Implement picture dialog
-				
-			}
-		});
-		
-        mPostBody.setOnClickListener(new View.OnClickListener() {			
-			@Override
-			public void onClick(View v) {
-				// Implement picture dialog
-				mPostBody.setText("");
-			}
-		});
-        
         return v;
-	}	
+	}
 }

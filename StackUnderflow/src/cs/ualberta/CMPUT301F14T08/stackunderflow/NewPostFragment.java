@@ -9,15 +9,19 @@ import java.util.UUID;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class NewPostFragment extends Fragment {
+public abstract class NewPostFragment extends Fragment {
 	
 	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";
 	protected static final String DIALOG_USERNAME = "username";
@@ -28,7 +32,7 @@ public class NewPostFragment extends Fragment {
 	
 	protected EditText mPostTitle;
 	protected EditText mPostBody;
-	protected ImageButton mUploadPictureButton;
+	protected Button mUploadPictureButton;
 	protected Button mSubmitButton;
 	
 	protected int mBlackColor;
@@ -38,11 +42,12 @@ public class NewPostFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		
-		mBlackColor = getResources().getColor(R.color.black);
-		mWhiteColor = getResources().getColor(R.color.white);
-		mBlueColor = getResources().getColor(R.color.blue);
 	}
+	
+	abstract int getViewID();
+	abstract int getBodyTextViewID();
+	abstract int getAddPictureButtonID();
+	abstract int getSubmitButtonID();
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
@@ -71,8 +76,31 @@ public class NewPostFragment extends Fragment {
         	
         default:
             return super.onOptionsItemSelected(menuItem);
-    	}
+    	} 
 	}
+	
+	   @Override
+	    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+	        
+	        View v = inflater.inflate(getViewID(), parent, false);     
+
+	        // Get Views IDs
+	        mPostBody = (EditText)v.findViewById(getBodyTextViewID());
+	        mUploadPictureButton = (Button) v.findViewById(getAddPictureButtonID());
+	        mSubmitButton = (Button) v.findViewById(getSubmitButtonID());
+	        
+
+	        //TODO Implement picture dialog/upload
+	        mUploadPictureButton.setOnClickListener(new View.OnClickListener() {            
+	            @Override
+	            public void onClick(View v) {
+	                // Implement picture dialog
+	                
+	            }
+	        });
+	        
+	        return v;
+	    }
     	
     	
 	

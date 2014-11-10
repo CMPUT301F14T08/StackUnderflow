@@ -29,6 +29,7 @@ public class MainFragment extends Fragment {
 	protected PostController sPostController;
 	protected PostAdapter adapter;
 	private ListView listview;
+	private View loadingPanel;
 	private String lastSort;
 	
 	@Override
@@ -44,7 +45,6 @@ public class MainFragment extends Fragment {
 	public void onResume(){
 		super.onResume();
 		createView(lastSort);
-		adapter.notifyDataSetChanged();
 	}
 	
 	@Override
@@ -53,7 +53,7 @@ public class MainFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.list_fragment, null);
 		listview = (ListView) view.findViewById(R.id.list_view);
-
+		loadingPanel = view.findViewById(R.id.loadingPanel);
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			
 			// Opens Question or Answer Fragment based upon list item clicked 
@@ -105,6 +105,7 @@ public class MainFragment extends Fragment {
 	}
 	
 	public void createView(String sort) {
+        loadingPanel.setVisibility(View.VISIBLE);
 		new DownloadPostsTask().execute();
 		adapter = new PostAdapter(getActivity(), new ArrayList<Post>());
 		listview.setAdapter(adapter);
@@ -119,6 +120,12 @@ public class MainFragment extends Fragment {
 	         
 	     }
 	     
+	     @Override
+	     protected void onPreExecute() {
+	         
+	     }
+	     
+	     @Override
 	     protected void onPostExecute(PostController result) {
 	         sPostController = result;
 	         
@@ -133,6 +140,7 @@ public class MainFragment extends Fragment {
              }
 
 	         adapter.notifyDataSetChanged();
+	         loadingPanel.setVisibility(View.GONE);
 	     }
 
 	 }

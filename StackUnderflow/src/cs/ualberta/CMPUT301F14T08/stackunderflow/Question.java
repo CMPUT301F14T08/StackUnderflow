@@ -1,15 +1,15 @@
-/**
- * Question class, extends Post class This is where the differences between post and question can be found. This will show a title, amount of answers 
- * it can also get the position of answers. and the answers that are linked to it.
- * @author Cmput301 Winter 2014 Group 8
- */
+
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
-
+/**
+ * Question class, extends Post class This is where the differences between post and question can be found. This will show a title, amount of answers 
+ * it can also get the position of answers. and the answers that are linked to it.
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class Question extends Post {
 	
 	private String mTitle;
@@ -73,7 +73,12 @@ public class Question extends Post {
         }
         return null;
     }
-	
+	/**
+	 * Looks for an answer in a list of all the answers to a question. This is important to user because answers are stored in a array list 
+	 * because of this keep in mind removing and adding can change the position of answer. 
+	 * @param answerUUID A UUID of a answer (Which is randomly generated on creation) 
+	 * @return a int with the number of answers in front of the answer with the matching UUID
+	 */
 	public int getPositionOfAnswer(UUID answerUUID){
 		int position = 0;
 		for(int i = 0; i < mAnswers.size(); i++){

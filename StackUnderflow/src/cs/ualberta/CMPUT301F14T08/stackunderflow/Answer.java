@@ -1,8 +1,4 @@
-/**
-* Answer class, extends Post class. Used to hold answers to questions. mPartent ID will like an answer to a question. 
-* Answers should never be called with out calling setparentQuestion or it will cause an answer that is not answering anything
-* @author Cmput301 Winter 2014 Group 8
- */
+
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
@@ -11,7 +7,11 @@ import java.util.UUID;
 import java.util.Date;
 
 
-
+/**
+* Answer class, extends Post class. Used to hold answers to questions. mPartent ID will like an answer to a question. 
+* Answers should never be called with out calling setparentQuestion or it will cause an answer that is not answering anything
+* @author Cmput301 Winter 2014 Group 8
+ */
 public class Answer extends Post {
     
 	private UUID mParentID;

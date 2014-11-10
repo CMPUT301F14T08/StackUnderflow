@@ -1,10 +1,10 @@
+
+
+package cs.ualberta.CMPUT301F14T08.stackunderflow;
 /**
  * UserAttributes class (stores attributes local to machine)
  * @author Cmput301 Winter 2014 Group 8
  */
-
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
-
 public class UserAttributes {
 	
 	private boolean mIsUpvoted;

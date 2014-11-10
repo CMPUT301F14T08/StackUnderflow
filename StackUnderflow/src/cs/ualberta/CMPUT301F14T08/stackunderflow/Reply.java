@@ -1,14 +1,14 @@
-/**
- * Reply class (utilized by Post class) This is the class that holds the information of when a user wishs to make a comment about a question or an answer.
- * it has a body of text, a UUID, a date, a signature, and it allows to see if there is already such a post online that will remove change if it is pushed online
- * @author Cmput301 Winter 2014 Group 8
- */
+
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.Date;
 import java.util.UUID;
-
+/**
+ * Reply class (utilized by Post class) This is the class that holds the information of when a user wishs to make a comment about a question or an answer.
+ * it has a body of text, a UUID, a date, a signature, and it allows to see if there is already such a post online that will remove change if it is pushed online
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class Reply {
 	
 	private UUID mUUID;

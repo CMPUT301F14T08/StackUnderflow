@@ -1,8 +1,4 @@
-/**
- * MainFragment This is where the sorting on the main screen appears so the user may view by most popular or most recent.
- * this also allows the user to move to questions that they would like to see.
- * @author Cmput301 Winter 2014 Group 8
- */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.ArrayList;
@@ -18,7 +14,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-
+/**
+ * MainFragment This is where the sorting on the main screen appears so the user may view by most popular or most recent.
+ * this also allows the user to move to questions that they would like to see.
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class MainFragment extends Fragment {
 	
 	private static final String SORT_DATE = "DATE";

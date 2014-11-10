@@ -1,7 +1,4 @@
-/**
- * OnSwipeTouchListener - Does the math to see if the user has swiped so that users may swipe thru all answers to a question. 
- * @author Cmput301 Winter 2014 Group 8
- */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import android.content.Context;
@@ -10,7 +7,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnTouchListener;
-
+/**
+ * OnSwipeTouchListener - Does the math to see if the user has swiped so that users may swipe thru all answers to a question. 
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class OnSwipeTouchListener implements OnTouchListener {
 
     private final GestureDetector gestureDetector;

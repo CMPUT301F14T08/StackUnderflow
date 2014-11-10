@@ -1,7 +1,4 @@
-/**
- * This fragment a question and display's it. This includes displaying the question along with all number of answers the question currently has. 
- * @author Cmput301 Winter 2014 Group 8
- */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import android.content.Intent;
@@ -12,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
+/**
+ * This fragment a question and display's it. This includes displaying the question along with all number of answers the question currently has. 
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class QuestionFragment extends PostFragment {
 	
 	private Question mQuestion;

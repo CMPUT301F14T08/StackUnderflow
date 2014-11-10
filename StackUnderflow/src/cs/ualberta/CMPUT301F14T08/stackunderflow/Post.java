@@ -4,7 +4,6 @@
  * be called as a Question or an Answer.
  */
 
-
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 
@@ -26,7 +25,12 @@ public class Post {
 	protected UserAttributes mUserAttributes;
 	protected int mUpvotesChangedOffline;
 	protected boolean mExistsOnline;
-	
+	/**
+	 * Basic post part that is used to inherit into Answer and Question. This constructor is used when the user attempts to make a post
+	 * that has a text body, date, signature but not a picture. This will generate a random UUID. By default mExistsOline to false. 
+	 * @param text The main body of the question
+	 * @param signature the user name of the author that wrote the post.
+	 */
 	public Post(String text, String signature) {
 	    mID = UUID.randomUUID(); 
         mText = text;

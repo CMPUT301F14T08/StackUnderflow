@@ -68,12 +68,12 @@ public class NewAnswerFragment extends NewPostFragment {
                 
                 //Checks if fields are left blank
                 if(body.equalsIgnoreCase("")){
-                    Toast.makeText(getActivity().getApplicationContext(), "Please Enter a Answer", 
+                    Toast.makeText(getActivity().getApplicationContext(), "Please enter an answer", 
                                Toast.LENGTH_LONG).show();
                 }
                 else{
                 Answer mAnswer = new Answer(body, author);          
-                Question qparent = (Question) sPostController.getPostManager().getPost(mPostId);
+                Question qparent = (Question) sPostController.getQuestion(mPostId);
                 sPostController.getPostManager().addAnswer(qparent, mAnswer);
                 getActivity().setResult(0);
                 getActivity().finish();

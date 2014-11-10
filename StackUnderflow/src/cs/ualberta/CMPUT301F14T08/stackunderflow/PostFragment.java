@@ -115,32 +115,16 @@ public abstract class PostFragment extends Fragment {
 	abstract protected int getImageIconID();
 	abstract protected int getTextColor();
 	
-	// configure the answer button text and image visibility
-	//abstract protected void configureAnswerButton();
-	
 	@Override
 	public void onPause(){
 		super.onPause();
 	}
-	
-//	@Override
-//	public void onResume(){
-//		super.onResume();
-//		//getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-//	}
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
 		super.onCreateOptionsMenu(menu, menuInflater);
 		menuInflater.inflate(R.menu.post_menu, menu);
 	}
-	
-//	// if answers are added we'll want to refresh the answer button
-//    @Override
-//    public void onResume(){
-//        super.onResume();
-//        configureAnswerButton();
-//    }
     
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem){
@@ -161,17 +145,12 @@ public abstract class PostFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)  
     {  
-              super.onActivityResult(requestCode, resultCode, data);  
-                  
-               // check if the request code is same as what is passed  here it is 2  
-                if(requestCode==0)  
-                      {  
-                	
-                	getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
-              
-                      }  
-  
-  }  
+		super.onActivityResult(requestCode, resultCode, data);  
+        // Request code should be 0 and should reload fragment to update info
+        if(requestCode==0){  
+        	getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+        }   
+    } 
 	
 	// Set all the stuff relevant to both Question and Answer Fragments here
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -239,6 +218,8 @@ public abstract class PostFragment extends Fragment {
             mPictureButton.setEnabled(false);
             mPictureButton.setVisibility(View.GONE);
         }
+        
+        mListView = (ListView)postView.findViewById(R.id.post_fragment_listview_replies);
         
         // Set Backbutton/Forward Button invisible for now, Answer/Question can
         // Choose to show them based on their individual requirements

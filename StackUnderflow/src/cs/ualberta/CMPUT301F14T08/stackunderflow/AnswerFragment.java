@@ -4,10 +4,8 @@
  */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +18,6 @@ public class AnswerFragment extends PostFragment {
 	
 	private Answer mAnswer;
 	private Question mParent;
-	final private Fragment frag = this;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -82,10 +79,6 @@ public class AnswerFragment extends PostFragment {
 					startActivity(i);	
 				}
 			    return true;
-            case R.id.menu_item_new_answer:
-                Intent i = new Intent(getActivity(), NewAnswerActivity.class);
-                i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID()); 
-                startActivityForResult(i, 0);
 			default:
 			    // Call PostFragment onOptionItemSelected to get the rest of the menu
 				return super.onOptionsItemSelected(item);
@@ -100,10 +93,7 @@ public class AnswerFragment extends PostFragment {
 	    // Call PostFragment onCreateView
 		super.setPost(mAnswer);
 		View v = super.onCreateView(inflater, parent, savedInstanceState);
-		
-		
-		
-		
+
 		// Logic unique to the Answer Fragment
 		LinearLayout linearLayout = (LinearLayout)v.findViewById(R.id.post_fragment_top_linearlayout);
 		linearLayout.setBackgroundColor(mTextColor);
@@ -119,18 +109,16 @@ public class AnswerFragment extends PostFragment {
 		v.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
 			public void onSwipeLeft() {
 				if(remainingAnswers > 0){
-
-					Log.d("MESSAGE LEFT", ""+remainingAnswers);
 					mAnswer = mParent.getAnswers().get(position+1);
-					getFragmentManager().beginTransaction().detach(frag).attach(frag).commit();
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
 				}
 		    }
 			
 			public void onSwipeRight() {
 
-				Log.d("MESSAGE RIGHT", ""+remainingAnswers);
 				if(position==0){
 					if(mCameFrom == FROM_QUESTION){
+						getActivity().setResult(0);
 						getActivity().onBackPressed();
 					}
 					else{
@@ -143,7 +131,37 @@ public class AnswerFragment extends PostFragment {
 				}
 				else{
 					mAnswer = mParent.getAnswers().get(position-1);
-					getFragmentManager().beginTransaction().detach(frag).attach(frag).commit();
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+				}
+		    }
+		});
+		
+		mListView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+			public void onSwipeLeft() {
+				if(remainingAnswers > 0){
+					mAnswer = mParent.getAnswers().get(position+1);
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+				}
+		    }
+			
+			public void onSwipeRight() {
+
+				if(position==0){
+					if(mCameFrom == FROM_QUESTION){
+						getActivity().setResult(0);
+						getActivity().onBackPressed();
+					}
+					else{
+						getActivity().finish();
+						Intent i = new Intent(getActivity(), QuestionActivity.class);
+						i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
+						i.putExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_OTHER);
+						startActivity(i);	
+					}   
+				}
+				else{
+					mAnswer = mParent.getAnswers().get(position-1);
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
 				}
 		    }
 		});
@@ -157,7 +175,7 @@ public class AnswerFragment extends PostFragment {
 			mAnswersButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					mAnswer = mParent.getAnswers().get(position+1);
-					getFragmentManager().beginTransaction().detach(frag).attach(frag).commit();
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
 				}
 			});
 		}

@@ -69,7 +69,7 @@ public class NewQuestionFragment extends NewPostFragment {
 				
 				//Checks if fields are left blank
 				if(title.equalsIgnoreCase("")||body.equalsIgnoreCase("") || (title.equalsIgnoreCase("")&&body.equalsIgnoreCase(""))){
-					Toast.makeText(getActivity().getApplicationContext(), "Please Fill all Fields", 
+					Toast.makeText(getActivity().getApplicationContext(), "Please Fill All Fields", 
 							Toast.LENGTH_LONG).show();
 				}
 				else{

@@ -48,7 +48,7 @@
         android:layout_alignRight="@+id/new_question_fragment_edittext_body"
         android:layout_marginBottom="14dp"
         android:layout_marginLeft="44dp"
-        android:layout_toRightOf="@+id/new_question_fragment_upload_photo_textview"
+        android:padding="15dp"
         android:background="@drawable/rounded_corners"
         android:text="@string/new_question_fragment_submit_button"
         android:textColor="@color/white" />

@@ -1,9 +1,4 @@
-/**
- * OnlinePostManager - Saves users questions, answers, posts and statistics that the users post into elastic search. This will
- * manage all elastic search information such as connecting and sending and reserving information from elastic search. This will also
- * load Questions, Answers, Posts, and Statistics on to the phone for the user to view.
- * @author Cmput301 Winter 2014 Group 8
- */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.io.BufferedReader;
@@ -30,7 +25,12 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.es.Hit;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.MatchAllCommand;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchHits;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchResponse;
-
+/**
+ * OnlinePostManager - Saves users questions, answers, posts and statistics that the users post into elastic search. This will
+ * manage all elastic search information such as connecting and sending and reserving information from elastic search. This will also
+ * load Questions, Answers, Posts, and Statistics on to the phone for the user to view.
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class OnlinePostManager extends PostManager {
     protected static OnlinePostManager sPostManager;
     private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301f14t08/question/_search";

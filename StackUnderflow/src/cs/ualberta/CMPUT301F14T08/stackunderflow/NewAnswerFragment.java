@@ -1,9 +1,4 @@
-/**
- * NewAnswerFragment - Called from NewAnswerActivity sets the user to Guest and makes the takes input from the NewAnswerFragment interface. 
- * Saves the data in the Edit text that the user inputs and submit it to the proper post manager. Also checks if the user has input anything
- * this will not allow the user to submit a blank field. If they attempt to it will display a toast telling them to.
- * @author Cmput301 Winter 2014 Group 8
- */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.UUID;
@@ -15,7 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
+/**
+ * NewAnswerFragment - Called from NewAnswerActivity sets the user to Guest and makes the takes input from the NewAnswerFragment interface. 
+ * Saves the data in the Edit text that the user inputs and submit it to the proper post manager. Also checks if the user has input anything
+ * this will not allow the user to submit a blank field. If they attempt to it will display a toast telling them to.
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class NewAnswerFragment extends NewPostFragment {
 	
 	@Override

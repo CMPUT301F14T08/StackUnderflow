@@ -1,9 +1,4 @@
-/**
- * StackUnderflow application PostController. Point of access for post manager - handles
- * differences between online/cached post manager automatically. Determines whether
- * to provide online or cache manager based on online/offline status.
- * @author Cmput301 Winter 2014 Group 8
- */
+
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 import java.util.UUID;
@@ -16,7 +11,12 @@ import android.util.Log;
 
 // TODO: Currently this just controls the CachedPostManager. 
 // Update during Project Part 3, Week 2 to include OnlineCachedManager.
-
+/**
+ * StackUnderflow application PostController. Point of access for post manager - handles
+ * differences between online/cached post manager automatically. Determines whether
+ * to provide online or cache manager based on online/offline status.
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class PostController {
 	private static PostController sPostController;
 	private PostManager mPostManager;

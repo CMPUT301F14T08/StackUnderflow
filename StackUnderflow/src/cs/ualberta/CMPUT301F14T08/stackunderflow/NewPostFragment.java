@@ -1,8 +1,4 @@
-/**
- * This is used when a user would like to make a new post. This will also allow the user to input a new user name if the user has not yet chosen one
- * If the user does not choose a user name it will simply default to User. 
- * @author Cmput301 Winter 2014 Group 8
- */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.UUID;
@@ -17,7 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
+/**
+ * This is used when a user would like to make a new post. This will also allow the user to input a new user name if the user has not yet chosen one
+ * If the user does not choose a user name it will simply default to User. 
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public abstract class NewPostFragment extends Fragment {
 	
 	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";

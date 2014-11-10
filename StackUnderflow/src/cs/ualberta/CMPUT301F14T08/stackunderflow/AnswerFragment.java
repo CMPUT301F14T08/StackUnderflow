@@ -1,7 +1,4 @@
-/**
- * AnswerFragment called from AnswerActivity. This is called when the user attempts to view and answer.
- * @author Cmput301 Winter 2014 Group 8
- */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import android.content.Intent;
@@ -13,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+/**
+ * AnswerFragment called from AnswerActivity. This is called when the user attempts to view and answer.
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class AnswerFragment extends PostFragment {
 	
 	private Answer mAnswer;

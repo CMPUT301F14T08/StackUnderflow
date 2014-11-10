@@ -1,7 +1,4 @@
-/**
- * BaseFragmentActivity simply a basic background fragment used to check if a fragment exists and if not create one. 
- * @author Cmput301 Winter 2014 Group 8
- */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.UUID;
@@ -10,7 +7,10 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-
+/**
+ * BaseFragmentActivity simply a basic background fragment used to check if a fragment exists and if not create one. 
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public abstract class BaseFragmentActivity extends Activity {
 	
 	// Sub-classes will just have to implement

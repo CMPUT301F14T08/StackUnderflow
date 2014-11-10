@@ -1,5 +1,6 @@
 /**
- * TODO: Add nice comment here
+ * This class manages the different the posts into an array list of objects and allows functionality within that array list
+ * @author Cmput301 Winter 2014 Group 8
  */
 
 
@@ -223,4 +224,6 @@ public abstract class PostManager {
    public int getPositionOfAnswer(Question question, Answer answer) {
         return question.getPositionOfAnswer(answer.getID());
    }
+   
+
 }

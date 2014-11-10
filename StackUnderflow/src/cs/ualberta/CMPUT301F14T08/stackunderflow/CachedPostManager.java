@@ -2,7 +2,8 @@
  * CachedPostManager manages anything a user enters when they are offline. Also only post manager uses one of these to hold posts
  * sendToFile allows for local saving of posts that can be pushed later to online to a Gson file on their device
  * loadToFile allows for users to load all local data that they already have saved inside their Gson file on their device
- * toggleUpove changes the upvote status from that user in the local cashe
+ * toggleUpove changes the upvote status from that user in the local cache
+ * @author Cmput301 Winter 2014 Group 8
  */
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
@@ -24,6 +25,7 @@ import com.google.gson.reflect.TypeToken;
 public class CachedPostManager extends PostManager{
 	private String QUESTION_CACHE_FILE = "cached_questions.json";
 	protected static CachedPostManager sPostManager;
+	protected boolean addedOffline;
 	
 	// Keep this private!
 	// -- Loads posts from cache when created
@@ -34,7 +36,7 @@ public class CachedPostManager extends PostManager{
 		} catch (Exception e) {
 		    mQuestions = new ArrayList<Post>();
 		}
-		
+		addedOffline = true;
 	}
 	
 	//TODO: Delete this later!
@@ -157,12 +159,14 @@ public class CachedPostManager extends PostManager{
 	public void addQuestion(Question newQuestion) {
 		super.addQuestion(newQuestion);
 		save();
+		addedOffline = true;
 	}
 	
 	@Override
 	public void addAnswer(Question parent, Answer newAnswer) {
 		super.addAnswer(parent, newAnswer);
 		save();
+		addedOffline = true;
 	}
 	
 	//TODO: Implement in Project Part 4
@@ -170,6 +174,7 @@ public class CachedPostManager extends PostManager{
 	public void addReply(Question parent, Reply newReply) {
 		super.addReply(parent, newReply);
 		save();
+		addedOffline = true;
 	}
 	
 	//TODO: Update with implementation of user attributes
@@ -185,13 +190,18 @@ public class CachedPostManager extends PostManager{
         
         post.setUpvotesChangedOffline(incrementVotes);
         save();
+        addedOffline = true;
     }
 	
     @Override
     public void toggleFavorite(Post post) {
         super.toggleFavorite(post);
         save();
+        addedOffline = true;
     }
 	
+    public boolean hasAddedOffline() {
+        return addedOffline;
+    }
 
 }

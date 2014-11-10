@@ -1,6 +1,7 @@
-/*
+/**
  * MainFragment This is where the sorting on the main screen appears so the user may view by most popular or most recent.
  * this also allows the user to move to questions that they would like to see.
+ * @author Cmput301 Winter 2014 Group 8
  */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
@@ -10,14 +11,13 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.util.Log;
 
 public class MainFragment extends Fragment {
 	
@@ -29,6 +29,7 @@ public class MainFragment extends Fragment {
 	protected PostController sPostController;
 	protected PostAdapter adapter;
 	private ListView listview;
+	private View loadingPanel;
 	private String lastSort;
 	
 	@Override
@@ -44,7 +45,6 @@ public class MainFragment extends Fragment {
 	public void onResume(){
 		super.onResume();
 		createView(lastSort);
-		adapter.notifyDataSetChanged();
 	}
 	
 	@Override
@@ -53,7 +53,7 @@ public class MainFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.list_fragment, null);
 		listview = (ListView) view.findViewById(R.id.list_view);
-
+		loadingPanel = view.findViewById(R.id.loadingPanel);
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			
 			// Opens Question or Answer Fragment based upon list item clicked 
@@ -105,6 +105,7 @@ public class MainFragment extends Fragment {
 	}
 	
 	public void createView(String sort) {
+        loadingPanel.setVisibility(View.VISIBLE);
 		new DownloadPostsTask().execute();
 		adapter = new PostAdapter(getActivity(), new ArrayList<Post>());
 		listview.setAdapter(adapter);
@@ -119,6 +120,12 @@ public class MainFragment extends Fragment {
 	         
 	     }
 	     
+	     @Override
+	     protected void onPreExecute() {
+	         
+	     }
+	     
+	     @Override
 	     protected void onPostExecute(PostController result) {
 	         sPostController = result;
 	         
@@ -136,6 +143,7 @@ public class MainFragment extends Fragment {
              adapter.add(a);
 
 	         adapter.notifyDataSetChanged();
+	         loadingPanel.setVisibility(View.GONE);
 	     }
 
 	 }

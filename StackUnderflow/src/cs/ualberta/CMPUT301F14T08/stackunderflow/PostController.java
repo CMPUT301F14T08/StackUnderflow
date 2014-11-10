@@ -2,6 +2,7 @@
  * StackUnderflow application PostController. Point of access for post manager - handles
  * differences between online/cached post manager automatically. Determines whether
  * to provide online or cache manager based on online/offline status.
+ * @author Cmput301 Winter 2014 Group 8
  */
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
@@ -10,7 +11,6 @@ import java.util.UUID;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.StrictMode;
 import android.util.Log;
 
 
@@ -42,12 +42,15 @@ public class PostController {
 	// check if we are online
 	// returns true if online returns false if off line 
 	public boolean isOnline() {
+		
 		ConnectivityManager cm =(ConnectivityManager)mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
 		NetworkInfo ni = cm.getActiveNetworkInfo();
 		if (ni == null) {
 		    // There are no active networks.
+			Log.d("Debug", "Is Online: False");
 		    return false;
 		}
+		Log.d("Debug", "Is Online: " + ni.isConnected());
 		return ni.isConnected();
 	}
 	
@@ -61,8 +64,12 @@ public class PostController {
 		}
 		
         // if using cached list and we go online than switch to the online post manager
-        else if (!sPostController.usingOnlinePostManager() && sPostController.isOnline()) {
+        else if (sPostController.isOnline()) {
             sPostController.mPostManager = OnlinePostManager.getInstance(context);
+        }
+        // if using cached list and we go online than switch to the online post manager
+        else {
+            sPostController.mPostManager = CachedPostManager.getInstance(context);
         }
         
         return sPostController;
@@ -70,7 +77,7 @@ public class PostController {
 	
 	// Static initializer, use this to get the active instance if 
     // you're just concerned with refreshing a single post
-    public static PostController getInstanceNoRefresh(Context context, UUID postUUID) {
+    public static PostController getInstanceNoRefresh(Context context) {
         
         getInstance(context);
         return sPostController;
@@ -83,14 +90,8 @@ public class PostController {
         getInstance(context);
 
         // if we're using the online list, refresh for the required post
-        if (sPostController.usingOnlinePostManager() && sPostController.isOnline()) {
-            
-            // if we've added anything that hasn't been pushed to live, try to push it now
-            if (((OnlinePostManager)sPostController.mPostManager).hasAddedOffline()) {
-                ((OnlinePostManager)sPostController.mPostManager).pushOfflineUpdates();
-                ((OnlinePostManager)sPostController.mPostManager).setAddedOffline(false);
-            }
-            
+        if (sPostController.usingOnlinePostManager()) {
+       
             Question question = sPostController.getQuestion(postUUID);
             ((OnlinePostManager)sPostController.mPostManager).refreshQuestion(question);
         }
@@ -104,7 +105,9 @@ public class PostController {
 	    getInstance(context);
 	    
         // if we're using the online list, refresh it
-        if (sPostController.usingOnlinePostManager() && sPostController.isOnline()) {
+        if (sPostController.usingOnlinePostManager()) {
+            // if we've added anything that hasn't been pushed to live, try to push it now
+            ((OnlinePostManager)sPostController.mPostManager).pushOfflineUpdates();
             ((OnlinePostManager)sPostController.mPostManager).refreshAll();
         }
         

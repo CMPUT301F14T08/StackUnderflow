@@ -1,5 +1,12 @@
 /*
  * TODO: Write a nice description to about this class
+=======
+/**
+ * This Fragment will help display all questions (Questions and Answers) When a user wants to view a question they are shown this screen. Here the user 
+ * may view and modify the upvote's as well as favorite or unfavorite the post. The user may also view the post body, username of the author of the post and 
+ * view a picture of the users problem if there is one as well as view how ever many answers there are to a given question.
+ * @author Cmput301 Winter 2014 Group 8
+>>>>>>> 500f4ef23b30759a35e6761747e289c9aab66311
  */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
@@ -13,7 +20,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,9 +34,11 @@ import android.widget.Toast;
 
 public abstract class PostFragment extends Fragment {
 	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";
+
 	public static final String EXTRA_CAME_FROM = "cs.ualberta.CMPUT301F14T08.stackunderflow.came_from";
 	public static final int FROM_OTHER = 0;
 	public static final int FROM_QUESTION = 1;
+
 	protected static final String DIALOG_USERNAME = "username";
     protected static final int REQUEST_USERNAME = 0;
     
@@ -61,11 +69,12 @@ public abstract class PostFragment extends Fragment {
 	
 	protected int mTextColor;
 	
+	protected View postView;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-	    
 		mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
         mCameFrom = getArguments().getInt(EXTRA_CAME_FROM);
 		
@@ -80,16 +89,21 @@ public abstract class PostFragment extends Fragment {
 		mTextColor = getResources().getColor(getTextColor());
 		
 		Context context = getActivity().getApplicationContext();
+		
 		mUpvoteFull = context.getResources().getDrawable(getUpvoteFullID());
-		mUpvoteFull.setBounds(0, 0, 60, 60);
+		mUpvoteFull.setBounds(0, 0, mUpvoteFull.getMinimumHeight(), mUpvoteFull.getMinimumWidth());
+		
 		mUpvoteEmpty = context.getResources().getDrawable(getUpvoteEmptyID());
-		mUpvoteEmpty.setBounds(0, 0, 60, 60);
+		mUpvoteEmpty.setBounds(0, 0, mUpvoteEmpty.getMinimumHeight(), mUpvoteEmpty.getMinimumWidth());
+
 		mFavoriteFull = context.getResources().getDrawable(getFavoriteFullID());
-		mFavoriteFull.setBounds(0, 0, 60, 60);
+		mFavoriteFull.setBounds(0, 0, mFavoriteFull.getMinimumHeight(), mFavoriteFull.getMinimumWidth());
+		
 		mFavoriteEmpty = context.getResources().getDrawable(getFavoriteEmptyID());
-		mFavoriteEmpty.setBounds(0, 0, 60, 60);
+		mFavoriteEmpty.setBounds(0, 0, mFavoriteEmpty.getMinimumHeight(), mFavoriteEmpty.getMinimumWidth());
+		
         mImageIcon = context.getResources().getDrawable(getImageIconID());
-        mImageIcon.setBounds(0, 0, 60, 60);
+        mImageIcon.setBounds(0, 0, mImageIcon.getMinimumHeight(), mImageIcon.getMinimumWidth());
 	}
 	
 	// Subclasses (Question/Answer) will implement these to tell
@@ -101,16 +115,19 @@ public abstract class PostFragment extends Fragment {
 	abstract protected int getImageIconID();
 	abstract protected int getTextColor();
 	
+	// configure the answer button text and image visibility
+	//abstract protected void configureAnswerButton();
+	
 	@Override
 	public void onPause(){
 		super.onPause();
 	}
 	
-	@Override
-	public void onResume(){
-		super.onResume();
-		//getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-	}
+//	@Override
+//	public void onResume(){
+//		super.onResume();
+//		//getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+//	}
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
@@ -118,15 +135,24 @@ public abstract class PostFragment extends Fragment {
 		menuInflater.inflate(R.menu.post_menu, menu);
 	}
 	
+//	// if answers are added we'll want to refresh the answer button
+//    @Override
+//    public void onResume(){
+//        super.onResume();
+//        configureAnswerButton();
+//    }
+    
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem){
 	    // Both Question/Answer have this Menu Item
 	    switch (menuItem.getItemId()) {
+
             case R.id.menu_item_new_answer:
                 Intent i = new Intent(getActivity(), NewAnswerActivity.class);
                 i.putExtra(PostFragment.EXTRA_POST_ID, mPost.getID()); 
                 startActivityForResult(i, 0);
             
+
             default:
                 return super.onOptionsItemSelected(menuItem);
     	}
@@ -149,20 +175,20 @@ public abstract class PostFragment extends Fragment {
 	
 	// Set all the stuff relevant to both Question and Answer Fragments here
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-	    View v = inflater.inflate(R.layout.post_fragment, parent, false);
+	    postView = inflater.inflate(R.layout.post_fragment, parent, false);
 	    
 	    // Post Body
-	    mPostBody = (TextView)v.findViewById(R.id.post_fragment_textview_body);
+	    mPostBody = (TextView)postView.findViewById(R.id.post_fragment_textview_body);
         mPostBody.setText(mPost.getText());
         
         // Author + Date
-        mUsername = (TextView)v.findViewById(R.id.post_fragment_textview_username);
+        mUsername = (TextView)postView.findViewById(R.id.post_fragment_textview_username);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
         String date = "(" + sdf.format(mPost.getDate()) + ")";
         mUsername.setText("- " + mPost.getSignature() + " " + date);
         
         // Upvote Button
-        mUpvoteButton = (Button)v.findViewById(R.id.post_fragment_button_upvote);
+        mUpvoteButton = (Button)postView.findViewById(R.id.post_fragment_button_upvote);
         setVoteText(mPost, mUpvoteButton);
         mUpvoteButton.setTextColor(mTextColor);
         setIconUpvote(mPost, mUpvoteButton);
@@ -177,7 +203,7 @@ public abstract class PostFragment extends Fragment {
         });
         
         // Favorite Button
-        mFavoriteButton = (Button)v.findViewById(R.id.post_fragment_button_favorite);
+        mFavoriteButton = (Button)postView.findViewById(R.id.post_fragment_button_favorite);
         mFavoriteButton.setTextColor(mTextColor);
         setIconFavorited(mPost, mFavoriteButton);
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +217,7 @@ public abstract class PostFragment extends Fragment {
         
         
         // Picture Button
-        mPictureButton = (Button)v.findViewById(R.id.post_fragment_button_photo);
+        mPictureButton = (Button)postView.findViewById(R.id.post_fragment_button_photo);
         mPictureButton.setCompoundDrawables(mImageIcon, null, null, null);
         mPictureButton.setTextColor(mTextColor);
 
@@ -216,13 +242,13 @@ public abstract class PostFragment extends Fragment {
         
         // Set Backbutton/Forward Button invisible for now, Answer/Question can
         // Choose to show them based on their individual requirements
-        mBackButton = (Button)v.findViewById(R.id.post_fragment_button_back);
+        mBackButton = (Button)postView.findViewById(R.id.post_fragment_button_back);
         mBackButton.setVisibility(View.GONE);
         
-        mAnswersButton = (Button)v.findViewById(R.id.post_fragment_button_answers);
+        mAnswersButton = (Button)postView.findViewById(R.id.post_fragment_button_answers);
         mAnswersButton.setVisibility(View.GONE);
         
-        return v;
+        return postView;
 	}
 
     protected void setIconFavorited(Post post, Button button) {
@@ -240,7 +266,7 @@ public abstract class PostFragment extends Fragment {
     }
     
     protected void setVoteText(Post post, Button button) {
-        if (post.getVotes() == 0)
+        if (post.getVotes() == 1)
             button.setText(mPost.getVotes() + " upvote");
         else
             button.setText(mPost.getVotes() + " upvotes");

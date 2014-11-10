@@ -1,7 +1,7 @@
-/*
+/**
  * An adaptor to return the desired view of a post, for use in a list view.
- * Called by profile fragment and mainfragment to populate the list views.
- * 
+ * Called by profile fragment and main fragment to populate the list views.
+ * @author Cmput301 Winter 2014 Group 8
  */
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;

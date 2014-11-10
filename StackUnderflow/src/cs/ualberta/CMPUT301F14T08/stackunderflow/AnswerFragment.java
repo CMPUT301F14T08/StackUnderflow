@@ -1,6 +1,6 @@
-/*
+/**
  * AnswerFragment called from AnswerActivity. This is called when the user attempts to view and answer.
- * 
+ * @author Cmput301 Winter 2014 Group 8
  */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
@@ -63,6 +63,10 @@ public class AnswerFragment extends PostFragment {
         return R.color.blue;
     }
 
+    /**
+     * This is called when the user expands the option menu and choose an option
+     * In the case of the option being "Back to Question" The user will be returned to the question page   
+     */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
@@ -85,8 +89,12 @@ public class AnswerFragment extends PostFragment {
 			default:
 			    // Call PostFragment onOptionItemSelected to get the rest of the menu
 				return super.onOptionsItemSelected(item);
-	    } }
+	    } 
+	}
 	
+	/**
+	 * When the view is created this works with the listeners work with buttons and edit text fields.
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 	    // Call PostFragment onCreateView

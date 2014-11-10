@@ -1,28 +1,26 @@
-/*
+/**
  * MainActivity is the main page. Called when the user first starts the app
  * works with the tabs on the main screen and the dialog allowing the user to navigate between the different screens.
+ * @author Cmput301 Winter 2014 Group 8
  */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.survivingwithandroid.actionbartabnavigation.R;
-//import com.survivingwithandroid.actionbartabnavigation.TabFragment;
-
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.FragmentTransaction;
 import android.app.ActionBar.TabListener;
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import android.app.Activity;
-import android.content.Intent;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.app.FragmentManager;
-import android.util.Log;
+import android.app.FragmentTransaction;
+
+import android.content.Intent;
 
 
 public class MainActivity extends Activity implements TabListener {

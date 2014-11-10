@@ -1,5 +1,5 @@
 /**
- * TODO: Add nice comment here
+ * This class manages the different the posts into an array list of objects and allows functionality within that array list
  */
 
 

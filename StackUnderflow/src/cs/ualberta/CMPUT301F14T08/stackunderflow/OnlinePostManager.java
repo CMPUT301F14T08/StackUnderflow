@@ -1,4 +1,4 @@
-/*
+/**
  * OnlinePostManager - Saves users questions, answers, posts and statistics that the users post into elastic search. This will
  * manage all elastic search information such as connecting and sending and reserving information from elastic search. This will also
  * load Questions, Answers, Posts, and Statistics on to the phone for the user to view.

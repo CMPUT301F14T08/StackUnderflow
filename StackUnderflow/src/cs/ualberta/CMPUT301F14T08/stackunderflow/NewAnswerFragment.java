@@ -1,4 +1,4 @@
-/*
+/**
  * NewAnswerFragment - Called from NewAnswerActivity sets the user to Guest and makes the takes input from the NewAnswerFragment interface. 
  * Saves the data in the Edit text that the user inputs and submit it to the proper post manager. Also checks if the user has input anything
  * this will not allow the user to submit a blank field. If they attempt to it will display a toast telling them to.

@@ -2,7 +2,8 @@
  * CachedPostManager manages anything a user enters when they are offline. Also only post manager uses one of these to hold posts
  * sendToFile allows for local saving of posts that can be pushed later to online to a Gson file on their device
  * loadToFile allows for users to load all local data that they already have saved inside their Gson file on their device
- * toggleUpove changes the upvote status from that user in the local cashe
+ * toggleUpove changes the upvote status from that user in the local cache
+ * @author Cmput301 Winter 2014 Group 8
  */
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;

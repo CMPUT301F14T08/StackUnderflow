@@ -1,4 +1,4 @@
-/*
+/**
  * An adaptor to return the desired view of a post, for use in a list view.
  * Called by profile fragment and mainfragment to populate the list views.
  * 

@@ -1,4 +1,4 @@
-/*
+/**
  * NewQuestionActivity - Simple code for when ever the "Ask a Question" button is pressed. Will simply call NewQuestionFragment.
  */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;

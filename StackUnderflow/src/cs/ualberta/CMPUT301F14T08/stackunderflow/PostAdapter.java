@@ -1,5 +1,3 @@
-
-
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.text.SimpleDateFormat;
@@ -84,7 +82,11 @@ public class PostAdapter extends ArrayAdapter<Post> {
 		return view;
 	}
 
-	// returns a properly formatted string for displaying post details
+	/**
+	 *  Details about the amount of votes, author and a format of the date. The output will be in format of : "by "+ author + " | " + date + " | " + votes + " votes"
+	 *  @param post a post that will contain the information for the output string 
+	 *  @return a properly formatted string for displaying post details
+	 */
 	private String templateDetails(Post post) {
 		String author = post.getSignature();
 		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);

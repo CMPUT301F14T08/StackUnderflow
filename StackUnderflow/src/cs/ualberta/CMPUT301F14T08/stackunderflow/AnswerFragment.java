@@ -58,10 +58,15 @@ public class AnswerFragment extends PostFragment {
     protected int getTextColor() {
         return R.color.blue;
     }
-
+    
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
+            case R.id.menu_item_new_answer:
+                Intent newAnswerIntent = new Intent(getActivity(), NewAnswerActivity.class);
+                newAnswerIntent.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID()); 
+                startActivity(newAnswerIntent);
+                return true;
 			case R.id.menu_item_back_to_question:
 				Intent i = new Intent(getActivity(), QuestionActivity.class);
 				i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
@@ -70,7 +75,35 @@ public class AnswerFragment extends PostFragment {
 			default:
 			    // Call PostFragment onOptionItemSelected to get the rest of the menu
 				return super.onOptionsItemSelected(item);
-	    } }
+	    } 
+	}
+	
+	@Override
+	protected void configureAnswerButton() {
+        mAnswersButton = (Button)postView.findViewById(R.id.post_fragment_button_answers);
+        
+        final int position = sPostController.getPostManager().getPositionOfAnswer(mParent, mAnswer);
+        int remainingAnswers = mParent.countAnswers() - position - 1;
+        if(remainingAnswers > 0){
+            
+            mAnswersButton.setEnabled(true);
+            mAnswersButton.setVisibility(View.VISIBLE);
+            mAnswersButton.setText(remainingAnswers + " More ");
+
+            mAnswersButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), AnswerActivity.class);
+                    i.putExtra(PostFragment.EXTRA_POST_ID, mParent.getAnswers().get(position+1).getID());
+                    startActivity(i);
+                }
+            });
+        }
+        else{
+            mAnswersButton.setEnabled(false);
+            mAnswersButton.setVisibility(View.GONE);
+        }
+    }
+	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
@@ -83,29 +116,8 @@ public class AnswerFragment extends PostFragment {
 		
 		mQuestionTitle = (TextView)v.findViewById(R.id.post_fragment_textview_title);
 		mQuestionTitle.setVisibility(View.GONE);
-		
-		mAnswersButton = (Button)v.findViewById(R.id.post_fragment_button_answers);
-		
-		final int position = sPostController.getPostManager().getPositionOfAnswer(mParent, mAnswer);
-		int remainingAnswers = mParent.countAnswers() - position - 1;
-		if(remainingAnswers > 0){
-			
-			mAnswersButton.setEnabled(true);
-			mAnswersButton.setVisibility(View.VISIBLE);
-			mAnswersButton.setText(remainingAnswers + " More ");
+	    configureAnswerButton();
 
-			mAnswersButton.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					Intent i = new Intent(getActivity(), AnswerActivity.class);
-					i.putExtra(PostFragment.EXTRA_POST_ID, mParent.getAnswers().get(position+1).getID());
-					startActivity(i);
-				}
-			});
-		}
-		else{
-			mAnswersButton.setEnabled(false);
-			mAnswersButton.setVisibility(View.GONE);
-		}
 		
 		return v;		
 	}

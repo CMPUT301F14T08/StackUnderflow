@@ -63,6 +63,8 @@ public class AnswerFragment extends PostFragment {
     /**
      * This is called when the user expands the option menu and choose an option
      * In the case of the option being "Back to Question" The user will be returned to the question page   
+     * @param which ever menu item is chosen.
+     * @return true if menu option one is selected.
      */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -143,7 +145,9 @@ public class AnswerFragment extends PostFragment {
 					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
 				}
 		    }
-			
+			/**
+			 * Called when the user swipes right. will move to the next answers until there are no more answers. 
+			 */	
 			public void onSwipeRight() {
 
 				if(position==0){

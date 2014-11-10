@@ -1,7 +1,4 @@
-/*
- * AnswerFragment called from AnswerActivity. This is called when the user attempts to view and answer.
- * 
- */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import android.content.Intent;
@@ -13,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+/**
+ * AnswerFragment called from AnswerActivity. This is called when the user attempts to view and answer.
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class AnswerFragment extends PostFragment {
 	
 	private Answer mAnswer;
@@ -27,6 +27,7 @@ public class AnswerFragment extends PostFragment {
 		mParent = (Question)sPostController.getPostManager().getPost(mAnswer.getParentID());
 	    // We cache a post after viewing it
         sPostController.addToCache(mParent);
+        mFragment = this;
 	}
 	
    @Override
@@ -59,24 +60,42 @@ public class AnswerFragment extends PostFragment {
         return R.color.blue;
     }
 
+    /**
+     * This is called when the user expands the option menu and choose an option
+     * In the case of the option being "Back to Question" The user will be returned to the question page   
+     * @param which ever menu item is chosen.
+     * @return true if menu option one is selected.
+     */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 			case R.id.menu_item_back_to_question:
-				Intent i = new Intent(getActivity(), QuestionActivity.class);
-				i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
-				startActivity(i);				 
+				if(mCameFrom == FROM_QUESTION){
+					getActivity().onBackPressed();
+				}
+				else{
+					getActivity().finish();
+					Intent i = new Intent(getActivity(), QuestionActivity.class);
+					i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
+					i.putExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_OTHER);
+					startActivity(i);	
+				}
 			    return true;
 			default:
 			    // Call PostFragment onOptionItemSelected to get the rest of the menu
 				return super.onOptionsItemSelected(item);
-	    } }
+	    } 
+	}
 	
+	/**
+	 * When the view is created this works with the listeners work with buttons and edit text fields.
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 	    // Call PostFragment onCreateView
+		super.setPost(mAnswer);
 		View v = super.onCreateView(inflater, parent, savedInstanceState);
-		
+
 		// Logic unique to the Answer Fragment
 		LinearLayout linearLayout = (LinearLayout)v.findViewById(R.id.post_fragment_top_linearlayout);
 		linearLayout.setBackgroundColor(mTextColor);
@@ -87,7 +106,70 @@ public class AnswerFragment extends PostFragment {
 		mAnswersButton = (Button)v.findViewById(R.id.post_fragment_button_answers);
 		
 		final int position = sPostController.getPostManager().getPositionOfAnswer(mParent, mAnswer);
-		int remainingAnswers = mParent.countAnswers() - position - 1;
+		final int remainingAnswers = mParent.countAnswers() - position - 1;
+		
+		v.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+			public void onSwipeLeft() {
+				if(remainingAnswers > 0){
+					mAnswer = mParent.getAnswers().get(position+1);
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+				}
+		    }
+			
+			public void onSwipeRight() {
+
+				if(position==0){
+					if(mCameFrom == FROM_QUESTION){
+						getActivity().setResult(0);
+						getActivity().onBackPressed();
+					}
+					else{
+						getActivity().finish();
+						Intent i = new Intent(getActivity(), QuestionActivity.class);
+						i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
+						i.putExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_OTHER);
+						startActivity(i);	
+					}   
+				}
+				else{
+					mAnswer = mParent.getAnswers().get(position-1);
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+				}
+		    }
+		});
+		
+		mListView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+			public void onSwipeLeft() {
+				if(remainingAnswers > 0){
+					mAnswer = mParent.getAnswers().get(position+1);
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+				}
+		    }
+			/**
+			 * Called when the user swipes right. will move to the next answers until there are no more answers. 
+			 */	
+			public void onSwipeRight() {
+
+				if(position==0){
+					if(mCameFrom == FROM_QUESTION){
+						getActivity().setResult(0);
+						getActivity().onBackPressed();
+					}
+					else{
+						getActivity().finish();
+						Intent i = new Intent(getActivity(), QuestionActivity.class);
+						i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
+						i.putExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_OTHER);
+						startActivity(i);	
+					}   
+				}
+				else{
+					mAnswer = mParent.getAnswers().get(position-1);
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+				}
+		    }
+		});
+		
 		if(remainingAnswers > 0){
 			
 			mAnswersButton.setEnabled(true);
@@ -96,9 +178,8 @@ public class AnswerFragment extends PostFragment {
 
 			mAnswersButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					Intent i = new Intent(getActivity(), AnswerActivity.class);
-					i.putExtra(PostFragment.EXTRA_POST_ID, mParent.getAnswers().get(position+1).getID());
-					startActivity(i);
+					mAnswer = mParent.getAnswers().get(position+1);
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
 				}
 			});
 		}

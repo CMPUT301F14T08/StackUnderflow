@@ -1,9 +1,3 @@
-/*
- * An adaptor to return the desired view of a post, for use in a list view.
- * Called by profile fragment and mainfragment to populate the list views.
- * 
- */
-
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.text.SimpleDateFormat;
@@ -19,7 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
+/**
+ * An adaptor to return the desired view of a post, for use in a list view.
+ * Called by profile fragment and main fragment to populate the list views.
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class PostAdapter extends ArrayAdapter<Post> {
 	
 	
@@ -57,6 +55,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 		postDetails = (TextView) view.findViewById(R.id.main_question_subtitle_text);
 		answerBoxText = (TextView) view.findViewById(R.id.main_answer_count_text);
 		postTitle.setEllipsize(TextUtils.TruncateAt.END); //Add ellipses if whole title doesn't fit
+		view.setBackgroundResource(R.color.off_white);
 		
 		if (isQuestion) {
 			Question tmp = (Question)currPost;
@@ -84,7 +83,11 @@ public class PostAdapter extends ArrayAdapter<Post> {
 		return view;
 	}
 
-	// returns a properly formatted string for displaying post details
+	/**
+	 *  Details about the amount of votes, author and a format of the date. The output will be in format of : "by "+ author + " | " + date + " | " + votes + " votes"
+	 *  @param post a post that will contain the information for the output string 
+	 *  @return a properly formatted string for displaying post details
+	 */
 	private String templateDetails(Post post) {
 		String author = post.getSignature();
 		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);

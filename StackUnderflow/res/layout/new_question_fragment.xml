@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:hint="@string/new_question_fragment_edittext_title"
+        android:textColorHint="@color/watermark_grey"
         android:ems="10" >
         <requestFocus />
     </EditText>    
@@ -22,28 +23,23 @@
         android:layout_alignLeft="@+id/new_question_fragment_edittext_title"
         android:layout_below="@+id/new_question_fragment_edittext_title"
         android:ems="10"
-        android:text=""
-        android:hint="@string/new_question_fragment_edittext_body" />
+        android:hint="@string/new_question_fragment_edittext_body" 
+        android:textColorHint="@color/watermark_grey"/>
 
-    <ImageButton
+   <Button
         android:id="@+id/new_question_fragment_upload_photo_button"
+        android:layout_marginTop="28dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="14sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+		android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:drawableLeft="@drawable/picture_dark"
+        android:background="@android:color/transparent"
         android:layout_alignLeft="@+id/new_question_fragment_edittext_body"
         android:layout_below="@+id/new_question_fragment_edittext_body"
-        android:layout_marginTop="28dp"
-        android:src="@drawable/picture_white" />
-
-    <TextView
-        android:id="@+id/new_question_fragment_upload_photo_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/new_question_fragment_upload_photo_button"
-        android:layout_alignTop="@+id/new_question_fragment_upload_photo_button"
-        android:layout_toRightOf="@+id/new_question_fragment_upload_photo_button"
-        android:gravity="right|center_vertical"
-        android:text="@string/new_question_fragment_upload_photo_textview" />
-    
+        android:text=" Upload Photo"/>
+   
     <Button
         android:id="@+id/new_question_fragment_submit_button"
         android:layout_width="wrap_content"
@@ -52,7 +48,7 @@
         android:layout_alignRight="@+id/new_question_fragment_edittext_body"
         android:layout_marginBottom="14dp"
         android:layout_marginLeft="44dp"
-        android:layout_toRightOf="@+id/new_question_fragment_upload_photo_textview"
+        android:padding="15dp"
         android:background="@drawable/rounded_corners"
         android:text="@string/new_question_fragment_submit_button"
         android:textColor="@color/white" />

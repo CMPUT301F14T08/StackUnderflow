@@ -1,6 +1,4 @@
-/**
- * TODO: Add nice comment here
- */
+
 
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
@@ -11,7 +9,10 @@ import java.util.Comparator;
 import java.util.UUID;
 
 import android.content.Context;
-
+/**
+ * This class manages the different the posts into an array list of objects and allows functionality within that array list
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public abstract class PostManager {
 	protected ArrayList<Post> mQuestions;
 	protected Context mContext;
@@ -223,4 +224,6 @@ public abstract class PostManager {
    public int getPositionOfAnswer(Question question, Answer answer) {
         return question.getPositionOfAnswer(answer.getID());
    }
+   
+
 }

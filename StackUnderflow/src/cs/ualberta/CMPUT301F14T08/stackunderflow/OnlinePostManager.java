@@ -1,8 +1,4 @@
-/*
- * OnlinePostManager - Saves users questions, answers, posts and statistics that the users post into elastic search. This will
- * manage all elastic search information such as connecting and sending and reserving information from elastic search. This will also
- * load Questions, Answers, Posts, and Statistics on to the phone for the user to view.
- */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.io.BufferedReader;
@@ -10,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -19,23 +14,28 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.ElasticSearchCommand;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchHits;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.es.MatchAllCommand;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.Hit;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.es.MatchAllCommand;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchHits;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchResponse;
-import android.content.Context;
-import android.util.Log;
-
+/**
+ * OnlinePostManager - Saves users questions, answers, posts and statistics that the users post into elastic search. This will
+ * manage all elastic search information such as connecting and sending and reserving information from elastic search. This will also
+ * load Questions, Answers, Posts, and Statistics on to the phone for the user to view.
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class OnlinePostManager extends PostManager {
     protected static OnlinePostManager sPostManager;
     private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301f14t08/question/_search";
     private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301f14t08/question/";
     private static final String TAG = "ELASTICSEARCH";
-    private boolean addedOffline;
     private CachedPostManager mCachedPostManager;
     private Gson gson;
     
@@ -43,12 +43,13 @@ public class OnlinePostManager extends PostManager {
         super(context);
         gson = new Gson();
         mCachedPostManager = CachedPostManager.getInstance(context);
-        this.setAddedOffline(false);
     }
-    
-    // 1. Gets questions from online
-    // 2. Updates cache
     // TODO Part 3: Call strip/populate user attributes
+    /**
+    * 1. Gets questions from online
+    * 2. Updates cache
+    * @return status a String that tells us if the files were successfully loaded from the server
+    */
     private String loadFromServer() {
         ArrayList<Question> questions = new ArrayList<Question>();
         HttpClient httpClient = new DefaultHttpClient();
@@ -83,7 +84,9 @@ public class OnlinePostManager extends PostManager {
         updateCacheAndSetUserAttributes();
         return status;
     }
-    
+    /**
+     * Does exactly what it says : Updates the Cache and sets the user attributes
+     */
     private void updateCacheAndSetUserAttributes() {
         for (Post post : getQuestions()) {
             Post cachedPost = mCachedPostManager.getPost(post.getID());
@@ -136,8 +139,10 @@ public class OnlinePostManager extends PostManager {
     
     /** Elastic Search Methods **/
     
-    // Get Post with specific ES ID
-    // -- returns null if no such question exists
+    /** Get Post with specific ES ID
+     * @param question which the ES Id is being seached for.
+     * @return null if no such question exists
+     */
     private Question getESQuestion(Question question) {
         Question onlineQuestion = null;
         HttpClient httpClient = new DefaultHttpClient();
@@ -164,8 +169,10 @@ public class OnlinePostManager extends PostManager {
         return question;
     }
     
-    // Inserts an question into the ES server
-    // -- returns a status string
+    /** Inserts an question into the ES server
+     *@param the question being added  
+     *@returns a status string
+     */
     private String insertEsQuestion(Question newQuestion) {
         
         HttpClient httpClient = new DefaultHttpClient();
@@ -189,8 +196,12 @@ public class OnlinePostManager extends PostManager {
         return status;
     }
     
-    // Updates question on ES server
-    // -- returns a status string
+    /** Updates question on ES server
+     * 
+     * @param existingQuestion the question we will be trying to add to ES
+     * @param updateString string if the file is already online or not
+     * @return a status string
+     */
     private String updateESQuestion(Question existingQuestion, String updateString) {
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost updateRequest = new HttpPost(RESOURCE_URL + existingQuestion.getID() + "/_update");
@@ -212,8 +223,9 @@ public class OnlinePostManager extends PostManager {
         return status;
     }
     
-    // Updates question votes on ES server
-    // -- returns a status string or null if fails
+    /** Updates question votes on ES server
+     * @return a status string or null if fails
+     */
     private String updateESQuestionVotes(Question existingQuestion, int voteChange) {
         Question onlineQuestion = getESQuestion(existingQuestion); 
         
@@ -228,15 +240,23 @@ public class OnlinePostManager extends PostManager {
         return updateESQuestion(existingQuestion, updateString);
     }
     
-    // Adds question answer on ES server
-    // - returns a status string or null if fails
+    /**
+     *  Adds question answer on ES server
+     * @param updatedQuestion the answer that has been cast as a question and updated into the ES
+     * @return status string or null if fails
+     */
     private String updateESAnswer(Question updatedQuestion) {
         String updateString = "\"mAnswers\": " + gson.toJson(updatedQuestion.getAnswers());
         return updateESQuestion(updatedQuestion, updateString);
     }
     
-    // Updates an answers votes on ES server
-    // - returns a status string or null if fails
+    /**
+     *  Updates an answers votes on ES server
+     * @param existingQuestion the question of the answer
+     * @param answer The answer that is being changed online for the amount of votes the answer has
+     * @param voteChange how many votes have changed
+     * @return a status string or null if fails
+     */
     private String updateESAnswerVotes(Question existingQuestion, Answer answer, int voteChange) {
         Question onlineQuestion = getESQuestion(existingQuestion); 
         
@@ -252,8 +272,12 @@ public class OnlinePostManager extends PostManager {
         return updateESAnswer(onlineQuestion);
     }
     
-    // Adds an answers to a question on ES server
-    // - returns a status string or null if fails
+    /**
+     *  Adds an answers to a question on ES server
+     * @param existingQuestion the question that is the parent of the answer being added
+     * @param answer the answer being added
+     * @return a status string or null if fails
+     */ 
     private String addESAnswer(Question existingQuestion, Answer answer) {
         Question onlineQuestion = getESQuestion(existingQuestion); 
         
@@ -321,15 +345,18 @@ public class OnlinePostManager extends PostManager {
 
     /** Public Methods **/
     
-    // 1. pushes updates to server
-    // 2. get posts from server
-    
+
     
     /** Public Methods **/
-    
     // TODO: 3. strips/loads user attributes
-    // Static initializer, use this to get the active instance.
-    // This insures we only ever have one copy going at once!
+    /**
+     * 1. pushes updates to server
+     * 2. get posts from server 
+     * Static initializer, use this to get the active instance.
+     * This insures we only ever have one copy going at once!
+     * @param context current context of the app
+     * @return a post manager of the posts online.
+     */ 
     public static OnlinePostManager getInstance(Context context) {
         if (sPostManager != null) {
             return sPostManager;
@@ -352,7 +379,10 @@ public class OnlinePostManager extends PostManager {
     }
     
     
-    // Saves individual question
+    /**
+     *  Saves individual question
+     *  @param The questions that will be added.
+     */
     @Override
     public void addQuestion(Question newQuestion) {
         newQuestion.setExistsOnline(true);
@@ -362,14 +392,16 @@ public class OnlinePostManager extends PostManager {
             super.addQuestion(newQuestion);
         }
         else {
-            setAddedOffline(true);
+            mCachedPostManager.addedOffline = true;
             newQuestion.setExistsOnline(false);
         }
         
         mCachedPostManager.addQuestion(newQuestion);
+        mCachedPostManager.save();
     }
     
-    // Saves individual answer by updating associated question on ES server
+    /** Saves individual answer by updating associated question on ES server
+     */
     @Override
     public void addAnswer(Question parent, Answer newAnswer) {
         newAnswer.setExistsOnline(true);
@@ -380,11 +412,11 @@ public class OnlinePostManager extends PostManager {
         }
             
         else {
-            setAddedOffline(true);
+            mCachedPostManager.addedOffline = true;
             newAnswer.setExistsOnline(false);
         }
         
-        mCachedPostManager.addAnswer(parent, newAnswer);
+        mCachedPostManager.save();
     }
     
     //TODO: Implement in Project Part 4
@@ -419,7 +451,7 @@ public class OnlinePostManager extends PostManager {
             post.setUpvotesChangedOffline(0);
         }
         else {
-            setAddedOffline(true);
+            mCachedPostManager.addedOffline = true;
             post.setUpvotesChangedOffline(incrementVotes);
         }
         
@@ -456,8 +488,12 @@ public class OnlinePostManager extends PostManager {
             
         return;
     }
-    
+    /**
+     * when the device returns to being online from an offline state this method will push the posts the user has made while offline online
+     */
     public void pushOfflineUpdates() {
+        if (!mCachedPostManager.hasAddedOffline())
+            return;
         
         String result = null;
         for (Post post : mCachedPostManager.getQuestions()) {
@@ -508,13 +544,18 @@ public class OnlinePostManager extends PostManager {
                 // TODO: Implement Reply Logic for Week 4
             }
         }
+        mCachedPostManager.addedOffline = false;
+
     }
     
     public void refreshAll() {
         loadFromServer();
     }
     
-    // Get Post with specific ES ID
+    /**
+     *  Get Post with specific ES ID
+     * @param question the post that will give the specific ESID
+     */
     public void refreshQuestion(Question question) {
         Question onlineQuestion = getESQuestion(question);
         
@@ -528,19 +569,13 @@ public class OnlinePostManager extends PostManager {
             mCachedPostManager.save();
     }
 
-    
-    public boolean hasAddedOffline() {
-        return addedOffline;
-    }
-    
     public void addToCache(Question question) {
         if (mCachedPostManager.getPost(question.getID()) == null) {
             mCachedPostManager.addQuestion(question);
         }
     }
     
-
-    public void setAddedOffline(boolean addedOffline) {
-        this.addedOffline = addedOffline;
+    public boolean hasAddedOffline() {
+        return mCachedPostManager.addedOffline;
     }
 }

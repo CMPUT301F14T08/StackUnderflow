@@ -42,7 +42,8 @@
         
         <activity 
             android:name=".NewAnswerActivity"
-            android:label="@string/new_question_title">
+            android:label="@string/new_question_title"
+            android:theme="@style/BlueTheme">
             
         </activity>
         

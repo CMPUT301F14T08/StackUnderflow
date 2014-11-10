@@ -1,9 +1,4 @@
-/**
- * CachedPostManager manages anything a user enters when they are offline. Also only post manager uses one of these to hold posts
- * sendToFile allows for local saving of posts that can be pushed later to online to a Gson file on their device
- * loadToFile allows for users to load all local data that they already have saved inside their Gson file on their device
- * toggleUpove changes the upvote status from that user in the local cashe
- */
+
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
@@ -20,10 +15,17 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
+/**
+ * CachedPostManager manages anything a user enters when they are offline. Also only post manager uses one of these to hold posts
+ * sendToFile allows for local saving of posts that can be pushed later to online to a Gson file on their device
+ * loadToFile allows for users to load all local data that they already have saved inside their Gson file on their device
+ * toggleUpove changes the upvote status from that user in the local cache
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class CachedPostManager extends PostManager{
 	private String QUESTION_CACHE_FILE = "cached_questions.json";
 	protected static CachedPostManager sPostManager;
+	protected boolean addedOffline;
 	
 	// Keep this private!
 	// -- Loads posts from cache when created
@@ -34,7 +36,7 @@ public class CachedPostManager extends PostManager{
 		} catch (Exception e) {
 		    mQuestions = new ArrayList<Post>();
 		}
-		
+		addedOffline = true;
 	}
 	
 	//TODO: Delete this later!
@@ -88,7 +90,10 @@ public class CachedPostManager extends PostManager{
 		mQuestions.add(q3);
 	}
 
-	// Save Questions using Gson
+	/**
+	 * Save Questions using Gson
+	 * @throws IOException if it cannot save to gson file
+	 */
 	private void sendToFile() throws IOException {
 		// Don't save the 'selected' attribute
 		clearSelected();
@@ -109,7 +114,11 @@ public class CachedPostManager extends PostManager{
 		}
 	}
 	
-	// Load posts from file using GSON
+	/**
+	 *  Load posts from file using GSON
+	 * @return Posts a Array List of Posts that the device pulls from a local gson file from the device. Will return a blank list if there is no gson file
+	 * @throws IOException if there is a error preventing the gson file from being loaded. 
+	 */
 	public ArrayList<Post> loadFromFile() throws IOException{
 
 		Reader reader = null;
@@ -131,8 +140,10 @@ public class CachedPostManager extends PostManager{
 	}
 	
 
-	// Static initializer, use this to get the active instance.
-	// This insures we only ever have one copy going at once!
+	/** Static initializer, use this to get the active instance.
+	 * This insures we only ever have one copy going at once!
+	 * @return a singleton post manager. 
+	 */
 	public static CachedPostManager getInstance(Context context) {
 		if (sPostManager == null) {
 			sPostManager = new CachedPostManager(context.getApplicationContext());
@@ -141,8 +152,10 @@ public class CachedPostManager extends PostManager{
 		return sPostManager;
 	}
 	
-	// Public save method
-	// -- Returns true if successful
+	/**
+	 *  Public save method
+	 * @return true if successful
+	 */
 	public boolean save(){
 		try {
 			sendToFile();
@@ -157,12 +170,14 @@ public class CachedPostManager extends PostManager{
 	public void addQuestion(Question newQuestion) {
 		super.addQuestion(newQuestion);
 		save();
+		addedOffline = true;
 	}
 	
 	@Override
 	public void addAnswer(Question parent, Answer newAnswer) {
 		super.addAnswer(parent, newAnswer);
 		save();
+		addedOffline = true;
 	}
 	
 	//TODO: Implement in Project Part 4
@@ -170,10 +185,14 @@ public class CachedPostManager extends PostManager{
 	public void addReply(Question parent, Reply newReply) {
 		super.addReply(parent, newReply);
 		save();
+		addedOffline = true;
 	}
 	
 	//TODO: Update with implementation of user attributes
-    // For now this will just increment votes
+    /**
+     * For now this will just increment votes
+     * @param a post that will have its vote increased by one if it is currently false or a decreased by one if it is currenly false
+     */
 	@Override
     public void toggleUpvote(Post post) {
         super.toggleUpvote(post);
@@ -185,13 +204,21 @@ public class CachedPostManager extends PostManager{
         
         post.setUpvotesChangedOffline(incrementVotes);
         save();
+        addedOffline = true;
     }
-	
+	/**
+	 * sets as a users favorite which if is called again this favorite is removed.
+	 * @param post that will be set or removed as a favorite
+	 */
     @Override
     public void toggleFavorite(Post post) {
         super.toggleFavorite(post);
         save();
+        addedOffline = true;
     }
 	
+    public boolean hasAddedOffline() {
+        return addedOffline;
+    }
 
 }

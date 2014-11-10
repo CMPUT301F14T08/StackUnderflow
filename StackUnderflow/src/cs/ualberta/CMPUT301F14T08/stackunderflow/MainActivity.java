@@ -1,29 +1,27 @@
-/*
- * MainActivity is the main page. Called when the user first starts the app
- * works with the tabs on the main screen and the dialog allowing the user to navigate between the different screens.
- */
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.survivingwithandroid.actionbartabnavigation.R;
-//import com.survivingwithandroid.actionbartabnavigation.TabFragment;
-
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.FragmentTransaction;
 import android.app.ActionBar.TabListener;
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import android.app.Activity;
-import android.content.Intent;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.app.FragmentManager;
-import android.util.Log;
-
+import android.app.FragmentTransaction;
+import android.content.Intent;
+/**
+ * MainActivity is the main page. Called when the user first starts the app
+ * works with the tabs on the main screen and the dialog allowing the user to navigate between the different screens.
+ * @author Cmput301 Winter 2014 Group 8
+ */
 
 public class MainActivity extends Activity implements TabListener {
 
@@ -62,24 +60,48 @@ public class MainActivity extends Activity implements TabListener {
 	public boolean onCreateOptionsMenu(Menu menu) {//, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.fragment_main_menu, menu);
+		
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
+        int duration = Toast.LENGTH_SHORT;
+        CharSequence text = "";
+        Toast toast = null;
+        
 		switch (item.getItemId()) {
-		case R.id.ask_question:	
+	      case R.id.ask_question: 
 
-			Intent intent = new Intent(this, NewQuestionActivity.class);				
-			startActivityForResult(intent, PICK_QUESTION);
+	            Intent intent = new Intent(this, NewQuestionActivity.class);                
+	            startActivityForResult(intent, PICK_QUESTION);
 
+	            return true;
+		case R.id.mark_read:	
+		    if (tf.sPostController == null) {
+		        return true;
+		    }
+		    
+            boolean postsAdded = tf.sPostController.addSelectedToCache();
+            tf.adapter.notifyDataSetChanged();
+		    
+
+		    if (tf.sPostController.usingOnlinePostManager() && postsAdded)
+    		    text = "Successfully added to Cache.";
+		    else if (tf.sPostController.usingOnlinePostManager() && !postsAdded)
+		        text = "Long-click to select one or more posts.";
+		    else 
+	            text = "Currently Offline. All posts are in Cache.";
+
+		    
+            toast = Toast.makeText(this, text, duration);
+            toast.show();
 			return true;
 
 		default:				
-			CharSequence text = "Implement menu item";
-			int duration = Toast.LENGTH_SHORT;
-			Toast toast = Toast.makeText(this, text, duration);
+			text = "Implement menu item";
+			toast = Toast.makeText(this, text, duration);
 			toast.show();			
 			return false;
 		} 

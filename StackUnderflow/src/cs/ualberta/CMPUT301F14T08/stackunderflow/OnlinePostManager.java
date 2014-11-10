@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -20,16 +19,17 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.ElasticSearchCommand;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchHits;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.es.MatchAllCommand;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.Hit;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.es.MatchAllCommand;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchHits;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchResponse;
-import android.content.Context;
-import android.util.Log;
 
 public class OnlinePostManager extends PostManager {
     protected static OnlinePostManager sPostManager;

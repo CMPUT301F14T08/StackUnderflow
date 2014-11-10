@@ -27,6 +27,7 @@ public class AnswerFragment extends PostFragment {
 		mParent = (Question)sPostController.getPostManager().getPost(mAnswer.getParentID());
 	    // We cache a post after viewing it
         sPostController.addToCache(mParent);
+        mFragment = this;
 	}
 	
    @Override
@@ -66,15 +67,17 @@ public class AnswerFragment extends PostFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
-            case R.id.menu_item_new_answer:
-                Intent newAnswerIntent = new Intent(getActivity(), NewAnswerActivity.class);
-                newAnswerIntent.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID()); 
-                startActivity(newAnswerIntent);
-                return true;
 			case R.id.menu_item_back_to_question:
-				Intent i = new Intent(getActivity(), QuestionActivity.class);
-				i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
-				startActivity(i);				 
+				if(mCameFrom == FROM_QUESTION){
+					getActivity().onBackPressed();
+				}
+				else{
+					getActivity().finish();
+					Intent i = new Intent(getActivity(), QuestionActivity.class);
+					i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
+					i.putExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_OTHER);
+					startActivity(i);	
+				}
 			    return true;
 			default:
 			    // Call PostFragment onOptionItemSelected to get the rest of the menu
@@ -82,49 +85,104 @@ public class AnswerFragment extends PostFragment {
 	    } 
 	}
 	
-	@Override
-	protected void configureAnswerButton() {
-        mAnswersButton = (Button)postView.findViewById(R.id.post_fragment_button_answers);
-        
-        final int position = sPostController.getPostManager().getPositionOfAnswer(mParent, mAnswer);
-        int remainingAnswers = mParent.countAnswers() - position - 1;
-        if(remainingAnswers > 0){
-            
-            mAnswersButton.setEnabled(true);
-            mAnswersButton.setVisibility(View.VISIBLE);
-            mAnswersButton.setText(remainingAnswers + " More ");
-
-            mAnswersButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent i = new Intent(getActivity(), AnswerActivity.class);
-                    i.putExtra(PostFragment.EXTRA_POST_ID, mParent.getAnswers().get(position+1).getID());
-                    startActivity(i);
-                }
-            });
-        }
-        else{
-            mAnswersButton.setEnabled(false);
-            mAnswersButton.setVisibility(View.GONE);
-        }
-    }
-	
-	
 	/**
 	 * When the view is created this works with the listeners work with buttons and edit text fields.
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 	    // Call PostFragment onCreateView
+		super.setPost(mAnswer);
 		View v = super.onCreateView(inflater, parent, savedInstanceState);
-		
+
 		// Logic unique to the Answer Fragment
 		LinearLayout linearLayout = (LinearLayout)v.findViewById(R.id.post_fragment_top_linearlayout);
 		linearLayout.setBackgroundColor(mTextColor);
 		
 		mQuestionTitle = (TextView)v.findViewById(R.id.post_fragment_textview_title);
 		mQuestionTitle.setVisibility(View.GONE);
-	    configureAnswerButton();
+		
+		mAnswersButton = (Button)v.findViewById(R.id.post_fragment_button_answers);
+		
+		final int position = sPostController.getPostManager().getPositionOfAnswer(mParent, mAnswer);
+		final int remainingAnswers = mParent.countAnswers() - position - 1;
+		
+		v.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+			public void onSwipeLeft() {
+				if(remainingAnswers > 0){
+					mAnswer = mParent.getAnswers().get(position+1);
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+				}
+		    }
+			
+			public void onSwipeRight() {
 
+				if(position==0){
+					if(mCameFrom == FROM_QUESTION){
+						getActivity().setResult(0);
+						getActivity().onBackPressed();
+					}
+					else{
+						getActivity().finish();
+						Intent i = new Intent(getActivity(), QuestionActivity.class);
+						i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
+						i.putExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_OTHER);
+						startActivity(i);	
+					}   
+				}
+				else{
+					mAnswer = mParent.getAnswers().get(position-1);
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+				}
+		    }
+		});
+		
+		mListView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+			public void onSwipeLeft() {
+				if(remainingAnswers > 0){
+					mAnswer = mParent.getAnswers().get(position+1);
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+				}
+		    }
+			
+			public void onSwipeRight() {
+
+				if(position==0){
+					if(mCameFrom == FROM_QUESTION){
+						getActivity().setResult(0);
+						getActivity().onBackPressed();
+					}
+					else{
+						getActivity().finish();
+						Intent i = new Intent(getActivity(), QuestionActivity.class);
+						i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
+						i.putExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_OTHER);
+						startActivity(i);	
+					}   
+				}
+				else{
+					mAnswer = mParent.getAnswers().get(position-1);
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+				}
+		    }
+		});
+		
+		if(remainingAnswers > 0){
+			
+			mAnswersButton.setEnabled(true);
+			mAnswersButton.setVisibility(View.VISIBLE);
+			mAnswersButton.setText(remainingAnswers + " More ");
+
+			mAnswersButton.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					mAnswer = mParent.getAnswers().get(position+1);
+					getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+				}
+			});
+		}
+		else{
+			mAnswersButton.setEnabled(false);
+			mAnswersButton.setVisibility(View.GONE);
+		}
 		
 		return v;		
 	}

@@ -1,8 +1,12 @@
+/*
+ * TODO: Write a nice description to about this class
+=======
 /**
  * This Fragment will help display all questions (Questions and Answers) When a user wants to view a question they are shown this screen. Here the user 
  * may view and modify the upvote's as well as favorite or unfavorite the post. The user may also view the post body, username of the author of the post and 
  * view a picture of the users problem if there is one as well as view how ever many answers there are to a given question.
  * @author Cmput301 Winter 2014 Group 8
+>>>>>>> 500f4ef23b30759a35e6761747e289c9aab66311
  */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
@@ -12,6 +16,7 @@ import java.util.UUID;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -29,14 +34,21 @@ import android.widget.Toast;
 
 public abstract class PostFragment extends Fragment {
 	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";
-	
+
+	public static final String EXTRA_CAME_FROM = "cs.ualberta.CMPUT301F14T08.stackunderflow.came_from";
+	public static final int FROM_OTHER = 0;
+	public static final int FROM_QUESTION = 1;
+
 	protected static final String DIALOG_USERNAME = "username";
     protected static final int REQUEST_USERNAME = 0;
+    
+    protected Fragment mFragment;
     
 	protected PostController sPostController;
 	protected ReplyAdapter adapter;
 	protected UUID mPostId;
 	protected Post mPost;
+	protected int mCameFrom;
 	
 	protected LinearLayout mTopLinearLayout;
 	protected TextView mQuestionTitle;
@@ -64,6 +76,7 @@ public abstract class PostFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
+        mCameFrom = getArguments().getInt(EXTRA_CAME_FROM);
 		
 		// Don't let HTTP run in the background, we're just waiting for updates on
 		// one Post, not a list so we can wait until we receive them before rendering the view
@@ -102,9 +115,6 @@ public abstract class PostFragment extends Fragment {
 	abstract protected int getImageIconID();
 	abstract protected int getTextColor();
 	
-	// configure the answer button text and image visibility
-	abstract protected void configureAnswerButton();
-	
 	@Override
 	public void onPause(){
 		super.onPause();
@@ -115,23 +125,32 @@ public abstract class PostFragment extends Fragment {
 		super.onCreateOptionsMenu(menu, menuInflater);
 		menuInflater.inflate(R.menu.post_menu, menu);
 	}
-	
-	// if answers are added we'll want to refresh the answer button
-    @Override
-    public void onResume(){
-        super.onResume();
-        configureAnswerButton();
-    }
     
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem){
 	    // Both Question/Answer have this Menu Item
 	    switch (menuItem.getItemId()) {
-	        // TODO: Add shared code for adding replies to post
+
+            case R.id.menu_item_new_answer:
+                Intent i = new Intent(getActivity(), NewAnswerActivity.class);
+                i.putExtra(PostFragment.EXTRA_POST_ID, mPost.getID()); 
+                startActivityForResult(i, 0);
+            
+
             default:
                 return super.onOptionsItemSelected(menuItem);
     	}
 	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)  
+    {  
+		super.onActivityResult(requestCode, resultCode, data);  
+        // Request code should be 0 and should reload fragment to update info
+        if(requestCode==0){  
+        	getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+        }   
+    } 
 	
 	// Set all the stuff relevant to both Question and Answer Fragments here
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -200,6 +219,8 @@ public abstract class PostFragment extends Fragment {
             mPictureButton.setVisibility(View.GONE);
         }
         
+        mListView = (ListView)postView.findViewById(R.id.post_fragment_listview_replies);
+        
         // Set Backbutton/Forward Button invisible for now, Answer/Question can
         // Choose to show them based on their individual requirements
         mBackButton = (Button)postView.findViewById(R.id.post_fragment_button_back);
@@ -231,5 +252,9 @@ public abstract class PostFragment extends Fragment {
         else
             button.setText(mPost.getVotes() + " upvotes");
     }
+
+	protected void setPost(Post post) {
+		mPost = post;
+	}
 
 }

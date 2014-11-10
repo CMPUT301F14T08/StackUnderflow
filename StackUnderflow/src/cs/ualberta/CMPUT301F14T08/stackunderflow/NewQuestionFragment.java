@@ -7,7 +7,6 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class NewQuestionFragment extends NewPostFragment {
@@ -70,7 +68,7 @@ public class NewQuestionFragment extends NewPostFragment {
 				
 				//Checks if fields are left blank
 				if(title.equalsIgnoreCase("")||body.equalsIgnoreCase("") || (title.equalsIgnoreCase("")&&body.equalsIgnoreCase(""))){
-					Toast.makeText(getActivity().getApplicationContext(), "Please Fill all Fields", 
+					Toast.makeText(getActivity().getApplicationContext(), "Please Fill All Fields", 
 							Toast.LENGTH_LONG).show();
 				}
 				else{

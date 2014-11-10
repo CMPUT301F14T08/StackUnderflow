@@ -31,11 +31,11 @@
         android:id="@+id/new_answer_fragment_submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="15dp"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/new_answer_fragment_edittext_body"
         android:layout_marginBottom="14dp"
         android:layout_marginLeft="44dp"
-        android:layout_toRightOf="@+id/new_answer_fragment_upload_photo_button"
         android:background="@drawable/rounded_corners"
         android:text="@string/new_answer_fragment_submit_button"
         android:textColor="@color/white" />

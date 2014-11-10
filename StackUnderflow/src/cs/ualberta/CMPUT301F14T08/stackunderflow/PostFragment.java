@@ -12,12 +12,9 @@ import java.util.UUID;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ScaleDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +29,7 @@ import android.widget.Toast;
 
 public abstract class PostFragment extends Fragment {
 	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";
+	
 	protected static final String DIALOG_USERNAME = "username";
     protected static final int REQUEST_USERNAME = 0;
     
@@ -58,6 +56,8 @@ public abstract class PostFragment extends Fragment {
 	protected Drawable mImageIcon;
 	
 	protected int mTextColor;
+	
+	protected View postView;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -102,6 +102,9 @@ public abstract class PostFragment extends Fragment {
 	abstract protected int getImageIconID();
 	abstract protected int getTextColor();
 	
+	// configure the answer button text and image visibility
+	abstract protected void configureAnswerButton();
+	
 	@Override
 	public void onPause(){
 		super.onPause();
@@ -113,15 +116,18 @@ public abstract class PostFragment extends Fragment {
 		menuInflater.inflate(R.menu.post_menu, menu);
 	}
 	
+	// if answers are added we'll want to refresh the answer button
+    @Override
+    public void onResume(){
+        super.onResume();
+        configureAnswerButton();
+    }
+    
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem){
 	    // Both Question/Answer have this Menu Item
 	    switch (menuItem.getItemId()) {
-            case R.id.menu_item_new_answer:
-                Intent i = new Intent(getActivity(), NewAnswerActivity.class);
-                i.putExtra(PostFragment.EXTRA_POST_ID, mPost.getID()); 
-                startActivity(i);
-            
+	        // TODO: Add shared code for adding replies to post
             default:
                 return super.onOptionsItemSelected(menuItem);
     	}
@@ -129,20 +135,20 @@ public abstract class PostFragment extends Fragment {
 	
 	// Set all the stuff relevant to both Question and Answer Fragments here
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-	    View v = inflater.inflate(R.layout.post_fragment, parent, false);
+	    postView = inflater.inflate(R.layout.post_fragment, parent, false);
 	    
 	    // Post Body
-	    mPostBody = (TextView)v.findViewById(R.id.post_fragment_textview_body);
+	    mPostBody = (TextView)postView.findViewById(R.id.post_fragment_textview_body);
         mPostBody.setText(mPost.getText());
         
         // Author + Date
-        mUsername = (TextView)v.findViewById(R.id.post_fragment_textview_username);
+        mUsername = (TextView)postView.findViewById(R.id.post_fragment_textview_username);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
         String date = "(" + sdf.format(mPost.getDate()) + ")";
         mUsername.setText("- " + mPost.getSignature() + " " + date);
         
         // Upvote Button
-        mUpvoteButton = (Button)v.findViewById(R.id.post_fragment_button_upvote);
+        mUpvoteButton = (Button)postView.findViewById(R.id.post_fragment_button_upvote);
         setVoteText(mPost, mUpvoteButton);
         mUpvoteButton.setTextColor(mTextColor);
         setIconUpvote(mPost, mUpvoteButton);
@@ -157,7 +163,7 @@ public abstract class PostFragment extends Fragment {
         });
         
         // Favorite Button
-        mFavoriteButton = (Button)v.findViewById(R.id.post_fragment_button_favorite);
+        mFavoriteButton = (Button)postView.findViewById(R.id.post_fragment_button_favorite);
         mFavoriteButton.setTextColor(mTextColor);
         setIconFavorited(mPost, mFavoriteButton);
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
@@ -171,7 +177,7 @@ public abstract class PostFragment extends Fragment {
         
         
         // Picture Button
-        mPictureButton = (Button)v.findViewById(R.id.post_fragment_button_photo);
+        mPictureButton = (Button)postView.findViewById(R.id.post_fragment_button_photo);
         mPictureButton.setCompoundDrawables(mImageIcon, null, null, null);
         mPictureButton.setTextColor(mTextColor);
 
@@ -196,13 +202,13 @@ public abstract class PostFragment extends Fragment {
         
         // Set Backbutton/Forward Button invisible for now, Answer/Question can
         // Choose to show them based on their individual requirements
-        mBackButton = (Button)v.findViewById(R.id.post_fragment_button_back);
+        mBackButton = (Button)postView.findViewById(R.id.post_fragment_button_back);
         mBackButton.setVisibility(View.GONE);
         
-        mAnswersButton = (Button)v.findViewById(R.id.post_fragment_button_answers);
+        mAnswersButton = (Button)postView.findViewById(R.id.post_fragment_button_answers);
         mAnswersButton.setVisibility(View.GONE);
         
-        return v;
+        return postView;
 	}
 
     protected void setIconFavorited(Post post, Button button) {

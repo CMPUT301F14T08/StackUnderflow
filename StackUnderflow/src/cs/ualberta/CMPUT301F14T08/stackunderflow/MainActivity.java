@@ -8,22 +8,19 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.survivingwithandroid.actionbartabnavigation.R;
-//import com.survivingwithandroid.actionbartabnavigation.TabFragment;
-
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.FragmentTransaction;
 import android.app.ActionBar.TabListener;
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import android.app.Activity;
-import android.content.Intent;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.app.FragmentManager;
-import android.util.Log;
+import android.app.FragmentTransaction;
+
+import android.content.Intent;
 
 
 public class MainActivity extends Activity implements TabListener {

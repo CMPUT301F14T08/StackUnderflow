@@ -11,7 +11,6 @@ import java.util.UUID;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.StrictMode;
 import android.util.Log;
 
 
@@ -78,7 +77,7 @@ public class PostController {
 	
 	// Static initializer, use this to get the active instance if 
     // you're just concerned with refreshing a single post
-    public static PostController getInstanceNoRefresh(Context context, UUID postUUID) {
+    public static PostController getInstanceNoRefresh(Context context) {
         
         getInstance(context);
         return sPostController;

@@ -173,6 +173,22 @@ public class PostController {
         }
     }
 	
+    public void addSelectedToCache() {
+        if (!usingOnlinePostManager()) {
+            for (Post post : mPostManager.getQuestions()) {
+                if (post.mIsSelected) 
+                    post.setIsSelected(false);
+            }
+            return;
+        }
+            
+        for (Post post : mPostManager.getQuestions()) {
+            if (post.mIsSelected) {
+                addToCache((Question)post);
+                post.setIsSelected(false);
+            }
+        }
+    }
 	
     public PostManager getPostManager() {
         return mPostManager;

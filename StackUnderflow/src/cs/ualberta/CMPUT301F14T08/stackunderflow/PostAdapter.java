@@ -55,6 +55,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 		postDetails = (TextView) view.findViewById(R.id.main_question_subtitle_text);
 		answerBoxText = (TextView) view.findViewById(R.id.main_answer_count_text);
 		postTitle.setEllipsize(TextUtils.TruncateAt.END); //Add ellipses if whole title doesn't fit
+		view.setBackgroundResource(R.color.off_white);
 		
 		if (isQuestion) {
 			Question tmp = (Question)currPost;

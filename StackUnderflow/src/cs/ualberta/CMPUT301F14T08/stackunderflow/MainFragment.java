@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 /**
  * MainFragment This is where the sorting on the main screen appears so the user may view by most popular or most recent.
@@ -54,6 +55,21 @@ public class MainFragment extends Fragment {
 		View view = inflater.inflate(R.layout.list_fragment, null);
 		listview = (ListView) view.findViewById(R.id.list_view);
 		loadingPanel = view.findViewById(R.id.loadingPanel);
+		listview.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> l, View v, int position, long id) {
+                Post p = ((PostAdapter)adapter).getItem(position);
+       
+                p.toggleIsSelected();
+                int color = p.getIsSelected() ? R.color.selection_blue : R.color.off_white;
+                v.setBackgroundResource(color);
+                Log.d("Debug", "Is Selected: " + p.getIsSelected());
+                return true;
+            }
+		    
+        });
+		
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			
 			// Opens Question or Answer Fragment based upon list item clicked 

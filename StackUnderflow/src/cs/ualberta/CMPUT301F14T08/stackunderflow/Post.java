@@ -107,9 +107,13 @@ public class Post {
 		mReplies.add(newReply);
 	}
 	
-	public boolean getIsSelected(){
-		return mIsSelected;
+	public void toggleIsSelected(){
+		mIsSelected = !mIsSelected;
 	}
+	
+	public boolean getIsSelected(){
+        return mIsSelected;
+    }
 	
 	public void setIsSelected(boolean isSelected){
 		mIsSelected = isSelected;

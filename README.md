@@ -35,8 +35,3 @@ License: Free to alter and use for personal or commercial products (https://pict
 URL: https://pictonic.co  
    
    
-### Code References
-------------------
-
-**Android Elastic Search Lab Material**  
-https://github.com/dfserrano/AndroidElasticSearch

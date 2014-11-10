@@ -1,3 +1,7 @@
+/**
+ * This is used when a user would like to make a new post. This will also allow the user to input a new user name if the user has not yet chosen one
+ * If the user does not choose a user name it will simply default to User. 
+ */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.util.UUID;

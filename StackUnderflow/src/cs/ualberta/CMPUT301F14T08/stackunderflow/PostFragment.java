@@ -1,5 +1,7 @@
-/*
- * TODO: Write a nice discription to about this class
+/**
+ * This Fragment will help display all questions (Questions and Answers) When a user wants to view a question they are shown this screen. Here the user 
+ * may view and modify the upvote's as well as favorite or unfavorite the post. The user may also view the post body, username of the author of the post and 
+ * view a picture of the users problem if there is one as well as view how ever many answers there are to a given question.
  */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 

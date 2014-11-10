@@ -1,4 +1,4 @@
-/*
+/**
  * MainActivity is the main page. Called when the user first starts the app
  * works with the tabs on the main screen and the dialog allowing the user to navigate between the different screens.
  */

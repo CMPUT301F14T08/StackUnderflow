@@ -1,6 +1,6 @@
-/*
+/**
  * AnswerFragment called from AnswerActivity. This is called when the user attempts to view and answer.
- * 
+ * @author Cmput301 Winter 2014 Group 8
  */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 

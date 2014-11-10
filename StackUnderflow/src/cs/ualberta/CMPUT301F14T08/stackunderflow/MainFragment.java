@@ -1,4 +1,4 @@
-/*
+/**
  * MainFragment This is where the sorting on the main screen appears so the user may view by most popular or most recent.
  * this also allows the user to move to questions that they would like to see.
  */

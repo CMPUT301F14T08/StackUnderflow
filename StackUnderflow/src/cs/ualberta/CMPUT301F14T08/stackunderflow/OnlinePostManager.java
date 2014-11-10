@@ -376,7 +376,7 @@ public class OnlinePostManager extends PostManager {
         
         String result = addESAnswer(parent, newAnswer);
         if (result.equals("HTTP/1.1 200 OK")) {
-            super.addAnswer(parent, newAnswer);
+            //super.addAnswer(parent, newAnswer);
         }
             
         else {

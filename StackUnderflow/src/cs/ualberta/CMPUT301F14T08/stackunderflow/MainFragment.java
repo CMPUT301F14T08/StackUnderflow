@@ -131,6 +131,9 @@ public class MainFragment extends Fragment {
              for (Post post : sPostController.getPostManager().getQuestions()) {
                  adapter.add(post);
              }
+             Question q = (Question)sPostController.getPostManager().getQuestions().get(3);
+             Answer a = q.getAnswers().get(0);
+             adapter.add(a);
 
 	         adapter.notifyDataSetChanged();
 	     }

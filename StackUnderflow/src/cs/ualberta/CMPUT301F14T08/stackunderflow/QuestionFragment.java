@@ -2,7 +2,9 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,7 +21,23 @@ public class QuestionFragment extends PostFragment {
 		mQuestion = (Question)mPost;
 	    // We cache a post after viewing it
         sPostController.addToCache(mQuestion);
+        mFragment = this;
 	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)  
+    {  
+              super.onActivityResult(requestCode, resultCode, data);  
+                  
+               // check if the request code is same as what is passed  here it is 2  
+                if(requestCode==0)  
+                      {  
+                	Log.d("REQUEST CODE", ""+mQuestion.countAnswers());
+                //	getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+              
+                      }  
+  
+  }  
 	
 	@Override
 	protected int getUpvoteFullID() {
@@ -51,6 +69,13 @@ public class QuestionFragment extends PostFragment {
 	    return R.color.black;
 	}
 	
+	//Use the same menu for both question and answer but just hide the "back to question" option for the question view
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+	    super.onPrepareOptionsMenu(menu);
+	    menu.findItem(R.id.menu_item_back_to_question).setVisible(false);
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 	    // Call PostFragment onCreateView
@@ -63,7 +88,7 @@ public class QuestionFragment extends PostFragment {
 
 		mAnswersButton = (Button)v.findViewById(R.id.post_fragment_button_answers);
 		
-		int answers = mQuestion.getAnswers().size();
+		int answers = mQuestion.countAnswers();
 		if(answers > 0){
 			
 			mAnswersButton.setEnabled(true);
@@ -78,6 +103,7 @@ public class QuestionFragment extends PostFragment {
 				public void onClick(View v) {
 					Intent i = new Intent(getActivity(), AnswerActivity.class);
 					i.putExtra(PostFragment.EXTRA_POST_ID, mQuestion.getAnswers().get(0).getID());
+					i.putExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_QUESTION);
 					startActivity(i);
 				}
 			});

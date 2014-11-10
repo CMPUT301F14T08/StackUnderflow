@@ -11,6 +11,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -59,7 +60,6 @@ public abstract class PostFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-	    
 		mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
 		
 		// Don't let HTTP run in the background, we're just waiting for updates on
@@ -73,16 +73,21 @@ public abstract class PostFragment extends Fragment {
 		mTextColor = getResources().getColor(getTextColor());
 		
 		Context context = getActivity().getApplicationContext();
+		
 		mUpvoteFull = context.getResources().getDrawable(getUpvoteFullID());
-		mUpvoteFull.setBounds(0, 0, 60, 60);
+		mUpvoteFull.setBounds(0, 0, mUpvoteFull.getMinimumHeight(), mUpvoteFull.getMinimumWidth());
+		
 		mUpvoteEmpty = context.getResources().getDrawable(getUpvoteEmptyID());
-		mUpvoteEmpty.setBounds(0, 0, 60, 60);
+		mUpvoteEmpty.setBounds(0, 0, mUpvoteEmpty.getMinimumHeight(), mUpvoteEmpty.getMinimumWidth());
+		
 		mFavoriteFull = context.getResources().getDrawable(getFavoriteFullID());
-		mFavoriteFull.setBounds(0, 0, 60, 60);
+		mFavoriteFull.setBounds(0, 0, mFavoriteFull.getMinimumHeight(), mFavoriteFull.getMinimumWidth());
+		
 		mFavoriteEmpty = context.getResources().getDrawable(getFavoriteEmptyID());
-		mFavoriteEmpty.setBounds(0, 0, 60, 60);
+		mFavoriteEmpty.setBounds(0, 0, mFavoriteEmpty.getMinimumHeight(), mFavoriteEmpty.getMinimumWidth());
+		
         mImageIcon = context.getResources().getDrawable(getImageIconID());
-        mImageIcon.setBounds(0, 0, 60, 60);
+        mImageIcon.setBounds(0, 0, mImageIcon.getMinimumHeight(), mImageIcon.getMinimumWidth());
 	}
 	
 	// Subclasses (Question/Answer) will implement these to tell

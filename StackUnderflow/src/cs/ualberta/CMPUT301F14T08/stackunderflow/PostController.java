@@ -2,6 +2,7 @@
  * StackUnderflow application PostController. Point of access for post manager - handles
  * differences between online/cached post manager automatically. Determines whether
  * to provide online or cache manager based on online/offline status.
+ * @author Cmput301 Winter 2014 Group 8
  */
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;

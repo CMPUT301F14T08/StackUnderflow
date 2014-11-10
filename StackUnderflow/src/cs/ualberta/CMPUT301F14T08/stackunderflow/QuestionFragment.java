@@ -1,5 +1,6 @@
 /**
  * This fragment a question and display's it. This includes displaying the question along with all number of answers the question currently has. 
+ * @author Cmput301 Winter 2014 Group 8
  */
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 

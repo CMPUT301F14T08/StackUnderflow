@@ -153,21 +153,25 @@ public class PostController {
         }
     }
 	
-    public void addSelectedToCache() {
+    public boolean addSelectedToCache() {
+        boolean postsSelected = false;
+        
         if (!usingOnlinePostManager()) {
             for (Post post : mPostManager.getQuestions()) {
                 if (post.mIsSelected) 
                     post.setIsSelected(false);
             }
-            return;
+            return false;
         }
             
         for (Post post : mPostManager.getQuestions()) {
             if (post.mIsSelected) {
+                postsSelected = true;
                 addToCache((Question)post);
                 post.setIsSelected(false);
             }
         }
+        return postsSelected;
     }
 	
     public PostManager getPostManager() {

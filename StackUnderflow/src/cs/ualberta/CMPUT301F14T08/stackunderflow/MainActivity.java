@@ -83,12 +83,14 @@ public class MainActivity extends Activity implements TabListener {
 		        return true;
 		    }
 		    
-            tf.sPostController.addSelectedToCache();
+            boolean postsAdded = tf.sPostController.addSelectedToCache();
             tf.adapter.notifyDataSetChanged();
 		    
 
-		    if (tf.sPostController.usingOnlinePostManager())
+		    if (tf.sPostController.usingOnlinePostManager() && postsAdded)
     		    text = "Successfully added to Cache.";
+		    else if (tf.sPostController.usingOnlinePostManager() && !postsAdded)
+		        text = "Long-click to select one or more posts.";
 		    else 
 	            text = "Currently Offline. All posts are in Cache.";
 

@@ -1,5 +1,5 @@
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.controllers;
 
 import android.content.Context;
 import android.view.GestureDetector;

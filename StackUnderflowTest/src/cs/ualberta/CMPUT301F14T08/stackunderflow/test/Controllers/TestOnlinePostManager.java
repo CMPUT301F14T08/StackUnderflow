@@ -13,10 +13,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.OnlinePostManager;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activity.MainActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.OnlinePostManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 
 public class TestOnlinePostManager extends ActivityInstrumentationTestCase2<MainActivity>  {
 

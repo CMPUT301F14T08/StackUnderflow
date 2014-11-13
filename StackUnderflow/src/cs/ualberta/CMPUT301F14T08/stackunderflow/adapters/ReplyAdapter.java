@@ -1,8 +1,13 @@
 
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.adapters;
 
 import java.util.ArrayList;
+
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
 
 import android.content.Context;
 import android.view.LayoutInflater;

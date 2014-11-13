@@ -1,6 +1,7 @@
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.activity;
 
+import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.AnswerFragment;
 import android.app.Fragment;
 /**
  * AnswerActivity. Simply the base for the AnswerFragment. 

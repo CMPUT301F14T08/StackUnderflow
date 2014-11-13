@@ -1,8 +1,8 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.test.Model;
 
 import android.test.ActivityInstrumentationTestCase2;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Reply;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activity.MainActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
 
 public class TestReply extends ActivityInstrumentationTestCase2<MainActivity> {
 	public TestReply() {

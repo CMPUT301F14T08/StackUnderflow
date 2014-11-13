@@ -1,6 +1,10 @@
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.drawable;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.string;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;

@@ -1,4 +1,4 @@
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.exception;
 
 public class InvalidParentException extends RuntimeException {
 /**

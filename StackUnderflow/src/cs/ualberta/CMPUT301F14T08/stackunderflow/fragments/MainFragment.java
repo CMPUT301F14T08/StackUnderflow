@@ -1,7 +1,19 @@
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
 import java.util.ArrayList;
+
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.color;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activity.AnswerActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activity.QuestionActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.adapters.PostAdapter;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 
 import android.app.Fragment;
 import android.content.Intent;

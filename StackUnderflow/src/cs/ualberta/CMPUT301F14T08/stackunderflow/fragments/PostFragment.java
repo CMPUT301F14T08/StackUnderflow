@@ -1,9 +1,18 @@
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.UUID;
+
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.menu;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activity.NewAnswerActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.adapters.ReplyAdapter;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
 
 import android.app.Fragment;
 import android.content.Context;

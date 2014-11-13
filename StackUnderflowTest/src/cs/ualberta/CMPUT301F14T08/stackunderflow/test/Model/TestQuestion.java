@@ -1,9 +1,9 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.test.Model;
 
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Question;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Reply;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activity.MainActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
 import android.test.ActivityInstrumentationTestCase2;
 
 public class TestQuestion extends ActivityInstrumentationTestCase2<MainActivity> {

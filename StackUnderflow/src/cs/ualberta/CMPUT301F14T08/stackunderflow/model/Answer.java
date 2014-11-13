@@ -1,10 +1,12 @@
 
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.model;
 
 
 import java.util.UUID;
 import java.util.Date;
+
+
 
 
 /**

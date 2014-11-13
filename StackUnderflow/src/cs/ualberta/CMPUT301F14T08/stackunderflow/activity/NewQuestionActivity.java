@@ -1,6 +1,7 @@
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.activity;
 
+import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.NewQuestionFragment;
 import android.app.Fragment;
 /**
  * NewQuestionActivity - Simple code for when ever the "Ask a Question" button is pressed. Will simply call NewQuestionFragment.

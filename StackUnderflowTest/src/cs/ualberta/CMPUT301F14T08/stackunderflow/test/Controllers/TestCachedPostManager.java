@@ -6,12 +6,12 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import android.test.ActivityInstrumentationTestCase2;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.CachedPostManager;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Post;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.PostController;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activity.MainActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.CachedPostManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 
 public class TestCachedPostManager extends ActivityInstrumentationTestCase2<MainActivity>  {
     public TestCachedPostManager() {

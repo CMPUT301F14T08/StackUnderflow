@@ -1,7 +1,15 @@
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
 import java.util.UUID;
+
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.string;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

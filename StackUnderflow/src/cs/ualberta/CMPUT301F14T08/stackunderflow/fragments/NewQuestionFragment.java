@@ -1,7 +1,10 @@
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
 
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

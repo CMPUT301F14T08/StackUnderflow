@@ -1,6 +1,14 @@
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.color;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.drawable;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.string;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activity.AnswerActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.OnSwipeTouchListener;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;

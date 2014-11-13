@@ -1,9 +1,17 @@
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.activity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.menu;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.string;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.MainFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.UsernameDialogFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
 import android.app.ActionBar.TabListener;
 import android.app.Activity;
 import android.app.Fragment;
@@ -121,8 +129,6 @@ public class MainActivity extends Activity implements TabListener {
 			data.putInt("idx",  tab.getPosition());
 			tf.setArguments(data);
 			fragmentList.add(tf);
-		} else {
-			tf = (MainFragment) f;
 		}
 		fragmentTransaction.replace(android.R.id.content, tf);		
 	}    

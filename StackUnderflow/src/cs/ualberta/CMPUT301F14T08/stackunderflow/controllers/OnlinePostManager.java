@@ -1,5 +1,5 @@
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.controllers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +25,10 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.es.Hit;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.MatchAllCommand;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchHits;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchResponse;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
 /**
  * OnlinePostManager - Saves users questions, answers, posts and statistics that the users post into elastic search. This will
  * manage all elastic search information such as connecting and sending and reserving information from elastic search. This will also

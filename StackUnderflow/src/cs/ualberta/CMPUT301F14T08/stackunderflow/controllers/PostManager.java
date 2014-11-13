@@ -1,12 +1,18 @@
 
 
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.controllers;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
+
+import cs.ualberta.CMPUT301F14T08.stackunderflow.exception.InvalidPostTypeException;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
 
 import android.content.Context;
 /**

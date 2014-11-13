@@ -1,10 +1,12 @@
 
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.model;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+
+
 /**
  * Question class, extends Post class This is where the differences between post and question can be found. This will show a title, amount of answers 
  * it can also get the position of answers. and the answers that are linked to it.

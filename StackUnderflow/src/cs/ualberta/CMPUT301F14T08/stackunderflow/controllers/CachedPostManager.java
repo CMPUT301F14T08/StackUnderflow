@@ -1,6 +1,6 @@
 
 
-package cs.ualberta.CMPUT301F14T08.stackunderflow;
+package cs.ualberta.CMPUT301F14T08.stackunderflow.controllers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +15,11 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
 /**
  * CachedPostManager manages anything a user enters when they are offline. Also only post manager uses one of these to hold posts
  * sendToFile allows for local saving of posts that can be pushed later to online to a Gson file on their device

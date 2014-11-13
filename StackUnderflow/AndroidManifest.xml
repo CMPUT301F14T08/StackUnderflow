@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Stackoverflow" >
         <activity
-            android:name=".MainActivity"
+            android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activity.MainActivity"
             android:label="@string/title_activity_stack_underflow" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,22 +26,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".QuestionActivity"
+            android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activity.QuestionActivity"
             android:label="@string/question_title" 
             android:theme="@style/BlackTheme">
         </activity>
         <activity
-            android:name=".AnswerActivity"
+            android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activity.AnswerActivity"
             android:label="@string/answer_title" 
             android:theme="@style/BlueTheme">
         </activity>
         <activity 
-            android:name=".NewQuestionActivity"
+            android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activity.NewQuestionActivity"
             android:label="@string/new_question_title">
         </activity>
         
         <activity 
-            android:name=".NewAnswerActivity"
+            android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activity.NewAnswerActivity"
             android:label="@string/new_question_title"
             android:theme="@style/BlueTheme">
             

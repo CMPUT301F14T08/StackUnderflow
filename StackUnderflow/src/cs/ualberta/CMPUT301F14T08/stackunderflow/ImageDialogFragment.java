@@ -1,5 +1,6 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import android.app.Activity;
@@ -8,6 +9,9 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +24,9 @@ import android.widget.ImageButton;
 public class ImageDialogFragment extends DialogFragment {
 	
 	Uri imageFileUri;
+	protected Drawable mImage;
+	protected Bitmap mBitmap;
+	protected Drawable mDrawable;
 	protected ImageButton mImageButton;
 	private static final int CAPTURE_IMAGE_REQUEST_CODE = 12345;
 	
@@ -75,7 +82,12 @@ public class ImageDialogFragment extends DialogFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		if (requestCode == CAPTURE_IMAGE_REQUEST_CODE) {
 			if (resultCode == Activity.RESULT_OK) {
-				mImageButton.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
+				//mImage = Drawable.createFromPath(imageFileUri.getPath());
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				mBitmap = BitmapFactory.decodeFile(imageFileUri.getPath());
+				mBitmap.compress(Bitmap.CompressFormat.JPEG, 70, out);
+				mDrawable = new BitmapDrawable(getResources(), mBitmap);
+				mImageButton.setImageDrawable(mDrawable);
 				
 			}
 		}

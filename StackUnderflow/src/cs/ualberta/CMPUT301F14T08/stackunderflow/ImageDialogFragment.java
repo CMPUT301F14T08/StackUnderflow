@@ -85,7 +85,9 @@ public class ImageDialogFragment extends DialogFragment {
 				//mImage = Drawable.createFromPath(imageFileUri.getPath());
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				mBitmap = BitmapFactory.decodeFile(imageFileUri.getPath());
-				mBitmap.compress(Bitmap.CompressFormat.JPEG, 70, out);
+				while(mBitmap.getByteCount() > 64000){
+					mBitmap.compress(Bitmap.CompressFormat.JPEG, 70, out);
+				}
 				mDrawable = new BitmapDrawable(getResources(), mBitmap);
 				mImageButton.setImageDrawable(mDrawable);
 				

@@ -1,8 +1,10 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.io.File;
 import java.util.UUID;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,7 +23,9 @@ public abstract class NewPostFragment extends Fragment {
 	
 	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";
 	protected static final String DIALOG_USERNAME = "username";
+	protected static final String DIALOG_IMAGE = "image";
     protected static final int REQUEST_USERNAME = 0;
+    protected static final int REQUEST_IMAGE = 1;
     
 	protected PostController sPostController;
 	protected UUID mPostId;
@@ -90,7 +94,10 @@ public abstract class NewPostFragment extends Fragment {
 	        mUploadPictureButton.setOnClickListener(new View.OnClickListener() {            
 	            @Override
 	            public void onClick(View v) {
-	                // Implement picture dialog
+	            	FragmentManager fm = getActivity().getFragmentManager();
+	            	ImageDialogFragment dialog = new ImageDialogFragment();
+	        		dialog.setTargetFragment(NewPostFragment.this, REQUEST_IMAGE);
+	        		dialog.show(fm, DIALOG_USERNAME);
 	                
 	            }
 	        });

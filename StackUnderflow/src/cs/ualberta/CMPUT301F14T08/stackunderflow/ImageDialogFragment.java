@@ -2,11 +2,13 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 import java.io.File;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -68,5 +70,14 @@ public class ImageDialogFragment extends DialogFragment {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
 		startActivityForResult(intent, CAPTURE_IMAGE_REQUEST_CODE);
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		if (requestCode == CAPTURE_IMAGE_REQUEST_CODE) {
+			if (resultCode == Activity.RESULT_OK) {
+				mImageButton.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
+				
+			}
+		}
 	}
 }

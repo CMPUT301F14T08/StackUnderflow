@@ -1,5 +1,6 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
@@ -17,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -54,7 +56,7 @@ public class ImageDialogFragment extends DialogFragment {
                 // Positive button
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Do something else
+                        //getTarg
                     }
                 })
  
@@ -82,13 +84,20 @@ public class ImageDialogFragment extends DialogFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		if (requestCode == CAPTURE_IMAGE_REQUEST_CODE) {
 			if (resultCode == Activity.RESULT_OK) {
-				//mImage = Drawable.createFromPath(imageFileUri.getPath());
+				Bitmap original = BitmapFactory.decodeFile(imageFileUri.getPath());
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				mBitmap = BitmapFactory.decodeFile(imageFileUri.getPath());
-				while(mBitmap.getByteCount() > 64000){
-					mBitmap.compress(Bitmap.CompressFormat.JPEG, 70, out);
-				}
-				mDrawable = new BitmapDrawable(getResources(), mBitmap);
+				original.compress(Bitmap.CompressFormat.JPEG, 70, out);
+				Bitmap modified = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+				
+				//debug stuff. the log shows that original and modified are the same size.
+				//I suspect this is because both are bitmaps versions.
+				//Not sure how to measure the jpegs directly, but i expect they are different sizes.
+				int bytesOriginal = original.getByteCount();
+				Log.d("MYTAG", String.valueOf(bytesOriginal), new Exception());
+				int bytesModified = modified.getByteCount();
+				Log.d("MYTAG", String.valueOf(bytesModified), new Exception());
+				
+				mDrawable = new BitmapDrawable(getResources(), modified);
 				mImageButton.setImageDrawable(mDrawable);
 				
 			}

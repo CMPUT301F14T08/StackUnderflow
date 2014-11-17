@@ -23,10 +23,10 @@ import android.content.Intent;
  * @author Cmput301 Winter 2014 Group 8
  */
 
-public class MainActivity extends Activity implements TabListener {
+public class ProfileActivity extends Activity implements TabListener {
 
 	private List<Fragment> fragmentList = new ArrayList<Fragment>();
-	protected MainFragment tf = null;
+	protected ProfileFragment tf = null;
 	static final int PICK_QUESTION = 0;
 	static final int PICK_ANSWER = 1;
 
@@ -38,14 +38,19 @@ public class MainActivity extends Activity implements TabListener {
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		Tab tab = actionBar.newTab();
-		tab.setText(R.string.newest);
+		tab.setText(R.string.my_posts);
 		tab.setTabListener(this);
 		actionBar.addTab(tab);
 
 		Tab tab2 = actionBar.newTab();
-		tab2.setText(R.string.popular);
+		tab2.setText(R.string.my_favorites);
 		tab2.setTabListener(this);
 		actionBar.addTab(tab2);
+		
+		Tab tab3 = actionBar.newTab();
+		tab3.setText(R.string.read_later);
+		tab3.setTabListener(this);
+		actionBar.addTab(tab3);
 
 	}
 
@@ -56,6 +61,7 @@ public class MainActivity extends Activity implements TabListener {
 
 	/** Called when the activity is first created. */
 
+	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {//, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -63,7 +69,9 @@ public class MainActivity extends Activity implements TabListener {
 		
 		return true;
 	}
-
+	*/
+	
+	/*
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -78,14 +86,7 @@ public class MainActivity extends Activity implements TabListener {
 	            startActivityForResult(intent, PICK_QUESTION);
 
 	            return true;
-	            
-	      case R.id.user_profile: 
-
-	            Intent i = new Intent(this, ProfileActivity.class);                
-	            startActivity(i);
-
-	            return true;
-	      case R.id.mark_read:	
+		case R.id.mark_read:	
 		    if (tf.sPostController == null) {
 		        return true;
 		    }
@@ -112,7 +113,8 @@ public class MainActivity extends Activity implements TabListener {
 			toast.show();			
 			return false;
 		} 
-	}	
+	}
+	*/
 
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
@@ -123,13 +125,13 @@ public class MainActivity extends Activity implements TabListener {
 			fragmentList.get(tab.getPosition());
 
 		if (f == null) {
-			tf = new MainFragment();
+			tf = new ProfileFragment();
 			Bundle data = new Bundle();
 			data.putInt("idx",  tab.getPosition());
 			tf.setArguments(data);
 			fragmentList.add(tf);
 		} else {
-			tf = (MainFragment) f;
+			tf = (ProfileFragment) f;
 		}
 		fragmentTransaction.replace(android.R.id.content, tf);		
 	}    
@@ -154,7 +156,7 @@ public class MainActivity extends Activity implements TabListener {
 		//No implementation required at present
 	}
 
-
+/*
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent data) {
 		if (requestCode == PICK_QUESTION) {
@@ -167,7 +169,7 @@ public class MainActivity extends Activity implements TabListener {
 			}
 		}
 	}
-
+*/
 
 
 }

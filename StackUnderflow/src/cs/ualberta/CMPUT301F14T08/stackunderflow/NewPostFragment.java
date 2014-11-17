@@ -3,9 +3,13 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 import java.io.File;
 import java.util.UUID;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +33,7 @@ public abstract class NewPostFragment extends Fragment {
     
 	protected PostController sPostController;
 	protected UUID mPostId;
+	protected Uri mImageFileUri;
 	
 	protected EditText mPostTitle;
 	protected EditText mPostBody;
@@ -78,34 +83,44 @@ public abstract class NewPostFragment extends Fragment {
             return super.onOptionsItemSelected(menuItem);
     	} 
 	}
-	
-	   @Override
-	    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 	        
-	        View v = inflater.inflate(getViewID(), parent, false);     
+        View v = inflater.inflate(getViewID(), parent, false);     
 
-	        // Get Views IDs
-	        mPostBody = (EditText)v.findViewById(getBodyTextViewID());
-	        mUploadPictureButton = (Button) v.findViewById(getAddPictureButtonID());
-	        mSubmitButton = (Button) v.findViewById(getSubmitButtonID());
-	        
+        // Get Views IDs
+        mPostBody = (EditText)v.findViewById(getBodyTextViewID());
+        mUploadPictureButton = (Button) v.findViewById(getAddPictureButtonID());
+        mSubmitButton = (Button) v.findViewById(getSubmitButtonID());
+        
 
-	        //TODO Implement picture dialog/upload
-	        mUploadPictureButton.setOnClickListener(new View.OnClickListener() {            
-	            @Override
-	            public void onClick(View v) {
-	            	FragmentManager fm = getActivity().getFragmentManager();
-	            	ImageDialogFragment dialog = new ImageDialogFragment();
-	        		dialog.setTargetFragment(NewPostFragment.this, REQUEST_IMAGE);
-	        		dialog.show(fm, DIALOG_USERNAME);
-	                
-	            }
-	        });
-	        
-	        return v;
-	    }
-    	
-    	
-	
-	
+        //TODO Implement picture dialog/upload
+        mUploadPictureButton.setOnClickListener(new View.OnClickListener() {            
+            @Override
+            public void onClick(View v) {
+            	FragmentManager fm = getActivity().getFragmentManager();
+            	ImageDialogFragment dialog = new ImageDialogFragment();
+        		dialog.setTargetFragment(NewPostFragment.this, REQUEST_IMAGE);
+        		dialog.show(fm, DIALOG_USERNAME);
+                
+            }
+        });
+        
+        return v;
+    }
+   
+	//not recieving the uri properly.
+   @Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+	   if (requestCode == REQUEST_IMAGE) {
+		   if (resultCode == Activity.RESULT_OK) {
+               Bundle bundle = data.getExtras();
+               mImageFileUri = Uri.parse(bundle.getString("uri","NO_URI_RECIEVED")); //null exception error
+               String imageFilePath = mImageFileUri.getPath();
+               File jpeg = new File(imageFilePath);
+               long fileSize = jpeg.length();
+               Log.d("MYTAGE", String.valueOf(fileSize), new Exception());
+		   }
+	   }
+	}
 }

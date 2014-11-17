@@ -29,10 +29,8 @@ import android.widget.ImageButton;
 public class ImageDialogFragment extends DialogFragment {
 	
 	protected Uri mImageFileUri;
-	protected Drawable mImage;
-	protected Bitmap mBitmap;
-	protected Drawable mDrawable;
 	protected ImageButton mImageButton;
+	protected File mJPEGFile;
 	private static final int CAPTURE_IMAGE_REQUEST_CODE = 12345;
 	
 	int getImageButtonID() {
@@ -59,7 +57,12 @@ public class ImageDialogFragment extends DialogFragment {
                 // Positive button
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        //getTarg
+                    	//this block not working as intended. NewPostFragment gets a null pointer error when
+                    	//unpacking bundle
+                    	Intent i = new Intent();
+                    	Bundle extras = new Bundle();
+                    	extras.putString("uri", mImageFileUri.toString());
+                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
                     }
                 })
  
@@ -91,37 +94,37 @@ public class ImageDialogFragment extends DialogFragment {
 		if (requestCode == CAPTURE_IMAGE_REQUEST_CODE) {
 			if (resultCode == Activity.RESULT_OK) {
 				String imageFilePath = mImageFileUri.getPath();
-				File imageFile = new File(imageFilePath);					//loads JPEG to memory
-				BitmapFactory.Options o = new BitmapFactory.Options();
-				o.inSampleSize = 2;											//Factor for scaling down
-				Bitmap modified = null;										
+				mJPEGFile = new File(imageFilePath);						//loads JPEG to memory
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inSampleSize = 2;										//Factor for scaling down
+				Bitmap bitmap = null;										
 				FileOutputStream fos = null;
-				long fileSize = imageFile.length();
+				long fileSize = mJPEGFile.length();
 				//Log.d("MYTAGE", String.valueOf(fileSize), new Exception());
 				
 				//each iteration shrinks image by a factor of two
 				while(fileSize > 64000){
 					try {
-						modified = BitmapFactory.decodeStream(new FileInputStream(imageFile), null, o); //converts JPEG to bitmap at half size
-						fos = new FileOutputStream(imageFile);
+						bitmap = BitmapFactory.decodeStream(new FileInputStream(mJPEGFile), null, options); //converts JPEG to bitmap at half size
+						fos = new FileOutputStream(mJPEGFile);
 					} 
 					catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
-					modified.compress(Bitmap.CompressFormat.JPEG, 100, fos);	//converts bitmap back to JPEG
-					fileSize = imageFile.length();
+					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);	//converts bitmap back to JPEG
+					fileSize = mJPEGFile.length();
 					//Log.d("MYTAGE", String.valueOf(fileSize), new Exception());
 				}
 				
 				//converts JPEG to bitmap without scaling, so that it can be drawn.
 				try {
-					modified = BitmapFactory.decodeStream(new FileInputStream(imageFile));
+					bitmap = BitmapFactory.decodeStream(new FileInputStream(mJPEGFile));
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
 
-				mDrawable = new BitmapDrawable(getResources(), modified); 	//creates drawable from bitmap
-				mImageButton.setImageDrawable(mDrawable);					//updates thumbnail view
+				Drawable drawable= new BitmapDrawable(getResources(), bitmap);	 	//creates drawable from bitmap
+				mImageButton.setImageDrawable(drawable);							//updates thumbnail view
 				}
 		}
 	}

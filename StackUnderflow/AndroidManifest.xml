@@ -49,7 +49,9 @@
         
         <activity 
             android:name=".ProfileActivity"
-            android:label="@string/profile_title">
+            android:label="@string/profile_title"
+            android:theme="@style/ProfileActionBar"
+           >
             
         </activity>
         

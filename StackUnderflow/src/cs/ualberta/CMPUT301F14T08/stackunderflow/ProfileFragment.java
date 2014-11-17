@@ -22,9 +22,9 @@ import android.widget.ListView;
  */
 public class ProfileFragment extends Fragment {
 	
-	private static final String SORT_MY_POSTS = "MY_POSTS";
-	private static final String SORT_MY_FAVORITES = "MY_FAVORITES";
-	private static final String SORT_READ_LATER = "READ_LATER";
+	private static final String FILTER_MY_POSTS = "MY_POSTS";
+	private static final String FILTER_MY_FAVORITES = "MY_FAVORITES";
+	private static final String FILTER_READ_LATER = "READ_LATER";
 	
 	private int index;
 	
@@ -39,7 +39,6 @@ public class ProfileFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		Bundle data = getArguments();
 		index = data.getInt("idx");
-
 	}
 	
 	
@@ -57,22 +56,6 @@ public class ProfileFragment extends Fragment {
 		listview = (ListView) view.findViewById(R.id.list_view);
 		loadingPanel = view.findViewById(R.id.loadingPanel);
 		
-		/*
-		listview.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> l, View v, int position, long id) {
-                Post p = ((PostAdapter)adapter).getItem(position);
-       
-                p.toggleIsSelected();
-                int color = p.getIsSelected() ? R.color.selection_blue : R.color.off_white;
-                v.setBackgroundResource(color);
-                Log.d("Debug", "Is Selected: " + p.getIsSelected());
-                return true;
-            }
-		    
-        });
-        */
 		
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			
@@ -106,17 +89,17 @@ public class ProfileFragment extends Fragment {
 		// Implements tab-switching between sorted list views for "Newest" and "Popular" Main Activity tabs
 		switch(index){
 		case 0:
-			createView(SORT_MY_POSTS);
-			lastSort = SORT_MY_POSTS;
+			createView(FILTER_MY_POSTS);
+			lastSort = FILTER_MY_POSTS;
 			break;
 			
 		case 1:
-			createView(SORT_MY_FAVORITES);
-			lastSort = SORT_MY_FAVORITES;
+			createView(FILTER_MY_FAVORITES);
+			lastSort = FILTER_MY_FAVORITES;
 			break;
 		case 2:
-			createView(SORT_READ_LATER);
-			lastSort = SORT_READ_LATER;
+			createView(FILTER_READ_LATER);
+			lastSort = FILTER_READ_LATER;
 			break;
 			
 		default:
@@ -148,22 +131,27 @@ public class ProfileFragment extends Fragment {
 	         
 	     }
 	     
+	   
 	     @Override
 	     protected void onPostExecute(PostController result) {
 	         sPostController = result;
-	         
-             if (lastSort.equals(SORT_MY_POSTS))
-                 sPostController.getPostManager().sortByDate();
-              else if (lastSort.equals(SORT_MY_FAVORITES)) 
-                 sPostController.getPostManager().sortByScore();
-              else if (lastSort.equals(SORT_READ_LATER)) 
-                  sPostController.getPostManager().sortByScore();
-             
             
 	         adapter.clear();
+	         
+	         //FILTER_MY_POSTS is currently blank list: needs questions created with username and isUsers user attribute set (UserProfile implementation)
+	         //FILTER_MY_FAVORITES is working
+	         //FILTER_READ_LATER is currently blank list: isReadLater user attribute is not being set in MainActivity call to addSelectedToCache() (add to function in PostController?)
              for (Post post : sPostController.getPostManager().getQuestions()) {
-                 adapter.add(post);
+            	 if (
+            			 (lastSort.equals(FILTER_MY_POSTS) && post.getUserAttributes().getIsUsers())
+            			 || (lastSort.equals(FILTER_MY_FAVORITES) && post.getUserAttributes().getIsFavorited())
+            			 || (lastSort.equals(FILTER_READ_LATER) && post.getUserAttributes().getIsReadLater())
+            		 )
+            	 {
+            		 adapter.add(post);
+            	 }
              }
+             
 
 	         adapter.notifyDataSetChanged();
 	         loadingPanel.setVisibility(View.GONE);

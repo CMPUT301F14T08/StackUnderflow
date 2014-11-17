@@ -31,4 +31,9 @@
            parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/black</item>
     </style>
+    <style name="ProfileActionBar"
+			parent="@style/Theme.Stackoverflow">
+        <item name="android:actionBarSize">85dp</item>
+    </style>
+    
 </resources>

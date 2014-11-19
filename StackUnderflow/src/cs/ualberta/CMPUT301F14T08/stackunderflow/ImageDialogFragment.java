@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,23 +26,32 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class ImageDialogFragment extends DialogFragment {
 	
-	protected Uri mImageFileUri;
+	protected Uri mJPEGFileUri;
+	protected String mJPEGFileName;
+	protected byte mJPEGByteArray[];
 	protected ImageButton mImageButton;
-	protected File mJPEGFile;
+	protected TextView mTextView;
+	//protected File mJPEGFile;
 	private static final int CAPTURE_IMAGE_REQUEST_CODE = 12345;
 	
 	int getImageButtonID() {
         return R.id.image_prompt_fragment_image_button;
     }
+	int getTextViewID() {
+		return R.id.image_prompt_fragment_textview;
+	}
 	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
 		final View v = inflater.inflate(R.layout.image_prompt, null);
 		
+		mTextView = (TextView)v.findViewById(getTextViewID());
+		mTextView.setVisibility(View.GONE);
 		mImageButton = (ImageButton)v.findViewById(getImageButtonID());
 		mImageButton.setOnClickListener(new View.OnClickListener() {            
             @Override
@@ -61,7 +71,9 @@ public class ImageDialogFragment extends DialogFragment {
                     	//unpacking bundle
                     	Intent i = new Intent();
                     	Bundle extras = new Bundle();
-                    	extras.putString("uri", mImageFileUri.toString());
+                    	extras.putByteArray("BYTES", mJPEGByteArray);
+                    	extras.putString("NAME", mJPEGFileName);
+                    	i.putExtras(extras);
                         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
                     }
                 })
@@ -81,9 +93,9 @@ public class ImageDialogFragment extends DialogFragment {
 			folder.mkdir();
 		String imagePathAndFileName = path + File.separator + String.valueOf(System.currentTimeMillis()) + ".jpg";
 		File imageFile = new File(imagePathAndFileName);
-		mImageFileUri = Uri.fromFile(imageFile);
+		mJPEGFileUri = Uri.fromFile(imageFile);
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageFileUri);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, mJPEGFileUri);
 		startActivityForResult(intent, CAPTURE_IMAGE_REQUEST_CODE);
 	}
 	
@@ -93,39 +105,46 @@ public class ImageDialogFragment extends DialogFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		if (requestCode == CAPTURE_IMAGE_REQUEST_CODE) {
 			if (resultCode == Activity.RESULT_OK) {
-				String imageFilePath = mImageFileUri.getPath();
-				mJPEGFile = new File(imageFilePath);						//loads JPEG to memory
+				String jpegFilePath = mJPEGFileUri.getPath();
+				File jpegFile = new File(jpegFilePath); //loads JPEG to memory
+				long fileSize = jpegFile.length();
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inSampleSize = 2;										//Factor for scaling down
-				Bitmap bitmap = null;										
-				FileOutputStream fos = null;
-				long fileSize = mJPEGFile.length();
-				//Log.d("MYTAGE", String.valueOf(fileSize), new Exception());
 				
-				//each iteration shrinks image by a factor of two
+				FileInputStream fis = null;
+				mJPEGByteArray = null;				
+				//loads jpeg into jpegByteArray
+				try {
+					fis = new FileInputStream(jpegFile);
+					mJPEGByteArray = new byte[(int)fileSize];
+					fis.read(mJPEGByteArray);
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				Bitmap bitmap = null;
+				ByteArrayOutputStream baos = null;
+				//compresses jpegByteArray
 				while(fileSize > 64000){
-					try {
-						bitmap = BitmapFactory.decodeStream(new FileInputStream(mJPEGFile), null, options); //converts JPEG to bitmap at half size
-						fos = new FileOutputStream(mJPEGFile);
-					} 
-					catch (FileNotFoundException e) {
-						e.printStackTrace();
-					}
-					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);	//converts bitmap back to JPEG
-					fileSize = mJPEGFile.length();
+					bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(mJPEGByteArray), null, options); //converts JPEG to bitmap at half size
+					baos = new ByteArrayOutputStream();
+					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);	//converts bitmap back to JPEG in baos
+					mJPEGByteArray = baos.toByteArray();						//loads baos into byte array
+					try {baos.flush();}	
+					catch (IOException e) {e.printStackTrace();	}						
+					fileSize = mJPEGByteArray.length;						//recalculates fileSize
 					//Log.d("MYTAGE", String.valueOf(fileSize), new Exception());
 				}
 				
-				//converts JPEG to bitmap without scaling, so that it can be drawn.
-				try {
-					bitmap = BitmapFactory.decodeStream(new FileInputStream(mJPEGFile));
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-
+				bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(mJPEGByteArray)); //creates bitmap from jpegByteArray
 				Drawable drawable= new BitmapDrawable(getResources(), bitmap);	 	//creates drawable from bitmap
 				mImageButton.setImageDrawable(drawable);							//updates thumbnail view
-				}
+				mJPEGFileName = jpegFile.getName();
+				mTextView.setText(mJPEGFileName);
+				mTextView.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 }

@@ -33,7 +33,9 @@ public abstract class NewPostFragment extends Fragment {
     
 	protected PostController sPostController;
 	protected UUID mPostId;
-	protected Uri mImageFileUri;
+	//protected Uri mImageFileUri;
+	protected String mJPEGFileName;
+	protected byte mJPEGByteArray[];
 	
 	protected EditText mPostTitle;
 	protected EditText mPostBody;
@@ -115,11 +117,9 @@ public abstract class NewPostFragment extends Fragment {
 	   if (requestCode == REQUEST_IMAGE) {
 		   if (resultCode == Activity.RESULT_OK) {
                Bundle bundle = data.getExtras();
-               mImageFileUri = Uri.parse(bundle.getString("uri","NO_URI_RECIEVED")); //null exception error
-               String imageFilePath = mImageFileUri.getPath();
-               File jpeg = new File(imageFilePath);
-               long fileSize = jpeg.length();
-               Log.d("MYTAGE", String.valueOf(fileSize), new Exception());
+               mJPEGByteArray = bundle.getByteArray("BYTES"); //null exception error
+               mJPEGFileName = bundle.getString("NAME");
+               mUploadPictureButton.setText(mJPEGFileName);
 		   }
 	   }
 	}

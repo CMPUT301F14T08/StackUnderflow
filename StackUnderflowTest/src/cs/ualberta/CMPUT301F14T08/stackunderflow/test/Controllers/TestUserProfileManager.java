@@ -3,16 +3,20 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.test.Controllers;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import android.R.string;
 import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.CachedPostManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.OnlinePostManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.UserProfile;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.UserProfileManager;
 
 public class TestUserProfileManager extends ActivityInstrumentationTestCase2<MainActivity> {
@@ -52,10 +56,25 @@ public class TestUserProfileManager extends ActivityInstrumentationTestCase2<Mai
     	String test=x.getUserProfile().getUsername();
     	assertEquals(test,"test1");
     }
-    public void testChangedDataSave() throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+    public void testChangedDataSaveQuestion() throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
     	UserProfileManager u = UserProfileManager.getInstance(getActivity());
-    	Log.d("STUFF", "THIS SHOULD SHOW UP2");
     	UserProfileManager.getInstance(getActivity());
-    	assertEquals(u,u);
+    	CachedPostManager manager = CachedPostManager.getInstance(getActivity());
+        Question q = new Question("a", "a", "a");
+        manager.addQuestion(q);
+        Log.d("STUFF",""+u.getUserProfile().getUserAttributesForId(q.getID()));
+
+    	assertEquals(u.getUserProfile().getUserAttributesForId(q.getID()),q.getUserAttributes());
+    }
+    public void testChangedDataSaveAnswer() throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+    	UserProfileManager u = UserProfileManager.getInstance(getActivity());
+    	UserProfileManager.getInstance(getActivity());
+    	CachedPostManager manager = CachedPostManager.getInstance(getActivity());
+    	Question q = new Question("a", "a", "a");
+        Answer a = new Answer("a", "a", "a");
+        manager.addAnswer(q,a);
+        Log.d("STUFF",""+u.getUserProfile().getUserAttributesForId(q.getID()));
+
+    	assertEquals(u.getUserProfile().getUserAttributesForId(a.getID()),a.getUserAttributes());
     }
 }

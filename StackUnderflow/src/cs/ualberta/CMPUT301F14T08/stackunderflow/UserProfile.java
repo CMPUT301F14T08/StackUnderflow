@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public class UserProfile {
 	private String mUsername;
-	private HashMap<UUID, UserAttributes> mUserAttributesMap = new HashMap<UUID, UserAttributes>();
+	private static HashMap<UUID, UserAttributes> mUserAttributesMap = new HashMap<UUID, UserAttributes>();
 	private int mAnswersPostedCount;
 	private int mQuestionsPostedCount;
 	

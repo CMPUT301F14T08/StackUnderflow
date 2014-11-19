@@ -169,11 +169,12 @@ public class CachedPostManager extends PostManager{
 
 	@Override
 	public void addQuestion(Question newQuestion) {
+		UserProfileManager.getInstance(mContext).getUserProfile().addToMap(newQuestion.mUserAttributes, newQuestion.getID());
 		super.addQuestion(newQuestion);
 		save();
 		addedOffline = true;
 		
-		UserProfileManager.getInstance(mContext).getUserProfile().addToMap(newQuestion.mUserAttributes, newQuestion.getID());
+		
 	}
 	
 	@Override

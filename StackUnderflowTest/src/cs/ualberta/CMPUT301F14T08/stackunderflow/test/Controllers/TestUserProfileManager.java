@@ -74,7 +74,7 @@ public class TestUserProfileManager extends ActivityInstrumentationTestCase2<Mai
         Answer a = new Answer("a", "a", "a");
         manager.addAnswer(q,a);
         Log.d("STUFF",""+u.getUserProfile().getUserAttributesForId(q.getID()));
-
+        
     	assertEquals(u.getUserProfile().getUserAttributesForId(a.getID()),a.getUserAttributes());
     }
 }

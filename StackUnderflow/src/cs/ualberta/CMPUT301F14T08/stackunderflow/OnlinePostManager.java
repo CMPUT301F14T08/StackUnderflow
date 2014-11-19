@@ -398,6 +398,7 @@ public class OnlinePostManager extends PostManager {
         
         mCachedPostManager.addQuestion(newQuestion);
         mCachedPostManager.save();
+        
     }
     
     /** Saves individual answer by updating associated question on ES server
@@ -417,6 +418,9 @@ public class OnlinePostManager extends PostManager {
         }
         
         mCachedPostManager.save();
+		UserProfileManager userProfileManager = null;
+		userProfileManager.getInstance(mContext);
+		userProfileManager.getUserProfile().addToMap(newAnswer.mUserAttributes, newAnswer.getID());
     }
     
     //TODO: Implement in Project Part 4

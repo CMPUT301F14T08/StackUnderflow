@@ -7,8 +7,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,13 +21,12 @@ import com.google.gson.reflect.TypeToken;
  * @author Cmput301 Winter 2014 Group 8
  */
 public class UserProfileManager {
-	private UserProfileManager sUserProfileManager;
+	private static UserProfileManager sUserProfileManager;
 	private String PROFILE_FILE;
 	private UserProfile mUserProfile;
 	protected Context mContext;
 
 	private UserProfileManager(Context context){
-		sUserProfileManager=new UserProfileManager(context);
 		PROFILE_FILE = "user_profile.json";
 		mContext = context;
 		try {
@@ -63,7 +64,7 @@ public class UserProfileManager {
 			Gson gson = new Gson();
 			InputStream input = mContext.openFileInput(PROFILE_FILE);
 			reader = new InputStreamReader(input);
-			userProfile = gson.fromJson(reader, new TypeToken() {}.getType());
+			userProfile = gson.fromJson(reader, new TypeToken <UserProfile>() {}.getType());
 			
 		} finally { 
 			if (reader != null)
@@ -73,11 +74,14 @@ public class UserProfileManager {
 	}
 	/**
 	 * Creates a singleton of sUserProfileManager. THIS IS HOW YOU CREATE A USERPROFILEMANAGER
-	 * @return the current userprofile or a new UserProfileManager when no UserProfileManager can be found
+	 * @return the current user profile or a new UserProfileManager when no UserProfileManager can be found
 	 */
-	public UserProfileManager getInstance(Context context){
+	public static UserProfileManager getInstance(Context context){
+		Log.d("STUFF", "WHAT ABOUT THIS");
 		if (sUserProfileManager == null) {
+			Log.d("STUFF", "THIS SHOULD SHOW UP");
 			sUserProfileManager = new UserProfileManager(context.getApplicationContext());
+			Log.d("STUFF", "THIS SHOULDN'T SHOW UP");
 		}
 		return sUserProfileManager;
 	}
@@ -92,5 +96,8 @@ public class UserProfileManager {
 		} catch (IOException e) {
 			return false;
 		}
+	}
+	public UserProfile getUserProfile(){
+		return mUserProfile;
 	}
 }

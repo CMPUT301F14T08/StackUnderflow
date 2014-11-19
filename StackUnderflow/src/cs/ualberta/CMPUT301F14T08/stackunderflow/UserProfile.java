@@ -46,5 +46,8 @@ public class UserProfile {
 	public UserAttributes getUserAttributesForId(UUID id){
 		return mUserAttributesMap.get(id);
 	}
+	public void addToMap(UserAttributes userAttributes, UUID id){
+		mUserAttributesMap.put(id,userAttributes);
+	}
 
 }

@@ -52,7 +52,7 @@ public class PostController {
 		    return false;
 		}
 		Log.d("Debug", "Is Online: " + ni.isConnected());
-		return ni.isConnected();
+		return false;
 	}
 	
 	/** retrieves the post controller or initializes it if it doesn't exits

@@ -5,6 +5,8 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+
+import android.content.Context;
 /**
  * Question class, extends Post class This is where the differences between post and question can be found. This will show a title, amount of answers 
  * it can also get the position of answers. and the answers that are linked to it.
@@ -23,6 +25,7 @@ public class Question extends Post {
 	 */
 	public Question(String text, String signature, String title){
 		this(text, signature, null, title);
+		
 	}
 	/**
 	 * Constructor for questions which is a child of post. This version holds questions that user may post and read. This version is

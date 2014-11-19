@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -127,7 +128,7 @@ public class CachedPostManager extends PostManager{
 			Gson gson = new Gson();
 			InputStream input = mContext.openFileInput(QUESTION_CACHE_FILE);
 			reader = new InputStreamReader(input);
-			questions = gson.fromJson(reader, new TypeToken<ArrayList<Question>>() {}.getType());
+			questions = gson.fromJson(reader, new TypeToken <ArrayList<Question>>() {}.getType());
 			
 		} finally {
 			if (reader != null)
@@ -171,6 +172,8 @@ public class CachedPostManager extends PostManager{
 		super.addQuestion(newQuestion);
 		save();
 		addedOffline = true;
+		
+		UserProfileManager.getInstance(mContext).getUserProfile().addToMap(newQuestion.mUserAttributes, newQuestion.getID());
 	}
 	
 	@Override
@@ -178,6 +181,7 @@ public class CachedPostManager extends PostManager{
 		super.addAnswer(parent, newAnswer);
 		save();
 		addedOffline = true;
+		UserProfileManager.getInstance(mContext).getUserProfile().addToMap(newAnswer.mUserAttributes, newAnswer.getID());
 	}
 	
 	//TODO: Implement in Project Part 4

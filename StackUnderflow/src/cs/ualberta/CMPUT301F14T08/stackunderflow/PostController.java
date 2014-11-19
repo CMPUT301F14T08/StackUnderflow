@@ -9,6 +9,8 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 
+
+
 // TODO: Currently this just controls the CachedPostManager. 
 // Update during Project Part 3, Week 2 to include OnlineCachedManager.
 /**
@@ -178,8 +180,9 @@ public class PostController {
         
         if (!usingOnlinePostManager()) {
             for (Post post : mPostManager.getQuestions()) {
-                if (post.mIsSelected) 
+                if (post.mIsSelected) { 
                     post.setIsSelected(false);
+                }
             }
             return false;
         }
@@ -189,6 +192,7 @@ public class PostController {
                 postsSelected = true;
                 addToCache((Question)post);
                 post.setIsSelected(false);
+               	post.getUserAttributes().setIsReadLater(true);               
             }
         }
         return postsSelected;

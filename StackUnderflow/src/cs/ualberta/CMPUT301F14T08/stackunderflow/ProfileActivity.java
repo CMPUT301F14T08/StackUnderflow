@@ -4,6 +4,8 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
+
 import android.app.ActionBar.TabListener;
 import android.app.Activity;
 import android.app.Fragment;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.ActionBar;
@@ -44,21 +47,25 @@ public class ProfileActivity extends Activity implements TabListener {
 	    actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
 	            | ActionBar.DISPLAY_SHOW_HOME);
 	    
-	    TextView user_name = (TextView) actionBar.getCustomView().findViewById(R.id.profile_user_name);
-	    TextView questions_posted = (TextView) actionBar.getCustomView().findViewById(R.id.profile_questions_box);
-	    TextView answers_posted = (TextView) actionBar.getCustomView().findViewById(R.id.profile_answers_box);
+	    TextView mUserName = (TextView) actionBar.getCustomView().findViewById(R.id.profile_user_name);
+	    TextView mQuestionsPosted = (TextView) actionBar.getCustomView().findViewById(R.id.profile_questions_box);
+	    TextView mAnswersPosted = (TextView) actionBar.getCustomView().findViewById(R.id.profile_answers_box);
+	    RatingBar mRatingBar = (RatingBar) actionBar.getCustomView().findViewById(R.id.ratingBar);
 	    
-	    //Use once UserProfile is implemented
-	    //user_name.setText(getUsername());
-	    //int q_count = getQuestionsPostedCount();
-	    //int a_count = getAnswersPostedCount();
+//	    TODO: Use once UserProfile is implemented:
+//	    user_name.setText(getUsername());
+//	    int q_count = getQuestionsPostedCount();
+//	    int a_count = getAnswersPostedCount();
 	    
 	    
-	    //temporary until UserProfile implemented
-	    user_name.setText("guest ");
+//	    TODO: temporary values, remove once UserProfile implemented
+	    mUserName.setText("guest ");
 	    int q_count = 10;
 	    int a_count = 15;
-	    //
+//	    TODO: temporary value, decide on a ratings calculation method
+//	    rating step is set to 1/2 star, but can be changed in xml (or programatically)
+	    mRatingBar.setRating(3.0f);
+//	    
 	    
 	    String q_string = Integer.toString(q_count);
 	    String a_string = Integer.toString(a_count);
@@ -67,13 +74,21 @@ public class ProfileActivity extends Activity implements TabListener {
 		Spannable formattedString = new SpannableString(string);
 		formattedString.setSpan(new RelativeSizeSpan(0.4f), q_count/10+1, formattedString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		
-		questions_posted.setText(formattedString);		
+		mQuestionsPosted.setText(formattedString);		
 	    
 		string = String.format("%s\n  Answers  ", a_string);		
 		formattedString = new SpannableString(string);
 		formattedString.setSpan(new RelativeSizeSpan(0.4f), a_count/10+1, formattedString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		
-		answers_posted.setText(formattedString);    
+		mAnswersPosted.setText(formattedString);
+		
+		mUserName.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+//			    TODO: implement username dialog
+	            Toast toast = Toast.makeText(v.getContext(), "Implement username dialog", Toast.LENGTH_SHORT);
+	            toast.show();			
+			}
+		});
 	    
 	    
 		Tab tab = actionBar.newTab();
@@ -136,6 +151,8 @@ public class ProfileActivity extends Activity implements TabListener {
 	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 		//No implementation required at present
 	}
+
+
 
 
 }

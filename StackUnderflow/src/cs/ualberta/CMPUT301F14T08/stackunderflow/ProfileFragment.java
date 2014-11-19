@@ -135,13 +135,13 @@ public class ProfileFragment extends Fragment {
 	     @Override
 	     protected void onPostExecute(PostController result) {
 	         sPostController = result;
-            
+	         
+	         sPostController.getPostManager().sortByDate();
+	         
 	         adapter.clear();
 	         
-	         //FILTER_MY_POSTS is currently blank list: needs questions created with username and isUsers user attribute set (UserProfile implementation)
-	         //FILTER_MY_FAVORITES is working
-	         //FILTER_READ_LATER is currently blank list: isReadLater user attribute is not being set in MainActivity call to addSelectedToCache() (add to function in PostController?)
-             for (Post post : sPostController.getPostManager().getQuestions()) {
+	         //FILTER_MY_POSTS is currently blank list: needs posts with username set (UserProfile implementation)
+	         for (Post post : sPostController.getPostManager().getQuestions()) {
             	 if (
             			 (lastSort.equals(FILTER_MY_POSTS) && post.getUserAttributes().getIsUsers())
             			 || (lastSort.equals(FILTER_MY_FAVORITES) && post.getUserAttributes().getIsFavorited())

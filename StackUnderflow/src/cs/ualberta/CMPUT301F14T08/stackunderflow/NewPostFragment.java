@@ -38,6 +38,15 @@ public abstract class NewPostFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		checkUsername();
+	}
+	
+	protected void checkUsername(){
+		//access user profile manager, check the name
+		//UserProfileManager man = <replace>;
+		//if (man.getUsername == "guest"){
+		UsernameDialog.showDialog(getFragmentManager());
+		//}
 	}
 	
 	abstract int getViewID();

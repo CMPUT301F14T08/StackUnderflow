@@ -73,12 +73,10 @@ public class MainActivity extends Activity implements TabListener {
         
 		switch (item.getItemId()) {
 	      case R.id.ask_question: 
-
 	            Intent intent = new Intent(this, NewQuestionActivity.class);                
 	            startActivityForResult(intent, PICK_QUESTION);
-
 	            return true;
-		case R.id.mark_read:	
+	      case R.id.mark_read:	
 		    if (tf.sPostController == null) {
 		        return true;
 		    }
@@ -121,19 +119,9 @@ public class MainActivity extends Activity implements TabListener {
 			data.putInt("idx",  tab.getPosition());
 			tf.setArguments(data);
 			fragmentList.add(tf);
-		} else {
-			tf = (MainFragment) f;
-		}
+		} 
 		fragmentTransaction.replace(android.R.id.content, tf);		
 	}    
-
-	// Code to allow testing of Username Dialog, remove once copied over
-	// to other places that need to call it.
-	public void testDialogFragment(MenuItem menu) {
-		FragmentManager fm = getFragmentManager();
-		UsernameDialogFragment udf = new UsernameDialogFragment();
-		udf.show(fm, "Username Dialog Fragment");
-	}
 
 	@Override
 	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {

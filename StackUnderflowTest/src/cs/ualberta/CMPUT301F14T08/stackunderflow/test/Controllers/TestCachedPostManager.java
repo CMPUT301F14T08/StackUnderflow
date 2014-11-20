@@ -36,6 +36,7 @@ public class TestCachedPostManager extends ActivityInstrumentationTestCase2<Main
         
         assertEquals(comparisonPosts, manager.getQuestions());
     }
+
     
     public void testLoadFromFile() {
     	ArrayList<Post> comparisonPosts = new ArrayList<Post>();

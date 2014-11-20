@@ -38,6 +38,7 @@ public class PostController {
 		else {
 		    mPostManager = CachedPostManager.getInstance(context);	
 		    Log.i("Debug", "Using Offline Post Manager");
+		    
 		}
 	}
 	

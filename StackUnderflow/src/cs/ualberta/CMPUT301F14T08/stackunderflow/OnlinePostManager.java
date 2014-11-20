@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -110,16 +111,9 @@ public class OnlinePostManager extends PostManager {
                     answer.clearUserAttributes();
             }
             
-            cachedPost = post;
-            
+            cachedPost = post;           
             
         }
-    }
-    
-    
-    //TODO: implement when adding user attributes
-    private void stripUserAttributes() {
-        return;
     }
     
     //TODO: implement when adding user attributes
@@ -140,7 +134,7 @@ public class OnlinePostManager extends PostManager {
     /** Elastic Search Methods **/
     
     /** Get Post with specific ES ID
-     * @param question which the ES Id is being seached for.
+     * @param question which the ES Id is being searched for.
      * @return null if no such question exists
      */
     private Question getESQuestion(Question question) {
@@ -386,7 +380,7 @@ public class OnlinePostManager extends PostManager {
     @Override
     public void addQuestion(Question newQuestion) {
         newQuestion.setExistsOnline(true);
-        
+        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(newQuestion.mUserAttributes, newQuestion.getID());
         String result = insertEsQuestion(newQuestion);
         if (result.equals("HTTP/1.1 201 Created")) {
             super.addQuestion(newQuestion);
@@ -398,6 +392,7 @@ public class OnlinePostManager extends PostManager {
         
         mCachedPostManager.addQuestion(newQuestion);
         mCachedPostManager.save();
+        
     }
     
     /** Saves individual answer by updating associated question on ES server
@@ -405,7 +400,7 @@ public class OnlinePostManager extends PostManager {
     @Override
     public void addAnswer(Question parent, Answer newAnswer) {
         newAnswer.setExistsOnline(true);
-        
+        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(newAnswer.mUserAttributes, newAnswer.getID());
         String result = addESAnswer(parent, newAnswer);
         if (result.equals("HTTP/1.1 200 OK")) {
             super.addAnswer(parent, newAnswer);
@@ -435,7 +430,7 @@ public class OnlinePostManager extends PostManager {
             incrementVotes = 1;
         }
         
-        cachedPost.getUserAttributes().setIsUpvoted(post.getUserAttributes().getIsUpvoted());
+        cachedPost.getUserAttributes().setIsUpvoted(!post.getUserAttributes().getIsUpvoted());
         cachedPost.setVotes(post.getVotes());
         
         String result = null;
@@ -462,8 +457,10 @@ public class OnlinePostManager extends PostManager {
     public void toggleFavorite(Post post) {
         Post cachedPost = mCachedPostManager.getPost(post.getID());
         super.toggleFavorite(post);
-        cachedPost.getUserAttributes().setIsFavorited(post.getUserAttributes().getIsFavorited());
-        
+        if(post.getUserAttributes().getIsFavorited())
+        	cachedPost.getUserAttributes().setIsFavorited(false);
+        else
+        	cachedPost.getUserAttributes().setIsFavorited(true);
         mCachedPostManager.save();
     }
     
@@ -472,7 +469,9 @@ public class OnlinePostManager extends PostManager {
     @Override
     public void toggleReadLater(Post post) {
         super.toggleReadLater(post);
-        
+        if(post.getUserAttributes().getIsReadLater())
+        	post.getUserAttributes().setIsReadLater(true);
+
         // add the post to the cached post manager
         // if it is not already present
         Question question;

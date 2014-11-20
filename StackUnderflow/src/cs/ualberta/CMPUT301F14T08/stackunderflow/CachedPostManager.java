@@ -210,6 +210,11 @@ public class CachedPostManager extends PostManager{
         post.setUpvotesChangedOffline(incrementVotes);
         save();
         addedOffline = true;
+        if(post.getUserAttributes().getIsUpvoted())
+        	post.getUserAttributes().setIsUpvoted(false);
+        else
+        	post.getUserAttributes().setIsUpvoted(true);
+        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(post.mUserAttributes, post.getID());
     }
 	/**
 	 * sets as a users favorite which if is called again this favorite is removed.
@@ -220,6 +225,12 @@ public class CachedPostManager extends PostManager{
         super.toggleFavorite(post);
         save();
         addedOffline = true;
+        if (post.getUserAttributes().getIsFavorited())
+        	post.getUserAttributes().setIsFavorited(false);
+        else
+        	post.getUserAttributes().setIsFavorited(true);
+        post.getUserAttributes().setIsFavorited(!post.getUserAttributes().getIsFavorited());
+        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(post.mUserAttributes, post.getID());
     }
 	
     public boolean hasAddedOffline() {

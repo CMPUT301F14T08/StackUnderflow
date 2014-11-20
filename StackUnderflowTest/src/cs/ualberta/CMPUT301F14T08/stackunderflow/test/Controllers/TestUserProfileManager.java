@@ -77,4 +77,24 @@ public class TestUserProfileManager extends ActivityInstrumentationTestCase2<Mai
         
     	assertEquals(u.getUserProfile().getUserAttributesForId(a.getID()),a.getUserAttributes());
     }
+    public void testChangedDataUpVote() throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+    	UserProfileManager u = UserProfileManager.getInstance(getActivity());
+    	UserProfileManager.getInstance(getActivity());
+    	CachedPostManager manager = CachedPostManager.getInstance(getActivity());
+    	Question q = new Question("a", "a", "a");
+        manager.toggleUpvote(q);
+        
+    	assertEquals(u.getUserProfile().getUserAttributesForId(q.getID()),q.getUserAttributes());
+    }
+    public void testChangedDataFavorit() throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+    	UserProfileManager u = UserProfileManager.getInstance(getActivity());
+    	UserProfileManager.getInstance(getActivity());
+    	CachedPostManager manager = CachedPostManager.getInstance(getActivity());
+    	Question q = new Question("a", "a", "a");
+    	manager.addQuestion(q);
+    	u.getUserProfile().getUserAttributesForId(q.getID()).setIsFavorited(true); 	
+        manager.toggleFavorite(q);
+    	assertEquals(u.getUserProfile().getUserAttributesForId(q.getID()).getIsFavorited(),false);
+    	
+    }
 }

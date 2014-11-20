@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -110,16 +111,9 @@ public class OnlinePostManager extends PostManager {
                     answer.clearUserAttributes();
             }
             
-            cachedPost = post;
-            
+            cachedPost = post;           
             
         }
-    }
-    
-    
-    //TODO: implement when adding user attributes
-    private void stripUserAttributes() {
-        return;
     }
     
     //TODO: implement when adding user attributes
@@ -140,7 +134,7 @@ public class OnlinePostManager extends PostManager {
     /** Elastic Search Methods **/
     
     /** Get Post with specific ES ID
-     * @param question which the ES Id is being seached for.
+     * @param question which the ES Id is being searched for.
      * @return null if no such question exists
      */
     private Question getESQuestion(Question question) {

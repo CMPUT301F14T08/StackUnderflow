@@ -100,6 +100,7 @@ public abstract class PostFragment extends Fragment {
 		
         mImageIcon = context.getResources().getDrawable(getImageIconID());
         mImageIcon.setBounds(0, 0, mImageIcon.getMinimumHeight(), mImageIcon.getMinimumWidth());
+        
         if(sPostController.getPostManager().isQuestion(mPost))
         	mPost.getUserAttributes().setIsReadTrue();
         else{

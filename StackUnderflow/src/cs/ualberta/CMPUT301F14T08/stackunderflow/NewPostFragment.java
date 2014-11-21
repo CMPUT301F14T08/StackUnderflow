@@ -94,6 +94,8 @@ public abstract class NewPostFragment extends Fragment {
         mPostBody = (EditText)v.findViewById(getBodyTextViewID());
         mUploadPictureButton = (Button) v.findViewById(getAddPictureButtonID());
         mSubmitButton = (Button) v.findViewById(getSubmitButtonID());
+        mJPEGByteArray = null;
+        mJPEGFileName = null;
         
 
         //TODO Implement picture dialog/upload
@@ -101,7 +103,7 @@ public abstract class NewPostFragment extends Fragment {
             @Override
             public void onClick(View v) {
             	FragmentManager fm = getActivity().getFragmentManager();
-            	ImageDialogFragment dialog = new ImageDialogFragment();
+            	ImageDialogFragment dialog = ImageDialogFragment.newInstance(mJPEGFileName, mJPEGByteArray);
         		dialog.setTargetFragment(NewPostFragment.this, REQUEST_IMAGE);
         		dialog.show(fm, DIALOG_USERNAME);
                 
@@ -119,7 +121,17 @@ public abstract class NewPostFragment extends Fragment {
                Bundle bundle = data.getExtras();
                mJPEGByteArray = bundle.getByteArray("BYTES"); //null exception error
                mJPEGFileName = bundle.getString("NAME");
-               mUploadPictureButton.setText(mJPEGFileName);
+               if (mJPEGFileName != null) {
+            	   mUploadPictureButton.setText(mJPEGFileName);
+               }
+               else {
+            	   mUploadPictureButton.setText("Upload Photo");
+               }
+		   }
+		   if (resultCode == Activity.RESULT_CANCELED) {
+			   mJPEGByteArray = null;
+			   mJPEGFileName = null;
+			   mUploadPictureButton.setText("Upload Photo");
 		   }
 	   }
 	}

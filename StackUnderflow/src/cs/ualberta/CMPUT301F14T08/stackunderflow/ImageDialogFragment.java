@@ -45,14 +45,33 @@ public class ImageDialogFragment extends DialogFragment {
 		return R.id.image_prompt_fragment_textview;
 	}
 	
+	static ImageDialogFragment newInstance(String fileName, byte[] byteArray){
+		ImageDialogFragment f = new ImageDialogFragment();
+		Bundle args = new Bundle();
+		args.putString("fileName", fileName);
+		args.putByteArray("byteArray", byteArray);
+		f.setArguments(args);
+		return f;
+	}
+	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
 		final View v = inflater.inflate(R.layout.image_prompt, null);
 		
 		mTextView = (TextView)v.findViewById(getTextViewID());
-		mTextView.setVisibility(View.GONE);
 		mImageButton = (ImageButton)v.findViewById(getImageButtonID());
+		
+		mJPEGByteArray = getArguments().getByteArray("byteArray");
+		mJPEGFileName = getArguments().getString("fileName");
+		
+		if (mJPEGByteArray != null){
+			showPicture();
+		}
+		else {
+			mTextView.setVisibility(View.GONE);
+		}
+
 		mImageButton.setOnClickListener(new View.OnClickListener() {            
             @Override
             public void onClick(View v) {
@@ -79,9 +98,9 @@ public class ImageDialogFragment extends DialogFragment {
                 })
  
                 // Negative Button
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Remove", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,    int which) {
-                        // Do something else
+                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, null);
                     }
                 }).create();
     }
@@ -107,6 +126,7 @@ public class ImageDialogFragment extends DialogFragment {
 			if (resultCode == Activity.RESULT_OK) {
 				String jpegFilePath = mJPEGFileUri.getPath();
 				File jpegFile = new File(jpegFilePath); //loads JPEG to memory
+				mJPEGFileName = jpegFile.getName();
 				long fileSize = jpegFile.length();
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inSampleSize = 2;										//Factor for scaling down
@@ -137,14 +157,16 @@ public class ImageDialogFragment extends DialogFragment {
 					fileSize = mJPEGByteArray.length;						//recalculates fileSize
 					//Log.d("MYTAGE", String.valueOf(fileSize), new Exception());
 				}
-				
-				bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(mJPEGByteArray)); //creates bitmap from jpegByteArray
-				Drawable drawable= new BitmapDrawable(getResources(), bitmap);	 	//creates drawable from bitmap
-				mImageButton.setImageDrawable(drawable);							//updates thumbnail view
-				mJPEGFileName = jpegFile.getName();
-				mTextView.setText(mJPEGFileName);
-				mTextView.setVisibility(View.VISIBLE);
+				showPicture();				
 			}
 		}
+	}
+	public void showPicture(){
+		Bitmap bitmap = null;
+		bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(mJPEGByteArray)); //creates bitmap from jpegByteArray
+		Drawable drawable= new BitmapDrawable(getResources(), bitmap);	 	//creates drawable from bitmap
+		mImageButton.setImageDrawable(drawable);							//updates thumbnail view
+		mTextView.setText(mJPEGFileName);
+		mTextView.setVisibility(View.VISIBLE);
 	}
 }

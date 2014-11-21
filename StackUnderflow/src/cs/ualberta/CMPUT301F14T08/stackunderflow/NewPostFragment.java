@@ -26,7 +26,6 @@ import android.widget.EditText;
 public abstract class NewPostFragment extends Fragment {
 	
 	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";
-	protected static final String DIALOG_USERNAME = "username";
 	protected static final String DIALOG_IMAGE = "image";
     protected static final int REQUEST_USERNAME = 0;
     protected static final int REQUEST_IMAGE = 1;
@@ -103,9 +102,9 @@ public abstract class NewPostFragment extends Fragment {
             @Override
             public void onClick(View v) {
             	FragmentManager fm = getActivity().getFragmentManager();
-            	ImageDialogFragment dialog = ImageDialogFragment.newInstance(mJPEGFileName, mJPEGByteArray);
+            	NewImageDialogFragment dialog = NewImageDialogFragment.newInstance(mJPEGFileName, mJPEGByteArray);
         		dialog.setTargetFragment(NewPostFragment.this, REQUEST_IMAGE);
-        		dialog.show(fm, DIALOG_USERNAME);
+        		dialog.show(fm, DIALOG_IMAGE);
                 
             }
         });

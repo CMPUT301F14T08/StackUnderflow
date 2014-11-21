@@ -77,6 +77,7 @@ public class NewQuestionFragment extends NewPostFragment {
 					msg.putExtra("question.title", title);
 					msg.putExtra("question.author", author);
 					msg.putExtra("question.body", body);
+					msg.putExtra("question.picture", mJPEGByteArray);
 
 					getActivity().setResult(Activity.RESULT_OK, msg);
 					getActivity().finish();

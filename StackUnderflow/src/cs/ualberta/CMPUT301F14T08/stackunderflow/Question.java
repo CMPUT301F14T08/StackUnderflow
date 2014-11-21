@@ -32,7 +32,7 @@ public class Question extends Post {
 	 * @param title This String is a short name used to explain a basic idea of the story that other user will read before choosing to read the body text
 	 * @param picture This String is an image that the user may input to give details about them problem (without an image another constructor is used)
 	 */
-	public Question(String text, String signature, String picture, String title){
+	public Question(String text, String signature, byte[] picture, String title){
 		super(text, signature, picture);
 		mTitle = title;
 		mAnswers = new ArrayList<Answer>();
@@ -48,7 +48,7 @@ public class Question extends Post {
 	 * @param picture This String is an image that the user may input to give details about them problem (without an image another constructor is used)
 	 * @param Date This Date object takes the time that the question is posted so that it may be displayed and sorted by.
 	 */
-	public Question(String text, String signature, String picture, String title, Date date){
+	public Question(String text, String signature, byte[] picture, String title, Date date){
 		super(text, signature, picture, date);
 		mTitle = title;
 		mAnswers = new ArrayList<Answer>();

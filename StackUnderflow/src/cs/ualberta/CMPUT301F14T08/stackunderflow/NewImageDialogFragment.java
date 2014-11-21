@@ -28,7 +28,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class ImageDialogFragment extends DialogFragment {
+public class NewImageDialogFragment extends DialogFragment {
 	
 	protected Uri mJPEGFileUri;
 	protected String mJPEGFileName;
@@ -45,8 +45,8 @@ public class ImageDialogFragment extends DialogFragment {
 		return R.id.image_prompt_fragment_textview;
 	}
 	
-	static ImageDialogFragment newInstance(String fileName, byte[] byteArray){
-		ImageDialogFragment f = new ImageDialogFragment();
+	static NewImageDialogFragment newInstance(String fileName, byte[] byteArray){
+		NewImageDialogFragment f = new NewImageDialogFragment();
 		Bundle args = new Bundle();
 		args.putString("fileName", fileName);
 		args.putByteArray("byteArray", byteArray);
@@ -57,7 +57,7 @@ public class ImageDialogFragment extends DialogFragment {
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		final View v = inflater.inflate(R.layout.image_prompt, null);
+		final View v = inflater.inflate(R.layout.image_prompt_fragment, null);
 		
 		mTextView = (TextView)v.findViewById(getTextViewID());
 		mImageButton = (ImageButton)v.findViewById(getImageButtonID());
@@ -155,7 +155,7 @@ public class ImageDialogFragment extends DialogFragment {
 					try {baos.flush();}	
 					catch (IOException e) {e.printStackTrace();	}						
 					fileSize = mJPEGByteArray.length;						//recalculates fileSize
-					//Log.d("MYTAGE", String.valueOf(fileSize), new Exception());
+					//Log.d("MYTAG", String.valueOf(fileSize), new Exception());
 				}
 				showPicture();				
 			}

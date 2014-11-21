@@ -44,7 +44,6 @@ public class CachedPostManager extends PostManager{
 		Question q1 = new Question(  
 				"LOL I don't actually have a question, I just wanted to post.",
 				"gregthegreg",
-				"pic1",
 				"MY FIRST QUESTION GUIS!!!11");
 		
 		Answer a1 = new Answer("LOL I AM ANSWERING MY OWN QUESTION!", "gregthegreg");
@@ -79,7 +78,7 @@ public class CachedPostManager extends PostManager{
 		
 		Answer a3 = new Answer("Don't call me DJ Hindle :/", "djhindle");
 		a3.setExistsOnline(true);
-		Answer a4 = new Answer("Attached is a picture of how much I don't want you to call me DJ Hindle", "djhindle", "hindlepic.jpg");
+		Answer a4 = new Answer("Attached is a picture of how much I don't want you to call me DJ Hindle", "djhindle");
 		a4.setExistsOnline(true);
 		
 		q3.addAnswer(a3);

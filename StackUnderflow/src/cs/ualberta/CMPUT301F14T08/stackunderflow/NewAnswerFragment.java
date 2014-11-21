@@ -71,12 +71,20 @@ public class NewAnswerFragment extends NewPostFragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Please enter an answer", 
                                Toast.LENGTH_LONG).show();
                 }
-                else{
-                Answer mAnswer = new Answer(body, author);          
-                Question qparent = (Question) sPostController.getQuestion(mPostId);
-                sPostController.getPostManager().addAnswer(qparent, mAnswer);
-                getActivity().setResult(0);
-                getActivity().finish();
+                
+                else {
+                	Answer mAnswer = null;
+                	if (mJPEGByteArray != null) {
+                		mAnswer = new Answer(body, author, mJPEGByteArray);  
+                	}
+                	else {
+                		mAnswer = new Answer(body, author);  
+                	}
+	                        
+	                Question qparent = (Question) sPostController.getQuestion(mPostId);
+	                sPostController.getPostManager().addAnswer(qparent, mAnswer);
+	                getActivity().setResult(0);
+	                getActivity().finish();
                 }
             }
         });

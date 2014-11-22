@@ -162,7 +162,15 @@ public class MainActivity extends Activity implements TabListener {
 				String title = data.getStringExtra("question.title");
 				String body = data.getStringExtra("question.body");
 				String author = data.getStringExtra("question.author");
-				Question q = new Question(body, author, title);
+				byte[] picture = data.getByteArrayExtra("question.picture");
+				Question q = null;
+				if (picture != null) {
+					q = new Question(body, author, picture, title);
+				}
+				else {
+					q = new Question(body, author, title);
+				}
+				
 				tf.sPostController.getPostManager().addQuestion(q);
 			}
 		}

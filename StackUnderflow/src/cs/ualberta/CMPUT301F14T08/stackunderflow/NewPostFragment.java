@@ -1,9 +1,15 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.io.File;
 import java.util.UUID;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,11 +26,14 @@ import android.widget.EditText;
 public abstract class NewPostFragment extends Fragment {
 	
 	public static final String EXTRA_POST_ID = "cs.ualberta.CMPUT301F14T08.stackunderflow.post_id";
-	protected static final String DIALOG_USERNAME = "username";
+	protected static final String DIALOG_IMAGE = "image";
     protected static final int REQUEST_USERNAME = 0;
+    protected static final int REQUEST_IMAGE = 1;
     
 	protected PostController sPostController;
 	protected UUID mPostId;
+	protected String mJPEGFileName;
+	protected byte mJPEGByteArray[];
 	
 	protected EditText mPostTitle;
 	protected EditText mPostBody;
@@ -74,31 +83,54 @@ public abstract class NewPostFragment extends Fragment {
             return super.onOptionsItemSelected(menuItem);
     	} 
 	}
-	
-	   @Override
-	    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 	        
-	        View v = inflater.inflate(getViewID(), parent, false);     
+        View v = inflater.inflate(getViewID(), parent, false);     
 
-	        // Get Views IDs
-	        mPostBody = (EditText)v.findViewById(getBodyTextViewID());
-	        mUploadPictureButton = (Button) v.findViewById(getAddPictureButtonID());
-	        mSubmitButton = (Button) v.findViewById(getSubmitButtonID());
-	        
+        // Get Views IDs
+        mPostBody = (EditText)v.findViewById(getBodyTextViewID());
+        mUploadPictureButton = (Button) v.findViewById(getAddPictureButtonID());
+        mSubmitButton = (Button) v.findViewById(getSubmitButtonID());
+        mJPEGByteArray = null;
+        mJPEGFileName = null;
+        
 
-	        //TODO Implement picture dialog/upload
-	        mUploadPictureButton.setOnClickListener(new View.OnClickListener() {            
-	            @Override
-	            public void onClick(View v) {
-	                // Implement picture dialog
-	                
-	            }
-	        });
-	        
-	        return v;
-	    }
-    	
-    	
-	
-	
+        //Calls newImageDialogFragment with existing picture info (byteArray and fileName)
+        mUploadPictureButton.setOnClickListener(new View.OnClickListener() {            
+            @Override
+            public void onClick(View v) {
+            	FragmentManager fm = getActivity().getFragmentManager();
+            	NewImageDialogFragment dialog = NewImageDialogFragment.newInstance(mJPEGFileName, mJPEGByteArray);
+        		dialog.setTargetFragment(NewPostFragment.this, REQUEST_IMAGE);
+        		dialog.show(fm, DIALOG_IMAGE);
+                
+            }
+        });
+        
+        return v;
+    }
+   
+	//gets picture as a byteArray and file name as a string from NewImageDialogFragment
+   @Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+	   if (requestCode == REQUEST_IMAGE) {
+		   if (resultCode == Activity.RESULT_OK) {
+               Bundle bundle = data.getExtras();
+               mJPEGByteArray = bundle.getByteArray("BYTES"); //null exception error
+               mJPEGFileName = bundle.getString("NAME");
+               if (mJPEGFileName != null) {
+            	   mUploadPictureButton.setText(mJPEGFileName);
+               }
+               else {
+            	   mUploadPictureButton.setText("Upload Photo");
+               }
+		   }
+		   if (resultCode == Activity.RESULT_CANCELED) {
+			   mJPEGByteArray = null;
+			   mJPEGFileName = null;
+			   mUploadPictureButton.setText("Upload Photo");
+		   }
+	   }
+	}
 }

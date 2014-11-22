@@ -62,7 +62,8 @@ public class TestCachedPostManager extends ActivityInstrumentationTestCase2<Main
         manager.getQuestions().clear();
         comparisonPosts.clear();
         
-        Answer a = new Answer("a", "a", "a");
+        byte[] image = null;
+        Answer a = new Answer("a", "a", image);
         q.addAnswer(a);
         comparisonPosts.add(q);
         manager.addQuestion(q);
@@ -86,10 +87,11 @@ public class TestCachedPostManager extends ActivityInstrumentationTestCase2<Main
 		calendar.set(2000, 8, 13);		
 		createDate = calendar.getTime();
     	ArrayList<Post> posts = new ArrayList<Post>();
+    	byte[] image = null;
         Question q1 = new Question(  
                 "LOL I don't actually have a question, I just wanted to post.",
                 "gregthegreg",
-                "pic1",
+                image,
                 "MY FIRST QUESTION GUIS!!!11", createDate);
         
         calendar.set(2001, 8, 13);		
@@ -129,7 +131,7 @@ public class TestCachedPostManager extends ActivityInstrumentationTestCase2<Main
         
         calendar.set(2010, 8, 13);		
 		createDate = calendar.getTime();
-        Answer a4 = new Answer("Attached is a picture of how much I don't want you to call me DJ Hindle", "djhindle", "hindlepic.jpg", createDate);
+        Answer a4 = new Answer("Attached is a picture of how much I don't want you to call me DJ Hindle", "djhindle", image, createDate);
         
         q3.addAnswer(a3);
         q3.addAnswer(a4);

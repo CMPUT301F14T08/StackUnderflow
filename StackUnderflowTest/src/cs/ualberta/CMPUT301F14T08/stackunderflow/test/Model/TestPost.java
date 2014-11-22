@@ -47,7 +47,7 @@ public class TestPost extends ActivityInstrumentationTestCase2<MainActivity> {
 	 */
 	public void testPostPicture(){
 		// attach photo method, to be implemented
-		String image = "placeholder"; //placeholder for image
+		byte[] image = null; //placeholder for image
 		Post p1 = new Post("post body", "author", image);
 
 		assertTrue(p1.getPicture().equals(image));

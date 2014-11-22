@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -37,6 +38,9 @@ public abstract class PostFragment extends Fragment {
 
 	protected static final String DIALOG_USERNAME = "username";
     protected static final int REQUEST_USERNAME = 0;
+    
+    protected static final String DIALOG_IMAGE = "image";
+    protected static final int REQUEST_IMAGE = 0;
     
     protected Fragment mFragment;
     
@@ -211,10 +215,10 @@ public abstract class PostFragment extends Fragment {
                 
                 @Override
                 public void onClick(View v) {
-                    // TODO: Implement Code to show Pictures
-                    String toastString = "Someone needs to implement code to show the picture";
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_LONG);
-                    toast.show();    
+                	FragmentManager fm = getActivity().getFragmentManager();
+                	ViewImageDialogFragment dialog = ViewImageDialogFragment.newInstance(mPost.getPicture());
+            		dialog.setTargetFragment(PostFragment.this, REQUEST_IMAGE);
+            		dialog.show(fm, DIALOG_IMAGE); 
                 }
             });
         }

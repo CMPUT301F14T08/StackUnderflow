@@ -44,7 +44,7 @@ public class NewImageDialogFragment extends DialogFragment {
 	int getTextViewID() {
 		return R.id.image_prompt_fragment_textview;
 	}
-	
+	//Sets arguments and calls constructor
 	static NewImageDialogFragment newInstance(String fileName, byte[] byteArray){
 		NewImageDialogFragment f = new NewImageDialogFragment();
 		Bundle args = new Bundle();
@@ -80,14 +80,10 @@ public class NewImageDialogFragment extends DialogFragment {
 		});
             
 		return new AlertDialog.Builder(getActivity())
-                // Set Dialog Title
                 .setTitle("Select a photo")
                 .setView(v)
-                // Positive button
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                    	//this block not working as intended. NewPostFragment gets a null pointer error when
-                    	//unpacking bundle
                     	Intent i = new Intent();
                     	Bundle extras = new Bundle();
                     	extras.putByteArray("BYTES", mJPEGByteArray);
@@ -96,15 +92,13 @@ public class NewImageDialogFragment extends DialogFragment {
                         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
                     }
                 })
- 
-                // Negative Button
                 .setNegativeButton("Remove", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,    int which) {
                         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, null);
                     }
                 }).create();
     }
-	
+	//Calls camera to take a picture and save it to a file with miliseconds as a name.
 	public void selectPhoto() {
 		String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Image";
 		File folder = new File(path);
@@ -119,7 +113,7 @@ public class NewImageDialogFragment extends DialogFragment {
 	}
 	
 	//jpeg object is loaded into memory, then scaled down by a factor of two until
-	// file size is below 64kb. Scaling is donw by converting JPEG to bitmap at half size,
+	// file size is below 64kb. Scaling is done by converting JPEG to bitmap at half size,
 	//then converted back to JPEG
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		if (requestCode == CAPTURE_IMAGE_REQUEST_CODE) {

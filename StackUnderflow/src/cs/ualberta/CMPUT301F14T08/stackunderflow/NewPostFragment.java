@@ -32,7 +32,6 @@ public abstract class NewPostFragment extends Fragment {
     
 	protected PostController sPostController;
 	protected UUID mPostId;
-	//protected Uri mImageFileUri;
 	protected String mJPEGFileName;
 	protected byte mJPEGByteArray[];
 	
@@ -97,7 +96,7 @@ public abstract class NewPostFragment extends Fragment {
         mJPEGFileName = null;
         
 
-        //TODO Implement picture dialog/upload
+        //Calls newImageDialogFragment with existing picture info (byteArray and fileName)
         mUploadPictureButton.setOnClickListener(new View.OnClickListener() {            
             @Override
             public void onClick(View v) {
@@ -112,7 +111,7 @@ public abstract class NewPostFragment extends Fragment {
         return v;
     }
    
-	//not recieving the uri properly.
+	//gets picture as a byteArray and file name as a string from NewImageDialogFragment
    @Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 	   if (requestCode == REQUEST_IMAGE) {

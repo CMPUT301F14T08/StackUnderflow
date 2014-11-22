@@ -56,17 +56,7 @@ public class TestUserProfileManager extends ActivityInstrumentationTestCase2<Mai
     	String test=x.getUserProfile().getUsername();
     	assertEquals(test,"test1");
     }
-    public void testChangedDataSaveQuestion() throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
-    	UserProfileManager u = UserProfileManager.getInstance(getActivity());
-    	UserProfileManager.getInstance(getActivity());
-    	CachedPostManager manager = CachedPostManager.getInstance(getActivity());
-        Question q = new Question("a", "a", "a");
-        manager.addQuestion(q);
-        Log.d("STUFF",""+u.getUserProfile().getUserAttributesForId(q.getID()));
-
-    	assertEquals(u.getUserProfile().getUserAttributesForId(q.getID()),q.getUserAttributes());
-    }
-    public void testChangedDataSaveAnswer() throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+      public void testChangedDataSaveAnswer() throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
     	UserProfileManager u = UserProfileManager.getInstance(getActivity());
     	UserProfileManager.getInstance(getActivity());
     	CachedPostManager manager = CachedPostManager.getInstance(getActivity());
@@ -94,7 +84,17 @@ public class TestUserProfileManager extends ActivityInstrumentationTestCase2<Mai
     	manager.addQuestion(q);
     	u.getUserProfile().getUserAttributesForId(q.getID()).setIsFavorited(true); 	
         manager.toggleFavorite(q);
-    	assertEquals(u.getUserProfile().getUserAttributesForId(q.getID()).getIsFavorited(),false);
-    	
+    	assertEquals(u.getUserProfile().getUserAttributesForId(q.getID()).getIsFavorited(),false);   	
     }
+    public void testChangedDataSaveQuestion() throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+    	UserProfileManager u = UserProfileManager.getInstance(getActivity());
+    	UserProfileManager.getInstance(getActivity());
+    	CachedPostManager manager = CachedPostManager.getInstance(getActivity());
+        Question q = new Question("a", "a", "a");
+        manager.addQuestion(q);
+        Log.d("STUFF",""+u.getUserProfile().getUserAttributesForId(q.getID()));
+
+    	assertEquals(u.getUserProfile().getUserAttributesForId(q.getID()),q.getUserAttributes());
+    }
+
 }

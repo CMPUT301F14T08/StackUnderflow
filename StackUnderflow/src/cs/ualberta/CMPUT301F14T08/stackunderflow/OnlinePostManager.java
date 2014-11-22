@@ -389,10 +389,8 @@ public class OnlinePostManager extends PostManager {
             mCachedPostManager.addedOffline = true;
             newQuestion.setExistsOnline(false);
         }
-        
-        mCachedPostManager.addQuestion(newQuestion);
+        mCachedPostManager.getQuestions().add(newQuestion);
         mCachedPostManager.save();
-        
     }
     
     /** Saves individual answer by updating associated question on ES server
@@ -430,6 +428,7 @@ public class OnlinePostManager extends PostManager {
             incrementVotes = 1;
         }
         
+        // remove
         cachedPost.getUserAttributes().setIsUpvoted(!post.getUserAttributes().getIsUpvoted());
         cachedPost.setVotes(post.getVotes());
         
@@ -449,7 +448,7 @@ public class OnlinePostManager extends PostManager {
             mCachedPostManager.addedOffline = true;
             post.setUpvotesChangedOffline(incrementVotes);
         }
-        
+        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(post.mUserAttributes, post.getID());
         mCachedPostManager.save();
     }
     
@@ -461,6 +460,7 @@ public class OnlinePostManager extends PostManager {
         	cachedPost.getUserAttributes().setIsFavorited(false);
         else
         	cachedPost.getUserAttributes().setIsFavorited(true);
+        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(post.mUserAttributes, post.getID());
         mCachedPostManager.save();
     }
     
@@ -471,7 +471,7 @@ public class OnlinePostManager extends PostManager {
         super.toggleReadLater(post);
         if(post.getUserAttributes().getIsReadLater())
         	post.getUserAttributes().setIsReadLater(true);
-
+        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(post.mUserAttributes, post.getID());
         // add the post to the cached post manager
         // if it is not already present
         Question question;

@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import android.content.Context;
 import android.util.Log;
@@ -99,5 +100,9 @@ public class UserProfileManager {
 	}
 	public UserProfile getUserProfile(){
 		return mUserProfile;
+	}
+	public void addToMap(UserAttributes userAttributes, UUID id){
+		mUserProfile.addToMap(userAttributes,id);
+		save();
 	}
 }

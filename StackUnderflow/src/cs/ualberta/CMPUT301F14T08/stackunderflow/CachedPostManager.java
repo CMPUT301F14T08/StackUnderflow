@@ -168,7 +168,7 @@ public class CachedPostManager extends PostManager{
 
 	@Override
 	public void addQuestion(Question newQuestion) {
-		UserProfileManager.getInstance(mContext).getUserProfile().addToMap(newQuestion.mUserAttributes, newQuestion.getID());
+		UserProfileManager.getInstance(mContext).addToMap(newQuestion.mUserAttributes, newQuestion.getID());
 		super.addQuestion(newQuestion);
 		save();
 		addedOffline = true;
@@ -181,7 +181,7 @@ public class CachedPostManager extends PostManager{
 		super.addAnswer(parent, newAnswer);
 		save();
 		addedOffline = true;
-		UserProfileManager.getInstance(mContext).getUserProfile().addToMap(newAnswer.mUserAttributes, newAnswer.getID());
+		UserProfileManager.getInstance(mContext).addToMap(newAnswer.mUserAttributes, newAnswer.getID());
 	}
 	
 	//TODO: Implement in Project Part 4
@@ -209,11 +209,12 @@ public class CachedPostManager extends PostManager{
         post.setUpvotesChangedOffline(incrementVotes);
         save();
         addedOffline = true;
+        
         if(post.getUserAttributes().getIsUpvoted())
-        	post.getUserAttributes().setIsUpvoted(false);
-        else
         	post.getUserAttributes().setIsUpvoted(true);
-        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(post.mUserAttributes, post.getID());
+        else
+        	post.getUserAttributes().setIsUpvoted(false);
+        UserProfileManager.getInstance(mContext).addToMap(post.mUserAttributes, post.getID());
     }
 	/**
 	 * sets as a users favorite which if is called again this favorite is removed.
@@ -229,7 +230,7 @@ public class CachedPostManager extends PostManager{
         else
         	post.getUserAttributes().setIsFavorited(true);
         post.getUserAttributes().setIsFavorited(!post.getUserAttributes().getIsFavorited());
-        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(post.mUserAttributes, post.getID());
+        UserProfileManager.getInstance(mContext).addToMap(post.mUserAttributes, post.getID());
     }
 	
     public boolean hasAddedOffline() {

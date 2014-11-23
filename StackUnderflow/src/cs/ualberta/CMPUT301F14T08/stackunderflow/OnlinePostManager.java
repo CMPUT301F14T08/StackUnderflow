@@ -380,7 +380,7 @@ public class OnlinePostManager extends PostManager {
     @Override
     public void addQuestion(Question newQuestion) {
         newQuestion.setExistsOnline(true);
-        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(newQuestion.mUserAttributes, newQuestion.getID());
+        UserProfileManager.getInstance(mContext).addToMap(newQuestion.mUserAttributes, newQuestion.getID());
         String result = insertEsQuestion(newQuestion);
         if (result.equals("HTTP/1.1 201 Created")) {
             super.addQuestion(newQuestion);
@@ -398,7 +398,7 @@ public class OnlinePostManager extends PostManager {
     @Override
     public void addAnswer(Question parent, Answer newAnswer) {
         newAnswer.setExistsOnline(true);
-        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(newAnswer.mUserAttributes, newAnswer.getID());
+        UserProfileManager.getInstance(mContext).addToMap(newAnswer.mUserAttributes, newAnswer.getID());
         String result = addESAnswer(parent, newAnswer);
         if (result.equals("HTTP/1.1 200 OK")) {
             super.addAnswer(parent, newAnswer);
@@ -426,10 +426,13 @@ public class OnlinePostManager extends PostManager {
         int incrementVotes = -1;
         if (post.getUserAttributes().getIsUpvoted()) {
             incrementVotes = 1;
-        }
-        
+        }      
+        if(post.getUserAttributes().getIsUpvoted())
+        	post.getUserAttributes().setIsUpvoted(true);
+        else
+        	post.getUserAttributes().setIsUpvoted(false);
+        UserProfileManager.getInstance(mContext).addToMap(post.mUserAttributes, post.getID());
         // remove
-        cachedPost.getUserAttributes().setIsUpvoted(!post.getUserAttributes().getIsUpvoted());
         cachedPost.setVotes(post.getVotes());
         
         String result = null;
@@ -448,7 +451,7 @@ public class OnlinePostManager extends PostManager {
             mCachedPostManager.addedOffline = true;
             post.setUpvotesChangedOffline(incrementVotes);
         }
-        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(post.mUserAttributes, post.getID());
+        UserProfileManager.getInstance(mContext).addToMap(post.mUserAttributes, post.getID());
         mCachedPostManager.save();
     }
     
@@ -457,10 +460,10 @@ public class OnlinePostManager extends PostManager {
         Post cachedPost = mCachedPostManager.getPost(post.getID());
         super.toggleFavorite(post);
         if(post.getUserAttributes().getIsFavorited())
-        	cachedPost.getUserAttributes().setIsFavorited(false);
-        else
         	cachedPost.getUserAttributes().setIsFavorited(true);
-        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(post.mUserAttributes, post.getID());
+        else
+        	cachedPost.getUserAttributes().setIsFavorited(false);
+        UserProfileManager.getInstance(mContext).addToMap(post.mUserAttributes, post.getID());
         mCachedPostManager.save();
     }
     
@@ -471,7 +474,7 @@ public class OnlinePostManager extends PostManager {
         super.toggleReadLater(post);
         if(post.getUserAttributes().getIsReadLater())
         	post.getUserAttributes().setIsReadLater(true);
-        UserProfileManager.getInstance(mContext).getUserProfile().addToMap(post.mUserAttributes, post.getID());
+        UserProfileManager.getInstance(mContext).addToMap(post.mUserAttributes, post.getID());
         // add the post to the cached post manager
         // if it is not already present
         Question question;

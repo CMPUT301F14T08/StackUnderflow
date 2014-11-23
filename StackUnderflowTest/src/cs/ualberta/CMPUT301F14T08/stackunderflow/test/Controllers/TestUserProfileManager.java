@@ -61,7 +61,7 @@ public class TestUserProfileManager extends ActivityInstrumentationTestCase2<Mai
     	UserProfileManager.getInstance(getActivity());
     	CachedPostManager manager = CachedPostManager.getInstance(getActivity());
     	Question q = new Question("a", "a", "a");
-        Answer a = new Answer("a", "a", "a");
+        Answer a = new Answer("a", "a");
         manager.addAnswer(q,a);
         Log.d("STUFF",""+u.getUserProfile().getUserAttributesForId(q.getID()));
         

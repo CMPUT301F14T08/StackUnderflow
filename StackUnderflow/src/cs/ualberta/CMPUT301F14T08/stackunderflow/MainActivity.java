@@ -1,6 +1,8 @@
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import android.app.ActionBar.TabListener;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -162,7 +165,8 @@ public class MainActivity extends Activity implements TabListener {
 				String title = data.getStringExtra("question.title");
 				String body = data.getStringExtra("question.body");
 				String author = data.getStringExtra("question.author");
-				byte[] picture = data.getByteArrayExtra("question.picture");
+				String picture = Base64.encodeToString(data.getByteArrayExtra("question.picture"), Base64.DEFAULT);
+				
 				Question q = null;
 				if (picture != null) {
 					q = new Question(body, author, picture, title);

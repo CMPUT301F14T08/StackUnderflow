@@ -4,6 +4,7 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
 import java.util.UUID;
 
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +76,9 @@ public class NewAnswerFragment extends NewPostFragment {
                 else {
                 	Answer mAnswer = null;
                 	if (mJPEGByteArray != null) {
-                		mAnswer = new Answer(body, author, mJPEGByteArray);  
+                		String picture = Base64.encodeToString(mJPEGByteArray, Base64.DEFAULT);
+        				
+                		mAnswer = new Answer(body, author, picture);  
                 	}
                 	else {
                 		mAnswer = new Answer(body, author);  

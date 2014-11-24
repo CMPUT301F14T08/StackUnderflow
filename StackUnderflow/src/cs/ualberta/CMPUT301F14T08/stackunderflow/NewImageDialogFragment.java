@@ -109,7 +109,7 @@ public class NewImageDialogFragment extends DialogFragment {
 		mJPEGFileUri = Uri.fromFile(imageFile);
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, mJPEGFileUri);
-		startActivityForResult(intent, CAPTURE_IMAGE_REQUEST_CODE);
+		startActivityForResult(Intent.createChooser(intent, "Choose photo from..."), CAPTURE_IMAGE_REQUEST_CODE);
 	}
 	
 	//jpeg object is loaded into memory, then scaled down by a factor of two until

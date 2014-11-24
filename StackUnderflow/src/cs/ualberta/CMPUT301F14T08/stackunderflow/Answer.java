@@ -28,7 +28,7 @@ public class Answer extends Post {
 	 * @param text main text of the answer. (The Answer part of the Answer)
 	 * @param signature The user name of the user who submitted the answer.
 	 */
-	public Answer(String text, String signature, byte[] photo) {
+	public Answer(String text, String signature, String photo) {
 		super(text, signature, photo);
 		mParentID = null;
 	}
@@ -37,7 +37,7 @@ public class Answer extends Post {
 	 * @param text main text of the answer. (The Answer part of the Answer)
 	 * @param signature The user name of the user who submitted the answer.
 	 */
-	public Answer(String text, String signature, byte[] photo, Date date) {
+	public Answer(String text, String signature, String photo, Date date) {
 		super(text, signature, photo, date);
 		mParentID = null;
 	}

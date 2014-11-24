@@ -29,54 +29,54 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchResponse;
 public class SearchPosts {
     private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301f14t08/question/_search";
     private Gson gson;
-    
+
     public SearchPosts() {
         gson = new Gson();
     }
-    
+
     /**
-    * 1. Gets questions from online using search terms
-    * 2. Returns a list of posts to the calling fragment
-    * @return status a String that tells us if the files were successfully loaded from the server
-    */
+     * 1. Gets questions from online using search terms
+     * 2. Returns a list of posts to the calling fragment
+     * @return status a String that tells us if the files were successfully loaded from the server
+     */
     public ArrayList<Post> loadFromServer(int type, boolean pics, String terms) {
         ArrayList<Post> posts = new ArrayList<Post>();
         HttpClient httpClient = new DefaultHttpClient();
         String status = null;
-        
+
         try {
-	 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-		    StrictMode.setThreadPolicy(policy);
-		     
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
             HttpPost request = new HttpPost(SEARCH_URL);
             ElasticSearchCommand command = new MatchSearchCommand(type, pics, terms);
-            
+
             request.setHeader("Accept", "application/json");
             request.setEntity(new StringEntity(command.getJsonCommand()));
             HttpResponse response = httpClient.execute(request);
-            
+
             status = response.getStatusLine().toString();
             Log.d("Debug", status);
-            
+
             SearchResponse<Question> parsedResponse = parseSearchResponse(response);
             SearchHits<Question> searchHits = parsedResponse.getHits();
-            
+
             if (searchHits != null && searchHits.getHits() != null) {
                 for (Hit<Question> hit : searchHits.getHits()) {
                     posts.add((Question)hit.getSource());
                 }
             }
-            
+
         } catch (Exception e) {
             status = "Exception " + e.getClass() + ": " + e.getMessage();
             Log.d("Debug", status);
         }
-        
+
         httpClient.getConnectionManager().shutdown();
-        
+
         return posts;
     }
-    
+
     private SearchResponse<Question> parseSearchResponse(HttpResponse response) throws IOException {
         String json;
         json = getHttpResponseContent(response);
@@ -86,7 +86,7 @@ public class SearchPosts {
 
         return parsedResponse;
     }
-    
+
     // Gets content from an HTTP response
     private String getHttpResponseContent(HttpResponse response) throws IOException {
         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));

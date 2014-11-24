@@ -4,12 +4,12 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow;
  * @author Cmput301 Winter 2014 Group 8
  */
 public class UserAttributes {
-	
-	private boolean mIsUpvoted;
-	private boolean mIsFavorited;
-	private boolean mIsReadLater;
-	private boolean mIsUsers;
-	private boolean mIsRead;
+
+    private boolean mIsUpvoted;
+    private boolean mIsFavorited;
+    private boolean mIsReadLater;
+    private boolean mIsUsers;
+    private boolean mIsRead;
 
 
     public UserAttributes(){
@@ -19,63 +19,63 @@ public class UserAttributes {
         mIsReadLater = false;
         mIsRead = false;
     }
-	
-	public UserAttributes(boolean isUsers){
-    	mIsUsers = isUsers;
-    	mIsUpvoted = false;
-    	mIsFavorited = false;
-    	mIsReadLater = false;
-    	mIsRead = false;
-	}
 
-	public boolean getIsFavorited() {
-		return mIsFavorited;
-	}
+    public UserAttributes(boolean isUsers){
+        mIsUsers = isUsers;
+        mIsUpvoted = false;
+        mIsFavorited = false;
+        mIsReadLater = false;
+        mIsRead = false;
+    }
 
-	public void toggleIsFavorited() {
-		mIsFavorited = !mIsFavorited;
-	}
-	
-	public void setIsFavorited(boolean favorited) {
+    public boolean getIsFavorited() {
+        return mIsFavorited;
+    }
+
+    public void toggleIsFavorited() {
+        mIsFavorited = !mIsFavorited;
+    }
+
+    public void setIsFavorited(boolean favorited) {
         mIsFavorited = favorited;
     }
 
 
-	public boolean getIsUpvoted() {
-		return mIsUpvoted;
-	}
-	
+    public boolean getIsUpvoted() {
+        return mIsUpvoted;
+    }
+
     public void setIsUpvoted(boolean isUpvoted) {
         this.mIsUpvoted = isUpvoted;
     }
 
 
-	public void toggleIsUpvoted() {
-		mIsUpvoted = !mIsUpvoted;
-	}
-	
-	public boolean getIsUsers() {
-		return mIsUsers;
-	}
+    public void toggleIsUpvoted() {
+        mIsUpvoted = !mIsUpvoted;
+    }
 
-	public boolean getIsReadLater() {
-		return mIsReadLater;
-	}
+    public boolean getIsUsers() {
+        return mIsUsers;
+    }
 
-	public void setIsReadLater(boolean isReadLater) {
-		mIsReadLater = isReadLater;
-	}
+    public boolean getIsReadLater() {
+        return mIsReadLater;
+    }
 
-	public boolean getIsRead() {
-		return mIsRead;
-	}
+    public void setIsReadLater(boolean isReadLater) {
+        mIsReadLater = isReadLater;
+    }
 
-	public void setIsReadTrue() {
-		mIsRead = true;
-		if (mIsReadLater) setIsReadLater(false);
-	}
+    public boolean getIsRead() {
+        return mIsRead;
+    }
+
+    public void setIsReadTrue() {
+        mIsRead = true;
+        if (mIsReadLater) setIsReadLater(false);
+    }
 
 
 
-	
+
 }

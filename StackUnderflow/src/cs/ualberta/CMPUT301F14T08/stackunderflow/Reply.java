@@ -10,44 +10,44 @@ import java.util.UUID;
  * @author Cmput301 Winter 2014 Group 8
  */
 public class Reply {
-	
-	private UUID mUUID;
-	private String mText;
-	private Date mDate;
-	private	String mSignature;
-	private boolean mExistsOnline; // flag stating whether the reply exists online yet
-	private UUID mParentID; // immediate parent
-	private UUID mQuestionID;  // UUID of question containing this object (if this reply is to an answer, it will be the parent Question of that answer)
-	
-	public Reply(String text, String signature) {
-		mText = text;
-		mSignature = signature;
-		mUUID = UUID.randomUUID();
-		mDate = new Date();
-		mExistsOnline = false;
-	    mParentID = null;
-	}
 
-	public UUID getUUID(){
-		return mUUID;
-	}
-	
-	public String getText() {
-		return mText;
-	}
-	
-	public Date getDate() {
-		return mDate;
-	}
-	
-	public String getSignature() {
-		return mSignature;
-	}
+    private UUID mUUID;
+    private String mText;
+    private Date mDate;
+    private	String mSignature;
+    private boolean mExistsOnline; // flag stating whether the reply exists online yet
+    private UUID mParentID; // immediate parent
+    private UUID mQuestionID;  // UUID of question containing this object (if this reply is to an answer, it will be the parent Question of that answer)
+
+    public Reply(String text, String signature) {
+        mText = text;
+        mSignature = signature;
+        mUUID = UUID.randomUUID();
+        mDate = new Date();
+        mExistsOnline = false;
+        mParentID = null;
+    }
+
+    public UUID getUUID(){
+        return mUUID;
+    }
+
+    public String getText() {
+        return mText;
+    }
+
+    public Date getDate() {
+        return mDate;
+    }
+
+    public String getSignature() {
+        return mSignature;
+    }
 
     public boolean getExistsOnline() {
         return mExistsOnline;
     }
-    
+
     public void setExistsOnline(boolean isPushedToLive) {
         mExistsOnline = isPushedToLive;
     }
@@ -55,14 +55,14 @@ public class Reply {
     public UUID getParentID() {
         return mParentID;
     }
-    
+
     public UUID getQuestionID() {
         return mQuestionID;
     }
 
     public void setParent(Post post) {
         this.mParentID = post.getID();
-        
+
         if (post instanceof Question) {
             this.mQuestionID = post.getID();
         }
@@ -74,4 +74,4 @@ public class Reply {
     }
 
 }	
-	
+

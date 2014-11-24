@@ -8,9 +8,9 @@ import android.app.Fragment;
  */
 public class NewAnswerActivity extends BaseFragmentActivity {
 
-	@Override
-	protected Fragment newFragmentType() {
-	
-		return new NewAnswerFragment();
-	}
+    @Override
+    protected Fragment newFragmentType() {
+
+        return new NewAnswerFragment();
+    }
 }

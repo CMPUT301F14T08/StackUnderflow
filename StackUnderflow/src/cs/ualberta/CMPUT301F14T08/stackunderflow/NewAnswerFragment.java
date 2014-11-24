@@ -18,20 +18,20 @@ import android.widget.Toast;
  * @author Cmput301 Winter 2014 Group 8
  */
 public class NewAnswerFragment extends NewPostFragment {
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-		getActivity().setTitle(R.string.new_answer_title);
-		mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
-	    sPostController = PostController.getInstanceForID(getActivity(), mPostId);
-	}	
-	
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        getActivity().setTitle(R.string.new_answer_title);
+        mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
+        sPostController = PostController.getInstanceForID(getActivity(), mPostId);
+    }	
+
     @Override
     int getViewID() {
         return R.layout.new_answer_fragment;
     }
-    
+
     @Override
     int getBodyTextViewID() {
         return R.id.new_answer_fragment_edittext_body;
@@ -46,52 +46,52 @@ public class NewAnswerFragment extends NewPostFragment {
     int getSubmitButtonID() {
         return R.id.new_answer_fragment_submit_button;
     }   
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
-		// Call NewPostFragment onCreate View
-		View v = super.onCreateView(inflater, parent, savedInstanceState);
-		
-		
-		// Set up on click listener for submitting answers
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+        // Call NewPostFragment onCreate View
+        View v = super.onCreateView(inflater, parent, savedInstanceState);
+
+
+        // Set up on click listener for submitting answers
         // For adding images see the super class onCreateView
         mPostBody = (EditText)v.findViewById(getBodyTextViewID());
         mUploadPictureButton = (Button) v.findViewById(getAddPictureButtonID());
         mSubmitButton = (Button) v.findViewById(getSubmitButtonID());
-        
+
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {           
-                
+
                 // TODO: Change this to use usernames after implementing user profile
-            	String author = UserProfileManager.getInstance(getActivity()).getUsername();
+                String author = UserProfileManager.getInstance(getActivity()).getUsername();
                 String body = mPostBody.getText().toString();
-                
+
                 //Checks if fields are left blank
                 if(body.equalsIgnoreCase("")){
                     Toast.makeText(getActivity().getApplicationContext(), "Please enter an answer", 
-                               Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_LONG).show();
                 }
-                
+
                 else {
-                	Answer mAnswer = null;
-                	if (mJPEGByteArray != null) {
-                		String picture = Base64.encodeToString(mJPEGByteArray, Base64.DEFAULT);
-        				
-                		mAnswer = new Answer(body, author, picture);  
-                	}
-                	else {
-                		mAnswer = new Answer(body, author);  
-                	}
-	                        
-	                Question qparent = (Question) sPostController.getQuestion(mPostId);
-	                sPostController.getPostManager().addAnswer(qparent, mAnswer);
-	                getActivity().setResult(0);
-	                getActivity().finish();
+                    Answer mAnswer = null;
+                    if (mJPEGByteArray != null) {
+                        String picture = Base64.encodeToString(mJPEGByteArray, Base64.DEFAULT);
+
+                        mAnswer = new Answer(body, author, picture);  
+                    }
+                    else {
+                        mAnswer = new Answer(body, author);  
+                    }
+
+                    Question qparent = (Question) sPostController.getQuestion(mPostId);
+                    sPostController.getPostManager().addAnswer(qparent, mAnswer);
+                    getActivity().setResult(0);
+                    getActivity().finish();
                 }
             }
         });
-        
+
         return v;
-	}
+    }
 }

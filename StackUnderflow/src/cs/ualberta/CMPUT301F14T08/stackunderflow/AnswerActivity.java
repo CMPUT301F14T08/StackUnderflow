@@ -8,8 +8,8 @@ import android.app.Fragment;
  */
 public class AnswerActivity extends BaseFragmentActivity {
 
-	@Override
-	protected Fragment newFragmentType() {
-		return new AnswerFragment();
-	}	
+    @Override
+    protected Fragment newFragmentType() {
+        return new AnswerFragment();
+    }	
 }

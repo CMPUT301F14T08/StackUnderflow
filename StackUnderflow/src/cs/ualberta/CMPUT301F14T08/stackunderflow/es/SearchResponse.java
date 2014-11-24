@@ -9,7 +9,7 @@ public class SearchResponse<T> {
     private boolean timed_out;
     private Shard _shards;
     private SearchHits<T> hits;
-    
+
     public SearchResponse() {}
 
     public int getTook() {
@@ -45,15 +45,15 @@ public class SearchResponse<T> {
     }      
 }
 
-    
+
 
 class Shard {
     private int total;
     private int successful;
     private int failed;
-    
+
     public Shard() {}
-    
+
     public int getTotal() {
         return total;
     }

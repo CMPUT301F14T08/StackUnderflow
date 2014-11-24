@@ -18,8 +18,8 @@ import android.widget.TextView;
  * @author Cmput301 Winter 2014 Group 8
  */
 public class ReplyAdapter extends ArrayAdapter<Reply> {
-    
-    
+
+
     /* uses the passed in controller to create an ArrayAdapter of Posts
      * Once merged with PostController, edit out ArrayList<Post> for
      * PostController, and add controller.getPostManager().getPosts());
@@ -28,25 +28,25 @@ public class ReplyAdapter extends ArrayAdapter<Reply> {
     public ReplyAdapter(Context context, ArrayList<Reply> replies) {
         super(context, 0, replies);
     }
-    
+
     // set up the required view, or uses a recycled view instead
     public View getView(int position, View view, ViewGroup parent) {
 
         TextView replyText;
         EditText editText;
         Reply currReply;
-        
+
         currReply = getItem(position);
-        
+
         // If the view is null, inflate one
         if (view == null) {
             LayoutInflater inflator = LayoutInflater.from(getContext());
             view = inflator.inflate(R.layout.fragment_reply_list_item, parent, false); //list_item_post, parent, false);
         }
-        
+
         replyText = (TextView) view.findViewById(R.id.reply_text);
         replyText.setText(currReply.getText() + " - " + currReply.getSignature());
-        
+
         return view;
     }
 

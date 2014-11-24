@@ -38,7 +38,7 @@ public class OnlinePostManager extends PostManager {
     private static final String TAG = "ELASTICSEARCH";
     private CachedPostManager mCachedPostManager;
     private Gson gson;
-    
+
     protected OnlinePostManager(Context context) {
         super(context);
         gson = new Gson();
@@ -46,40 +46,40 @@ public class OnlinePostManager extends PostManager {
     }
     // TODO Part 3: Call strip/populate user attributes
     /**
-    * 1. Gets questions from online
-    * 2. Updates cache
-    * @return status a String that tells us if the files were successfully loaded from the server
-    */
+     * 1. Gets questions from online
+     * 2. Updates cache
+     * @return status a String that tells us if the files were successfully loaded from the server
+     */
     private String loadFromServer() {
         ArrayList<Question> questions = new ArrayList<Question>();
         HttpClient httpClient = new DefaultHttpClient();
         String status = null;
-        
+
         try {
             HttpPost request = new HttpPost(SEARCH_URL);
             ElasticSearchCommand command = new MatchAllCommand();
-            
+
             request.setHeader("Accept", "application/json");
             request.setEntity(new StringEntity(command.getJsonCommand()));
             HttpResponse response = httpClient.execute(request);
-            
+
             status = response.getStatusLine().toString();
             Log.d("Debug", status);
-            
+
             SearchResponse<Question> parsedResponse = parseSearchResponse(response);
             SearchHits<Question> searchHits = parsedResponse.getHits();
-            
+
             if (searchHits != null && searchHits.getHits() != null) {
                 for (Hit<Question> hit : searchHits.getHits()) {
                     questions.add(hit.getSource());
                 }
             }
-            
+
         } catch (Exception e) {
             status = "Exception " + e.getClass() + ": " + e.getMessage();
             Log.d("Debug", status);
         }
-        
+
         this.mQuestions = castToPosts(questions);
         updateCacheAndSetUserAttributes();
         return status;
@@ -90,17 +90,17 @@ public class OnlinePostManager extends PostManager {
     private void updateCacheAndSetUserAttributes() {
         for (Post post : getQuestions()) {
             Post cachedPost = mCachedPostManager.getPost(post.getID());
-            
+
             if (cachedPost == null) {
                 post.clearUserAttributes();
-                
+
                 for (Answer answer : ((Question)post).getAnswers()) {
                     answer.clearUserAttributes();
                 }
-                
+
                 continue;
             }
-            
+
             post.setUserAttributes(cachedPost.getUserAttributes());
             for (Answer answer : ((Question)post).getAnswers()) {
                 Answer cachedAnswer = (Answer) mCachedPostManager.getPost(answer.getID());
@@ -109,17 +109,17 @@ public class OnlinePostManager extends PostManager {
                 else 
                     answer.clearUserAttributes();
             }
-            
+
             cachedPost = post;           
-            
+
         }
     }
-    
+
     //TODO: implement when adding user attributes
     private void populateUserAttributes() {
         return;
     }
-    
+
     //TODO: implement when adding user attributes
     private void saveReadLaterToCachePostManager() {
         return;
@@ -129,9 +129,9 @@ public class OnlinePostManager extends PostManager {
     private void saveReadToCachePostManager() {
         return;
     }
-    
+
     /** Elastic Search Methods **/
-    
+
     /** Get Post with specific ES ID
      * @param question which the ES Id is being searched for.
      * @return null if no such question exists
@@ -147,36 +147,36 @@ public class OnlinePostManager extends PostManager {
             Hit<Question> hit = parseGetResponse(response);
             status = response.getStatusLine().toString();
             Log.i(TAG, status);
-            
+
             if (hit == null) {
                 return null;
             }
-            
+
             question = hit.getSource();
 
         } catch (Exception e) {
             status = "Exception: " + e.getMessage();
             Log.i(TAG, status);
         }
-        
+
         return question;
     }
-    
+
     /** Inserts an question into the ES server
      *@param the question being added  
      *@returns a status string
      */
     private String insertEsQuestion(Question newQuestion) {
-        
+
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost addRequest = new HttpPost(RESOURCE_URL + newQuestion.getID());
         String status = null;
-        
+
         try {
             StringEntity stringEntity = new StringEntity(gson.toJson(newQuestion));
             addRequest.setEntity(stringEntity);
             addRequest.setHeader("Accept", "application/json");
-    
+
             HttpResponse response = httpClient.execute(addRequest);
             status = response.getStatusLine().toString();
             Log.i(TAG, status);
@@ -185,10 +185,10 @@ public class OnlinePostManager extends PostManager {
             status = "Exception: " + e.getMessage();
             Log.i(TAG, status);
         }
-        
+
         return status;
     }
-    
+
     /** Updates question on ES server
      * 
      * @param existingQuestion the question we will be trying to add to ES
@@ -199,12 +199,12 @@ public class OnlinePostManager extends PostManager {
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost updateRequest = new HttpPost(RESOURCE_URL + existingQuestion.getID() + "/_update");
         String status = null;
-        
+
         try {
             StringEntity stringEntity = new StringEntity("{ \"doc\": {" + updateString + "}}");
             updateRequest.setEntity(stringEntity);
             updateRequest.setHeader("Accept", "application/json");
-    
+
             HttpResponse response = httpClient.execute(updateRequest);
             status = response.getStatusLine().toString();
             Log.i(TAG, status);
@@ -215,16 +215,16 @@ public class OnlinePostManager extends PostManager {
         }
         return status;
     }
-    
+
     /** Updates question votes on ES server
      * @return a status string or null if fails
      */
     private String updateESQuestionVotes(Question existingQuestion, int voteChange) {
         Question onlineQuestion = getESQuestion(existingQuestion); 
-        
+
         if (onlineQuestion == null)
             return null;
-        
+
         onlineQuestion.setVotes(onlineQuestion.getVotes() + voteChange);
         String updateString = "\"mVotes\":" + Integer.valueOf(onlineQuestion.getVotes()).toString();
         // set the existing question to the refreshed online question
@@ -232,7 +232,7 @@ public class OnlinePostManager extends PostManager {
         existingQuestion = onlineQuestion;
         return updateESQuestion(existingQuestion, updateString);
     }
-    
+
     /**
      *  Adds question answer on ES server
      * @param updatedQuestion the answer that has been cast as a question and updated into the ES
@@ -242,12 +242,12 @@ public class OnlinePostManager extends PostManager {
         String updateString = "\"mAnswers\": " + gson.toJson(updatedQuestion.getAnswers());
         return updateESQuestion(updatedQuestion, updateString);
     }
-    
+
     private String updateESReply(Question updatedQuestion) {
         String updateString = "\"mReplies\": " + gson.toJson(updatedQuestion.getReplies());
         return updateESQuestion(updatedQuestion, updateString);
     }
-    
+
     /**
      *  Updates an answers votes on ES server
      * @param existingQuestion the question of the answer
@@ -257,19 +257,19 @@ public class OnlinePostManager extends PostManager {
      */
     private String updateESAnswerVotes(Question existingQuestion, Answer answer, int voteChange) {
         Question onlineQuestion = getESQuestion(existingQuestion); 
-        
+
         if (onlineQuestion == null)
             return null;
 
         Answer onlineAnswer = onlineQuestion.getAnswer(answer.getID());
         onlineAnswer.setUserAttributes(answer.getUserAttributes());
         onlineAnswer.setVotes(onlineAnswer.getVotes() + voteChange);
-        
+
         // set the existing question to the refreshed online question
         existingQuestion = onlineQuestion;
         return updateESAnswer(onlineQuestion);
     }
-    
+
     /**
      *  Adds an answers to a question on ES server
      * @param existingQuestion the question that is the parent of the answer being added
@@ -278,7 +278,7 @@ public class OnlinePostManager extends PostManager {
      */ 
     private String addESAnswer(Question existingQuestion, Answer answer) {
         Question onlineQuestion = getESQuestion(existingQuestion); 
-        
+
         if (onlineQuestion == null)
             return null;
 
@@ -287,11 +287,11 @@ public class OnlinePostManager extends PostManager {
         existingQuestion = onlineQuestion;
         return updateESAnswer(onlineQuestion);
     }
-    
+
     // TODO: Part 3 Implement Reply Update Logic
     private String addESQuestionReply(Question existingQuestion, Reply reply) {
-    	Question onlineQuestion = getESQuestion(existingQuestion); 
-        
+        Question onlineQuestion = getESQuestion(existingQuestion); 
+
         if (onlineQuestion == null)
             return null;
 
@@ -300,12 +300,12 @@ public class OnlinePostManager extends PostManager {
         existingQuestion = onlineQuestion;
         return updateESReply(onlineQuestion);
     }
-    
+
     // TODO: Part 3 Implement Reply Update Logic
     private String addESAnswerReply(Answer existingAnswer, Reply reply) {
-    	Question parentQuestion = getQuestion(existingAnswer.getParentID());
-    	Question onlineQuestion = getESQuestion(parentQuestion); 
-        
+        Question parentQuestion = getQuestion(existingAnswer.getParentID());
+        Question onlineQuestion = getESQuestion(parentQuestion); 
+
         if (onlineQuestion == null)
             return null;
 
@@ -314,25 +314,25 @@ public class OnlinePostManager extends PostManager {
         existingAnswer = onlineQuestion.getAnswer(existingAnswer.getID());
         return updateESAnswer(onlineQuestion);
     }
-    
+
     /** HTTP Parsing and Conversion **/
-    
-    
+
+
     /** HTTP Parsing Methods **/
-    
+
     private Hit<Question> parseGetResponse(HttpResponse response) {
-        
+
         try {
             String json = getHttpResponseContent(response);
             Type hitType = new TypeToken<Hit<Question>>() {}.getType();
-            
+
             Hit<Question> hit = gson.fromJson(json, hitType);
             return hit;
         } 
         catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         return null;
     }
     private SearchResponse<Question> parseSearchResponse(HttpResponse response) throws IOException {
@@ -359,9 +359,9 @@ public class OnlinePostManager extends PostManager {
     }
 
     /** Public Methods **/
-    
 
-    
+
+
     /** Public Methods **/
     // TODO: 3. strips/loads user attributes
     /**
@@ -376,10 +376,10 @@ public class OnlinePostManager extends PostManager {
         if (sPostManager != null) {
             return sPostManager;
         }
-        
+
         // initialize instance
         sPostManager = new OnlinePostManager(context.getApplicationContext());
-        
+
         // push updates to server
         sPostManager.pushOfflineUpdates();
 
@@ -389,11 +389,11 @@ public class OnlinePostManager extends PostManager {
         } catch (Exception e) {
             sPostManager.mQuestions = new ArrayList<Post>();
         }
-        
+
         return sPostManager;
     }
-    
-    
+
+
     /**
      *  Saves individual question
      *  @param The questions that will be added.
@@ -413,7 +413,7 @@ public class OnlinePostManager extends PostManager {
         mCachedPostManager.getQuestions().add(newQuestion);
         mCachedPostManager.save();
     }
-    
+
     /** Saves individual answer by updating associated question on ES server
      */
     @Override
@@ -424,39 +424,39 @@ public class OnlinePostManager extends PostManager {
         if (result.equals("HTTP/1.1 200 OK")) {
             super.addAnswer(parent, newAnswer);
         }
-            
+
         else {
             mCachedPostManager.addedOffline = true;
             newAnswer.setExistsOnline(false);
         }
-        
+
         mCachedPostManager.save();
     }
-    
+
     //TODO: Implement in Project Part 4
     @Override
     public void addReply(Post parent, Reply newReply) {
-    	newReply.setExistsOnline(true);
-    	
-    	String result;
-    	if (isQuestion(parent)) {
-    		result = addESQuestionReply((Question)parent, newReply);
+        newReply.setExistsOnline(true);
+
+        String result;
+        if (isQuestion(parent)) {
+            result = addESQuestionReply((Question)parent, newReply);
         }
-    	else{
-    		result = addESAnswerReply((Answer)parent, newReply);
-    	}
+        else{
+            result = addESAnswerReply((Answer)parent, newReply);
+        }
         if (result.equals("HTTP/1.1 200 OK")) {
             super.addReply(parent, newReply);
         }
-            
+
         else {
             mCachedPostManager.addedOffline = true;
             newReply.setExistsOnline(false);
         }
-        
+
         mCachedPostManager.save();
     }
-    
+
     @Override
     public void toggleUpvote(Post post) {
         super.toggleUpvote(post);
@@ -467,13 +467,13 @@ public class OnlinePostManager extends PostManager {
             incrementVotes = 1;
         }      
         if(post.getUserAttributes().getIsUpvoted())
-        	post.getUserAttributes().setIsUpvoted(true);
+            post.getUserAttributes().setIsUpvoted(true);
         else
-        	post.getUserAttributes().setIsUpvoted(false);
+            post.getUserAttributes().setIsUpvoted(false);
         UserProfileManager.getInstance(mContext).addToMap(post.mUserAttributes, post.getID());
         // remove
         cachedPost.setVotes(post.getVotes());
-        
+
         String result = null;
         if (isQuestion(post)) {
             result = updateESQuestionVotes((Question)post, incrementVotes);
@@ -493,40 +493,40 @@ public class OnlinePostManager extends PostManager {
         UserProfileManager.getInstance(mContext).addToMap(post.mUserAttributes, post.getID());
         mCachedPostManager.save();
     }
-    
+
     @Override
     public void toggleFavorite(Post post) {
         Post cachedPost = mCachedPostManager.getPost(post.getID());
         super.toggleFavorite(post);
         if(post.getUserAttributes().getIsFavorited())
-        	cachedPost.getUserAttributes().setIsFavorited(true);
+            cachedPost.getUserAttributes().setIsFavorited(true);
         else
-        	cachedPost.getUserAttributes().setIsFavorited(false);
+            cachedPost.getUserAttributes().setIsFavorited(false);
         UserProfileManager.getInstance(mContext).addToMap(post.mUserAttributes, post.getID());
         mCachedPostManager.save();
     }
-    
+
     //TODO: Update with implementation of user attributes
     // THIS SHOULD TURN OFF WHEN NOT ONLINE
     @Override
     public void toggleReadLater(Post post) {
         super.toggleReadLater(post);
         if(post.getUserAttributes().getIsReadLater())
-        	post.getUserAttributes().setIsReadLater(true);
+            post.getUserAttributes().setIsReadLater(true);
         UserProfileManager.getInstance(mContext).addToMap(post.mUserAttributes, post.getID());
         // add the post to the cached post manager
         // if it is not already present
         Question question;
-        
+
         if (isQuestion(post)) {
             question = (Question) post;
         }
         else {
             question = (Question)getPost(((Answer)post).getParentID());
         }
-        
+
         addToCache(question);
-            
+
         return;
     }
     /**
@@ -535,7 +535,7 @@ public class OnlinePostManager extends PostManager {
     public void pushOfflineUpdates() {
         if (!mCachedPostManager.hasAddedOffline())
             return;
-        
+
         String result = null;
         for (Post post : mCachedPostManager.getQuestions()) {
             // if the question is new then all associated data including questions/replies are new 
@@ -548,7 +548,7 @@ public class OnlinePostManager extends PostManager {
                     question.setExistsOnline(false);
                 continue;
             }
-            
+
             int votesOffline = question.getUpvotesChangedOffline(); 
             if(votesOffline != 0) {
                 question.setUpvotesChangedOffline(0);
@@ -556,8 +556,8 @@ public class OnlinePostManager extends PostManager {
                 if (!result.equals("HTTP/1.1 200 OK"))
                     question.setUpvotesChangedOffline(votesOffline);
             }
-            
-            
+
+
             // TODO: Implement Reply Logic for Week 4
             /*
             for (Reply reply : question.getReplies()) {
@@ -565,7 +565,7 @@ public class OnlinePostManager extends PostManager {
                     // logic
                 }
             }*/
-            
+
             for (Answer answer : question.getAnswers()) {
                 if (!answer.getExistsOnline()) { 
                     answer.setExistsOnline(true);
@@ -574,7 +574,7 @@ public class OnlinePostManager extends PostManager {
                         answer.setExistsOnline(false);
                     continue;
                 }
-                
+
                 votesOffline = question.getUpvotesChangedOffline(); 
                 if(votesOffline != 0) {
                     answer.setUpvotesChangedOffline(0);
@@ -588,21 +588,21 @@ public class OnlinePostManager extends PostManager {
         mCachedPostManager.addedOffline = false;
 
     }
-    
+
     public void refreshAll() {
         loadFromServer();
     }
-    
+
     /**
      *  Get Post with specific ES ID
      * @param question the post that will give the specific ESID
      */
     public void refreshQuestion(Question question) {
         Question onlineQuestion = getESQuestion(question);
-        
+
         if (onlineQuestion == null)
             return;
-        
+
         onlineQuestion.setUserAttributes(question.getUserAttributes());
         question = onlineQuestion;
         boolean updated = mCachedPostManager.updateIfExists(onlineQuestion);
@@ -615,7 +615,7 @@ public class OnlinePostManager extends PostManager {
             mCachedPostManager.addQuestion(question);
         }
     }
-    
+
     public boolean hasAddedOffline() {
         return mCachedPostManager.addedOffline;
     }

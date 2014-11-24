@@ -11,43 +11,43 @@ import java.util.UUID;
  * @author Cmput301 Winter 2014 Group 8
  */
 public class UserProfile {
-	private String mUsername;
-	private static HashMap<UUID, UserAttributes> mUserAttributesMap = new HashMap<UUID, UserAttributes>();
-	private int mAnswersPostedCount;
-	private int mQuestionsPostedCount;
-	
-	public UserProfile(){
-		mUsername ="Guest";
-		int mAnswersPostedCount=0;
-		int mQuestionsPostedCount=0;
-		
-	}
-	public String getUsername(){
-		return mUsername;
-	}
-	public void setUsername(String username){
-		mUsername=username;
-	}
-	
-	public int getAnswerPostedCount(){
-		return mAnswersPostedCount;
-	}
-	public void incrementAnswersPostedCount(){
-		mAnswersPostedCount++;
-	}
-	
-	public int getQuestionsPostedCount(){
-		return mQuestionsPostedCount;
-	}
-	public void incrementQuestionsPostedCount(){
-		mQuestionsPostedCount++;
-	}
+    private String mUsername;
+    private static HashMap<UUID, UserAttributes> mUserAttributesMap = new HashMap<UUID, UserAttributes>();
+    private int mAnswersPostedCount;
+    private int mQuestionsPostedCount;
 
-	public UserAttributes getUserAttributesForId(UUID id){
-		return mUserAttributesMap.get(id);
-	}
-	public void addToMap(UserAttributes userAttributes, UUID id){
-		mUserAttributesMap.put(id,userAttributes);
-	}
+    public UserProfile(){
+        mUsername ="Guest";
+        int mAnswersPostedCount=0;
+        int mQuestionsPostedCount=0;
+
+    }
+    public String getUsername(){
+        return mUsername;
+    }
+    public void setUsername(String username){
+        mUsername=username;
+    }
+
+    public int getAnswerPostedCount(){
+        return mAnswersPostedCount;
+    }
+    public void incrementAnswersPostedCount(){
+        mAnswersPostedCount++;
+    }
+
+    public int getQuestionsPostedCount(){
+        return mQuestionsPostedCount;
+    }
+    public void incrementQuestionsPostedCount(){
+        mQuestionsPostedCount++;
+    }
+
+    public UserAttributes getUserAttributesForId(UUID id){
+        return mUserAttributesMap.get(id);
+    }
+    public void addToMap(UserAttributes userAttributes, UUID id){
+        mUserAttributesMap.put(id,userAttributes);
+    }
 
 }

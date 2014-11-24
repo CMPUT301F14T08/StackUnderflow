@@ -10,7 +10,7 @@ public class SearchHits<T> {
     private int total;
     private float max_score;
     private List<Hit<T>> hits;
-    
+
     public SearchHits() {}
 
     public int getTotal() {

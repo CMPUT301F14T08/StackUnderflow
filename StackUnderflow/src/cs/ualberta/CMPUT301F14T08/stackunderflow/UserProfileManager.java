@@ -36,6 +36,7 @@ public class UserProfileManager {
 			mUserProfile = new UserProfile();
 		}
 	}
+	
 	/**
 	 * This will attempt to save the user profile to the a file called "user_profile.json" 
 	 * @throws IOException will occure if for some reason the save fails. (Eg. If there is not enough memory on the device)
@@ -53,6 +54,7 @@ public class UserProfileManager {
 				writer.close();
 		}
 	}
+	
 	/**
 	 * LoadFromFile will attempt to load any information that is saved on the user_profile.json file on the device
 	 * @return returns anything that was found in "user_profile.json" if nothing was found it will simply output a blank UserProfile
@@ -73,6 +75,7 @@ public class UserProfileManager {
 		}
 		return userProfile;		
 	}
+	
 	/**
 	 * Creates a singleton of sUserProfileManager. THIS IS HOW YOU CREATE A USERPROFILEMANAGER
 	 * @return the current user profile or a new UserProfileManager when no UserProfileManager can be found
@@ -86,6 +89,7 @@ public class UserProfileManager {
 		}
 		return sUserProfileManager;
 	}
+	
 	/**
 	 * Attempt to save to a file locally on the device called user_profile.json
 	 * @return true if was able to load, false if it failed
@@ -98,11 +102,22 @@ public class UserProfileManager {
 			return false;
 		}
 	}
+	
 	public UserProfile getUserProfile(){
 		return mUserProfile;
 	}
+	
 	public void addToMap(UserAttributes userAttributes, UUID id){
 		mUserProfile.addToMap(userAttributes,id);
+		save();
+	}
+	
+	public String getUsername(){
+		return mUserProfile.getUsername();
+	}
+	
+	public void setUsername(String username){
+		mUserProfile.setUsername(username);
 		save();
 	}
 }

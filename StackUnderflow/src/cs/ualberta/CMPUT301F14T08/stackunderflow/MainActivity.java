@@ -63,50 +63,55 @@ public class MainActivity extends Activity implements TabListener {
 	public boolean onCreateOptionsMenu(Menu menu) {//, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.fragment_main_menu, menu);
-		
+
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-        int duration = Toast.LENGTH_SHORT;
-        CharSequence text = "";
-        Toast toast = null;
-        
+		int duration = Toast.LENGTH_SHORT;
+		CharSequence text = "";
+		Toast toast = null;
+
 		switch (item.getItemId()) {
-	      case R.id.ask_question: 
+		case R.id.ask_question: 
+			Intent intent = new Intent(this, NewQuestionActivity.class);                
+			startActivityForResult(intent, PICK_QUESTION);
 
-	            Intent intent = new Intent(this, NewQuestionActivity.class);                
-	            startActivityForResult(intent, PICK_QUESTION);
+			return true;
 
-	            return true;
-	            
-	      case R.id.user_profile: 
+		case R.id.user_profile: 
+			Intent i = new Intent(this, ProfileActivity.class);                
+			startActivity(i);
 
-	            Intent i = new Intent(this, ProfileActivity.class);                
-	            startActivity(i);
+			return true;
 
-	            return true;
-	      case R.id.mark_read:	
-		    if (tf.sPostController == null) {
-		        return true;
-		    }
-		    
-            boolean postsAdded = tf.sPostController.addSelectedToCache();
-            tf.adapter.notifyDataSetChanged();
-		    
+		case R.id.search:
+			FragmentManager fm = getFragmentManager();
+			SearchDialogFragment sdf = new SearchDialogFragment();
+			sdf.show(fm, "Search Dialog Fragment");
 
-		    if (tf.sPostController.usingOnlinePostManager() && postsAdded)
-    		    text = "Successfully added to Cache.";
-		    else if (tf.sPostController.usingOnlinePostManager() && !postsAdded)
-		        text = "Long-click to select one or more posts.";
-		    else 
-	            text = "Currently Offline. All posts are in Cache.";
+		case R.id.mark_read:	
+			if (tf.sPostController == null) {
+				return true;
+			}
 
-		    
-            toast = Toast.makeText(this, text, duration);
-            toast.show();
+			boolean postsAdded = tf.sPostController.addSelectedToCache();
+			tf.adapter.notifyDataSetChanged();
+
+
+			if (tf.sPostController.usingOnlinePostManager() && postsAdded)
+				text = "Successfully added to Cache.";
+			else if (tf.sPostController.usingOnlinePostManager() && !postsAdded)
+				text = "Long-click to select one or more posts.";
+			else 
+				text = "Currently Offline. All posts are in Cache.";
+
+
+			toast = Toast.makeText(this, text, duration);
+			toast.show();			
+
 			return true;
 
 		default:				
@@ -131,19 +136,11 @@ public class MainActivity extends Activity implements TabListener {
 			data.putInt("idx",  tab.getPosition());
 			tf.setArguments(data);
 			fragmentList.add(tf);
-		} else {
-			tf = (MainFragment) f;
+
 		}
+
 		fragmentTransaction.replace(android.R.id.content, tf);		
 	}    
-
-	// Code to allow testing of Username Dialog, remove once copied over
-	// to other places that need to call it.
-	public void testDialogFragment(MenuItem menu) {
-		FragmentManager fm = getFragmentManager();
-		UsernameDialogFragment udf = new UsernameDialogFragment();
-		udf.show(fm, "Username Dialog Fragment");
-	}
 
 	@Override
 	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
@@ -165,8 +162,11 @@ public class MainActivity extends Activity implements TabListener {
 				String title = data.getStringExtra("question.title");
 				String body = data.getStringExtra("question.body");
 				String author = data.getStringExtra("question.author");
-				String picture = Base64.encodeToString(data.getByteArrayExtra("question.picture"), Base64.DEFAULT);
-				
+				String picture = null;
+				if (data.getByteArrayExtra("question.picture") != null) {
+					picture = Base64.encodeToString(data.getByteArrayExtra("question.picture"), Base64.DEFAULT);
+				}
+
 				Question q = null;
 				if (picture != null) {
 					q = new Question(body, author, picture, title);
@@ -174,7 +174,7 @@ public class MainActivity extends Activity implements TabListener {
 				else {
 					q = new Question(body, author, title);
 				}
-				
+
 				tf.sPostController.getPostManager().addQuestion(q);
 			}
 		}

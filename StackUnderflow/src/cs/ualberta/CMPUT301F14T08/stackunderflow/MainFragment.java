@@ -38,7 +38,6 @@ public class MainFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		Bundle data = getArguments();
 		index = data.getInt("idx");
-
 	}
 	
 	
@@ -131,9 +130,7 @@ public class MainFragment extends Fragment {
 	private class DownloadPostsTask extends AsyncTask<Void, PostController, PostController> {
 	    
 	     protected PostController doInBackground(Void... params) {
-	         return PostController.getInstanceForList(getActivity());
-
-	         
+	         return PostController.getInstanceForList(getActivity());         
 	     }
 	     
 	     @Override

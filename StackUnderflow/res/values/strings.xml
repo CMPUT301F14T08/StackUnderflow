@@ -5,9 +5,8 @@
     <string name="title_activity_stack_underflow">StackUnderflow</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
     <string name="username"></string>
-    <string name="upvote_count"> </string>
+    <string name="upvote_count"></string>
     <string name="answer_count"> Answers</string>
     <string name="favorite">favorite</string>
     <string name="question_title">Question</string>
@@ -16,8 +15,7 @@
     <string name="new_reply">New Reply</string>
     <string name="back_to_question">Back to Question</string>
 
-
-    
+   
     <!--  Main Fragment/Activity -->
     <string name="search">Search</string>
     <string name="ask_question">Ask a Question</string>
@@ -31,26 +29,36 @@
     <string name="answer_text">Answers</string>
     <string name="zero_answers">0</string>
     <string name="default_text">Default</string>
-    
-     <!-- New Question  -->
+
+    <!-- New Question -->
     <string name="new_question_title">New Question</string>
-	<string name="new_question_fragment_edittext_title">Place Title Text Here</string>
-	<string name="new_question_fragment_edittext_body">Place Question Text Here</string>	
-	<string name="new_question_fragment_submit_button">Submit</string>
-	<string name="new_question_fragment_upload_photo_textview">Upload Photo</string>
-	
-	<!-- New Answer  -->
+    <string name="new_question_fragment_edittext_title">Place Title Text Here</string>
+    <string name="new_question_fragment_edittext_body">Place Question Text Here</string>
+    <string name="new_question_fragment_submit_button">Submit</string>
+    <string name="new_question_fragment_upload_photo_textview">Upload Photo</string>
+
+    <!-- New Answer -->
     <string name="new_answer_title">New Answer</string>
 	<string name="new_answer_fragment_edittext_body">Place Answer Text Here</string>	
 	<string name="new_answer_fragment_submit_button">Submit</string>
 	<string name="new_answer_fragment_upload_photo_textview">Upload Photo</string>
-	<string name="dialogDescText">You need to choose a username! This is the name that users will see when you post a Question, Answer, or Reply.</string>
-	<string name="usernameDialog">Username:</string>
 	
 	<!--  Profile Fragment/Activity -->
 	<string name="profile_title">User Profile</string>
     <string name="my_posts">My Posts</string>
     <string name="my_favorites">My Favorites</string>
 	<string name="read_later">Read Later</string>
-    
+
+    <!-- Username Dialog -->
+    <string name="dialogDescText">You need to choose a username! This is the name that users will see when you post a Question, Answer, or Reply.</string>
+    <string name="usernameDialog">Username:</string>
+
+    <!-- Searching -->
+    <string name="search_question">Questions Only</string>
+    <string name="search_answer">Answers Only</string>
+    <string name="search_both">Both</string>
+    <string name="search_only_pic">Only Posts with Pictures</string>
+    <string name="search_text">Text:</string>
+    <string name="title_activity_search">SearchActivity</string>
+
 </resources>

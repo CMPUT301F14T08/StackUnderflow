@@ -52,16 +52,12 @@ public class ProfileActivity extends Activity implements TabListener {
 	    TextView mAnswersPosted = (TextView) actionBar.getCustomView().findViewById(R.id.profile_answers_box);
 	    RatingBar mRatingBar = (RatingBar) actionBar.getCustomView().findViewById(R.id.ratingBar);
 	    
-//	    TODO: Use once UserProfile is implemented:
-//	    user_name.setText(getUsername());
-//	    int q_count = getQuestionsPostedCount();
-//	    int a_count = getAnswersPostedCount();
+	    UserProfileManager upm = UserProfileManager.getInstance(getApplication());
+	    String setUsername = upm.getUsername();
+	    mUserName.setText(setUsername);
+	    int q_count = upm.getUserProfile().getQuestionsPostedCount();
+	    int a_count = upm.getUserProfile().getAnswerPostedCount();
 	    
-	    
-//	    TODO: temporary values, remove once UserProfile implemented
-	    mUserName.setText("guest ");
-	    int q_count = 10;
-	    int a_count = 15;
 //	    TODO: temporary value, decide on a ratings calculation method
 //	    rating step is set to 1/2 star, but can be changed in xml (or programatically)
 	    mRatingBar.setRating(3.0f);
@@ -84,9 +80,10 @@ public class ProfileActivity extends Activity implements TabListener {
 		
 		mUserName.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-//			    TODO: implement username dialog
-	            Toast toast = Toast.makeText(v.getContext(), "Implement username dialog", Toast.LENGTH_SHORT);
-	            toast.show();			
+				if (((TextView)v.findViewById(R.id.profile_user_name)).getText() == "Guest"){
+					UsernameDialog.showDialog(getFragmentManager());
+					// We need a way to update the text view after returning from the fragment
+				}
 			}
 		});
 	    
@@ -131,14 +128,6 @@ public class ProfileActivity extends Activity implements TabListener {
 		fragmentTransaction.replace(android.R.id.content, tf);
 
 	}    
-
-	// Code to allow testing of Username Dialog, remove once copied over
-	// to other places that need to call it.
-	public void testDialogFragment(MenuItem menu) {
-		FragmentManager fm = getFragmentManager();
-		UsernameDialogFragment udf = new UsernameDialogFragment();
-		udf.show(fm, "Username Dialog Fragment");
-	}
 
 	@Override
 	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {

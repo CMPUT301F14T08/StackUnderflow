@@ -64,7 +64,7 @@ public class NewAnswerFragment extends NewPostFragment {
             public void onClick(View v) {           
                 
                 // TODO: Change this to use usernames after implementing user profile
-                String author = "Guest"; 
+            	String author = UserProfileManager.getInstance(getActivity()).getUsername();
                 String body = mPostBody.getText().toString();
                 
                 //Checks if fields are left blank

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RadioGroup
+        android:id="@+id/SearchPostRadioButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"        
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp" >
+
+        <RadioButton
+            android:id="@+id/QuestionsOnlyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:checked="true"
+            android:drawableLeft="@drawable/radio_button"
+            android:drawablePadding="8dp"
+            android:text="@string/search_question" />
+
+        <RadioButton
+            android:id="@+id/AnswersOnlyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/radio_button"
+            android:drawablePadding="8dp"
+            android:text="@string/search_answer" />
+
+        <RadioButton
+            android:id="@+id/BothButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/radio_button"
+            android:drawablePadding="8dp"
+            android:text="@string/search_both" />
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/search_picture_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/SearchPostRadioButtons"
+        android:layout_alignRight="@+id/SearchPostRadioButtons"
+        android:layout_below="@+id/SearchPostRadioButtons"
+        android:layout_marginTop="10dp"
+        android:button="@null"
+        android:drawableLeft="@drawable/checkbox_button"
+        android:drawablePadding="8dp"
+        android:text="@string/search_only_pic" />
+
+    <TextView
+        android:id="@+id/searchTextTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/search_picture_button"
+        android:layout_below="@+id/search_picture_button"
+        android:layout_marginTop="14dp"
+        android:text="@string/search_text" />
+
+    <EditText
+        android:id="@+id/searchEnteredText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/searchTextTitle"
+        android:layout_alignRight="@+id/search_picture_button"
+        android:layout_below="@+id/searchTextTitle"
+        android:ems="10"
+        android:hint="@string/search" >
+
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>

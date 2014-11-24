@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView.FindListener;
+import android.widget.EditText;
 /**
  * UsernameDiaglogFragment - When a user attempts to input a question or answer they will be prompted with a window asking for them for a user name that will
  * then be saved on the device locally so that they may post with that same user name every time.
@@ -29,14 +31,22 @@ public class UsernameDialogFragment extends DialogFragment{
                 // Positive button
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Do something else
+                        EditText edit = (EditText) v.findViewById(R.id.enterUsername);
+                        String name = edit.getText().toString();
+                        
+                        if (name.length() > 0) {
+                        	//Refactor this out, too many dots
+                        	UserProfileManager.getInstance(getActivity()).setUsername(name);
+                        }
                     }
                 })
  
                 // Negative Button
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,    int which) {
-                        // Do something else
+                        //Fix this to not close the profile page when hitting cancel
+                    	//if (getActivity().findViewById(R.id.answersTextView) != null)
+                    		getActivity().finish();
                     }
                 }).create();
     }

@@ -18,11 +18,11 @@ import android.widget.Toast;
  */
 public class NewQuestionFragment extends NewPostFragment {
 
-	@Override
+	/*@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		//getActivity().setTitle(R.string.new_question_title);
-	}	
+	}*/	
 	
     @Override
     int getViewID() {
@@ -63,7 +63,7 @@ public class NewQuestionFragment extends NewPostFragment {
 				
 				String title = mPostTitle.getText().toString();
                 // TODO: Change this to use usernames after implementing user profile
-				String author = "Guest";
+				String author = UserProfileManager.getInstance(getActivity()).getUsername();
 				String body = mPostBody.getText().toString();
 				
 				//Checks if fields are left blank

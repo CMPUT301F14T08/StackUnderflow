@@ -43,7 +43,8 @@ public class TestQuestion extends ActivityInstrumentationTestCase2<MainActivity>
 	 */
 	public void testAttachPicture(){
 		// attach photo method, to be implemented
-		byte[] image = null; //how to create test image?
+		//##### CHECK TO MAKE SURE THIS FITS WITH IMAGE CHANGE ####
+		String image = null; //how to create test image?
 		Question q1 = new Question("post body", "author", image, "title");
 
 		assertTrue(q1.getPicture().equals(image));

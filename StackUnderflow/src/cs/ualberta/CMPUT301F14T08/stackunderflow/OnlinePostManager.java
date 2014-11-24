@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -241,7 +240,6 @@ public class OnlinePostManager extends PostManager {
      */
     private String updateESAnswer(Question updatedQuestion) {
         String updateString = "\"mAnswers\": " + gson.toJson(updatedQuestion.getAnswers());
-        Log.d("ANSWER", updateString);
         return updateESQuestion(updatedQuestion, updateString);
     }
     

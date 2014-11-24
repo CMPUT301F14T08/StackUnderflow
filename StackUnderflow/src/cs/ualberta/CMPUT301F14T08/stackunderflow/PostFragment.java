@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -99,7 +98,6 @@ public abstract class PostFragment extends Fragment {
 		Context context = getActivity().getApplicationContext();
 		
 		showReplyEdit = false;
-		Log.d("REPLY", "false");
 		
 		mUpvoteFull = context.getResources().getDrawable(getUpvoteFullID());
 		mUpvoteFull.setBounds(0, 0, mUpvoteFull.getMinimumHeight(), mUpvoteFull.getMinimumWidth());
@@ -263,7 +261,6 @@ public abstract class PostFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					String replyText = mReplyEditText.getText().toString();
-					Log.d("REPLY_TEXT", "text="+replyText);
 					InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 				    mgr.hideSoftInputFromWindow(mReplyEditText.getWindowToken(), 0);
 					if(!replyText.equalsIgnoreCase("")){
@@ -281,12 +278,10 @@ public abstract class PostFragment extends Fragment {
 					}
 				}
 			});
-        Log.d("REPLY", "showing");
 	}
         else{
         	mReplyEditText.setVisibility(View.GONE);
         	mReplySubmitButton.setVisibility(View.GONE);
-        	Log.d("REPLY", "hidden");
         }
         
         // Set Backbutton/Forward Button invisible for now, Answer/Question can

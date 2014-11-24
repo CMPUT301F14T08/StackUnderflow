@@ -60,43 +60,48 @@ public class MainActivity extends Activity implements TabListener {
 	public boolean onCreateOptionsMenu(Menu menu) {//, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.fragment_main_menu, menu);
-		
+
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-        int duration = Toast.LENGTH_SHORT;
-        CharSequence text = "";
-        Toast toast = null;
-        
+		int duration = Toast.LENGTH_SHORT;
+		CharSequence text = "";
+		Toast toast = null;
+
 		switch (item.getItemId()) {
-	      case R.id.ask_question: 
+		case R.id.ask_question: 
+			Intent intent = new Intent(this, NewQuestionActivity.class);                
+			startActivityForResult(intent, PICK_QUESTION);
 
-	            Intent intent = new Intent(this, NewQuestionActivity.class);                
-	            startActivityForResult(intent, PICK_QUESTION);
-
-	            return true;
+			return true;
+		
+		case R.id.search:
+			FragmentManager fm = getFragmentManager();
+			SearchDialogFragment sdf = new SearchDialogFragment();
+			sdf.show(fm, "Search Dialog Fragment");
+			
 		case R.id.mark_read:	
-		    if (tf.sPostController == null) {
-		        return true;
-		    }
-		    
-            boolean postsAdded = tf.sPostController.addSelectedToCache();
-            tf.adapter.notifyDataSetChanged();
-		    
+			if (tf.sPostController == null) {
+				return true;
+			}
 
-		    if (tf.sPostController.usingOnlinePostManager() && postsAdded)
-    		    text = "Successfully added to Cache.";
-		    else if (tf.sPostController.usingOnlinePostManager() && !postsAdded)
-		        text = "Long-click to select one or more posts.";
-		    else 
-	            text = "Currently Offline. All posts are in Cache.";
+			boolean postsAdded = tf.sPostController.addSelectedToCache();
+			tf.adapter.notifyDataSetChanged();
 
-		    
-            toast = Toast.makeText(this, text, duration);
-            toast.show();
+
+			if (tf.sPostController.usingOnlinePostManager() && postsAdded)
+				text = "Successfully added to Cache.";
+			else if (tf.sPostController.usingOnlinePostManager() && !postsAdded)
+				text = "Long-click to select one or more posts.";
+			else 
+				text = "Currently Offline. All posts are in Cache.";
+
+
+			toast = Toast.makeText(this, text, duration);
+			toast.show();
 			return true;
 
 		default:				
@@ -121,8 +126,6 @@ public class MainActivity extends Activity implements TabListener {
 			data.putInt("idx",  tab.getPosition());
 			tf.setArguments(data);
 			fragmentList.add(tf);
-		} else {
-			tf = (MainFragment) f;
 		}
 		fragmentTransaction.replace(android.R.id.content, tf);		
 	}    

@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.INTERNET" /> 
-	
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="17" />
@@ -27,26 +27,27 @@
         </activity>
         <activity
             android:name=".QuestionActivity"
-            android:label="@string/question_title" 
-            android:theme="@style/BlackTheme">
+            android:label="@string/question_title"
+            android:theme="@style/BlackTheme" >
         </activity>
         <activity
             android:name=".AnswerActivity"
-            android:label="@string/answer_title" 
-            android:theme="@style/BlueTheme">
+            android:label="@string/answer_title"
+            android:theme="@style/BlueTheme" >
         </activity>
-        <activity 
+        <activity
             android:name=".NewQuestionActivity"
-            android:label="@string/new_question_title">
+            android:label="@string/new_question_title" >
         </activity>
-        
-        <activity 
+        <activity
             android:name=".NewAnswerActivity"
             android:label="@string/new_question_title"
-            android:theme="@style/BlueTheme">
-            
+            android:theme="@style/BlueTheme" >
         </activity>
-        
+        <activity
+            android:name=".SearchActivity"
+            android:label="@string/title_activity_search" >
+        </activity>
     </application>
 
 </manifest>

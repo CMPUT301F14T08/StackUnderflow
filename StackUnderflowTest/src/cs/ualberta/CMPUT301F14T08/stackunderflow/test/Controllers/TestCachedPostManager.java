@@ -1,6 +1,6 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.test.Controllers;
 
-import java.io.IOException;
+/*import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -148,4 +148,4 @@ public class TestCachedPostManager extends ActivityInstrumentationTestCase2<Main
         }
         return posts;
     }
-}
+}*/

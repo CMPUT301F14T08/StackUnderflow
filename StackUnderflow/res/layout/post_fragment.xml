@@ -100,13 +100,45 @@
 
 </LinearLayout>
 
-<ListView
-    android:id="@+id/post_fragment_listview_replies"
+<LinearLayout
+    android:id="@+id/post_fragment_replies_linearlayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="1.0" >
+    android:orientation="vertical"
+    android:layout_weight="1.0">
 
-</ListView>
+    <ListView
+        android:id="@+id/post_fragment_listview_replies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="7" >
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="1" >
+
+        <EditText
+            android:id="@+id/post_fragment_replies_editText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="New Reply"
+            android:layout_weight="1" 
+            android:ems="10" />
+
+        <ImageButton
+            android:id="@+id/post_fragment_reply_submit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@android:color/transparent"
+            android:padding="5dp"
+            android:src="@drawable/check_full_grey" />
+
+    </LinearLayout>
+</LinearLayout>
 
 <LinearLayout
     android:layout_width="match_parent"

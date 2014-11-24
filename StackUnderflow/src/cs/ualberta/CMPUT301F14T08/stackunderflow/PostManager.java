@@ -137,8 +137,9 @@ public abstract class PostManager {
 	}
 	
 	//TODO: Implement in Project Part 4
-	public  void addReply(Question parent, Reply newReply) {
-	};
+	public void addReply(Post parent, Reply newReply) {
+		parent.addReply(newReply);
+	}
 	
 	//TODO: Implement with user attributes
 	public void toggleFavorite(Post post) {

@@ -186,7 +186,7 @@ public class CachedPostManager extends PostManager{
 	
 	//TODO: Implement in Project Part 4
 	@Override
-	public void addReply(Question parent, Reply newReply) {
+	public void addReply(Post parent, Reply newReply) {
 		super.addReply(parent, newReply);
 		save();
 		addedOffline = true;

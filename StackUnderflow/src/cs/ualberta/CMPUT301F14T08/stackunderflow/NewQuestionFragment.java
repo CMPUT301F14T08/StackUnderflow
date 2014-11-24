@@ -18,11 +18,11 @@ import android.widget.Toast;
  */
 public class NewQuestionFragment extends NewPostFragment {
 
-	@Override
+	/*@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		//getActivity().setTitle(R.string.new_question_title);
-	}	
+	}*/	
 	
     @Override
     int getViewID() {

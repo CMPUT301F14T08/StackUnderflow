@@ -126,17 +126,11 @@ public class MainActivity extends Activity implements TabListener {
 			data.putInt("idx",  tab.getPosition());
 			tf.setArguments(data);
 			fragmentList.add(tf);
+
 		}
+
 		fragmentTransaction.replace(android.R.id.content, tf);		
 	}    
-
-	// Code to allow testing of Username Dialog, remove once copied over
-	// to other places that need to call it.
-	public void testDialogFragment(MenuItem menu) {
-		FragmentManager fm = getFragmentManager();
-		UsernameDialogFragment udf = new UsernameDialogFragment();
-		udf.show(fm, "Username Dialog Fragment");
-	}
 
 	@Override
 	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {

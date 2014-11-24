@@ -120,6 +120,9 @@ public class NewImageDialogFragment extends DialogFragment {
 			if (resultCode == Activity.RESULT_OK) {
 				String jpegFilePath = mJPEGFileUri.getPath();
 				File jpegFile = new File(jpegFilePath); //loads JPEG to memory
+				Log.d("FILESIZE_B", ""+jpegFile.length());
+				long kb = jpegFile.length() / 1024;
+				Log.d("FILESIZE_KB", ""+kb);
 				mJPEGFileName = jpegFile.getName();
 				long fileSize = jpegFile.length();
 				BitmapFactory.Options options = new BitmapFactory.Options();
@@ -141,15 +144,19 @@ public class NewImageDialogFragment extends DialogFragment {
 				Bitmap bitmap = null;
 				ByteArrayOutputStream baos = null;
 				//compresses jpegByteArray
-				while(fileSize > 64000){
+				while(fileSize > 64*1024){
 					bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(mJPEGByteArray), null, options); //converts JPEG to bitmap at half size
 					baos = new ByteArrayOutputStream();
-					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);	//converts bitmap back to JPEG in baos
+					bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);	//converts bitmap back to JPEG in baos
 					mJPEGByteArray = baos.toByteArray();						//loads baos into byte array
-					try {baos.flush();}	
+					try {baos.flush();}
 					catch (IOException e) {e.printStackTrace();	}						
 					fileSize = mJPEGByteArray.length;						//recalculates fileSize
 					//Log.d("MYTAG", String.valueOf(fileSize), new Exception());
+
+					Log.d("FILESIZE_B", ""+fileSize);
+					long kbs = fileSize / 1024;
+					Log.d("FILESIZE_KB", ""+kbs);
 				}
 				showPicture();				
 			}

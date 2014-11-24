@@ -5,19 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.UUID;
 
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.menu;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.NewAnswerActivity;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.ReplyAdapter;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.ViewImageDialogFragment;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -39,6 +26,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.NewAnswerActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.ReplyAdapter;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.ViewImageDialogFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
 /**
  * This Fragment will help display all questions (Questions and Answers) When a user wants to view a question they are shown this screen. Here the user 
  * may view and modify the upvote's as well as favorite or unfavorite the post. The user may also view the post body, username of the author of the post and 
@@ -75,7 +71,6 @@ public abstract class PostFragment extends Fragment {
     protected Button mPictureButton;
     protected TextView mUsername;
     protected ListView mListView;
-    protected LinearLayout mLinearLayout;
     protected EditText mReplyEditText;
     protected ImageButton mReplySubmitButton;
     protected Button mAnswersButton;
@@ -145,6 +140,9 @@ public abstract class PostFragment extends Fragment {
     abstract protected int getImageIconID();
     abstract protected int getTextColor();
 
+    /**
+     * Sets flag to hid the reply EditText view upon returning to the fragment from elsewhere
+     */
     @Override
     public void onResume(){
         super.onResume();
@@ -159,7 +157,7 @@ public abstract class PostFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
-        // Both Question/Answer have this Menu Item
+        // Both Question/Answer have these menuItems
         switch (menuItem.getItemId()) {
 
         case R.id.menu_item_new_answer:
@@ -169,6 +167,7 @@ public abstract class PostFragment extends Fragment {
             break;
 
         case R.id.menu_item_new_reply:
+        	//Refresh the fragment to redraw the view with the reply EditText view visible
             showReplyEdit=true;
             getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
             mReplyAdapter.notifyDataSetChanged();
@@ -257,14 +256,16 @@ public abstract class PostFragment extends Fragment {
             mPictureButton.setVisibility(View.GONE);
         }
 
-        mLinearLayout = (LinearLayout)postView.findViewById(R.id.post_fragment_replies_linearlayout);
-
+        //Reply list
         mReplyAdapter = new ReplyAdapter(getActivity().getApplicationContext(), mPost.getReplies());
         mListView = (ListView)postView.findViewById(R.id.post_fragment_listview_replies);
         mListView.setAdapter(mReplyAdapter);
 
+        //Reply EditText and submit button
         mReplyEditText = (EditText)postView.findViewById(R.id.post_fragment_replies_editText);
         mReplySubmitButton = (ImageButton)postView.findViewById(R.id.post_fragment_reply_submit);
+        
+        //Only show if flag is set to true (via the menu option)
         if(showReplyEdit){
             mReplyEditText.setVisibility(View.VISIBLE);
             mReplySubmitButton.setVisibility(View.VISIBLE);
@@ -274,9 +275,13 @@ public abstract class PostFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     String replyText = mReplyEditText.getText().toString();
+                    
+                    //Hide the keyboard once the submit button is pressed
                     InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     mgr.hideSoftInputFromWindow(mReplyEditText.getWindowToken(), 0);
-                    if(!replyText.equalsIgnoreCase("")){
+                    
+                    //Ensure the reply is not blank
+                    if(!replyText.replace(" ", "").equalsIgnoreCase("")){
                         String name = UserProfileManager.getInstance(getActivity()).getUsername();
                         Reply reply = new Reply(mReplyEditText.getText().toString(), name);
                         mReplyEditText.setText("");

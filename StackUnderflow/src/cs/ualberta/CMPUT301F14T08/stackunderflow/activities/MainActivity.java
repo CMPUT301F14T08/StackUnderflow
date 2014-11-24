@@ -172,6 +172,7 @@ public class MainActivity extends Activity implements TabListener {
                 String author = data.getStringExtra("question.author");
                 String picture = null;
                 if (data.getByteArrayExtra("question.picture") != null) {
+                	//Encode byte array as a string to faster storage online
                     picture = Base64.encodeToString(data.getByteArrayExtra("question.picture"), Base64.DEFAULT);
                 }
 

@@ -18,8 +18,8 @@ public class UserProfile {
 
     public UserProfile(){
         mUsername ="Guest";
-        int mAnswersPostedCount=0;
-        int mQuestionsPostedCount=0;
+        mAnswersPostedCount=0;
+        mQuestionsPostedCount=0;
 
     }
     public String getUsername(){

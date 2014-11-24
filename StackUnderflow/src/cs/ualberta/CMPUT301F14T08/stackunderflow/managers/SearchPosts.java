@@ -74,7 +74,7 @@ public class SearchPosts {
             Log.d("Debug", status);
         }
 
-        httpClient.getConnectionManager().shutdown();
+        //httpClient.getConnectionManager().shutdown();
 
         return posts;
     }

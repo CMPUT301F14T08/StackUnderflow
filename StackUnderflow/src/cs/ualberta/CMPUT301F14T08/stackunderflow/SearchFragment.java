@@ -84,7 +84,7 @@ public class SearchFragment extends Fragment {
 	public void createView() {
         loadingPanel.setVisibility(View.VISIBLE);
 		new DownloadPostsTask().execute();
-		searchResult = new SearchPosts().loadFromServer(searchType, searchPics, searchTerms);
+		searchResult = new ArrayList<Post>(); //new SearchPosts().loadFromServer(searchType, searchPics, searchTerms);
 		adapter = new PostAdapter(getActivity(), searchResult);
 		listview.setAdapter(adapter);
 	}

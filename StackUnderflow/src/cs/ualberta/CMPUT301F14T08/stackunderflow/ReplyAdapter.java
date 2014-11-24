@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 /**
@@ -32,6 +33,7 @@ public class ReplyAdapter extends ArrayAdapter<Reply> {
     public View getView(int position, View view, ViewGroup parent) {
 
         TextView replyText;
+        EditText editText;
         Reply currReply;
         
         currReply = getItem(position);

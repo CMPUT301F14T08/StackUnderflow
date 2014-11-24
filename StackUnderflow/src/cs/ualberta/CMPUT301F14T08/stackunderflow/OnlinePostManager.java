@@ -247,6 +247,12 @@ public class OnlinePostManager extends PostManager {
      */
     private String updateESAnswer(Question updatedQuestion) {
         String updateString = "\"mAnswers\": " + gson.toJson(updatedQuestion.getAnswers());
+        Log.d("ANSWER", updateString);
+        return updateESQuestion(updatedQuestion, updateString);
+    }
+    
+    private String updateESReply(Question updatedQuestion) {
+        String updateString = "\"mReplies\": " + gson.toJson(updatedQuestion.getReplies());
         return updateESQuestion(updatedQuestion, updateString);
     }
     
@@ -291,13 +297,30 @@ public class OnlinePostManager extends PostManager {
     }
     
     // TODO: Part 3 Implement Reply Update Logic
-    private void addESQuestionReply(Question existingQuestion, Reply reply) {
-        return;
+    private String addESQuestionReply(Question existingQuestion, Reply reply) {
+    	Question onlineQuestion = getESQuestion(existingQuestion); 
+        
+        if (onlineQuestion == null)
+            return null;
+
+        onlineQuestion.addReply(reply);
+        // set the existing question to the refreshed online question
+        existingQuestion = onlineQuestion;
+        return updateESReply(onlineQuestion);
     }
     
     // TODO: Part 3 Implement Reply Update Logic
-    private void addESAnswerReply(Question existingQuestion, Reply reply) {
-        return;
+    private String addESAnswerReply(Answer existingAnswer, Reply reply) {
+    	Question parentQuestion = getQuestion(existingAnswer.getParentID());
+    	Question onlineQuestion = getESQuestion(parentQuestion); 
+        
+        if (onlineQuestion == null)
+            return null;
+
+        onlineQuestion.getAnswer(existingAnswer.getID()).addReply(reply);
+        // set the existing question to the refreshed online question
+        existingAnswer = onlineQuestion.getAnswer(existingAnswer.getID());
+        return updateESAnswer(onlineQuestion);
     }
     
     /** HTTP Parsing and Conversion **/
@@ -421,8 +444,26 @@ public class OnlinePostManager extends PostManager {
     
     //TODO: Implement in Project Part 4
     @Override
-    public void addReply(Question parent, Reply newReply) {
-        return;
+    public void addReply(Post parent, Reply newReply) {
+    	newReply.setExistsOnline(true);
+    	
+    	String result;
+    	if (isQuestion(parent)) {
+    		result = addESQuestionReply((Question)parent, newReply);
+        }
+    	else{
+    		result = addESAnswerReply((Answer)parent, newReply);
+    	}
+        if (result.equals("HTTP/1.1 200 OK")) {
+            super.addReply(parent, newReply);
+        }
+            
+        else {
+            mCachedPostManager.addedOffline = true;
+            newReply.setExistsOnline(false);
+        }
+        
+        mCachedPostManager.save();
     }
     
     @Override

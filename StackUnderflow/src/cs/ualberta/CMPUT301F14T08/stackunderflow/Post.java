@@ -1,5 +1,3 @@
-
-
 package cs.ualberta.CMPUT301F14T08.stackunderflow;
 
 
@@ -16,7 +14,7 @@ public class Post {
     protected UUID mID; 
 	protected String mText;
 	protected int mVotes = 0;
-	protected String mPicture;  // placeholder: need image format, likely BitmapFactory implementation
+	protected byte[] mPicture;  // placeholder: need image format, likely BitmapFactory implementation
 	protected String mSignature;
 	protected Date mDate;
 	protected ArrayList<Reply> mReplies = new ArrayList<Reply>();
@@ -46,7 +44,7 @@ public class Post {
         mExistsOnline = false;
 	}
 	
-	public Post(String text, String signature, String picture){
+	public Post(String text, String signature, byte[] picture){
 		mID = UUID.randomUUID(); //TODO do we want random UUID or another method?
 		mText = text;
 		mVotes = 0;
@@ -73,7 +71,7 @@ public class Post {
 		return mSignature;
 	}
 	
-	public String getPicture() {
+	public byte[] getPicture() {
 		return mPicture;
 	}
 	
@@ -163,7 +161,7 @@ public class Post {
     
     // TODO: Remove this, use java reflection in tests to set date
 	//Constructor used to properly test SortByDate()
-	public Post(String text, String signature, String picture, Date date){
+	public Post(String text, String signature, byte[] picture, Date date){
 		mID = UUID.randomUUID(); //TODO do we want random UUID or another method?
 		mText = text;
 		mVotes = 0;

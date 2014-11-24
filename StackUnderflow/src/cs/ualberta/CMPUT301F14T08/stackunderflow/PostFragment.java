@@ -11,13 +11,17 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,10 +45,11 @@ public abstract class PostFragment extends Fragment {
     protected Fragment mFragment;
     
 	protected PostController sPostController;
-	protected ReplyAdapter adapter;
+	protected ReplyAdapter mReplyAdapter;
 	protected UUID mPostId;
 	protected Post mPost;
 	protected int mCameFrom;
+	protected boolean showReplyEdit;
 	
 	protected LinearLayout mTopLinearLayout;
 	protected TextView mQuestionTitle;
@@ -54,6 +59,9 @@ public abstract class PostFragment extends Fragment {
 	protected Button mPictureButton;
 	protected TextView mUsername;
 	protected ListView mListView;
+	protected LinearLayout mLinearLayout;
+	protected EditText mReplyEditText;
+	protected ImageButton mReplySubmitButton;
 	protected Button mAnswersButton;
 	protected Button mBackButton;
 	
@@ -86,6 +94,9 @@ public abstract class PostFragment extends Fragment {
 		
 		Context context = getActivity().getApplicationContext();
 		
+		showReplyEdit = false;
+		Log.d("REPLY", "false");
+		
 		mUpvoteFull = context.getResources().getDrawable(getUpvoteFullID());
 		mUpvoteFull.setBounds(0, 0, mUpvoteFull.getMinimumHeight(), mUpvoteFull.getMinimumWidth());
 		
@@ -112,8 +123,9 @@ public abstract class PostFragment extends Fragment {
 	abstract protected int getTextColor();
 	
 	@Override
-	public void onPause(){
-		super.onPause();
+	public void onResume(){
+		super.onResume();
+		showReplyEdit = false;
 	}
 	
 	@Override
@@ -131,11 +143,18 @@ public abstract class PostFragment extends Fragment {
                 Intent i = new Intent(getActivity(), NewAnswerActivity.class);
                 i.putExtra(PostFragment.EXTRA_POST_ID, mPost.getID()); 
                 startActivityForResult(i, 0);
-            
-
+                break;
+                
+            case R.id.menu_item_new_reply:
+            	showReplyEdit=true;
+            	getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+            	mReplyAdapter.notifyDataSetChanged();
+            	break;
+            	
             default:
                 return super.onOptionsItemSelected(menuItem);
     	}
+		return false;
 	}
 	
 	@Override
@@ -151,7 +170,7 @@ public abstract class PostFragment extends Fragment {
 	// Set all the stuff relevant to both Question and Answer Fragments here
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 	    postView = inflater.inflate(R.layout.post_fragment, parent, false);
-	    
+	   	    
 	    // Post Body
 	    mPostBody = (TextView)postView.findViewById(R.id.post_fragment_textview_body);
         mPostBody.setText(mPost.getText());
@@ -215,7 +234,48 @@ public abstract class PostFragment extends Fragment {
             mPictureButton.setVisibility(View.GONE);
         }
         
+        mLinearLayout = (LinearLayout)postView.findViewById(R.id.post_fragment_replies_linearlayout);
+        
+		mReplyAdapter = new ReplyAdapter(getActivity().getApplicationContext(), mPost.getReplies());
         mListView = (ListView)postView.findViewById(R.id.post_fragment_listview_replies);
+        mListView.setAdapter(mReplyAdapter);
+        
+        mReplyEditText = (EditText)postView.findViewById(R.id.post_fragment_replies_editText);
+        mReplySubmitButton = (ImageButton)postView.findViewById(R.id.post_fragment_reply_submit);
+        if(showReplyEdit){
+        	mReplyEditText.setVisibility(View.VISIBLE);
+        	mReplySubmitButton.setVisibility(View.VISIBLE);
+        	
+        	mReplySubmitButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					String replyText = mReplyEditText.getText().toString();
+					Log.d("REPLY_TEXT", "text="+replyText);
+					InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+				    mgr.hideSoftInputFromWindow(mReplyEditText.getWindowToken(), 0);
+					if(!replyText.equalsIgnoreCase("")){
+						Reply reply = new Reply(mReplyEditText.getText().toString(), "Guest");
+						mReplyEditText.setText("");
+						sPostController.getPostManager().addReply(mPost, reply);
+						showReplyEdit=false;
+						getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+						mReplyAdapter.notifyDataSetChanged();	
+					}
+					else{
+						String toastString = "No text entered";
+	                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_SHORT);
+	                    toast.show();
+					}
+				}
+			});
+        Log.d("REPLY", "showing");
+	}
+        else{
+        	mReplyEditText.setVisibility(View.GONE);
+        	mReplySubmitButton.setVisibility(View.GONE);
+        	Log.d("REPLY", "hidden");
+        }
         
         // Set Backbutton/Forward Button invisible for now, Answer/Question can
         // Choose to show them based on their individual requirements

@@ -34,7 +34,7 @@ public class UsernameDialogFragment extends DialogFragment{
                         EditText edit = (EditText) v.findViewById(R.id.enterUsername);
                         String name = edit.getText().toString();
                         
-                        if (name != "" && name != null) {
+                        if (name.length() > 0) {
                         	//UserProfileManager.setUsername(name);
                         }
                     }

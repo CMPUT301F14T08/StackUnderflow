@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
 import android.widget.TextView;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.MainActivity;
 
 public class TestMainActivity extends ActivityInstrumentationTestCase2<MainActivity> {
 	

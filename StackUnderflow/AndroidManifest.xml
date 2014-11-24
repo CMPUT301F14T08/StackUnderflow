@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Stackoverflow" >
         <activity
-            android:name=".MainActivity"
+            android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.MainActivity"
             android:label="@string/title_activity_stack_underflow" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,35 +29,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".QuestionActivity"
+            android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.QuestionActivity"
             android:label="@string/question_title"
             android:theme="@style/BlackTheme" >
         </activity>
         <activity
-            android:name=".AnswerActivity"
+            android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.AnswerActivity"
             android:label="@string/answer_title"
             android:theme="@style/BlueTheme">
 
         </activity>
         <activity
-            android:name=".NewQuestionActivity"
+            android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.NewQuestionActivity"
             android:label="@string/new_question_title" >
         </activity>
         <activity
-            android:name=".NewAnswerActivity"
+            android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.NewAnswerActivity"
             android:label="@string/new_question_title"
             android:theme="@style/BlueTheme" >
         </activity>
         <activity
-            android:name=".SearchActivity"
+            android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.SearchActivity"
             android:label="@string/title_activity_search" >
         </activity>
         
         <activity 
-            android:name=".ProfileActivity"
+            android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.ProfileActivity"
             android:label="@string/profile_title"
-            android:theme="@style/ProfileActionBar"
-           >
+            android:theme="@style/ProfileActionBar" >
             
         </activity>
         

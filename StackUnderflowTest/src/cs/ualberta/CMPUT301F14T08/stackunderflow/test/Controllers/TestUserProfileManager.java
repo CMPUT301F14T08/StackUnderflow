@@ -10,14 +10,14 @@ import android.R.string;
 import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Answer;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.CachedPostManager;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.OnlinePostManager;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Post;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Question;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.UserProfile;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.UserProfileManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.MainActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.CachedPostManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.OnlinePostManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.UserProfile;
 
 public class TestUserProfileManager extends ActivityInstrumentationTestCase2<MainActivity> {
 

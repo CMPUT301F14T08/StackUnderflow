@@ -3,7 +3,7 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.es;
 import java.util.Arrays;
 import java.util.List;
 
-import cs.ualberta.CMPUT301F14T08.stackunderflow.SearchObject;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.SearchObject;
 
 public class MatchSearchCommand implements ElasticSearchCommand {
     private int searchType;

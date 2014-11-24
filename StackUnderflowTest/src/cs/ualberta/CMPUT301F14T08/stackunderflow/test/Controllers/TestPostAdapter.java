@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
 import android.widget.TextView;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Post;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.PostAdapter;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.MainActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostAdapter;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 
 public class TestPostAdapter extends ActivityInstrumentationTestCase2<MainActivity> {
 	

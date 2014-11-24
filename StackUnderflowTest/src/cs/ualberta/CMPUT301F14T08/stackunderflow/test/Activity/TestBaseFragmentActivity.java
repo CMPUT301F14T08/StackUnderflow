@@ -5,10 +5,10 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
 import android.view.View;
 import android.widget.TextView;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.BaseFragmentActivity;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.MainActivity;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.PostFragment;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.BaseFragmentActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.MainActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.PostFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 
 public class TestBaseFragmentActivity extends ActivityInstrumentationTestCase2<BaseFragmentActivity> {
 	

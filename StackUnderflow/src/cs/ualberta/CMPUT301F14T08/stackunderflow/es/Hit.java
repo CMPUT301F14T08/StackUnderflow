@@ -2,6 +2,9 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.es;
 /**
  * Taken from https://github.com/dfserrano/AndroidElasticSearch/ used to add and remove information from elastic search online.
+ * 
+ * These are recourse files used for implementing elastic search. 
+ * Used to find a hit : Chooses if what it is looking at in ES is the information that is needed 
  */
 public class Hit<T> {
     private String _index;
@@ -10,7 +13,9 @@ public class Hit<T> {
     private String _version;
     private boolean found;
     private T _source;
-
+    /**
+     * 
+     */
     public Hit() {
 
     }

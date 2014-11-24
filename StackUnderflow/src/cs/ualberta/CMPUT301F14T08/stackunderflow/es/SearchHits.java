@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Taken from https://github.com/dfserrano/AndroidElasticSearch/ used to add and remove information from elastic search online.
+ * 
+ * These are recourse files used for implementing elastic search. 
  */
 public class SearchHits<T> {
     private int total;

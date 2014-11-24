@@ -4,7 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.SearchObject;
-
+/**
+ * Taken from https://github.com/dfserrano/AndroidElasticSearch/ used to add and remove information from elastic search online.
+ * 
+ * These are recourse files used for implementing elastic search. 
+ */
 public class MatchSearchCommand implements ElasticSearchCommand {
     private int searchType;
     private boolean searchPics;

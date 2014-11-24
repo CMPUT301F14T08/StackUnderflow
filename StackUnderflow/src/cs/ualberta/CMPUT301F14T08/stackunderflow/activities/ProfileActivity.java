@@ -34,7 +34,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 /**
- * ProfileActivity
+ * ProfileActivity This is the view for the to view profile attributes. This displays how many questions and answers a user has submitted. 
+ * This also displays all of a users read later, favorites and personal posts.
+ * Finally this is also the main location where the user can view his name and change it. 
  * 
  * @author Cmput301 Winter 2014 Group 8
  */
@@ -64,10 +66,20 @@ public class ProfileActivity extends Activity implements TabListener {
         int q_count = upm.getUserProfile().getQuestionsPostedCount();
         int a_count = upm.getUserProfile().getAnswerPostedCount();
 
-        //	    TODO: temporary value, decide on a ratings calculation method
-        //	    rating step is set to 1/2 star, but can be changed in xml (or programatically)
-        mRatingBar.setRating(3.0f);
-        //	    
+
+        if(q_count + a_count < 5)
+        	mRatingBar.setRating(0.0f);
+        if(q_count + a_count >= 5 && q_count + a_count < 10)
+        	mRatingBar.setRating(1.0f);
+        if(q_count + a_count >= 10 && q_count + a_count < 15)
+        	mRatingBar.setRating(2.0f);
+        if(q_count + a_count >= 15 && q_count + a_count < 20)
+        	mRatingBar.setRating(3.0f);
+        if(q_count + a_count >= 20 && q_count + a_count < 25)
+        	mRatingBar.setRating(4.0f);
+        if(q_count + a_count >= 25 && q_count + a_count < 30)
+        	mRatingBar.setRating(5.0f);
+           
 
         String q_string = Integer.toString(q_count);
         String a_string = Integer.toString(a_count);

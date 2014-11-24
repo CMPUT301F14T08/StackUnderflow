@@ -405,6 +405,7 @@ public class OnlinePostManager extends PostManager {
     @Override
     public void addQuestion(Question newQuestion) {
         newQuestion.setExistsOnline(true);
+        UserProfileManager.getInstance(mContext).getUserProfile().incrementQuestionsPostedCount();
         UserProfileManager.getInstance(mContext).addToMap(newQuestion.getmUserAttributes(), newQuestion.getID());
         String result = insertEsQuestion(newQuestion);
         if (result.equals("HTTP/1.1 201 Created")) {
@@ -433,7 +434,7 @@ public class OnlinePostManager extends PostManager {
             mCachedPostManager.addedOffline = true;
             newAnswer.setExistsOnline(false);
         }
-
+        UserProfileManager.getInstance(mContext).getUserProfile().incrementAnswersPostedCount();
         mCachedPostManager.save();
     }
 

@@ -37,7 +37,7 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
  */
 public class OnlinePostManager extends PostManager {
     protected static OnlinePostManager sPostManager;
-    private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301f14t08/question/_search";
+    private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301f14t08/question/_search/?size=100";
     private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301f14t08/question/";
     private static final String TAG = "ELASTICSEARCH";
     private CachedPostManager mCachedPostManager;

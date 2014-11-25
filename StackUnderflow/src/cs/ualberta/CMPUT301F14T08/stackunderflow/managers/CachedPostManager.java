@@ -173,6 +173,7 @@ public class CachedPostManager extends PostManager{
 
     @Override
     public void addQuestion(Question newQuestion) {
+    	newQuestion.getUserAttributes().toggleIsUsers();
     	UserProfileManager.getInstance(mContext).getUserProfile().incrementQuestionsPostedCount();
         UserProfileManager.getInstance(mContext).addToMap(newQuestion.getmUserAttributes(), newQuestion.getID());
         super.addQuestion(newQuestion);
@@ -187,6 +188,7 @@ public class CachedPostManager extends PostManager{
         super.addAnswer(parent, newAnswer);
         save();
         addedOffline = true;
+        newAnswer.getUserAttributes().toggleIsUsers();
         UserProfileManager.getInstance(mContext).getUserProfile().incrementAnswersPostedCount();
         UserProfileManager.getInstance(mContext).addToMap(newAnswer.getmUserAttributes(), newAnswer.getID());
     }

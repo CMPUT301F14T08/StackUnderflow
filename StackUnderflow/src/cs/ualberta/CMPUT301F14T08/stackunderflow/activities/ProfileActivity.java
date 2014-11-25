@@ -66,33 +66,23 @@ public class ProfileActivity extends Activity implements TabListener {
         int q_count = upm.getUserProfile().getQuestionsPostedCount();
         int a_count = upm.getUserProfile().getAnswerPostedCount();
 
-
-        if(q_count + a_count < 5)
-        	mRatingBar.setRating(0.0f);
-        if(q_count + a_count >= 5 && q_count + a_count < 10)
-        	mRatingBar.setRating(1.0f);
-        if(q_count + a_count >= 10 && q_count + a_count < 15)
-        	mRatingBar.setRating(2.0f);
-        if(q_count + a_count >= 15 && q_count + a_count < 20)
-        	mRatingBar.setRating(3.0f);
-        if(q_count + a_count >= 20 && q_count + a_count < 25)
-        	mRatingBar.setRating(4.0f);
-        if(q_count + a_count >= 25 && q_count + a_count < 30)
-        	mRatingBar.setRating(5.0f);
+        // Set rating bar from 0-5 with 1 star for every 5 combined total posts. Max of 5 stars
+        mRatingBar.setRating(q_count + a_count < 25 ? (int) Math.floor((q_count + a_count) / 5) : 5.0f);
            
-
         String q_string = Integer.toString(q_count);
         String a_string = Integer.toString(a_count);
 
         String string = String.format("%s\nQuestions", q_string);		
         Spannable formattedString = new SpannableString(string);
-        formattedString.setSpan(new RelativeSizeSpan(0.4f), q_count/10+1, formattedString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //q_string.length() is the number of digits the number of questions has
+        formattedString.setSpan(new RelativeSizeSpan(0.4f), q_string.length(), formattedString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         mQuestionsPosted.setText(formattedString);		
 
         string = String.format("%s\n  Answers  ", a_string);		
         formattedString = new SpannableString(string);
-        formattedString.setSpan(new RelativeSizeSpan(0.4f), a_count/10+1, formattedString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //a_string.length() is the number of digits the number of answers has
+        formattedString.setSpan(new RelativeSizeSpan(0.4f), a_string.length(), formattedString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         mAnswersPosted.setText(formattedString);
 

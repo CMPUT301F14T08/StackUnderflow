@@ -85,6 +85,7 @@ public class NewAnswerFragment extends NewPostFragment {
                 else {
                     Answer mAnswer = null;
                     if (mJPEGByteArray != null) {
+                    	//Encode byte array as a string to faster storage online
                         String picture = Base64.encodeToString(mJPEGByteArray, Base64.DEFAULT);
 
                         mAnswer = new Answer(body, author, picture);  

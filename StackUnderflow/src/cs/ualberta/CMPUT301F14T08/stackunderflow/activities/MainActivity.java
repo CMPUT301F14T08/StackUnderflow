@@ -41,7 +41,9 @@ public class MainActivity extends Activity implements TabListener {
     static final int PICK_QUESTION = 0;
     static final int PICK_ANSWER = 1;
 
-
+/**
+ * Called when the activity is first create. This is used to create the menu bar for sorting a posts by newest and most popular.
+ */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);	
 
@@ -59,13 +61,15 @@ public class MainActivity extends Activity implements TabListener {
         actionBar.addTab(tab2);
 
     }
-
+/**
+ * called when the app is resumed from being paused. Simply calles the super class on Resume.
+ */
     @Override
     public void onResume(){
         super.onResume();
     }
 
-    /** Called when the activity is first created. */
+    /** Called when the activity is first created. inflates the main menu options */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {//, MenuInflater inflater) {
@@ -74,7 +78,14 @@ public class MainActivity extends Activity implements TabListener {
 
         return true;
     }
-
+    /**
+     * case statements of what to do when a option from the menu is selected.
+     * Ask question make a new intent of NewQuestionActivity and inflates it
+     * User Profile creates a new intent of User Profile and inflates it
+     * Search makes opens a fragment manager and gives a pop up block to allow the user to search
+     * default. If none of the above options are select it will say that there is a unimplemented method. This should not be seen
+     * unless there is a bug. This is simply a safety to prevent the app from crashing if such a bug was to occure.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -129,7 +140,7 @@ public class MainActivity extends Activity implements TabListener {
             return false;
         } 
     }	
-
+    
     public void onTabSelected(ActionBar.Tab tab,
             FragmentTransaction fragmentTransaction) {
 
@@ -172,6 +183,7 @@ public class MainActivity extends Activity implements TabListener {
                 String author = data.getStringExtra("question.author");
                 String picture = null;
                 if (data.getByteArrayExtra("question.picture") != null) {
+                	//Encode byte array as a string to faster storage online
                     picture = Base64.encodeToString(data.getByteArrayExtra("question.picture"), Base64.DEFAULT);
                 }
 

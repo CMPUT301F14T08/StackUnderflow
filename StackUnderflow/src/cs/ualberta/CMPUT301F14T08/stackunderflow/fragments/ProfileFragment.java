@@ -46,19 +46,27 @@ public class ProfileFragment extends Fragment {
     private String lastSort;
 
     @Override
+    /**
+     * Called when the user profile view is opened. gets the data that is stored in the app. 
+     */
     public void onCreate(Bundle savedInstanceState) {		
         super.onCreate(savedInstanceState);
         Bundle data = getArguments();
         index = data.getInt("idx");
     }
-
-
+    
+    /**
+     * Called when the app returns from being paused. make sure to use the last sorted choice that the user selected.
+     */
     @Override
     public void onResume(){
         super.onResume();
         createView(lastSort);
     }
-
+    /**
+     * creates the view. Manages which option was selected Read later, My questions and favorites. 
+     * Also manages the views so that when an answer or questions pressed the user is brought to the correct page.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -144,6 +152,11 @@ public class ProfileFragment extends Fragment {
 
 
         @Override
+        /**
+         * This chooses and fills the post controllers with the correct information. putting the users favorites into the favorite list
+         * putting the users own posts when the user post's a question or answer it will show up in that list
+         * when the user views a post will read it later they will save in the read later list
+         */
         protected void onPostExecute(PostController result) {
             sPostController = result;
 

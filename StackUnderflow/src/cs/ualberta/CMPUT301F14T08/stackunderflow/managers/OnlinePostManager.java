@@ -180,13 +180,12 @@ public class OnlinePostManager extends PostManager {
             StringEntity stringEntity = new StringEntity(gson.toJson(newQuestion));
             addRequest.setEntity(stringEntity);
             addRequest.setHeader("Accept", "application/json");
-
             HttpResponse response = httpClient.execute(addRequest);
             status = response.getStatusLine().toString();
             Log.i(TAG, status);
 
         } catch (Exception e) {
-            status = "Exception: " + e.getMessage();
+            status = "Exception: " + e.toString() +" Message: " + e.getMessage();
             Log.i(TAG, status);
         }
 
@@ -405,11 +404,14 @@ public class OnlinePostManager extends PostManager {
     @Override
     public void addQuestion(Question newQuestion) {
         newQuestion.setExistsOnline(true);
+        newQuestion.getUserAttributes().toggleIsUsers();
         UserProfileManager.getInstance(mContext).getUserProfile().incrementQuestionsPostedCount();
         UserProfileManager.getInstance(mContext).addToMap(newQuestion.getmUserAttributes(), newQuestion.getID());
         String result = insertEsQuestion(newQuestion);
+        Log.d("Result", result);
         if (result.equals("HTTP/1.1 201 Created")) {
             super.addQuestion(newQuestion);
+            newQuestion.getUserAttributes().toggleIsUsers();
         }
         else {
             mCachedPostManager.addedOffline = true;
@@ -424,6 +426,7 @@ public class OnlinePostManager extends PostManager {
     @Override
     public void addAnswer(Question parent, Answer newAnswer) {
         newAnswer.setExistsOnline(true);
+        newAnswer.getUserAttributes().toggleIsUsers();
         UserProfileManager.getInstance(mContext).addToMap(newAnswer.getmUserAttributes(), newAnswer.getID());
         String result = addESAnswer(parent, newAnswer);
         if (result.equals("HTTP/1.1 200 OK")) {

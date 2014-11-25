@@ -42,7 +42,7 @@ public class UserProfileManager {
 
     /**
      * This will attempt to save the user profile to the a file called "user_profile.json" 
-     * @throws IOException will occure if for some reason the save fails. (Eg. If there is not enough memory on the device)
+     * @throws IOException will occur if for some reason the save fails. (Eg. If there is not enough memory on the device)
      */
     private void sendToFile() throws IOException {	
         Writer writer = null;	
@@ -111,16 +111,16 @@ public class UserProfileManager {
     }
 
     public void addToMap(UserAttributes userAttributes, UUID id){
-        mUserProfile.addToMap(userAttributes,id);
+    	getUserProfile().addToMap(userAttributes,id);
         save();
     }
 
     public String getUsername(){
-        return mUserProfile.getUsername();
+        return getUserProfile().getUsername();
     }
 
     public void setUsername(String username){
-        mUserProfile.setUsername(username);
+    	getUserProfile().setUsername(username);
         save();
     }
 }

@@ -60,6 +60,7 @@ public class ViewImageDialogFragment extends DialogFragment {
     public void showPicture(){
         String imgString = getArguments().getString("byteArray");
         byte[] byteArray = null;
+        //Convert back from string to byte array
         byteArray = Base64.decode(imgString, Base64.DEFAULT);
         if (byteArray != null) {Log.d("MYTAG2", "byte");}
         Bitmap bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(byteArray)); //creates bitmap from jpegByteArray

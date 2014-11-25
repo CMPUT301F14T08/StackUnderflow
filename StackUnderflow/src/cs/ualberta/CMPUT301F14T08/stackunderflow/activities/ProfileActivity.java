@@ -34,7 +34,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 /**
- * ProfileActivity This is the view for the to view profile attributes. This displays how many questions and answers a user has submitted. 
+ * ProfileActivity This is the view for the view profile attributes. This displays how many questions and answers a user has submitted. 
  * This also displays all of a users read later, favorites and personal posts.
  * Finally this is also the main location where the user can view his name and change it. 
  * 

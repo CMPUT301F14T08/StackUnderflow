@@ -45,6 +45,7 @@
     	    android:layout_width="wrap_content"
     	    android:layout_height="wrap_content"
     	    android:layout_alignBottom="@+id/profile_questions_box"
+    	    android:layout_alignParentLeft="true"
     	    android:layout_alignTop="@+id/profile_questions_box"
     	    android:layout_marginRight="10dp"
     	    android:layout_toLeftOf="@+id/profile_questions_box"
@@ -55,11 +56,13 @@
     	        android:id="@+id/profile_user_name"
     	        android:layout_width="match_parent"
     	        android:layout_height="wrap_content"
-    	        android:gravity="right"
+    	        android:gravity="center"
     	        android:lines="1"
-    	        android:textSize="20sp"
+    	        android:textSize="16sp"
     	        android:textStyle="bold" 
-    	        android:textColor="@color/white" >
+    	        android:textColor="@color/white" 
+      	        android:maxLength="12">
+
     	        
     	    </TextView>
 

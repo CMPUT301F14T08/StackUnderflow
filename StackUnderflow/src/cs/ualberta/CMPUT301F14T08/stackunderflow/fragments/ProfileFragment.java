@@ -27,8 +27,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 /**
- * MainFragment This is where the sorting on the main screen appears so the user may view by most popular or most recent.
- * this also allows the user to move to questions that they would like to see.
+ * ProfileFragment: This is where the list of posts appear which the user has created, favorited, or marked for read-later.
+ * The user name, post ratings bar, and total user questions and answers posted are also displayed.
  * @author Cmput301 Winter 2014 Group 8
  */
 public class ProfileFragment extends Fragment {

@@ -101,7 +101,7 @@ public class MainActivity extends Activity implements TabListener {
             return true;
 
         case R.id.user_profile: 
-            Intent i = new Intent(this, ProfileActivity.class);                
+            Intent i = new Intent(this, MapActivity.class);                
             startActivity(i);
 
             return true;

@@ -4,6 +4,14 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.model.LatLng;
 /** 
  * Post base class only ever really used as a parent of question and answers. Saves all information about posts such as the id text votes pictures and so on
  * This also allows setting and getting of of attributes of post. You should always use getters and setters. A basic post should never be called. It should always
@@ -23,6 +31,7 @@ public class Post {
     private UserAttributes mUserAttributes;
     protected int mUpvotesChangedOffline;
     protected boolean mExistsOnline;
+    protected LatLng location;
     /**
      * Basic post part that is used to inherit into Answer and Question. This constructor is used when the user attempts to make a post
      * that has a text body, date, signature but not a picture. This will generate a random UUID. By default mExistsOline to false. 
@@ -181,5 +190,12 @@ public class Post {
     public void setmUserAttributes(UserAttributes mUserAttributes) {
         this.mUserAttributes = mUserAttributes;
     }
-
-}
+    public LatLng getLocation(){
+		return location;
+    	
+    }
+    public void setLocation(LatLng latLng){
+    	location = latLng;
+    }
+ 
+ }

@@ -1,5 +1,3 @@
-
-
 package cs.ualberta.CMPUT301F14T08.stackunderflow.managers;
 
 import java.io.IOException;

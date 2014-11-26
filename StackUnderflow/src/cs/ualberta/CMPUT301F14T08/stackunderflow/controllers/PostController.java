@@ -1,5 +1,3 @@
-
-
 package cs.ualberta.CMPUT301F14T08.stackunderflow.controllers;
 import java.util.UUID;
 
@@ -16,9 +14,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-
-
-
 
 // TODO: Currently this just controls the CachedPostManager. 
 // Update during Project Part 3, Week 2 to include OnlineCachedManager.

@@ -1,5 +1,8 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.model;
-
+/**
+ * save data for the search object.
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class SearchObject {
     public static final int SEARCH_QUESTIONS = 0;
     public static final int SEARCH_ANSWERS = 1;

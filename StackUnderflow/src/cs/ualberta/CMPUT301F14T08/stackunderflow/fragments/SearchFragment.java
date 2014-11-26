@@ -1,6 +1,5 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
-
 import java.util.ArrayList;
 import android.app.Fragment;
 import android.content.Intent;
@@ -26,7 +25,10 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.SearchObject;
-
+/**
+ * 	Search view. This is where the search details are viewed.
+ *  @author Cmput301 Winter 2014 Group 8
+ */
 public class SearchFragment extends Fragment {		
     protected ArrayList<Post> searchResult;
     protected PostAdapter adapter;

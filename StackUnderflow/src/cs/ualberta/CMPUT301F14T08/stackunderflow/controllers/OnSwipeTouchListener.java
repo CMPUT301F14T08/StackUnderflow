@@ -1,4 +1,3 @@
-
 package cs.ualberta.CMPUT301F14T08.stackunderflow.controllers;
 
 import android.content.Context;
@@ -38,7 +37,9 @@ public class OnSwipeTouchListener implements OnTouchListener {
         public boolean onDown(MotionEvent e) {
             return true;
         }
-        //Checks for swiping
+        /**
+         * Checks for swiping
+         */
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             float distanceX = e2.getX() - e1.getX();

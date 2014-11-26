@@ -52,7 +52,12 @@ public class Post {
         mUpvotesChangedOffline = 0;
         mExistsOnline = false;
     }
-
+    /**
+     * Post will also creates when you call it with a picture. This works the same way but now has a string that will save as to Gson
+     * @param text The main body of the question
+     * @param signature the user name of the author that wrote the post.
+     * @param picture String that is used to save an image in GSON
+     */
     public Post(String text, String signature, String picture){
         mID = UUID.randomUUID(); //TODO do we want random UUID or another method?
         mText = text;

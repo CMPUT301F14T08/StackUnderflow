@@ -89,7 +89,12 @@ public class SearchPosts {
         return parsedResponse;
     }
 
-    // Gets content from an HTTP response
+    /**
+     *  Gets content from an HTTP response
+     * @param response used to connect to ES
+     * @return content from an HTTP response as a sting
+     * @throws IOException if it cannot connect
+     */
     private String getHttpResponseContent(HttpResponse response) throws IOException {
         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 

@@ -140,7 +140,9 @@ public class MainActivity extends Activity implements TabListener {
             return false;
         } 
     }	
-    
+    /**
+     * picks which tab a user chooses.
+     */
     public void onTabSelected(ActionBar.Tab tab,
             FragmentTransaction fragmentTransaction) {
 

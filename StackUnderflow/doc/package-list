@@ -1,1 +1,10 @@
+com.google.android.gms
 cs.ualberta.CMPUT301F14T08.stackunderflow
+cs.ualberta.CMPUT301F14T08.stackunderflow.activities
+cs.ualberta.CMPUT301F14T08.stackunderflow.controllers
+cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs
+cs.ualberta.CMPUT301F14T08.stackunderflow.es
+cs.ualberta.CMPUT301F14T08.stackunderflow.exceptions
+cs.ualberta.CMPUT301F14T08.stackunderflow.fragments
+cs.ualberta.CMPUT301F14T08.stackunderflow.managers
+cs.ualberta.CMPUT301F14T08.stackunderflow.model

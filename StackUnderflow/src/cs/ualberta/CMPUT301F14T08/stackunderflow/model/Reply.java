@@ -61,7 +61,13 @@ public class Reply {
     public UUID getQuestionID() {
         return mQuestionID;
     }
-
+    /**
+     * Checks if the passed post is a question or answer
+     * if its and question it will simply output the post
+     * if its a answer it will output the answers parent.
+     * will throw an exception if it answer parent is null.
+     * @param post
+     */
     public void setParent(Post post) {
         this.mParentID = post.getID();
 

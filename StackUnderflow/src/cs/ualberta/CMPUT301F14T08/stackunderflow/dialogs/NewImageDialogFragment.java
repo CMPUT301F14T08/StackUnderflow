@@ -31,7 +31,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
+/**
+ * The Dialog shows up and tells asks you to input an image. 
+ * @author Cmput301 Winter 2014 Group 8
+ */
 public class NewImageDialogFragment extends DialogFragment {
 
     protected Uri mJPEGFileUri;
@@ -48,7 +51,12 @@ public class NewImageDialogFragment extends DialogFragment {
     int getTextViewID() {
         return R.id.image_prompt_fragment_textview;
     }
-    //Sets arguments and calls constructor
+    /**
+     * Sets arguments and calls constructor
+     * @param fileName name of the file
+     * @param byteArray a image saved as an array of bytes.
+     * @return
+     */
     public static NewImageDialogFragment newInstance(String fileName, byte[] byteArray){
         NewImageDialogFragment f = new NewImageDialogFragment();
         Bundle args = new Bundle();
@@ -102,7 +110,9 @@ public class NewImageDialogFragment extends DialogFragment {
             }
         }).create();
     }
-    //Calls camera to take a picture and save it to a file with miliseconds as a name.
+    /**
+     * Calls camera to take a picture and save it to a file with miliseconds as a name.
+     */
     public void selectPhoto() {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Image";
         File folder = new File(path);
@@ -116,9 +126,11 @@ public class NewImageDialogFragment extends DialogFragment {
         startActivityForResult(Intent.createChooser(intent, "Choose photo from..."), CAPTURE_IMAGE_REQUEST_CODE);
     }
 
-    //jpeg object is loaded into memory, then scaled down by a factor of two until
-    // file size is below 64kb. Scaling is done by converting JPEG to bitmap at half size,
-    //then converted back to JPEG
+    /**
+     * jpeg object is loaded into memory, then scaled down by a factor of two until
+     * file size is below 64kb. Scaling is done by converting JPEG to bitmap at half size,
+     * then converted back to JPEG
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
@@ -166,6 +178,9 @@ public class NewImageDialogFragment extends DialogFragment {
             }
         }
     }
+    /**
+     * Displays the image
+     */
     public void showPicture(){
         Bitmap bitmap = null;
         bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(mJPEGByteArray)); //creates bitmap from jpegByteArray

@@ -18,10 +18,6 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 
-
-
-// TODO: Currently this just controls the CachedPostManager. 
-// Update during Project Part 3, Week 2 to include OnlineCachedManager.
 /**
  * StackUnderflow application PostController. Point of access for post manager - handles
  * differences between online/cached post manager automatically. Determines whether

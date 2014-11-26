@@ -48,7 +48,7 @@ public class OnlinePostManager extends PostManager {
         gson = new Gson();
         mCachedPostManager = CachedPostManager.getInstance(context);
     }
-    // TODO Part 3: Call strip/populate user attributes
+ 
     /**
      * 1. Gets questions from online
      * 2. Updates cache
@@ -117,21 +117,6 @@ public class OnlinePostManager extends PostManager {
             cachedPost = post;           
 
         }
-    }
-
-    //TODO: implement when adding user attributes
-    private void populateUserAttributes() {
-        return;
-    }
-
-    //TODO: implement when adding user attributes
-    private void saveReadLaterToCachePostManager() {
-        return;
-    }
-
-    //TODO: implement when adding user attributes
-    private void saveReadToCachePostManager() {
-        return;
     }
 
     /** Elastic Search Methods **/
@@ -291,7 +276,6 @@ public class OnlinePostManager extends PostManager {
         return updateESAnswer(onlineQuestion);
     }
 
-    // TODO: Part 3 Implement Reply Update Logic
     private String addESQuestionReply(Question existingQuestion, Reply reply) {
         Question onlineQuestion = getESQuestion(existingQuestion); 
 
@@ -441,7 +425,6 @@ public class OnlinePostManager extends PostManager {
         mCachedPostManager.save();
     }
 
-    //TODO: Implement in Project Part 4
     @Override
     public void addReply(Post parent, Reply newReply) {
         newReply.setExistsOnline(true);
@@ -514,8 +497,6 @@ public class OnlinePostManager extends PostManager {
         mCachedPostManager.save();
     }
 
-    //TODO: Update with implementation of user attributes
-    // THIS SHOULD TURN OFF WHEN NOT ONLINE
     @Override
     public void toggleReadLater(Post post) {
         super.toggleReadLater(post);
@@ -565,15 +546,6 @@ public class OnlinePostManager extends PostManager {
                     question.setUpvotesChangedOffline(votesOffline);
             }
 
-
-            // TODO: Implement Reply Logic for Week 4
-            /*
-            for (Reply reply : question.getReplies()) {
-                if (!reply.getExistsOnline()) { 
-                    // logic
-                }
-            }*/
-
             for (Answer answer : question.getAnswers()) {
                 if (!answer.getExistsOnline()) { 
                     answer.setExistsOnline(true);
@@ -590,7 +562,6 @@ public class OnlinePostManager extends PostManager {
                     if (!result.equals("HTTP/1.1 200 OK"))
                         answer.setUpvotesChangedOffline(votesOffline);
                 }
-                // TODO: Implement Reply Logic for Week 4
             }
         }
         mCachedPostManager.addedOffline = false;
@@ -620,7 +591,9 @@ public class OnlinePostManager extends PostManager {
 
     public void addToCache(Question question) {
         if (mCachedPostManager.getPost(question.getID()) == null) {
-            mCachedPostManager.addQuestion(question);
+            UserProfileManager.getInstance(mContext).addToMap(question.getmUserAttributes(), question.getID());
+            mCachedPostManager.getQuestions().add(question);
+            mCachedPostManager.save();
         }
     }
 

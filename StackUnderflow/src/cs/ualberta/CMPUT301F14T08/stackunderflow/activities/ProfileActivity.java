@@ -4,35 +4,23 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.activities;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.string;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.UsernameDialog;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.ProfileFragment;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
-
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.app.ActionBar;
-import android.app.ActionBar.LayoutParams;
-import android.app.ActionBar.Tab;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Intent;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.UsernameDialog;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.ProfileFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 /**
  * ProfileActivity This is the view for the view profile attributes. This displays how many questions and answers a user has submitted. 
  * This also displays all of a users read later, favorites and personal posts.

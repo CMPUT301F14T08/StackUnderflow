@@ -2,6 +2,8 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.model;
 
 import java.util.HashMap;
 import java.util.UUID;
+
+import android.util.Log;
 /**
  * UserProfileManager allows for modification of private attributes such found in UserProfile
  * mUsername is the username that the device has specified to author posts with. Default being Guest.
@@ -40,6 +42,7 @@ public class UserProfile {
         return mQuestionsPostedCount;
     }
     public void incrementQuestionsPostedCount(){
+        Log.d("DEBUG32", "here");
         mQuestionsPostedCount++;
     }
 

@@ -20,18 +20,17 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.model.UserAttributes;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.UserProfile;
 /**
  * UserProfileManager does exactly what the name suggests. It managers the profile manager in aspects of saving and loading to the local device
- * and checking if there is already a existing user profile. By defult the user file it is saved to is user_profile.json. UserProfile should be called
+ * and checking if there is already a existing user profile. By default the user file it is saved to is user_profile.json. UserProfile should be called
  * by getInstance. Because userProfile should act like a singleton and not be called if one already exists.
  * @author Cmput301 Winter 2014 Group 8
  */
 public class UserProfileManager {
     private static UserProfileManager sUserProfileManager;
-    private String PROFILE_FILE;
+    private String PROFILE_FILE = "user_profile.json";
     private UserProfile mUserProfile;
     protected Context mContext;
 
     private UserProfileManager(Context context){
-        PROFILE_FILE = "user_profile.json";
         mContext = context;
         try {
             mUserProfile = loadFromFile();
@@ -84,11 +83,8 @@ public class UserProfileManager {
      * @return the current user profile or a new UserProfileManager when no UserProfileManager can be found
      */
     public static UserProfileManager getInstance(Context context){
-        Log.d("STUFF", "WHAT ABOUT THIS");
         if (sUserProfileManager == null) {
-            Log.d("STUFF", "THIS SHOULD SHOW UP");
             sUserProfileManager = new UserProfileManager(context.getApplicationContext());
-            Log.d("STUFF", "THIS SHOULDN'T SHOW UP");
         }
         return sUserProfileManager;
     }

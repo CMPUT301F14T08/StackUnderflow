@@ -1,33 +1,27 @@
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow.activities;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.menu;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.string;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.SearchDialogFragment;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.MainFragment;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
-
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.Activity;
 import android.app.Fragment;
-import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Base64;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.SearchDialogFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.MainFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
+import android.util.Log;
 /**
  * MainActivity is the main page. Called when the user first starts the app
  * works with the tabs on the main screen and the dialog allowing the user to navigate between the different screens.
@@ -178,6 +172,7 @@ public class MainActivity extends Activity implements TabListener {
             Intent data) {
         if (requestCode == PICK_QUESTION) {
             if (resultCode == RESULT_OK) {
+                Log.d("DEBUG32", "here2");
                 String title = data.getStringExtra("question.title");
                 String body = data.getStringExtra("question.body");
                 String author = data.getStringExtra("question.author");

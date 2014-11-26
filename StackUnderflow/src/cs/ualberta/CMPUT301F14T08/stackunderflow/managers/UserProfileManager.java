@@ -37,7 +37,6 @@ public class UserProfileManager {
         try {
             mUserProfile = loadFromFile();
         } catch (Exception e) {
-            Log.d("DEBUG32", "Unable to Load User Profile");
             mUserProfile = new UserProfile();
         }
     }
@@ -53,7 +52,6 @@ public class UserProfileManager {
             OutputStream answer_out = mContext.openFileOutput(PROFILE_FILE, Context.MODE_PRIVATE);
             writer = new OutputStreamWriter(answer_out);
             gson.toJson(mUserProfile, writer);
-            Log.d("DEBUG32", gson.toJson(mUserProfile));
         } 
         finally {
             if (writer != null)
@@ -100,10 +98,8 @@ public class UserProfileManager {
     public boolean save(){
         try {
             sendToFile();
-            Log.d("DEBUG32", "Succeeded Saving");
             return true;
         } catch (IOException e) {
-            Log.d("DEBUG32", "Problem Saving");
             return false;
         }
     }

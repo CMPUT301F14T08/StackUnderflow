@@ -30,8 +30,6 @@ public class QuestionFragment extends PostFragment {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.question_title);
         mQuestion = (Question)mPost;
-        // We cache a post after viewing it
-        sPostController.addToCache(mQuestion);
         mFragment = this;
     }
 

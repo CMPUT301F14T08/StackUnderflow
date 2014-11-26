@@ -34,21 +34,17 @@ public class UserProfile {
     }
 
     public int getAnswerPostedCount(){
-        Log.d("DEBUG32", mAnswersPostedCount + " Answers Posted");
         return mAnswersPostedCount;
     }
     public void incrementAnswersPostedCount(){
         mAnswersPostedCount++;
-        Log.d("DEBUG32", mAnswersPostedCount + " Answers Posted");
     }
 
     public int getQuestionsPostedCount(){
-        Log.d("DEBUG32", mQuestionsPostedCount + " Questions Posted");
         return mQuestionsPostedCount;
     }
     public void incrementQuestionsPostedCount(){
         mQuestionsPostedCount++;
-        Log.d("DEBUG32", mQuestionsPostedCount + " Questions Posted");
     }
 
     // returns null if no key is found

@@ -101,19 +101,8 @@ public abstract class PostFragment extends Fragment {
         // one Post, not a list so we can wait until we receive them before rendering the view
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        sPostController = PostController.getInstanceForID(getActivity(), mPostId);   
-        //new DownloadPostTask().execute();
-        
-        /*try {
-            
-        } catch (InterruptedException e) {
-            Log.d("Interrupted Exception", e.getMessage());
-            sPostController = PostController.getInstanceNoRefresh(getActivity());
-        } catch (ExecutionException e) {
-            sPostController = PostController.getInstanceNoRefresh(getActivity());
-            Log.d("Execuion Exception", e.getMessage());
-        }*/
-        
+        sPostController = PostController.getInstanceNoRefresh(getActivity());   
+
         mPost = sPostController.getPostManager().getPost(mPostId);       
         
 

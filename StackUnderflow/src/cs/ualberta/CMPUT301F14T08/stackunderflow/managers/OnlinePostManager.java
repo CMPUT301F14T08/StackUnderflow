@@ -420,6 +420,7 @@ public class OnlinePostManager extends PostManager {
         }
         if (result.equals("HTTP/1.1 200 OK")) {
             parent.addReply(newReply);
+            Log.d("DEBUG32", "Reply not added");
         }
 
         else {
@@ -488,6 +489,7 @@ public class OnlinePostManager extends PostManager {
         if (!mCachedPostManager.hasAddedOffline())
             return;
 
+        Log.d("DEBUG32", "pushing online");
         String result = null;
         for (Post post : mCachedPostManager.getQuestions()) {
             // if the question is new then all associated data including questions/replies are new 
@@ -495,43 +497,37 @@ public class OnlinePostManager extends PostManager {
             Question question = (Question) post;
             if (!question.getExistsOnline()) {
                 result = insertEsQuestion(question);
-                if (result.equals("HTTP/1.1 201 Created"))
-                    question.setExistsOnline(true);
-                
+                Log.d("DEBUG32", "result of pushing question: " + result);
                 continue;
             }
 
             int votesOffline = question.getUpvotesChangedOffline(); 
             if(votesOffline != 0) {
                 result = updateESQuestionVotes(question, votesOffline);
-                if (result.equals("HTTP/1.1 200 OK"))
-                    question.setUpvotesChangedOffline(0);
-                
+                question.setUpvotesChangedOffline(0);
+                Log.d("DEBUG32", "result of pushing votes: " + result);
+
             }
             
             for (Reply reply : question.getReplies()) {
                 if(!reply.getExistsOnline()) {
                     result = addESQuestionReply(question, reply);
-                    if (result.equals("HTTP/1.1 200 OK")) {
-                        reply.setExistsOnline(true);
-                    }
+                    reply.setExistsOnline(true);
+                    Log.d("DEBUG32", "result of pushing replies: " + result);
                 }
             }
 
             for (Answer answer : question.getAnswers()) {
                 if (!answer.getExistsOnline()) { 
                     result = addESAnswer(question, answer);
-                    if (result.equals("HTTP/1.1 200 OK"))
-                        answer.setExistsOnline(true);
+                    answer.setExistsOnline(true);
                     continue;
                 }
                 
-                for (Reply reply : question.getReplies()) {
+                for (Reply reply : answer.getReplies()) {
                     if(!reply.getExistsOnline()) {
                         result = addESAnswerReply(answer, reply);
-                        if (result.equals("HTTP/1.1 200 OK")) {
-                            reply.setExistsOnline(true);
-                        }
+                        reply.setExistsOnline(true);
                     }
                 }
 
@@ -539,8 +535,6 @@ public class OnlinePostManager extends PostManager {
                 if(votesOffline != 0) {
                     answer.setUpvotesChangedOffline(0);
                     result = updateESAnswerVotes(question, answer, votesOffline);
-                    if (!result.equals("HTTP/1.1 200 OK"))
-                        answer.setUpvotesChangedOffline(votesOffline);
                 }
             }
         }

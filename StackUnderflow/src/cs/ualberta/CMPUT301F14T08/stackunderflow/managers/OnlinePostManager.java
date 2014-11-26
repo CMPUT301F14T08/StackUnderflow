@@ -492,12 +492,28 @@ public class OnlinePostManager extends PostManager {
         Log.d("DEBUG32", "pushing online");
         String result = null;
         for (Post post : mCachedPostManager.getQuestions()) {
+            
             // if the question is new then all associated data including questions/replies are new 
             // and we just have to insert the new question
             Question question = (Question) post;
             if (!question.getExistsOnline()) {
+                question.setUpvotesChangedOffline(0);
+                question.setExistsOnline(true);
                 result = insertEsQuestion(question);
                 Log.d("DEBUG32", "result of pushing question: " + result);
+                
+                for (Reply reply : question.getReplies()) {
+                    reply.setExistsOnline(true);
+                }
+                
+                for (Answer answer : question.getAnswers()) {
+                   answer.setExistsOnline(true);
+                   answer.setUpvotesChangedOffline(0);
+                  
+                   for (Reply reply : answer.getReplies()) {
+                       reply.setExistsOnline(true);
+                   }
+                }
                 continue;
             }
 
@@ -520,7 +536,12 @@ public class OnlinePostManager extends PostManager {
             for (Answer answer : question.getAnswers()) {
                 if (!answer.getExistsOnline()) { 
                     result = addESAnswer(question, answer);
+                    answer.setUpvotesChangedOffline(0);
                     answer.setExistsOnline(true);
+                    
+                    for (Reply reply : answer.getReplies()) {
+                        reply.setExistsOnline(true);
+                    }
                     continue;
                 }
                 
@@ -531,7 +552,7 @@ public class OnlinePostManager extends PostManager {
                     }
                 }
 
-                votesOffline = question.getUpvotesChangedOffline(); 
+                votesOffline = answer.getUpvotesChangedOffline(); 
                 if(votesOffline != 0) {
                     answer.setUpvotesChangedOffline(0);
                     result = updateESAnswerVotes(question, answer, votesOffline);

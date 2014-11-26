@@ -202,12 +202,5 @@ public abstract class PostManager {
     
     public abstract void toggleUpvote(Post post); 
     
-    /*{
-        post.getUserAttributes().toggleIsUpvoted();
-        if (post.getUserAttributes().getIsUpvoted())
-            post.incrementVotes();
-        else
-            post.decrementVotes();
-    }*/
 
 }

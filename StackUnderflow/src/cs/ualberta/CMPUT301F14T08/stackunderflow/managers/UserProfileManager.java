@@ -116,6 +116,10 @@ public class UserProfileManager {
     public void toggleIsUpvoted(Post post) {
         UUID id = post.getID();
         UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
+        if (attributes == null) {
+            attributes = new UserAttributes();
+            mUserProfile.addToMap(id, attributes);
+        }
         attributes.toggleIsUpvoted();
         save();
     }
@@ -157,6 +161,10 @@ public class UserProfileManager {
     public void toggleIsFavorited(Post post) {
         UUID id = post.getID();
         UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
+        if (attributes == null) {
+            attributes = new UserAttributes();
+            mUserProfile.addToMap(id, attributes);
+        }
         attributes.toggleIsFavorited();
         save();
     }

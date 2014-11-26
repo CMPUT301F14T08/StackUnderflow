@@ -191,6 +191,7 @@ public class MainActivity extends Activity implements TabListener {
                 }
 
                 tf.sPostController.getPostManager().addQuestion(q);
+                tf.onResume();
             }
         }
     }

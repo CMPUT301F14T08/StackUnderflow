@@ -32,15 +32,7 @@ public class Answer extends Post {
         super(text, signature, photo);
         mParentID = null;
     }
-    /**
-     * Constructor creates an answer for a question. Default parent ID is set to null.
-     * @param text main text of the answer. (The Answer part of the Answer)
-     * @param signature The user name of the user who submitted the answer.
-     */
-    public Answer(String text, String signature, String photo, Date date) {
-        super(text, signature, photo, date);
-        mParentID = null;
-    }
+
     /**
      * Called on a answer to set the inner variable mParentID to the ID of the question
      * @param parentQuestion the question that is the parent of the question.

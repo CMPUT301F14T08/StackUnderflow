@@ -14,7 +14,7 @@ import android.util.Log;
  */
 public class UserProfile {
     private String mUsername;
-    private static HashMap<UUID, UserAttributes> mUserAttributesMap = new HashMap<UUID, UserAttributes>();
+    private HashMap<UUID, UserAttributes> mUserAttributesMap = new HashMap<UUID, UserAttributes>();
     private int mAnswersPostedCount;
     private int mQuestionsPostedCount;
 
@@ -24,32 +24,39 @@ public class UserProfile {
         mQuestionsPostedCount=0;
 
     }
+    
     public String getUsername(){
         return mUsername;
     }
+    
     public void setUsername(String username){
         mUsername=username;
     }
 
     public int getAnswerPostedCount(){
+        Log.d("DEBUG32", mAnswersPostedCount + " Answers Posted");
         return mAnswersPostedCount;
     }
     public void incrementAnswersPostedCount(){
         mAnswersPostedCount++;
+        Log.d("DEBUG32", mAnswersPostedCount + " Answers Posted");
     }
 
     public int getQuestionsPostedCount(){
+        Log.d("DEBUG32", mQuestionsPostedCount + " Questions Posted");
         return mQuestionsPostedCount;
     }
     public void incrementQuestionsPostedCount(){
-        Log.d("DEBUG32", "here");
         mQuestionsPostedCount++;
+        Log.d("DEBUG32", mQuestionsPostedCount + " Questions Posted");
     }
 
+    // returns null if no key is found
     public UserAttributes getUserAttributesForId(UUID id){
         return mUserAttributesMap.get(id);
     }
-    public void addToMap(UserAttributes userAttributes, UUID id){
+    public void addToMap(UUID id, UserAttributes userAttributes){
+        Log.d("Debug", id.toString());
         mUserAttributesMap.put(id,userAttributes);
     }
 

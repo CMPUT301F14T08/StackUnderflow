@@ -16,6 +16,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.UserAttributes;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.UserProfile;
 /**
@@ -26,7 +28,7 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.model.UserProfile;
  */
 public class UserProfileManager {
     private static UserProfileManager sUserProfileManager;
-    private String PROFILE_FILE = "user_profile.json";
+    private static String PROFILE_FILE = "user_profile.json";
     private UserProfile mUserProfile;
     protected Context mContext;
 
@@ -35,6 +37,7 @@ public class UserProfileManager {
         try {
             mUserProfile = loadFromFile();
         } catch (Exception e) {
+            Log.d("DEBUG32", "Unable to Load User Profile");
             mUserProfile = new UserProfile();
         }
     }
@@ -50,6 +53,7 @@ public class UserProfileManager {
             OutputStream answer_out = mContext.openFileOutput(PROFILE_FILE, Context.MODE_PRIVATE);
             writer = new OutputStreamWriter(answer_out);
             gson.toJson(mUserProfile, writer);
+            Log.d("DEBUG32", gson.toJson(mUserProfile));
         } 
         finally {
             if (writer != null)
@@ -64,7 +68,7 @@ public class UserProfileManager {
      */
     private UserProfile loadFromFile() throws IOException{
         Reader reader = null;
-        UserProfile userProfile=new UserProfile();
+        UserProfile userProfile=null;
         try {
             Gson gson = new Gson();
             InputStream input = mContext.openFileInput(PROFILE_FILE);
@@ -96,27 +100,125 @@ public class UserProfileManager {
     public boolean save(){
         try {
             sendToFile();
+            Log.d("DEBUG32", "Succeeded Saving");
             return true;
         } catch (IOException e) {
+            Log.d("DEBUG32", "Problem Saving");
             return false;
         }
     }
 
-    public UserProfile getUserProfile(){
-        return mUserProfile;
+    public boolean getIsUpvoted(Post post) {
+        UUID id = post.getID();
+        UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
+        if (attributes == null)
+            return false;
+        else
+            return attributes.getIsUpvoted();
     }
-
-    public void addToMap(UserAttributes userAttributes, UUID id){
-    	getUserProfile().addToMap(userAttributes,id);
+    
+    public void toggleIsUpvoted(Post post) {
+        UUID id = post.getID();
+        UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
+        attributes.toggleIsUpvoted();
         save();
     }
+
+    public boolean getIsUsers(Post post) {
+        UUID id = post.getID();
+        UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
+        if (attributes == null)
+            return false;
+        else
+            return attributes.getIsUsers();
+    }
+
+    // Posts can only be added by user, so setIsUsers will always be true for new posts
+    public void saveNewPostAttributes(Post post) {
+        UUID id = post.getID();
+        UserAttributes newAttribs = new UserAttributes();
+        newAttribs.setIsUsers(true);
+        mUserProfile.addToMap(id, newAttribs);
+        
+        
+        if (post instanceof Question)
+            mUserProfile.incrementQuestionsPostedCount();
+        else
+            mUserProfile.incrementAnswersPostedCount();
+        
+        save();
+    }
+    
+    public boolean getIsFavorite(Post post){
+        UUID id = post.getID();
+        UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
+        if (attributes == null)
+            return false;
+        else
+            return attributes.getIsFavorited();
+    }
+    
+    public void toggleIsFavorited(Post post) {
+        UUID id = post.getID();
+        UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
+        attributes.toggleIsFavorited();
+        save();
+    }
+    
+    public boolean getIsReadLater(Post post){
+        UUID id = post.getID();
+        UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
+        if (attributes == null)
+            return false;
+        else
+            return attributes.getIsReadLater();
+    }
+    
+    public void setIsReadLater(Post post) {
+        UUID id = post.getID();
+        UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
+        
+        if (attributes == null) {
+            attributes = new UserAttributes();
+            attributes.setIsReadLater(true);
+            mUserProfile.addToMap(id, attributes);
+            return;
+        }
+             
+        attributes.setIsReadLater(true);
+        save();
+    }
+
+    public void setRead(Post post){
+        UUID id = post.getID();
+        UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
+        
+        if (attributes == null) {
+            attributes = new UserAttributes();
+            mUserProfile.addToMap(id, attributes);
+            return;
+        }
+        
+        attributes.setIsReadLater(false);
+        save();
+    }    
+
 
     public String getUsername(){
-        return getUserProfile().getUsername();
+        return mUserProfile.getUsername();
     }
+    
 
     public void setUsername(String username){
-    	getUserProfile().setUsername(username);
+        mUserProfile.setUsername(username);
         save();
+    }
+
+    public int getAnswerPostedCount() {
+        return mUserProfile.getAnswerPostedCount();
+    }
+    
+    public int getQuestionsPostedCount() {
+        return mUserProfile.getQuestionsPostedCount();
     }
 }

@@ -13,7 +13,6 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
-
 import android.content.Context;
 /**
  * This class manages the different the posts into an array list of objects and allows functionality within that array list
@@ -22,6 +21,7 @@ import android.content.Context;
 public abstract class PostManager {
     protected ArrayList<Post> mQuestions;
     protected Context mContext;
+    protected UserProfileManager mProfileManager;
 
     protected PostManager(Context context){
         mContext = context;
@@ -132,42 +132,6 @@ public abstract class PostManager {
         return list;
     }
 
-    // adds a question to our list of posts
-    public void addQuestion(Question newQuestion){
-        mQuestions.add(newQuestion);
-    }
-
-    // adds an answer to our list of posts
-    public void addAnswer(Question parent, Answer newAnswer){
-        parent.addAnswer(newAnswer);
-    }
-
-    //TODO: Implement in Project Part 4
-    public void addReply(Post parent, Reply newReply) {
-        parent.addReply(newReply);
-    }
-
-    //TODO: Implement with user attributes
-    public void toggleFavorite(Post post) {
-        post.getUserAttributes().toggleIsFavorited();
-    }
-
-    //TODO: Update with implementation of user attributes
-    // For now this will just increment votes
-    public void toggleUpvote(Post post) {
-        post.getUserAttributes().toggleIsUpvoted();
-        if (post.getUserAttributes().getIsUpvoted())
-            post.incrementVotes();
-        else
-            post.decrementVotes();
-    }
-
-
-    //TODO: Update with implementation of user attributes
-    public void toggleReadLater(Post post) {
-        post.getUserAttributes().setIsReadLater(true);
-    }
-
     // Sorts posts by number of votes (Descending Order)
     public void sortByScore() {
         Collections.sort(mQuestions, new Comparator<Post>() {
@@ -222,15 +186,28 @@ public abstract class PostManager {
         }
     }
 
-    //TODO: Implement in Project Part 4 with ElasticSearch
-    public ArrayList<Post> keywordSearch(String keyword){
-        ArrayList<Post> matchingPosts = new ArrayList<Post>();
-        return matchingPosts;
-    }
 
     public int getPositionOfAnswer(Question question, Answer answer) {
         return question.getPositionOfAnswer(answer.getID());
     }
+    
+    // abstract methods
+    public abstract void addQuestion(Question newQuestion);
 
+    public abstract void addAnswer(Question parent, Answer newAnswer);
+
+    public abstract void addReply(Post parent, Reply newReply);
+
+    public abstract void toggleFavorite(Post post);
+    
+    public abstract void toggleUpvote(Post post); 
+    
+    /*{
+        post.getUserAttributes().toggleIsUpvoted();
+        if (post.getUserAttributes().getIsUpvoted())
+            post.incrementVotes();
+        else
+            post.decrementVotes();
+    }*/
 
 }

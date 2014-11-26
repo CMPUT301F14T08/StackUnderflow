@@ -10,6 +10,7 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.AnswerActivity;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.QuestionActivity;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostAdapter;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
@@ -147,7 +148,7 @@ public class ProfileFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-
+            
         }
 
 
@@ -161,18 +162,28 @@ public class ProfileFragment extends Fragment {
             sPostController = result;
 
             sPostController.getPostManager().sortByDate();
+            UserProfileManager upm = UserProfileManager.getInstance(getActivity());
 
             adapter.clear();
 
             //FILTER_MY_POSTS is currently blank list: needs posts with username set (UserProfile implementation)
             for (Post post : sPostController.getPostManager().getQuestions()) {
                 if (
-                        (lastSort.equals(FILTER_MY_POSTS) && post.getUserAttributes().getIsUsers())
-                        || (lastSort.equals(FILTER_MY_FAVORITES) && post.getUserAttributes().getIsFavorited())
-                        || (lastSort.equals(FILTER_READ_LATER) && post.getUserAttributes().getIsReadLater())
-                        )
+                        lastSort.equals(FILTER_MY_POSTS) && upm.getIsUsers(post)
+                        || lastSort.equals(FILTER_MY_FAVORITES) && upm.getIsFavorite(post)
+                        || lastSort.equals(FILTER_READ_LATER) && upm.getIsReadLater(post)
+                   )
                 {
                     adapter.add(post);
+                }
+                
+                for (Answer answer : ((Question)post).getAnswers()) {
+                    if (
+                            lastSort.equals(FILTER_MY_POSTS) && upm.getIsUsers(answer)
+                            || lastSort.equals(FILTER_MY_FAVORITES) && upm.getIsFavorite(answer)
+                            || lastSort.equals(FILTER_READ_LATER) && upm.getIsReadLater(answer)
+                       )
+                     adapter.add(answer);
                 }
             }
 

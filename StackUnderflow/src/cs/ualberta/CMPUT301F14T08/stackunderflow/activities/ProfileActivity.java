@@ -51,8 +51,8 @@ public class ProfileActivity extends Activity implements TabListener {
         UserProfileManager upm = UserProfileManager.getInstance(getApplication());
         String setUsername = upm.getUsername();
         mUserName.setText(setUsername);
-        int q_count = upm.getUserProfile().getQuestionsPostedCount();
-        int a_count = upm.getUserProfile().getAnswerPostedCount();
+        int q_count = UserProfileManager.getInstance(getApplication()).getQuestionsPostedCount();
+        int a_count = UserProfileManager.getInstance(getApplication()).getAnswerPostedCount();
 
         // Set rating bar from 0-5 with 1 star for every 5 combined total posts. Max of 5 stars
         mRatingBar.setRating(q_count + a_count < 25 ? (int) Math.floor((q_count + a_count) / 5) : 5.0f);

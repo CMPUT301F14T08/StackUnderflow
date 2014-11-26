@@ -85,37 +85,23 @@ public class OnlinePostManager extends PostManager {
         }
 
         this.mQuestions = castToPosts(questions);
-        updateCacheAndSetUserAttributes();
+        updateCache();
         return status;
     }
     /**
-     * Does exactly what it says : Updates the Cache and sets the user attributes
+     * Does exactly what it says : Updates the Cache
      */
-    private void updateCacheAndSetUserAttributes() {
+    private void updateCache() {
         for (Post post : getQuestions()) {
             Post cachedPost = mCachedPostManager.getPost(post.getID());
 
+            // if the post is not in cache, ignore it
             if (cachedPost == null) {
-                post.clearUserAttributes();
-
-                for (Answer answer : ((Question)post).getAnswers()) {
-                    answer.clearUserAttributes();
-                }
-
                 continue;
             }
 
-            post.setUserAttributes(cachedPost.getUserAttributes());
-            for (Answer answer : ((Question)post).getAnswers()) {
-                Answer cachedAnswer = (Answer) mCachedPostManager.getPost(answer.getID());
-                if (cachedAnswer!= null) 
-                    answer.setUserAttributes(cachedAnswer.getUserAttributes());
-                else 
-                    answer.clearUserAttributes();
-            }
-
-            cachedPost = post;           
-
+            cachedPost = post;
+            mCachedPostManager.save();
         }
     }
 
@@ -126,7 +112,6 @@ public class OnlinePostManager extends PostManager {
      * @return null if no such question exists
      */
     private Question getESQuestion(Question question) {
-        Question onlineQuestion = null;
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(RESOURCE_URL + question.getID());
         String status = null;
@@ -216,7 +201,6 @@ public class OnlinePostManager extends PostManager {
         onlineQuestion.setVotes(onlineQuestion.getVotes() + voteChange);
         String updateString = "\"mVotes\":" + Integer.valueOf(onlineQuestion.getVotes()).toString();
         // set the existing question to the refreshed online question
-        onlineQuestion.setUserAttributes(existingQuestion.getUserAttributes());
         existingQuestion = onlineQuestion;
         return updateESQuestion(existingQuestion, updateString);
     }
@@ -250,7 +234,6 @@ public class OnlinePostManager extends PostManager {
             return null;
 
         Answer onlineAnswer = onlineQuestion.getAnswer(answer.getID());
-        onlineAnswer.setUserAttributes(answer.getUserAttributes());
         onlineAnswer.setVotes(onlineAnswer.getVotes() + voteChange);
 
         // set the existing question to the refreshed online question
@@ -288,7 +271,6 @@ public class OnlinePostManager extends PostManager {
         return updateESReply(onlineQuestion);
     }
 
-    // TODO: Part 3 Implement Reply Update Logic
     private String addESAnswerReply(Answer existingAnswer, Reply reply) {
         Question parentQuestion = getQuestion(existingAnswer.getParentID());
         Question onlineQuestion = getESQuestion(parentQuestion); 
@@ -366,6 +348,7 @@ public class OnlinePostManager extends PostManager {
 
         // initialize instance
         sPostManager = new OnlinePostManager(context.getApplicationContext());
+        sPostManager.mProfileManager =  UserProfileManager.getInstance(context);
 
         // push updates to server
         sPostManager.pushOfflineUpdates();
@@ -388,19 +371,17 @@ public class OnlinePostManager extends PostManager {
     @Override
     public void addQuestion(Question newQuestion) {
         newQuestion.setExistsOnline(true);
-        newQuestion.getUserAttributes().toggleIsUsers();
-        UserProfileManager.getInstance(mContext).getUserProfile().incrementQuestionsPostedCount();
-        UserProfileManager.getInstance(mContext).addToMap(newQuestion.getmUserAttributes(), newQuestion.getID());
         String result = insertEsQuestion(newQuestion);
-        Log.d("Result", result);
+        
         if (result.equals("HTTP/1.1 201 Created")) {
-            super.addQuestion(newQuestion);
-            newQuestion.getUserAttributes().toggleIsUsers();
+            this.mQuestions.add(newQuestion);
         }
         else {
             mCachedPostManager.addedOffline = true;
             newQuestion.setExistsOnline(false);
         }
+        
+        mProfileManager.saveNewPostAttributes(newQuestion);
         mCachedPostManager.getQuestions().add(newQuestion);
         mCachedPostManager.save();
     }
@@ -410,26 +391,27 @@ public class OnlinePostManager extends PostManager {
     @Override
     public void addAnswer(Question parent, Answer newAnswer) {
         newAnswer.setExistsOnline(true);
-        newAnswer.getUserAttributes().toggleIsUsers();
-        UserProfileManager.getInstance(mContext).addToMap(newAnswer.getmUserAttributes(), newAnswer.getID());
         String result = addESAnswer(parent, newAnswer);
+        
         if (result.equals("HTTP/1.1 200 OK")) {
-            super.addAnswer(parent, newAnswer);
+            parent.addAnswer(newAnswer);
         }
 
         else {
             mCachedPostManager.addedOffline = true;
             newAnswer.setExistsOnline(false);
         }
-        UserProfileManager.getInstance(mContext).getUserProfile().incrementAnswersPostedCount();
+        
+        mProfileManager.saveNewPostAttributes(newAnswer);
+        mCachedPostManager.getQuestion(parent.getID()).addAnswer(newAnswer);
         mCachedPostManager.save();
     }
 
     @Override
     public void addReply(Post parent, Reply newReply) {
         newReply.setExistsOnline(true);
-
         String result;
+        
         if (isQuestion(parent)) {
             result = addESQuestionReply((Question)parent, newReply);
         }
@@ -437,7 +419,7 @@ public class OnlinePostManager extends PostManager {
             result = addESAnswerReply((Answer)parent, newReply);
         }
         if (result.equals("HTTP/1.1 200 OK")) {
-            super.addReply(parent, newReply);
+            parent.addReply(newReply);
         }
 
         else {
@@ -445,26 +427,26 @@ public class OnlinePostManager extends PostManager {
             newReply.setExistsOnline(false);
         }
 
+        mCachedPostManager.getPost(parent.getID()).addReply(newReply);
         mCachedPostManager.save();
     }
 
     @Override
     public void toggleUpvote(Post post) {
-        super.toggleUpvote(post);
-        Post cachedPost = mCachedPostManager.getPost(post.getID());
 
-        int incrementVotes = -1;
-        if (post.getUserAttributes().getIsUpvoted()) {
-            incrementVotes = 1;
-        }      
-        if(post.getUserAttributes().getIsUpvoted())
-            post.getUserAttributes().setIsUpvoted(true);
-        else
-            post.getUserAttributes().setIsUpvoted(false);
-        UserProfileManager.getInstance(mContext).addToMap(post.getmUserAttributes(), post.getID());
-        // remove
-        cachedPost.setVotes(post.getVotes());
+        int incrementVotes = 1;
+        if (mProfileManager.getIsUpvoted(post)) {
+            incrementVotes = -1;
+            post.decrementVotes();
+        }
+        else {
+            post.incrementVotes();
+        }
+        
+        // Save user attributes
+        mProfileManager.toggleIsUpvoted(post);
 
+        // Update online
         String result = null;
         if (isQuestion(post)) {
             result = updateESQuestionVotes((Question)post, incrementVotes);
@@ -481,43 +463,24 @@ public class OnlinePostManager extends PostManager {
             mCachedPostManager.addedOffline = true;
             post.setUpvotesChangedOffline(incrementVotes);
         }
-        UserProfileManager.getInstance(mContext).addToMap(post.getmUserAttributes(), post.getID());
+        
+        mCachedPostManager.getPost(post.getID()).setUpvotesChangedOffline(incrementVotes);
         mCachedPostManager.save();
     }
 
     @Override
     public void toggleFavorite(Post post) {
-        Post cachedPost = mCachedPostManager.getPost(post.getID());
-        super.toggleFavorite(post);
-        if(post.getUserAttributes().getIsFavorited())
-            cachedPost.getUserAttributes().setIsFavorited(true);
-        else
-            cachedPost.getUserAttributes().setIsFavorited(false);
-        UserProfileManager.getInstance(mContext).addToMap(post.getmUserAttributes(), post.getID());
-        mCachedPostManager.save();
+        mProfileManager.toggleIsFavorited(post);
     }
 
-    @Override
     public void toggleReadLater(Post post) {
-        super.toggleReadLater(post);
-        if(post.getUserAttributes().getIsReadLater())
-            post.getUserAttributes().setIsReadLater(true);
-        UserProfileManager.getInstance(mContext).addToMap(post.getmUserAttributes(), post.getID());
-        // add the post to the cached post manager
-        // if it is not already present
-        Question question;
-
+        // Only questions can be marked as read later
         if (isQuestion(post)) {
-            question = (Question) post;
+            mProfileManager.setIsReadLater(post);
+            addToCache((Question)post);
         }
-        else {
-            question = (Question)getPost(((Answer)post).getParentID());
-        }
-
-        addToCache(question);
-
-        return;
     }
+
     /**
      * when the device returns to being online from an offline state this method will push the posts the user has made while offline online
      */
@@ -531,28 +494,45 @@ public class OnlinePostManager extends PostManager {
             // and we just have to insert the new question
             Question question = (Question) post;
             if (!question.getExistsOnline()) {
-                question.setExistsOnline(true);
                 result = insertEsQuestion(question);
-                if (!result.equals("HTTP/1.1 201 Created"))
-                    question.setExistsOnline(false);
+                if (result.equals("HTTP/1.1 201 Created"))
+                    question.setExistsOnline(true);
+                
                 continue;
             }
 
             int votesOffline = question.getUpvotesChangedOffline(); 
             if(votesOffline != 0) {
-                question.setUpvotesChangedOffline(0);
                 result = updateESQuestionVotes(question, votesOffline);
-                if (!result.equals("HTTP/1.1 200 OK"))
-                    question.setUpvotesChangedOffline(votesOffline);
+                if (result.equals("HTTP/1.1 200 OK"))
+                    question.setUpvotesChangedOffline(0);
+                
+            }
+            
+            for (Reply reply : question.getReplies()) {
+                if(!reply.getExistsOnline()) {
+                    result = addESQuestionReply(question, reply);
+                    if (result.equals("HTTP/1.1 200 OK")) {
+                        reply.setExistsOnline(true);
+                    }
+                }
             }
 
             for (Answer answer : question.getAnswers()) {
                 if (!answer.getExistsOnline()) { 
-                    answer.setExistsOnline(true);
                     result = addESAnswer(question, answer);
-                    if (!result.equals("HTTP/1.1 200 OK"))
-                        answer.setExistsOnline(false);
+                    if (result.equals("HTTP/1.1 200 OK"))
+                        answer.setExistsOnline(true);
                     continue;
+                }
+                
+                for (Reply reply : question.getReplies()) {
+                    if(!reply.getExistsOnline()) {
+                        result = addESAnswerReply(answer, reply);
+                        if (result.equals("HTTP/1.1 200 OK")) {
+                            reply.setExistsOnline(true);
+                        }
+                    }
                 }
 
                 votesOffline = question.getUpvotesChangedOffline(); 
@@ -565,7 +545,6 @@ public class OnlinePostManager extends PostManager {
             }
         }
         mCachedPostManager.addedOffline = false;
-
     }
 
     public void refreshAll() {
@@ -582,16 +561,14 @@ public class OnlinePostManager extends PostManager {
         if (onlineQuestion == null)
             return;
 
-        onlineQuestion.setUserAttributes(question.getUserAttributes());
         question = onlineQuestion;
-        boolean updated = mCachedPostManager.updateIfExists(onlineQuestion);
+        boolean updated = mCachedPostManager.updateIfExists(question);
         if (updated)
             mCachedPostManager.save();
     }
 
     public void addToCache(Question question) {
         if (mCachedPostManager.getPost(question.getID()) == null) {
-            UserProfileManager.getInstance(mContext).addToMap(question.getmUserAttributes(), question.getID());
             mCachedPostManager.getQuestions().add(question);
             mCachedPostManager.save();
         }

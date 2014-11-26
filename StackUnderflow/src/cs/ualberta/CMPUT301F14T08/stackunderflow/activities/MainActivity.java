@@ -83,7 +83,7 @@ public class MainActivity extends Activity implements TabListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int duration = Toast.LENGTH_SHORT;
+        int duration = Toast.LENGTH_LONG;
         CharSequence text = "";
         Toast toast = null;
 
@@ -110,18 +110,14 @@ public class MainActivity extends Activity implements TabListener {
                 return true;
             }
 
-            boolean postsAdded = tf.sPostController.addSelectedToCache();
+            boolean postsAdded = tf.sPostController.markSelectedAsReadLater();
             tf.adapter.notifyDataSetChanged();
 
-
-            if (tf.sPostController.usingOnlinePostManager() && postsAdded)
-                text = "Successfully added to Cache.";
-            else if (tf.sPostController.usingOnlinePostManager() && !postsAdded)
+            if (postsAdded)
+                text = "Successfully added to your Read Later List.";
+            else
                 text = "Long-click to select one or more posts.";
-            else 
-                text = "Currently Offline. All posts are in Cache.";
-
-
+   
             toast = Toast.makeText(this, text, duration);
             toast.show();			
 

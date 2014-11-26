@@ -4,14 +4,17 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +37,7 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.ViewImageDialogFragment
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
 /**
  * This Fragment will help display all questions (Questions and Answers) When a user wants to view a question they are shown this screen. Here the user 
@@ -97,8 +101,21 @@ public abstract class PostFragment extends Fragment {
         // one Post, not a list so we can wait until we receive them before rendering the view
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        sPostController = PostController.getInstanceForID(getActivity(), mPostId);
-        mPost = sPostController.getPostManager().getPost(mPostId);
+        sPostController = PostController.getInstanceForID(getActivity(), mPostId);   
+        //new DownloadPostTask().execute();
+        
+        /*try {
+            
+        } catch (InterruptedException e) {
+            Log.d("Interrupted Exception", e.getMessage());
+            sPostController = PostController.getInstanceNoRefresh(getActivity());
+        } catch (ExecutionException e) {
+            sPostController = PostController.getInstanceNoRefresh(getActivity());
+            Log.d("Execuion Exception", e.getMessage());
+        }*/
+        
+        mPost = sPostController.getPostManager().getPost(mPostId);       
+        
 
         // Set variables according to the resource IDs provided in subclasses
         mTextColor = getResources().getColor(getTextColor());
@@ -107,6 +124,7 @@ public abstract class PostFragment extends Fragment {
 
         showReplyEdit = false;
 
+        // Icons on buttons with text must be updated with setBounds
         mUpvoteFull = context.getResources().getDrawable(getUpvoteFullID());
         mUpvoteFull.setBounds(0, 0, mUpvoteFull.getMinimumHeight(), mUpvoteFull.getMinimumWidth());
 
@@ -122,11 +140,14 @@ public abstract class PostFragment extends Fragment {
         mImageIcon = context.getResources().getDrawable(getImageIconID());
         mImageIcon.setBounds(0, 0, mImageIcon.getMinimumHeight(), mImageIcon.getMinimumWidth());
 
-        if(sPostController.getPostManager().isQuestion(mPost))
-            mPost.getUserAttributes().setIsReadTrue();
+        if(sPostController.getPostManager().isQuestion(mPost)) {
+            sPostController.addToCache((Question)mPost);
+            sPostController.mProfileManager.setRead(mPost);
+        }
         else{
-            Answer tempAnswer = (Answer) mPost;
-            sPostController.getQuestion(tempAnswer.getParentID()).getUserAttributes().setIsReadTrue();
+            Question parent = sPostController.getQuestion( ((Answer)mPost).getParentID() );
+            sPostController.addToCache((Question)parent);
+            sPostController.mProfileManager.setRead(parent);
         }
 
     }
@@ -315,14 +336,14 @@ public abstract class PostFragment extends Fragment {
     }
 
     protected void setIconFavorited(Post post, Button button) {
-        if (post.getUserAttributes().getIsFavorited())
+        if (sPostController.mProfileManager.getIsFavorite(post))
             button.setCompoundDrawables(mFavoriteFull, null, null, null);
         else
             button.setCompoundDrawables(mFavoriteEmpty, null, null, null);
     }
 
     protected void setIconUpvote(Post post, Button button) {
-        if (post.getUserAttributes().getIsUpvoted())
+        if (sPostController.mProfileManager.getIsUpvoted(post))
             button.setCompoundDrawables(mUpvoteFull, null, null, null);
         else
             button.setCompoundDrawables(mUpvoteEmpty, null, null, null);

@@ -9,8 +9,6 @@ public class UserAttributes {
     private boolean mIsFavorited;
     private boolean mIsReadLater;
     private boolean mIsUsers;
-    private boolean mIsRead;
-
 /*
  * mIsUsers is true when the user was the one to post the question
  * mIsUpvoted is true when the user has upvoted the post
@@ -23,17 +21,6 @@ public class UserAttributes {
         mIsUpvoted = false;
         mIsFavorited = false;
         mIsReadLater = false;
-        mIsRead = false;
-    }
-/*
- * When calling user attributes is called with a boolean as parameter it will send that to if it belongs to the user.
- */
-    public UserAttributes(boolean isUsers){
-        mIsUsers = isUsers;
-        mIsUpvoted = false;
-        mIsFavorited = false;
-        mIsReadLater = false;
-        mIsRead = false;
     }
 
     public boolean getIsFavorited() {
@@ -44,20 +31,10 @@ public class UserAttributes {
         mIsFavorited = !mIsFavorited;
     }
 
-    public void setIsFavorited(boolean favorited) {
-        mIsFavorited = favorited;
-    }
-
-
     public boolean getIsUpvoted() {
         return mIsUpvoted;
     }
-
-    public void setIsUpvoted(boolean isUpvoted) {
-        this.mIsUpvoted = isUpvoted;
-    }
-
-
+    
     public void toggleIsUpvoted() {
         mIsUpvoted = !mIsUpvoted;
     }
@@ -66,8 +43,8 @@ public class UserAttributes {
         return mIsUsers;
     }
 
-    public void toggleIsUsers() {
-        mIsUsers = !mIsUsers;
+    public void setIsUsers(boolean isUsers) {
+        mIsUsers = isUsers;
     }
     
     public boolean getIsReadLater() {
@@ -77,17 +54,4 @@ public class UserAttributes {
     public void setIsReadLater(boolean isReadLater) {
         mIsReadLater = isReadLater;
     }
-
-    public boolean getIsRead() {
-        return mIsRead;
-    }
-
-    public void setIsReadTrue() {
-        mIsRead = true;
-        if (mIsReadLater) setIsReadLater(false);
-    }
-
-
-
-
 }

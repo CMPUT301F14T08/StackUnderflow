@@ -18,7 +18,8 @@
         android:textStyle="bold"
 		android:textColor="@color/white"
 		android:background="@drawable/rounded_corners"
-		android:padding="10dip"		
+		android:padding="10dp"
+		android:layout_marginLeft="14dp"		
         android:lines = "2"/>
     
 	<!-- Question text -->

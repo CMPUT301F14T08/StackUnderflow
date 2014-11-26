@@ -152,6 +152,7 @@ public class CachedPostManager extends PostManager{
     public static CachedPostManager getInstance(Context context) {
         if (sPostManager == null) {
             sPostManager = new CachedPostManager(context.getApplicationContext());
+            sPostManager.mProfileManager =  UserProfileManager.getInstance(context);
         }
 
         return sPostManager;
@@ -170,77 +171,61 @@ public class CachedPostManager extends PostManager{
         }
     }
 
-
     @Override
     public void addQuestion(Question newQuestion) {
-    	newQuestion.getUserAttributes().toggleIsUsers();
-    	UserProfileManager.getInstance(mContext).getUserProfile().incrementQuestionsPostedCount();
-        UserProfileManager.getInstance(mContext).addToMap(newQuestion.getmUserAttributes(), newQuestion.getID());
-        super.addQuestion(newQuestion);
-        save();
         addedOffline = true;
-
-
+    	mProfileManager.saveNewPostAttributes(newQuestion);
+    	
+        this.mQuestions.add(newQuestion);
+        save();
     }
 
     @Override
     public void addAnswer(Question parent, Answer newAnswer) {
-        super.addAnswer(parent, newAnswer);
-        save();
         addedOffline = true;
-        newAnswer.getUserAttributes().toggleIsUsers();
-        UserProfileManager.getInstance(mContext).getUserProfile().incrementAnswersPostedCount();
-        UserProfileManager.getInstance(mContext).addToMap(newAnswer.getmUserAttributes(), newAnswer.getID());
+        mProfileManager.saveNewPostAttributes(newAnswer);
+        
+        parent.addAnswer(newAnswer);
+        save();
     }
 
-    //TODO: Implement in Project Part 4
     @Override
     public void addReply(Post parent, Reply newReply) {
-        super.addReply(parent, newReply);
-        save();
         addedOffline = true;
+        parent.addReply(newReply);
+        save();
     }
 
-    //TODO: Update with implementation of user attributes
-    /**
-     * For now this will just increment votes
-     * @param a post that will have its vote increased by one if it is currently false or a decreased by one if it is currenly false
-     */
     @Override
     public void toggleUpvote(Post post) {
-        super.toggleUpvote(post);
+        addedOffline = true;
+        
+        // if the user has already upvoted the post
+        // then we are subtracting votes from the post when we toggle it
         int incrementVotes = 1;
-
-        if (!post.getUserAttributes().getIsUpvoted()) {
+        if (mProfileManager.getIsUpvoted(post)) {
             incrementVotes = -1;
+            post.decrementVotes();
         }
-
+        else {
+            post.incrementVotes();
+        }
+        
+        mProfileManager.toggleIsUpvoted(post);
         post.setUpvotesChangedOffline(incrementVotes);
         save();
-        addedOffline = true;
-
-        if(post.getUserAttributes().getIsUpvoted())
-            post.getUserAttributes().setIsUpvoted(true);
-        else
-            post.getUserAttributes().setIsUpvoted(false);
-        UserProfileManager.getInstance(mContext).addToMap(post.getmUserAttributes(), post.getID());
     }
+    
     /**
      * sets as a users favorite which if is called again this favorite is removed.
      * @param post that will be set or removed as a favorite
      */
     @Override
     public void toggleFavorite(Post post) {
-        super.toggleFavorite(post);
-        save();
         addedOffline = true;
-        if (post.getUserAttributes().getIsFavorited())
-            post.getUserAttributes().setIsFavorited(false);
-        else
-            post.getUserAttributes().setIsFavorited(true);
-        post.getUserAttributes().setIsFavorited(!post.getUserAttributes().getIsFavorited());
-        UserProfileManager.getInstance(mContext).addToMap(post.getmUserAttributes(), post.getID());
+        mProfileManager.toggleIsFavorited(post);
     }
+    
 
     public boolean hasAddedOffline() {
         return addedOffline;

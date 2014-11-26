@@ -1,9 +1,11 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.model;
-
+import android.util.Log;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+
 /** 
  * Post base class only ever really used as a parent of question and answers. Saves all information about posts such as the id text votes pictures and so on
  * This also allows setting and getting of of attributes of post. You should always use getters and setters. A basic post should never be called. It should always
@@ -20,9 +22,9 @@ public class Post {
     protected ArrayList<Reply> mReplies = new ArrayList<Reply>();
     protected boolean mIsSelected;
     protected boolean mIsFiltered;
-    private UserAttributes mUserAttributes;
     protected int mUpvotesChangedOffline;
     protected boolean mExistsOnline;
+    
     /**
      * Basic post part that is used to inherit into Answer and Question. This constructor is used when the user attempts to make a post
      * that has a text body, date, signature but not a picture. This will generate a random UUID. By default mExistsOline to false. 
@@ -39,13 +41,13 @@ public class Post {
         mReplies = new ArrayList<Reply>();
         mIsSelected = false;
         mIsFiltered = false;
-        setmUserAttributes(new UserAttributes());
         mUpvotesChangedOffline = 0;
         mExistsOnline = false;
+        
     }
 
     public Post(String text, String signature, String picture){
-        mID = UUID.randomUUID(); //TODO do we want random UUID or another method?
+        mID = UUID.randomUUID(); 
         mText = text;
         mVotes = 0;
         mPicture = picture;
@@ -54,7 +56,6 @@ public class Post {
         mReplies = new ArrayList<Reply>();
         mIsSelected = false;
         mIsFiltered = false;
-        setmUserAttributes(new UserAttributes());
         mUpvotesChangedOffline = 0;
         mExistsOnline = false;
     }
@@ -129,19 +130,6 @@ public class Post {
         mIsFiltered = isFiltered;
     }
 
-    public UserAttributes getUserAttributes(){
-        return getmUserAttributes();
-    }
-
-    public void setUserAttributes(UserAttributes userAttribs){
-        this.setmUserAttributes(userAttribs);
-    }
-
-    public void clearUserAttributes(){
-        this.setmUserAttributes(new UserAttributes());
-    }
-
-
     public int getUpvotesChangedOffline() {
         return mUpvotesChangedOffline;
     }
@@ -157,29 +145,4 @@ public class Post {
     public void setExistsOnline(boolean existsOnline) {
         this.mExistsOnline = existsOnline;
     }
-
-
-    // TODO: Remove this, use java reflection in tests to set date
-    //Constructor used to properly test SortByDate()
-    public Post(String text, String signature, String picture, Date date){
-        mID = UUID.randomUUID(); //TODO do we want random UUID or another method?
-        mText = text;
-        mVotes = 0;
-        mPicture = picture;
-        mSignature = signature;
-        mDate = date;
-        mReplies = new ArrayList<Reply>();
-        mIsSelected = false;
-        mIsFiltered = false;
-        setmUserAttributes(new UserAttributes());
-    }
-
-    public UserAttributes getmUserAttributes() {
-        return mUserAttributes;
-    }
-
-    public void setmUserAttributes(UserAttributes mUserAttributes) {
-        this.mUserAttributes = mUserAttributes;
-    }
-
 }

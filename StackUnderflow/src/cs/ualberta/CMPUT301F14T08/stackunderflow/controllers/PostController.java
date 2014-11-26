@@ -7,11 +7,11 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.exceptions.InvalidParentExcepti
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.CachedPostManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.OnlinePostManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.PostManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -28,6 +28,7 @@ public class PostController {
     private static PostController sPostController;
     private PostManager mPostManager;
     private Context mContext;
+    public UserProfileManager mProfileManager;
 
     // Keep this private!
     private PostController(Context context) {
@@ -72,6 +73,7 @@ public class PostController {
 
         if (sPostController == null) {
             sPostController = new PostController(context.getApplicationContext());
+            sPostController.mProfileManager =  UserProfileManager.getInstance(context);
             return sPostController;
         }
 
@@ -181,24 +183,18 @@ public class PostController {
         }
     }
 
-    public boolean addSelectedToCache() {
+    public boolean markSelectedAsReadLater() {
         boolean postsSelected = false;
-
-        if (!usingOnlinePostManager()) {
-            for (Post post : mPostManager.getQuestions()) {
-                if (post.getIsSelected()) { 
-                    post.setIsSelected(false);
-                }
-            }
-            return false;
-        }
-
+        
         for (Post post : mPostManager.getQuestions()) {
+            
             if (post.getIsSelected()) {
+                
                 postsSelected = true;
                 addToCache((Question)post);
                 post.setIsSelected(false);
-                post.getUserAttributes().setIsReadLater(true);               
+                mProfileManager.setIsReadLater(post);       
+                
             }
         }
         return postsSelected;

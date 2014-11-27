@@ -30,6 +30,9 @@
     <string name="zero_answers">0</string>
     <string name="default_text">Default</string>
 
+    <!-- New Post -->
+    <string name="add_location">Add Location</string>
+    
     <!-- New Question -->
     <string name="new_question_title">New Question</string>
     <string name="new_question_fragment_edittext_title">Place Title Text Here</string>
@@ -60,5 +63,9 @@
     <string name="search_only_pic">Only Posts with Pictures</string>
     <string name="search_text">Text:</string>
     <string name="title_activity_search">SearchActivity</string>
+    
+    <!-- Searching -->
+    <string name="use_my_location">Use My Location</string>
+    <string name="use_marker">User Marker Location</string>
 
 </resources>

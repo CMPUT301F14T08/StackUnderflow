@@ -21,7 +21,8 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.SearchActivity;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.SearchObject;
 /**
- * 
+ * When you choose to search a question this view is called. It allows the user to view questions in a number of ways
+ * By search only by question, search only by answer or search by both.
  * @author Cmput301 Winter 2014 Group 8
  */
 public class SearchDialogFragment extends DialogFragment{

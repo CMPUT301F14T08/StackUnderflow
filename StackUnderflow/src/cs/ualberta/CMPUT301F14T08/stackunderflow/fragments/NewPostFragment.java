@@ -95,6 +95,7 @@ public abstract class NewPostFragment extends Fragment {
             //                toast.show(); 
             //        	}
             return true;
+        	
 
         default:
             return super.onOptionsItemSelected(menuItem);

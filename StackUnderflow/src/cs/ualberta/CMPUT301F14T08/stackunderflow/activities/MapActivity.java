@@ -1,6 +1,8 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.activities;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -54,26 +56,34 @@ public class MapActivity extends Activity {
 		Toast toast = null;
 		switch (item.getItemId()) {
 		case R.id.my_location: 
-			if(m==null){
+			Location myLocation = googleMap.getMyLocation();
+			if(myLocation == null){
 				toast = Toast.makeText(this, "We cannot find your GPS location", duration);
 				toast.show();
 			}
 			else{
-				//TODO: PASS THE LOCATION OF THE USER INTO THE POST
-				//to get the location of the user googleMap.getMyLocation().getLatitude() amd googleMap.getMyLocation().getLongitude()
+				Intent msg = new Intent();
+                msg.putExtra("lat", myLocation.getLatitude());
+                msg.putExtra("lon", myLocation.getLongitude());
+
+                setResult(Activity.RESULT_OK, msg);
 				this.finish();
 
 			}
 			return true;
 
-		case R.id.marker: 
+		case R.id.marker:
+			
 			if(m==null){
 				toast = Toast.makeText(this, "You need to set a marker", duration);
 				toast.show();
 			}
 			else{
-				//TODO: PASS LOCATION OF THE MARKER INTO THE POST
-				//to get the location of the marker use m.getPosition()
+				Intent msg = new Intent();
+                msg.putExtra("lat", m.getPosition().latitude);
+                msg.putExtra("lon", m.getPosition().longitude);
+
+                setResult(Activity.RESULT_OK, msg);
 				this.finish();
 
 			}

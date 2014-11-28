@@ -2,19 +2,26 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
 
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.MapActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.LocManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 /**
  * NewQuestionFragment - Called from NewQuestionACtivity - User to allow a user to input a question. Takes input and saves
  * the information to the correct post manager.  Will not allow a user to input blank fields. 
@@ -22,11 +29,18 @@ import android.widget.Toast;
  */
 public class NewQuestionFragment extends NewPostFragment {
 
-    /*@Override
-	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
+	public static final int MAP_CODE = 11223344;
+	public static final double LOC_ERROR = 999999;
+	
+	//@Override
+	//public void onCreate(Bundle savedInstanceState){
+		//super.onCreate(savedInstanceState);
 		//getActivity().setTitle(R.string.new_question_title);
-	}*/	
+	//}
+	
+	private CheckBox mCheckBox;
+	private LatLng location = null;
+	
 
     @Override
     int getViewID() {
@@ -49,6 +63,17 @@ public class NewQuestionFragment extends NewPostFragment {
         // TODO Auto-generated method stub
         return R.id.new_question_fragment_submit_button;
     }   
+    
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if (requestCode == MAP_CODE && resultCode == Activity.RESULT_OK) {
+    			double lat = data.getDoubleExtra("lat", LOC_ERROR);
+    			double lon = data.getDoubleExtra("lon", LOC_ERROR);
+    			if(lat != LOC_ERROR && lon != LOC_ERROR){
+    				location = new LatLng(lat, lon);
+    					mCheckBox.setText("Location: " + LocManager.getLocationString(getActivity(), location));
+            	}
+    		}  
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
@@ -61,6 +86,24 @@ public class NewQuestionFragment extends NewPostFragment {
         mPostTitle = (EditText) v.findViewById(R.id.new_question_fragment_edittext_title);		
         mPostBody = (EditText)v.findViewById(R.id.new_question_fragment_edittext_body);		
         mSubmitButton = (Button) v.findViewById(R.id.new_question_fragment_submit_button);
+        mCheckBox = (CheckBox) v.findViewById(R.id.new_question_fragment_location_checkbox);
+        mCheckBox.setText("Location:");
+        
+        mCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if(isChecked){
+					Log.d("CHECKED", String.valueOf(isChecked));
+					Intent intent = new Intent(getActivity(), MapActivity.class);                
+		            startActivityForResult(intent, MAP_CODE);
+				}
+				else{
+					mCheckBox.setText("Location:");
+				}
+				
+			}
+		});
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {       	

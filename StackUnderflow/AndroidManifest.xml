@@ -34,7 +34,7 @@
        
        <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-       		android:value="AIzaSyAKXNLvZ675aUBqGcTnXtorgEi-I1Hofx8" />
+       		android:value="AIzaSyAgLagXCgoga0KtK_1U1vz53lrVgsT2HFY" />
             
         <activity
             android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.MainActivity"

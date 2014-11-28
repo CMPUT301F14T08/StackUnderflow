@@ -53,4 +53,13 @@
         android:text="@string/new_question_fragment_submit_button"
         android:textColor="@color/white" />
 
+    <CheckBox
+        android:id="@+id/new_question_fragment_location_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/new_question_fragment_edittext_body"
+        android:layout_below="@+id/new_question_fragment_upload_photo_button"
+        android:layout_marginTop="14dp"
+        android:text="Location:" />
+
 </RelativeLayout>

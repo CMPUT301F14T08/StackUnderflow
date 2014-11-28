@@ -1,10 +1,13 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.model;
-import android.util.Log;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+
+import android.content.Context;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.LocManager;
 
 /** 
  * Post base class only ever really used as a parent of question and answers. Saves all information about posts such as the id text votes pictures and so on
@@ -24,6 +27,7 @@ public class Post {
     protected boolean mIsFiltered;
     protected int mUpvotesChangedOffline;
     protected boolean mExistsOnline;
+    protected LatLng mLocation;
     
     /**
      * Basic post part that is used to inherit into Answer and Question. This constructor is used when the user attempts to make a post
@@ -32,18 +36,7 @@ public class Post {
      * @param signature the user name of the author that wrote the post.
      */
     public Post(String text, String signature) {
-        mID = UUID.randomUUID(); 
-        mText = text;
-        mVotes = 0;
-        mPicture = null;
-        mSignature = signature;
-        mDate = new Date();
-        mReplies = new ArrayList<Reply>();
-        mIsSelected = false;
-        mIsFiltered = false;
-        mUpvotesChangedOffline = 0;
-        mExistsOnline = false;
-        
+        this(text, signature, null);
     }
 
     public Post(String text, String signature, String picture){
@@ -58,6 +51,7 @@ public class Post {
         mIsFiltered = false;
         mUpvotesChangedOffline = 0;
         mExistsOnline = false;
+        mLocation = null;
     }
 
     public UUID getID() {
@@ -145,4 +139,21 @@ public class Post {
     public void setExistsOnline(boolean existsOnline) {
         this.mExistsOnline = existsOnline;
     }
+    
+    public String getLocationString(Context context){
+    	return hasLocation() ? LocManager.getLocationString(context, mLocation) : null;
+    }
+
+    public LatLng getLocation(){
+		return mLocation;
+    	
+    }
+    public void setLocation(LatLng location){
+    	mLocation = location;
+    }
+    
+    public boolean hasLocation(){
+    	return mLocation != null;
+    }
+    
 }

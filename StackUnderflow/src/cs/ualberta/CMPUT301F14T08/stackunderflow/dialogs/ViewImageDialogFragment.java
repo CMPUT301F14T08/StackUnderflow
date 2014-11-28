@@ -22,7 +22,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-
+/**
+ * A small dialog that appears when you try to view a image. It will display the associated image. This will change the picture into something that
+ * the device can view as naturally the device cannot view a string of characters as a image. 
+ *  @author Cmput301 Winter 2014 Group 8
+ *
+ */
 public class ViewImageDialogFragment extends DialogFragment {
 
     ImageView mImageView;
@@ -39,7 +44,9 @@ public class ViewImageDialogFragment extends DialogFragment {
         f.setArguments(args);
         return f;
     }
-
+    /**
+     * Creates a dialog where the image will be displayed. 
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -57,6 +64,9 @@ public class ViewImageDialogFragment extends DialogFragment {
             }
         }).create();
     }
+    /**
+     * This converts the string into a byte map and then draws the image to the screen.
+     */
     public void showPicture(){
         String imgString = getArguments().getString("byteArray");
         byte[] byteArray = null;

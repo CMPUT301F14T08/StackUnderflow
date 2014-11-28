@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/marker"
+        android:title="@string/use_marker"/>
+    <item android:id="@+id/my_location"
+        android:title="@string/use_my_location"/>
+
+
+</menu>

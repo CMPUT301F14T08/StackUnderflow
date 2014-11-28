@@ -34,6 +34,7 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.NewAnswerActivity;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.ReplyAdapter;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.ViewImageDialogFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.LocManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
@@ -74,6 +75,7 @@ public abstract class PostFragment extends Fragment {
     protected Button mFavoriteButton;
     protected Button mPictureButton;
     protected TextView mUsername;
+    protected TextView mLocation;
     protected ListView mListView;
     protected EditText mReplyEditText;
     protected ImageButton mReplySubmitButton;
@@ -212,6 +214,12 @@ public abstract class PostFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
         String date = "(" + sdf.format(mPost.getDate()) + ")";
         mUsername.setText("- " + mPost.getSignature() + " " + date);
+        
+        mLocation = (TextView)postView.findViewById(R.id.post_fragment_textview_location);
+        if(mPost.hasLocation())
+        	mLocation.setText(mPost.getLocationString(getActivity()));
+        else
+        	mLocation.setVisibility(View.GONE);
 
         // Upvote Button
         mUpvoteButton = (Button)postView.findViewById(R.id.post_fragment_button_upvote);

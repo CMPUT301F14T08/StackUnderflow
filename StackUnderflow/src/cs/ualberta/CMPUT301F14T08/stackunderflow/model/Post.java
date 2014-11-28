@@ -36,18 +36,7 @@ public class Post {
      * @param signature the user name of the author that wrote the post.
      */
     public Post(String text, String signature) {
-        mID = UUID.randomUUID(); 
-        mText = text;
-        mVotes = 0;
-        mPicture = null;
-        mSignature = signature;
-        mDate = new Date();
-        mReplies = new ArrayList<Reply>();
-        mIsSelected = false;
-        mIsFiltered = false;
-        mUpvotesChangedOffline = 0;
-        mExistsOnline = false;
-        
+        this(text, signature, null);
     }
 
     public Post(String text, String signature, String picture){
@@ -62,6 +51,7 @@ public class Post {
         mIsFiltered = false;
         mUpvotesChangedOffline = 0;
         mExistsOnline = false;
+        mLocation = null;
     }
 
     public UUID getID() {
@@ -151,7 +141,7 @@ public class Post {
     }
     
     public String getLocationString(Context context){
-    	return LocManager.getLocationString(context, mLocation);
+    	return hasLocation() ? LocManager.getLocationString(context, mLocation) : null;
     }
 
     public LatLng getLocation(){
@@ -160,6 +150,10 @@ public class Post {
     }
     public void setLocation(LatLng location){
     	mLocation = location;
+    }
+    
+    public boolean hasLocation(){
+    	return mLocation != null;
     }
     
 }

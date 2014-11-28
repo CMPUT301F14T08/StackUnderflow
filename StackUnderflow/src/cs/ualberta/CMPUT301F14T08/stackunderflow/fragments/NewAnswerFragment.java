@@ -3,23 +3,21 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
 import java.util.UUID;
 
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.string;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
-
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.LocManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 /**
  * NewAnswerFragment - Called from NewAnswerActivity sets the user to Guest and makes the takes input from the NewAnswerFragment interface. 
  * Saves the data in the Edit text that the user inputs and submit it to the proper post manager. Also checks if the user has input anything
@@ -37,36 +35,16 @@ public class NewAnswerFragment extends NewPostFragment {
     }	
 
     @Override
-    int getViewID() {
-        return R.layout.new_answer_fragment;
-    }
-
-    @Override
-    int getBodyTextViewID() {
-        return R.id.new_answer_fragment_edittext_body;
-    }
-
-    @Override
-    int getAddPictureButtonID() {
-        return R.id.new_answer_fragment_upload_photo_button;
-    }
-
-    @Override
-    int getSubmitButtonID() {
-        return R.id.new_answer_fragment_submit_button;
-    }   
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
-        // Call NewPostFragment onCreate View
+        
+    	// Call NewPostFragment onCreate View
         View v = super.onCreateView(inflater, parent, savedInstanceState);
-
-
-        // Set up on click listener for submitting answers
-        // For adding images see the super class onCreateView
-        mPostBody = (EditText)v.findViewById(getBodyTextViewID());
-        mUploadPictureButton = (Button) v.findViewById(getAddPictureButtonID());
-        mSubmitButton = (Button) v.findViewById(getSubmitButtonID());
+        
+        //Hide question title textview
+    	mPostTitle.setVisibility(View.GONE);
+    	
+    	//Change hint to display for answer textview
+    	mPostBody.setHint(R.string.new_answer_fragment_edittext_body);
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
 
@@ -88,11 +66,14 @@ public class NewAnswerFragment extends NewPostFragment {
                     	//Encode byte array as a string to faster storage online
                         String picture = Base64.encodeToString(mJPEGByteArray, Base64.DEFAULT);
 
-                        mAnswer = new Answer(body, author, picture);  
+                        mAnswer = new Answer(body, author, picture);
                     }
                     else {
                         mAnswer = new Answer(body, author);  
                     }
+
+                    if(mLatitude != LocManager.LOC_ERROR && mLongitude != LocManager.LOC_ERROR)
+                    	mAnswer.setLocation(new LatLng(mLatitude, mLongitude));
 
                     Question qparent = (Question) sPostController.getQuestion(mPostId);
                     sPostController.getPostManager().addAnswer(qparent, mAnswer);

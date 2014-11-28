@@ -12,6 +12,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class LocManager{
 	
+	public static final double LOC_ERROR = 999999;
+	
 	public static String getLocationString(Context context, LatLng location){
 		if (location == null) return "none";
     	Geocoder geocoder = new Geocoder(context);

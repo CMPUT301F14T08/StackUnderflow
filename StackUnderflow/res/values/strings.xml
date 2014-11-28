@@ -6,6 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="username"></string>
+    <string name="location"></string>
     <string name="upvote_count"></string>
     <string name="answer_count"> Answers</string>
     <string name="favorite">favorite</string>
@@ -31,20 +32,18 @@
     <string name="default_text">Default</string>
 
     <!-- New Post -->
-    <string name="add_location">Add Location</string>
+    <string name="new_post_fragment_submit_button">Submit</string>
+    <string name="new_post_fragment_upload_photo_textview"> Upload Photo</string>
+    <string name="new_post_fragment_location_checkbox">Location:</string>
     
     <!-- New Question -->
     <string name="new_question_title">New Question</string>
     <string name="new_question_fragment_edittext_title">Place Title Text Here</string>
     <string name="new_question_fragment_edittext_body">Place Question Text Here</string>
-    <string name="new_question_fragment_submit_button">Submit</string>
-    <string name="new_question_fragment_upload_photo_textview">Upload Photo</string>
 
     <!-- New Answer -->
     <string name="new_answer_title">New Answer</string>
-	<string name="new_answer_fragment_edittext_body">Place Answer Text Here</string>	
-	<string name="new_answer_fragment_submit_button">Submit</string>
-	<string name="new_answer_fragment_upload_photo_textview">Upload Photo</string>
+	<string name="new_answer_fragment_edittext_body">Place Answer Text Here</string>
 	
 	<!--  Profile Fragment/Activity -->
 	<string name="profile_title">User Profile</string>

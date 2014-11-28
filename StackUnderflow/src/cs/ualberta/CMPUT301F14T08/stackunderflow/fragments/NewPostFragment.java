@@ -1,31 +1,32 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
-import java.io.File;
 import java.util.UUID;
-
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.menu;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.NewImageDialogFragment;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.UsernameDialog;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.MapActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.NewImageDialogFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.UsernameDialog;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.LocManager;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 /**
  * This is used when a user would like to make a new post. This will also allow the user to input a new user name if the user has not yet chosen one
  * If the user does not choose a user name it will simply default to User. 
@@ -37,15 +38,19 @@ public abstract class NewPostFragment extends Fragment {
     protected static final String DIALOG_IMAGE = "image";
     protected static final int REQUEST_USERNAME = 0;
     protected static final int REQUEST_IMAGE = 1;
+	protected static final int REQUEST_MAP_CODE = 11223344;
 
     protected PostController sPostController;
     protected UUID mPostId;
     protected String mJPEGFileName;
     protected byte mJPEGByteArray[];
+    protected Double mLatitude;
+    protected Double mLongitude; 
 
     protected EditText mPostTitle;
     protected EditText mPostBody;
     protected Button mUploadPictureButton;
+    protected CheckBox mCheckBox;
     protected Button mSubmitButton;
 
     protected int mBlackColor;
@@ -66,11 +71,6 @@ public abstract class NewPostFragment extends Fragment {
         }
     }
 
-    abstract int getViewID();
-    abstract int getBodyTextViewID();
-    abstract int getAddPictureButtonID();
-    abstract int getSubmitButtonID();
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
         super.onCreateOptionsMenu(menu, menuInflater);
@@ -78,40 +78,19 @@ public abstract class NewPostFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()) {
-
-        case R.id.menu_item_new_reply:
-            //        	if(sPostController.getPostManager().getUserProfileManager().getUserProfile().getUsername.equals(null)){
-            //        		FragmentManager fm = getActivity().getFragmentManager();
-            //        		UsernameFragment dialog = new UsernameFragment();
-            //        		dialog.setTargetFragment(PostFragment.this, REQUEST_USERNAME);
-            //        		dialog.show(fm, DIALOG_USERNAME);
-            //        	}
-            //        	else{
-            //        		//new reply
-            //        		String toastString = "Someone needs to implement code to show add replies";
-            //                Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_LONG);
-            //                toast.show(); 
-            //        	}
-            return true;
-        	
-
-        default:
-            return super.onOptionsItemSelected(menuItem);
-        } 
-    }
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
 
-        View v = inflater.inflate(getViewID(), parent, false);     
+        View v = inflater.inflate(R.layout.new_post_fragment, parent, false);     
 
         // Get Views IDs
-        mPostBody = (EditText)v.findViewById(getBodyTextViewID());
-        mUploadPictureButton = (Button) v.findViewById(getAddPictureButtonID());
-        mSubmitButton = (Button) v.findViewById(getSubmitButtonID());
+        mPostTitle = (EditText) v.findViewById(R.id.new_post_fragment_edittext_title);
+        mPostBody = (EditText)v.findViewById(R.id.new_post_fragment_edittext_body);
+        mUploadPictureButton = (Button) v.findViewById(R.id.new_post_fragment_upload_photo_button);
+        mSubmitButton = (Button) v.findViewById(R.id.new_post_fragment_submit_button);
         mJPEGByteArray = null;
         mJPEGFileName = null;
+        mLatitude = null;
+        mLongitude = null;
 
 
         //Calls newImageDialogFragment with existing picture info (byteArray and fileName)
@@ -125,6 +104,23 @@ public abstract class NewPostFragment extends Fragment {
 
             }
         });
+        
+        mCheckBox = (CheckBox) v.findViewById(R.id.new_post_fragment_location_checkbox);
+        
+        mCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if(isChecked){
+					Intent intent = new Intent(getActivity(), MapActivity.class);                
+		            startActivityForResult(intent, REQUEST_MAP_CODE);
+				}
+				else{
+					mCheckBox.setText(getResources().getString(R.string.new_post_fragment_location_checkbox));
+				}
+				
+			}
+		});
 
         return v;
     }
@@ -150,5 +146,12 @@ public abstract class NewPostFragment extends Fragment {
                 mUploadPictureButton.setText("Upload Photo");
             }
         }
+        if (requestCode == REQUEST_MAP_CODE && resultCode == Activity.RESULT_OK) {
+			mLatitude = data.getDoubleExtra("latitude", LocManager.LOC_ERROR);
+			mLongitude = data.getDoubleExtra("longitude", LocManager.LOC_ERROR);
+			if(mLatitude != LocManager.LOC_ERROR && mLongitude != LocManager.LOC_ERROR){
+					mCheckBox.setText(getResources().getString(R.string.new_post_fragment_location_checkbox) + LocManager.getLocationString(getActivity(), new LatLng(mLatitude, mLongitude)));
+        	}
+		}
     }
 }

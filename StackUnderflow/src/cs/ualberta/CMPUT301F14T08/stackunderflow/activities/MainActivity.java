@@ -4,6 +4,8 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
@@ -20,6 +22,8 @@ import android.widget.Toast;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.SearchDialogFragment;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.MainFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.NewPostFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.LocManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 import android.util.Log;
 /**
@@ -172,6 +176,8 @@ public class MainActivity extends Activity implements TabListener {
                 String title = data.getStringExtra("question.title");
                 String body = data.getStringExtra("question.body");
                 String author = data.getStringExtra("question.author");
+                Double latitude = data.getDoubleExtra("question.latitude", LocManager.LOC_ERROR);
+                Double longitude = data.getDoubleExtra("question.longitude", LocManager.LOC_ERROR);
                 String picture = null;
                 if (data.getByteArrayExtra("question.picture") != null) {
                 	//Encode byte array as a string to faster storage online
@@ -185,6 +191,8 @@ public class MainActivity extends Activity implements TabListener {
                 else {
                     q = new Question(body, author, title);
                 }
+                if(latitude != LocManager.LOC_ERROR && longitude != LocManager.LOC_ERROR)
+                	q.setLocation(new LatLng(latitude, longitude));
 
                 tf.sPostController.getPostManager().addQuestion(q);
                 tf.onResume();

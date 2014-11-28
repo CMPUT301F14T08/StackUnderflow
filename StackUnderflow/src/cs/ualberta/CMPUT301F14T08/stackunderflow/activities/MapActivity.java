@@ -63,8 +63,8 @@ public class MapActivity extends Activity {
 			}
 			else{
 				Intent msg = new Intent();
-                msg.putExtra("lat", myLocation.getLatitude());
-                msg.putExtra("lon", myLocation.getLongitude());
+                msg.putExtra("latitude", myLocation.getLatitude());
+                msg.putExtra("longitude", myLocation.getLongitude());
 
                 setResult(Activity.RESULT_OK, msg);
 				this.finish();
@@ -80,8 +80,8 @@ public class MapActivity extends Activity {
 			}
 			else{
 				Intent msg = new Intent();
-                msg.putExtra("lat", m.getPosition().latitude);
-                msg.putExtra("lon", m.getPosition().longitude);
+                msg.putExtra("latitude", m.getPosition().latitude);
+                msg.putExtra("longitude", m.getPosition().longitude);
 
                 setResult(Activity.RESULT_OK, msg);
 				this.finish();

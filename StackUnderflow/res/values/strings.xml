@@ -55,6 +55,10 @@
     <!-- Username Dialog -->
     <string name="dialogDescText">You need to choose a username! This is the name that users will see when you post a Question, Answer, or Reply.</string>
     <string name="usernameDialog">Username:</string>
+    
+    <!-- Image Dialog -->
+    <string name="camera_choice">Camera</string>
+    <string name="gallery_choice">Gallery</string>
 
     <!-- Searching -->
     <string name="search_question">Questions Only</string>
@@ -64,8 +68,9 @@
     <string name="search_text">Text:</string>
     <string name="title_activity_search">SearchActivity</string>
     
-    <!-- Searching -->
+    <!-- Map -->
+    <string name="map_title">Map</string>
     <string name="use_my_location">Use My Location</string>
-    <string name="use_marker">User Marker Location</string>
+    <string name="use_marker">Use Marker Location</string>
 
 </resources>

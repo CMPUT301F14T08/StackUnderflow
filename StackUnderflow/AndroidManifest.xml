@@ -38,6 +38,7 @@
             
         <activity
             android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.MainActivity"
+          	android:screenOrientation="portrait"
             android:label="@string/title_activity_stack_underflow" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,34 +48,41 @@
         </activity>
         <activity
             android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.QuestionActivity"
+            android:screenOrientation="portrait"
             android:label="@string/question_title"
             android:theme="@style/BlackTheme" >
         </activity>
         <activity
             android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.AnswerActivity"
+            android:screenOrientation="portrait"
             android:label="@string/answer_title"
             android:theme="@style/BlueTheme">
 
         </activity>
         <activity
             android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.NewQuestionActivity"
+            android:screenOrientation="portrait"
             android:label="@string/new_question_title" >
         </activity>
         <activity
             android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.NewAnswerActivity"
+            android:screenOrientation="portrait"
             android:label="@string/new_question_title"
             android:theme="@style/BlueTheme" >
         </activity>
         <activity
             android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.SearchActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_search" >
         </activity>
                <activity
             android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.MapActivity"
-            android:label="Map" >
+            android:screenOrientation="portrait"
+            android:label="@string/map_title" >
         </activity>
         <activity 
             android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.ProfileActivity"
+            android:screenOrientation="portrait"
             android:label="@string/profile_title"
             android:theme="@style/ProfileActionBar" >
             

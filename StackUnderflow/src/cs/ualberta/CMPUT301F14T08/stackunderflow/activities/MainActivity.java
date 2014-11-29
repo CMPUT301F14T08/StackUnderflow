@@ -4,8 +4,6 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.activities;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
@@ -16,16 +14,18 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.SearchDialogFragment;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.MainFragment;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.NewPostFragment;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.LocManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
-import android.util.Log;
 /**
  * MainActivity is the main page. Called when the user first starts the app
  * works with the tabs on the main screen and the dialog allowing the user to navigate between the different screens.

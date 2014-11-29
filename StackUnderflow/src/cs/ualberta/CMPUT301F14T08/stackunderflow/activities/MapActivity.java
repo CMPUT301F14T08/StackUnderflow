@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.LocManager;
 /**
  * Shows then the map so users will be able to view the map. When they click on the map they will drop a pointer that will denote their location.
  * @author Cmput301 Winter 2014 Group 8
@@ -79,12 +80,20 @@ public class MapActivity extends Activity {
 				toast.show();
 			}
 			else{
-				Intent msg = new Intent();
-                msg.putExtra("latitude", m.getPosition().latitude);
-                msg.putExtra("longitude", m.getPosition().longitude);
-
-                setResult(Activity.RESULT_OK, msg);
-				this.finish();
+				double latitude = m.getPosition().latitude;
+				double longitude = m.getPosition().longitude;
+				if(LocManager.getLocationString(this, new LatLng(latitude, longitude)) != null){
+					Intent msg = new Intent();
+	                msg.putExtra("latitude", latitude);
+	                msg.putExtra("longitude", longitude);
+	
+	                setResult(Activity.RESULT_OK, msg);
+					this.finish();
+				}
+				else{
+					toast = Toast.makeText(this, "No location found at given marker point", duration);
+					toast.show();
+				}
 
 			}
 			return true;

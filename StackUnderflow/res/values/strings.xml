@@ -33,8 +33,9 @@
 
     <!-- New Post -->
     <string name="new_post_fragment_submit_button">Submit</string>
-    <string name="new_post_fragment_upload_photo_textview"> Upload Photo</string>
-    <string name="new_post_fragment_location_checkbox">Location:</string>
+    <string name="new_post_fragment_upload_photo_textview">&#160;Upload Photo?</string>
+    <string name="new_post_fragment_location_button_false">&#160;Location?</string>
+    <string name="new_post_fragment_location_button_true">&#160;Location:&#160;</string>
     
     <!-- New Question -->
     <string name="new_question_title">New Question</string>

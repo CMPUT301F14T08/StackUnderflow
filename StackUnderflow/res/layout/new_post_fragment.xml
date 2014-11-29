@@ -53,13 +53,16 @@
         android:text="@string/new_post_fragment_submit_button"
         android:textColor="@color/white" />
 
-    <CheckBox
-        android:id="@+id/new_post_fragment_location_checkbox"
+    <Button
+        android:id="@+id/new_post_fragment_location_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/new_post_fragment_edittext_body"
+        android:layout_alignLeft="@+id/new_post_fragment_upload_photo_button"
         android:layout_below="@+id/new_post_fragment_upload_photo_button"
-        android:layout_marginTop="14dp"
-        android:text="@string/new_post_fragment_location_checkbox" />
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/mapmarker"
+        android:text="@string/new_post_fragment_location_button_false"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
 
 </RelativeLayout>

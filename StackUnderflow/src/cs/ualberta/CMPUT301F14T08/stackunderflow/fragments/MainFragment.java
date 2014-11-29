@@ -1,19 +1,6 @@
-
 package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
 import java.util.ArrayList;
-
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.color;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.AnswerActivity;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.QuestionActivity;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostAdapter;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -27,6 +14,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.AnswerActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.QuestionActivity;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostAdapter;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 /**
  * MainFragment This is where the sorting on the main screen appears so the user may view by most popular or most recent.
  * this also allows the user to move to questions that they would like to see.

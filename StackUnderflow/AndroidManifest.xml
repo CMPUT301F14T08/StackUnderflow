@@ -49,6 +49,7 @@
         <activity
             android:name="cs.ualberta.CMPUT301F14T08.stackunderflow.activities.QuestionActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/question_title"
             android:theme="@style/BlackTheme" >
         </activity>

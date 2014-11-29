@@ -116,6 +116,7 @@ public abstract class NewPostFragment extends Fragment {
 		            startActivityForResult(intent, REQUEST_MAP_CODE);
 				}
 				else{
+					mLocationButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mapmarker, 0, 0, 0);
 					mLocationButton.setText(getResources().getString(R.string.new_post_fragment_location_button_false));
 					mLocationButton.setTextColor(getResources().getColor(R.color.black));
 					mLatitude = LocManager.LOC_ERROR;
@@ -137,10 +138,12 @@ public abstract class NewPostFragment extends Fragment {
                 mJPEGByteArray = bundle.getByteArray("BYTES"); //null exception error
                 mJPEGFileName = bundle.getString("NAME");
                 if (mJPEGFileName != null) {
+                	mUploadPictureButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.picture_blue, 0, 0, 0);
                     mUploadPictureButton.setText(" " + mJPEGFileName);
                     mUploadPictureButton.setTextColor(getResources().getColor(R.color.blue));
                 }
                 else {
+                	mUploadPictureButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.picture_dark, 0, 0, 0);
                     mUploadPictureButton.setText(getResources().getString(R.string.new_post_fragment_upload_photo_textview));
                     mUploadPictureButton.setTextColor(getResources().getColor(R.color.black));
                 }
@@ -148,6 +151,7 @@ public abstract class NewPostFragment extends Fragment {
             if (resultCode == Activity.RESULT_CANCELED) {
                 mJPEGByteArray = null;
                 mJPEGFileName = null;
+                mUploadPictureButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.picture_dark, 0, 0, 0);
                 mUploadPictureButton.setText(getResources().getString(R.string.new_post_fragment_upload_photo_textview));
                 mUploadPictureButton.setTextColor(getResources().getColor(R.color.black));
             }
@@ -156,8 +160,9 @@ public abstract class NewPostFragment extends Fragment {
 			mLatitude = data.getDoubleExtra("latitude", LocManager.LOC_ERROR);
 			mLongitude = data.getDoubleExtra("longitude", LocManager.LOC_ERROR);
 			if(mLatitude != LocManager.LOC_ERROR && mLongitude != LocManager.LOC_ERROR){
-					mLocationButton.setText(getResources().getString(R.string.new_post_fragment_location_button_true) + LocManager.getLocationString(getActivity(), new LatLng(mLatitude, mLongitude)));
-					mLocationButton.setTextColor(getResources().getColor(R.color.blue));
+				mLocationButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mapmarker_blue, 0, 0, 0);
+				mLocationButton.setText(getResources().getString(R.string.new_post_fragment_location_button_true) + LocManager.getLocationString(getActivity(), new LatLng(mLatitude, mLongitude)));
+				mLocationButton.setTextColor(getResources().getColor(R.color.blue));
         	}
 		}
     }

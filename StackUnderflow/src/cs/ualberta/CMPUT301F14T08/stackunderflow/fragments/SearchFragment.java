@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
@@ -118,6 +120,12 @@ public class SearchFragment extends Fragment {
         @Override
         protected void onPostExecute(SearchPosts result) {
             searchResult = result.loadFromServer(searchType, searchPics, searchTerms);
+
+            if(searchResult.size() == 0){
+            	Toast toast = Toast.makeText(getActivity(), "No results found", Toast.LENGTH_LONG);
+            	toast.setGravity(Gravity.CENTER, 0, 0);
+            	toast.show();
+            }
 
             adapter.clear();
             for (Post post : searchResult) {

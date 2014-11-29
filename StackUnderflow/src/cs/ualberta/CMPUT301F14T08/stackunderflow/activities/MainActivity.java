@@ -108,6 +108,7 @@ public class MainActivity extends Activity implements TabListener {
             FragmentManager fm = getFragmentManager();
             SearchDialogFragment sdf = new SearchDialogFragment();
             sdf.show(fm, "Search Dialog Fragment");
+            return true;
 
         case R.id.mark_read:	
             if (tf.sPostController == null) {

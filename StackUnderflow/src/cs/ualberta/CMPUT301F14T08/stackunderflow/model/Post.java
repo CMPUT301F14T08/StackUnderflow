@@ -156,4 +156,12 @@ public class Post {
     	return mLocation != null;
     }
     
+    public void setDate(Date date){
+    	mDate = date;
+    }
+    
+    public void setPicture(String picture){
+    	mPicture = picture;
+    }
+    
 }

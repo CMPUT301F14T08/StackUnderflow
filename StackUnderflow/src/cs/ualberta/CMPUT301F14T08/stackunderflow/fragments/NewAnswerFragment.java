@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +73,8 @@ public class NewAnswerFragment extends NewPostFragment {
                     else {
                         mAnswer = new Answer(body, author);  
                     }
-
+                    Log.d("lat", ""+mLatitude);
+                    Log.d("lon", ""+mLongitude);
                     if(mLatitude != LocManager.LOC_ERROR && mLongitude != LocManager.LOC_ERROR) {
                         location = new LatLng(mLatitude, mLongitude);
                     	mAnswer.setLocation(location);

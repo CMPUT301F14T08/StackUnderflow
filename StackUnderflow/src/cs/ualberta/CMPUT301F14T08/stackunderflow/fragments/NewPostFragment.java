@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -88,8 +90,8 @@ public abstract class NewPostFragment extends Fragment {
         mSubmitButton = (Button) v.findViewById(R.id.new_post_fragment_submit_button);
         mJPEGByteArray = null;
         mJPEGFileName = null;
-        mLatitude = null;
-        mLongitude = null;
+        mLatitude = LocManager.LOC_ERROR;
+        mLongitude = LocManager.LOC_ERROR;
 
 
         //Calls newImageDialogFragment with existing picture info (byteArray and fileName)
@@ -111,16 +113,21 @@ public abstract class NewPostFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				includeLocation = !includeLocation;
-				if(includeLocation){
-					Intent intent = new Intent(getActivity(), MapActivity.class);                
-		            startActivityForResult(intent, REQUEST_MAP_CODE);
+				if(Build.BRAND.equalsIgnoreCase("generic")){
+					Toast.makeText(getActivity(), "This feature is not supported using an emulator", Toast.LENGTH_LONG).show();
 				}
 				else{
-					mLocationButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mapmarker, 0, 0, 0);
-					mLocationButton.setText(getResources().getString(R.string.new_post_fragment_location_button_false));
-					mLocationButton.setTextColor(getResources().getColor(R.color.black));
-					mLatitude = LocManager.LOC_ERROR;
-					mLongitude = LocManager.LOC_ERROR;
+					if(includeLocation){
+						Intent intent = new Intent(getActivity(), MapActivity.class);                
+			            startActivityForResult(intent, REQUEST_MAP_CODE);
+					}
+					else{
+						mLocationButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mapmarker, 0, 0, 0);
+						mLocationButton.setText(getResources().getString(R.string.new_post_fragment_location_button_false));
+						mLocationButton.setTextColor(getResources().getColor(R.color.black));
+						mLatitude = LocManager.LOC_ERROR;
+						mLongitude = LocManager.LOC_ERROR;
+					}
 				}
 				
 			}

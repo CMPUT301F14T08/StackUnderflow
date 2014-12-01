@@ -25,6 +25,7 @@ public class UserProfile {
         mUsername ="Guest";
         mAnswersPostedCount=0;
         mQuestionsPostedCount=0;
+        mLocation = null;
     }
     
     public String getUsername(){

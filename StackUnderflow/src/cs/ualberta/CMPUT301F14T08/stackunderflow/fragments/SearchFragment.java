@@ -2,8 +2,10 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
 
 import java.util.ArrayList;
+
 import android.app.Fragment;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,17 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R.string;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.AnswerActivity;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.QuestionActivity;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostAdapter;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.SearchPosts;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
@@ -123,15 +125,45 @@ public class SearchFragment extends Fragment {
         protected void onPostExecute(SearchPosts result) {
             searchResult = result.loadFromServer(searchType, searchPics, searchTerms, searchLoc);
 
-            if(searchResult.size() == 0){
+            adapter.clear();
+            
+            boolean errorShown = false;
+            if(searchLoc){
+            	LatLng myLatLng = UserProfileManager.getInstance(getActivity()).getLocation();
+            	if(myLatLng == null){
+	            	Toast toast = Toast.makeText(getActivity(), "Cannot find your location to load nearby posts", Toast.LENGTH_LONG);
+	            	toast.setGravity(Gravity.CENTER, 0, 0);
+	            	toast.show();
+	            	searchResult.clear();
+	            	errorShown = true;
+            	}
+            	else{
+            		Location myLoc = new Location("");
+            		myLoc.setLatitude(myLatLng.latitude);
+            		myLoc.setLongitude(myLatLng.longitude);
+            		for (Post post : searchResult) {
+            			if(post.hasLocation()){
+	            			Location postLoc = new Location("");
+	            			postLoc.setLatitude(post.getLocation().latitude);
+	            			postLoc.setLongitude(post.getLocation().longitude);
+	            			float distance = myLoc.distanceTo(postLoc);
+	            			if(distance <= 100000){
+	            				adapter.add(post);
+	            			}
+            			}
+            		}
+            	}
+            }
+            else{
+	            for (Post post : searchResult) {
+	                adapter.add(post);
+	            }
+            }
+            
+            if(adapter.getCount() == 0 && !errorShown){
             	Toast toast = Toast.makeText(getActivity(), "No results found", Toast.LENGTH_LONG);
             	toast.setGravity(Gravity.CENTER, 0, 0);
             	toast.show();
-            }
-
-            adapter.clear();
-            for (Post post : searchResult) {
-                adapter.add(post);
             }
 
             adapter.notifyDataSetChanged();

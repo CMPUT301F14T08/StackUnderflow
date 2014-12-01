@@ -12,20 +12,21 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.PostFragment;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 
 public class TestBaseFragmentActivity extends
-        ActivityInstrumentationTestCase2<BaseFragmentActivity> {
+ActivityInstrumentationTestCase2<BaseFragmentActivity> {
 
     public TestBaseFragmentActivity() {
         super(BaseFragmentActivity.class);
     }
 
     // Refer to comment in TestAnswerActivity
-    /*
-     * public void testBaseFragment() { Intent intent = new Intent(); Question q = new Question("a",
-     * "a", "a"); intent.putExtra(PostFragment.EXTRA_POST_ID, q.getID()); setActivityIntent(intent);
-     * BaseFragmentActivity ba = getActivity(); View test = (View)
-     * ba.findViewById(cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout.base_fragment_activity);
-     * View test2 = (View)
-     * ba.getWindow().getDecorView().findViewById(cs.ualberta.CMPUT301F14T08.stackunderflow
-     * .R.layout.base_fragment_activity); ViewAsserts.assertOnScreen(test, test2); }
-     */
+    /*public void testBaseFragment() {
+        Intent intent = new Intent();
+        Question q = new Question("a", "a", "a");
+        intent.putExtra(PostFragment.EXTRA_POST_ID, q.getID());
+        setActivityIntent(intent);
+        BaseFragmentActivity ba = getActivity();
+        View test = (View) ba.findViewById(cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout.base_fragment_activity);
+        View test2 = (View) ba.getWindow().getDecorView().findViewById(cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout.base_fragment_activity);
+        ViewAsserts.assertOnScreen(test, test2);
+    }*/
 }

@@ -28,6 +28,7 @@ public class Post {
     protected int mUpvotesChangedOffline;
     protected boolean mExistsOnline;
     protected LatLng mLocation;
+    protected String locationStr;
     
     /**
      * Basic post part that is used to inherit into Answer and Question. This constructor is used when the user attempts to make a post
@@ -150,6 +151,7 @@ public class Post {
     }
     public void setLocation(LatLng location){
     	mLocation = location;
+    	setLocationStr(location);
     }
     
     public boolean hasLocation(){
@@ -164,4 +166,14 @@ public class Post {
     	mPicture = picture;
     }
     
+    public void setLocationStr(LatLng location) {
+        Double lat = 0.0d;
+        Double lon = 0.0d;
+        
+        lat = ((int) ((location.latitude * 1000.0) + 0.5)) / 1000.0;
+        lon = ((int) ((location.longitude * 1000.0) + 0.5)) / 1000.0;
+        
+        String formatedLocation = String.valueOf(lat) + ", " + String.valueOf(lon);
+        this.locationStr = formatedLocation;
+    }
 }

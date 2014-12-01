@@ -67,6 +67,7 @@ public class SearchDialogFragment extends DialogFragment{
                     intent.putExtra(SearchObject.SEARCH_PICS, searchPics);
                     intent.putExtra(SearchObject.SEARCH_STRING, searchTerms);
                     intent.putExtra(SearchObject.SEARCH_LOCATION, searchLoc);
+                    
                     startActivityForResult(intent, 0);
                 }
             })

@@ -23,29 +23,21 @@ public class MatchSearchCommand implements ElasticSearchCommand {
     }
 
     public String getJsonCommand() {
-        /*StringBuffer query = new StringBuffer("{\"query\" : {\"query_string\" : {\"query\" : \"" 
-                + searchTerms + "\", \"fields\": [");
+
+        StringBuffer query;
+
+        query = new StringBuffer("{\"query\": {\"filtered\": {\"query\":" +
+                " {\"query_string\": {\"query\": \"" + searchTerms + "\",\"fields\": [");
         if (searchType == SearchObject.SEARCH_QUESTIONS) query.append("\"mTitle\", \"mText\"");
         if (searchType == SearchObject.SEARCH_ANSWERS) query.append("\"mAnswers.mText\"");
         if (searchType == SearchObject.SEARCH_BOTH) query.append("\"mTitle\", \"mText\", \"mAnswers.mText\"");
-        query.append("]}}}");*/
-        StringBuffer query;
-        //if (searchLoc) {
-        // = new StringBuffer();
-        //}
-        //else {
-            query = new StringBuffer("{\"query\": {\"filtered\": {\"query\":" +
-                    " {\"query_string\": {\"query\": \"" + searchTerms + "\",\"fields\": [");
-            if (searchType == SearchObject.SEARCH_QUESTIONS) query.append("\"mTitle\", \"mText\"");
-            if (searchType == SearchObject.SEARCH_ANSWERS) query.append("\"mAnswers.mText\"");
-            if (searchType == SearchObject.SEARCH_BOTH) query.append("\"mTitle\", \"mText\", \"mAnswers.mText\"");
-            query.append("]}}");
-            if (searchPics) {
-                query.append(",\"filter\": {\"or\": [{ \"exists\": { \"field\" : \"mPicture\" }}," +
-                        "{ \"exists\": { \"field\" : \"mAnswers.mPicture\"}}]}");
-            }
-            query.append("}}}");
-        //}
+        query.append("]}}");
+        if (searchPics) {
+            query.append(",\"filter\": {\"or\": [{ \"exists\": { \"field\" : \"mPicture\" }}," +
+                    "{ \"exists\": { \"field\" : \"mAnswers.mPicture\"}}]}");
+        }
+        query.append("}}}");
+
 
         return query.toString();
     }

@@ -1,32 +1,39 @@
 package cs.ualberta.CMPUT301F14T08.stackunderflow.activities;
 
-import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.SearchDialogFragment;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.SearchFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.SearchDialogFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.SearchFragment;
+
 /**
  * SearchActivity. Simply the base for the SearchFragment. 
  * @author Cmput301 Winter 2014 Group 8
  */
 public class SearchActivity extends BaseFragmentActivity {
+    private SearchFragment sf;
+    static final int PICK_QUESTION = 0;
+    static final int PICK_ANSWER = 1;
+    
     public SearchActivity() {
-
+        super();
     }
 
     @Override
     protected Fragment newFragmentType() {
-        return new SearchFragment();
+        sf = new SearchFragment();
+        return sf;
     }	
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {//, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.fragment_main_menu, menu);
+        getMenuInflater().inflate(R.menu.search_menu, menu);
 
         return true;
     }
@@ -46,12 +53,6 @@ public class SearchActivity extends BaseFragmentActivity {
         Toast toast = null;
 
         switch (item.getItemId()) {
-        /*case R.id.ask_question: 
-            Intent intent = new Intent(this, NewQuestionActivity.class);                
-            startActivityForResult(intent, PICK_QUESTION);
-
-            return true;*/
-
         case R.id.user_profile: 
             Intent i = new Intent(this, ProfileActivity.class);                
             startActivity(i);
@@ -64,23 +65,25 @@ public class SearchActivity extends BaseFragmentActivity {
             sdf.show(fm, "Search Dialog Fragment");
             return true;
 
-        /*case R.id.mark_read:    
-            if (tf.sPostController == null) {
+        case R.id.mark_read:    
+            if (sf.sPostController == null) {
                 return true;
             }
 
-            boolean postsAdded = tf.sPostController.markSelectedAsReadLater();
-            tf.adapter.notifyDataSetChanged();
+            boolean postsAdded = sf.sPostController.markSelectedAsReadLater();
+            sf.adapter.notifyDataSetChanged();
 
-            if (postsAdded)
+            if (postsAdded) {
                 text = "Successfully added to your Read Later List.";
-            else
+            }
+            else {
                 text = "Long-click to select one or more posts.";
+            }
    
             toast = Toast.makeText(this, text, duration);
             toast.show();           
 
-            return true;*/
+            return true;
 
         default:                
             text = "Implement menu item";
@@ -89,4 +92,5 @@ public class SearchActivity extends BaseFragmentActivity {
             return false;
         } 
     }   
+
 }

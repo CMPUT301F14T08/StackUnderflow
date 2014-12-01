@@ -78,7 +78,6 @@ public class ProfileActivity extends Activity implements TabListener {
             public void onClick(View v) {
                 if (((TextView)v.findViewById(R.id.profile_user_name)).getText() == "Guest"){
                     UsernameDialog.showDialog(getFragmentManager());
-                    // We need a way to update the text view after returning from the fragment
                 }
             }
         });

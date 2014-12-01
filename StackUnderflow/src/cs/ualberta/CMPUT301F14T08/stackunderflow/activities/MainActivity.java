@@ -196,10 +196,10 @@ public class MainActivity extends Activity implements TabListener {
                 if(latitude != LocManager.LOC_ERROR && longitude != LocManager.LOC_ERROR) {
                     location = new LatLng(latitude, longitude);
                 	q.setLocation(location);
+                	tf.sPostController.getPostManager().setUserLocation(location);
                 }
 
-                tf.sPostController.getPostManager().addQuestion(q);
-                tf.sPostController.getPostManager().setUserLocation(location);
+                tf.sPostController.getPostManager().addQuestion(q);                
                 tf.onResume();
             }
         }

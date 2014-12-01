@@ -3,42 +3,27 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
 import java.util.ArrayList;
 
-import android.app.Fragment;
-import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.AnswerActivity;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.QuestionActivity;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostAdapter;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.SearchPosts;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.SearchObject;
 /**
  * 	Search view. This is where the search details are viewed.
  *  @author Cmput301 Winter 2014 Group 8
  */
-public class SearchFragment extends Fragment {		
-    protected ArrayList<Post> searchResult;
-    protected PostAdapter adapter;
-    private ListView listview;
-    private View loadingPanel;
+public class SearchFragment extends ListFragment {
 
     private int searchType = 2;
     private boolean searchPics = false;
@@ -50,55 +35,20 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.search);
         Bundle b = getActivity().getIntent().getExtras();
-        //savedInstanceState.getBoolean(SearchObject.SEARCH_PICS);
+        sPostController = PostController.getInstanceNoRefresh(getActivity());
         searchType = b.getInt(SearchObject.SEARCH_TYPE);
-        searchPics = b.getBoolean(SearchObject.SEARCH_PICS); //getArguments().getBoolean(SearchObject.SEARCH_PICS);
-        searchTerms = b.getString(SearchObject.SEARCH_STRING); //getArguments().getString(SearchObject.SEARCH_STRING);
+        searchPics = b.getBoolean(SearchObject.SEARCH_PICS);
+        searchTerms = b.getString(SearchObject.SEARCH_STRING);
         searchLoc = b.getBoolean(SearchObject.SEARCH_LOCATION);
+        
+        currFrag = "search";
     }
 
     @Override
     public void onResume(){
         super.onResume();
         createView();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.list_fragment, null);
-        listview = (ListView) view.findViewById(R.id.list_view);
-        loadingPanel = view.findViewById(R.id.loadingPanel);
-
-        listview.setOnItemClickListener(new OnItemClickListener() {
-
-            // Opens Question or Answer Fragment based upon list item clicked 
-            @Override
-            public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-                Intent i;
-
-                Post p = ((PostAdapter)adapter).getItem(position);
-                // Move the putExtra & startActivity out once AnswerActivity is created
-                if (p instanceof Question) {
-                    Log.d("Debug", "Question Clicked: " + p.getID());
-                    i = new Intent(getActivity(), QuestionActivity.class);
-                    i.putExtra(PostFragment.EXTRA_POST_ID, p.getID());
-                    startActivity(i);
-                }
-                else if (p instanceof Answer) {
-                    Log.d("Debug", "Answer Clicked: " + p.getID());
-                    i = new Intent(getActivity(), AnswerActivity.class);
-                    i.putExtra(PostFragment.EXTRA_POST_ID, p.getID());
-                    startActivity(i);
-                }
-
-            }
-
-        });		
-
-        return view;
-
+        currFrag = "search";
     }
 
     public void createView() {

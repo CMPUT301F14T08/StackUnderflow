@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/search" android:title="@string/search"></item>
+    <item android:id="@+id/user_profile" android:title="@string/user_profile"></item>
+    <item android:id="@+id/mark_read" android:title="@string/mark_read"></item> 
+</menu>

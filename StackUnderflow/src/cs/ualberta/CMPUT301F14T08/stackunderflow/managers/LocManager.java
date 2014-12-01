@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class LocManager{
 	
 	public static final double LOC_ERROR = 999999;
+	public static final String LOCATION_ERROR = "LOCATION_ERROR";
 	
 	public static String getLocationString(Context context, LatLng location){
 		if (location == null) return "none";
@@ -25,14 +26,14 @@ public class LocManager{
         catch (IOException e1) {
         	Log.e("LOCATION_ERROR","IO Exception in getFromLocation()");
         	e1.printStackTrace();
-        	return "IO Exception trying to get address";
+        	return LOCATION_ERROR;
         }
         catch (IllegalArgumentException e2) {
         	// Error message to post in the log
         	String errorString = "Illegal arguments " + Double.toString(location.latitude) + " , " + Double.toString(location.longitude) + " passed to address service";
         	Log.e("LOCATION_ERROR", errorString);
         	e2.printStackTrace();
-        	return errorString;
+        	return LOCATION_ERROR;
         }
         
         if (addresses != null && addresses.size() > 0) {

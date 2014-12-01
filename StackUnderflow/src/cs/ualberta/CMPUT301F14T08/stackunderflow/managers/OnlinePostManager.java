@@ -327,12 +327,9 @@ public class OnlinePostManager extends PostManager {
         return result.toString();
     }
 
-    /** Public Methods **/
-
 
 
     /** Public Methods **/
-    // TODO: 3. strips/loads user attributes
     /**
      * 1. pushes updates to server
      * 2. get posts from server 

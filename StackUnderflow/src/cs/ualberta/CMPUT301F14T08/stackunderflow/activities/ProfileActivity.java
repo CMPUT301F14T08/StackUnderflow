@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -20,7 +21,9 @@ import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.UsernameDialog;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.ProfileFragment;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.LocManager;
@@ -64,6 +67,9 @@ public class ProfileActivity extends Activity implements TabListener {
         if (userLoc != null) {
             if ((userLoc.latitude != LocManager.LOC_ERROR) && (userLoc.latitude != LocManager.LOC_ERROR)) {
                 setLocation = LocManager.getLocationString(getApplicationContext(), userLoc);
+                if (setLocation == LocManager.LOCATION_ERROR){
+                	setLocation = "Location";
+                }
             }
         }
         mUserLocation.setText(setLocation);
@@ -102,8 +108,19 @@ public class ProfileActivity extends Activity implements TabListener {
 
         mUserLocation.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MapActivity.class);                
-                startActivityForResult(intent, REQUEST_MAP_CODE);
+            	//Disable location if running on an emulator
+				if(Build.BRAND.equalsIgnoreCase("generic")){
+					Toast.makeText(getApplicationContext(), "This feature is not supported using an emulator", Toast.LENGTH_LONG).show();
+				}
+				else{
+					if(PostController.getInstanceNoRefresh(getApplicationContext()).isOnline()){
+						Intent intent = new Intent(getApplicationContext(), MapActivity.class);                
+						startActivityForResult(intent, REQUEST_MAP_CODE);
+					}
+					else{
+						Toast.makeText(getApplicationContext(), "No network connection", Toast.LENGTH_LONG).show();
+					}
+				}
             }
         });
 

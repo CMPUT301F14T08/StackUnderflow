@@ -113,13 +113,20 @@ public abstract class NewPostFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				includeLocation = !includeLocation;
+				
+				//Disable location if running on an emulator
 				if(Build.BRAND.equalsIgnoreCase("generic")){
 					Toast.makeText(getActivity(), "This feature is not supported using an emulator", Toast.LENGTH_LONG).show();
 				}
 				else{
 					if(includeLocation){
-						Intent intent = new Intent(getActivity(), MapActivity.class);                
-			            startActivityForResult(intent, REQUEST_MAP_CODE);
+						if(PostController.getInstanceNoRefresh(getActivity()).isOnline()){
+							Intent intent = new Intent(getActivity(), MapActivity.class);                
+				            startActivityForResult(intent, REQUEST_MAP_CODE);
+						}
+						else{
+							Toast.makeText(getActivity(), "No network connection", Toast.LENGTH_LONG).show();
+						}
 					}
 					else{
 						mLocationButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mapmarker, 0, 0, 0);

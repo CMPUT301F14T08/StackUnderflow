@@ -212,7 +212,7 @@ public abstract class PostFragment extends Fragment {
         mUsername.setText("- " + mPost.getSignature() + " " + date);
         
         mLocation = (TextView)postView.findViewById(R.id.post_fragment_textview_location);
-        if(mPost.hasLocation())
+        if(mPost.hasLocation() && PostController.getInstanceNoRefresh(getActivity()).isOnline())
         	mLocation.setText(mPost.getLocationString(getActivity()));
         else
         	mLocation.setVisibility(View.GONE);

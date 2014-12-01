@@ -51,6 +51,7 @@
     <string name="my_posts">My Posts</string>
     <string name="my_favorites">My Favorites</string>
 	<string name="read_later">Read Later</string>
+	<string name="location_text">Location</string>
 
     <!-- Username Dialog -->
     <string name="dialogDescText">You need to choose a username! This is the name that users will see when you post a Question, Answer, or Reply.</string>

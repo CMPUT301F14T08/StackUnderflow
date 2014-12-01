@@ -1,83 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/profile_action_bar_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
+    android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="horizontal"
-    android:padding = "10dip" 
-    android:gravity="center">
-    	<TextView
-    	    android:id="@+id/profile_answers_box"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:layout_alignParentRight="true"
-    	    android:layout_alignParentTop="true"
+    android:padding="10dip" >
 
-    	    android:background="@drawable/rounded_corners_blue"
-    	    android:gravity="center"
-    	    android:lines="2"
-    	    android:padding="10dip"
-    	    android:text="A\nansw"
-    	    android:textColor="@color/white"
-    	    android:textSize="24sp"
-    	    android:textStyle="bold" />
+    <TextView
+        android:id="@+id/profile_answers_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/rounded_corners_blue"
+        android:gravity="center"
+        android:lines="2"
+        android:padding="10dip"
+        android:text="A\nansw"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-    	<TextView
-    	    android:id="@+id/profile_questions_box"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:layout_alignBaseline="@+id/profile_answers_box"
-    	    android:layout_alignBottom="@+id/profile_answers_box"
-    	    android:layout_marginRight="10dp"
-    	    android:layout_toLeftOf="@+id/profile_answers_box"
-    	    android:background="@drawable/rounded_corners_blue"
-    	    android:gravity="center"
-    	    android:lines="2"
-    	    android:padding="10dip"
-    	    android:text="Q\nques"
-    	    android:textColor="@color/white"
-    	    android:textSize="24sp"
-    	    android:textStyle="bold" />
+    <TextView
+        android:id="@+id/profile_questions_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/profile_answers_box"
+        android:layout_alignBottom="@+id/profile_answers_box"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/profile_answers_box"
+        android:background="@drawable/rounded_corners_blue"
+        android:gravity="center"
+        android:lines="2"
+        android:padding="10dip"
+        android:text="Q\nques"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-    	<LinearLayout
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:layout_alignBottom="@+id/profile_questions_box"
-    	    android:layout_alignParentLeft="true"
-    	    android:layout_alignTop="@+id/profile_questions_box"
-    	    android:layout_marginRight="10dp"
-    	    android:layout_toLeftOf="@+id/profile_questions_box"
-    	    android:gravity="center"
-    	    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/profile_questions_box"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/profile_questions_box"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/profile_questions_box"
+        android:gravity="center"
+        android:orientation="vertical" >
 
-    	    <TextView
-    	        android:id="@+id/profile_user_name"
-    	        android:layout_width="match_parent"
-    	        android:layout_height="wrap_content"
-    	        android:gravity="center"
-    	        android:lines="1"
-    	        android:textSize="16sp"
-    	        android:textStyle="bold" 
-    	        android:textColor="@color/white" 
-      	        android:maxLength="12">
+        <TextView
+            android:id="@+id/profile_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="1"
+            android:maxLength="12"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" >
+        </TextView>
 
-    	        
-    	    </TextView>
+        <TextView
+            android:id="@+id/user_location_prof"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="1"
+            android:maxLength="12"
+            android:text="@string/location_text"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" >
+        </TextView>
+        
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="2.5"
+            android:stepSize="0.5" />
 
-    	    <RatingBar
-    	        android:id="@+id/ratingBar"
-    	        style="?android:attr/ratingBarStyleSmall"
-    	        android:layout_width="wrap_content"
-    	        android:layout_height="wrap_content"
-    	        android:numStars="5"
-    	        android:rating="2.5"
-    	        android:stepSize="0.5" />
 
-    	
-    	</LinearLayout>
-    
-    </RelativeLayout>
+    </LinearLayout>
 
-
+</RelativeLayout>

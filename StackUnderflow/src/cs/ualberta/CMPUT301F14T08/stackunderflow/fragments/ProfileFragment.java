@@ -32,7 +32,7 @@ import android.widget.ListView;
  * The user name, post ratings bar, and total user questions and answers posted are also displayed.
  * @author Cmput301 Winter 2014 Group 8
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends ListFragment {
 
     private static final String FILTER_MY_POSTS = "MY_POSTS";
     private static final String FILTER_MY_FAVORITES = "MY_FAVORITES";
@@ -40,10 +40,6 @@ public class ProfileFragment extends Fragment {
 
     private int index;
 
-    protected PostController sPostController;
-    protected PostAdapter adapter;
-    private ListView listview;
-    private View loadingPanel;
     private String lastSort;
 
     @Override
@@ -55,7 +51,7 @@ public class ProfileFragment extends Fragment {
         Bundle data = getArguments();
         index = data.getInt("idx");
     }
-    
+
     /**
      * Called when the app returns from being paused. make sure to use the last sorted choice that the user selected.
      */
@@ -72,39 +68,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.list_fragment, null);
-        listview = (ListView) view.findViewById(R.id.list_view);
-        loadingPanel = view.findViewById(R.id.loadingPanel);
-
-
-        listview.setOnItemClickListener(new OnItemClickListener() {
-
-            // Opens Question or Answer Fragment based upon list item clicked 
-            @Override
-            public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-                // TODO: Update
-                Intent i;
-
-                Post p = ((PostAdapter)adapter).getItem(position);
-                // Move the putExtra & startActivity out once AnswerActivity is created
-                if (p instanceof Question) {
-                    Log.d("Debug", "Question Clicked: " + p.getID());
-                    i = new Intent(getActivity(), QuestionActivity.class);
-                    i.putExtra(PostFragment.EXTRA_POST_ID, p.getID());
-                    startActivity(i);
-                }
-                else if (p instanceof Answer) {
-                    Log.d("Debug", "Answer Clicked: " + p.getID());
-                    i = new Intent(getActivity(), AnswerActivity.class);
-                    i.putExtra(PostFragment.EXTRA_POST_ID, p.getID());
-                    startActivity(i);
-                }
-
-                // place putExtra and start activity down here, remove braces on statements			
-
-            }
-
-        });		
+        View view = super.onCreateView(inflater, container, savedInstanceState);
 
         // Implements tab-switching between sorted list views for "Newest" and "Popular" Main Activity tabs
         switch(index){
@@ -148,9 +112,8 @@ public class ProfileFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            
-        }
 
+        }
 
         @Override
         /**
@@ -166,27 +129,21 @@ public class ProfileFragment extends Fragment {
 
             adapter.clear();
 
-            //FILTER_MY_POSTS is currently blank list: needs posts with username set (UserProfile implementation)
             for (Post post : sPostController.getPostManager().getQuestions()) {
-                if (
-                        lastSort.equals(FILTER_MY_POSTS) && upm.getIsUsers(post)
+                if (lastSort.equals(FILTER_MY_POSTS) && upm.getIsUsers(post)
                         || lastSort.equals(FILTER_MY_FAVORITES) && upm.getIsFavorite(post)
-                        || lastSort.equals(FILTER_READ_LATER) && upm.getIsReadLater(post)
-                   )
-                {
+                        || lastSort.equals(FILTER_READ_LATER) && upm.getIsReadLater(post)){
                     adapter.add(post);
                 }
-                
+
                 for (Answer answer : ((Question)post).getAnswers()) {
-                    if (
-                            lastSort.equals(FILTER_MY_POSTS) && upm.getIsUsers(answer)
+                    if (lastSort.equals(FILTER_MY_POSTS) && upm.getIsUsers(answer)
                             || lastSort.equals(FILTER_MY_FAVORITES) && upm.getIsFavorite(answer)
-                            || lastSort.equals(FILTER_READ_LATER) && upm.getIsReadLater(answer)
-                       )
-                     adapter.add(answer);
+                            || lastSort.equals(FILTER_READ_LATER) && upm.getIsReadLater(answer)) {
+                        adapter.add(answer);
+                    }
                 }
             }
-
 
             adapter.notifyDataSetChanged();
             loadingPanel.setVisibility(View.GONE);

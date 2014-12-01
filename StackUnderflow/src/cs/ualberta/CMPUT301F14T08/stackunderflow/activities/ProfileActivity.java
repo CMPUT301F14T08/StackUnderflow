@@ -4,12 +4,15 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.UsernameDialog;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.ProfileFragment;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.LocManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 /**
  * ProfileActivity This is the view for the view profile attributes. This displays how many questions and answers a user has submitted. 
@@ -30,8 +34,10 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
  */
 
 public class ProfileActivity extends Activity implements TabListener {
+    protected static final int REQUEST_MAP_CODE = 11223344;
 
     private List<Fragment> fragmentList = new ArrayList<Fragment>();
+    private UserProfileManager upm;
     protected ProfileFragment tf = null;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -44,19 +50,31 @@ public class ProfileActivity extends Activity implements TabListener {
                 | ActionBar.DISPLAY_SHOW_HOME);
 
         TextView mUserName = (TextView) actionBar.getCustomView().findViewById(R.id.profile_user_name);
+        TextView mUserLocation = (TextView) actionBar.getCustomView().findViewById(R.id.user_location_prof);
         TextView mQuestionsPosted = (TextView) actionBar.getCustomView().findViewById(R.id.profile_questions_box);
         TextView mAnswersPosted = (TextView) actionBar.getCustomView().findViewById(R.id.profile_answers_box);
         RatingBar mRatingBar = (RatingBar) actionBar.getCustomView().findViewById(R.id.ratingBar);
 
-        UserProfileManager upm = UserProfileManager.getInstance(getApplication());
+        upm = UserProfileManager.getInstance(getApplication());
         String setUsername = upm.getUsername();
         mUserName.setText(setUsername);
+
+        String setLocation = "Location";
+        LatLng userLoc = upm.getLocation();
+        if (userLoc != null) {
+            if ((userLoc.latitude != LocManager.LOC_ERROR) && (userLoc.latitude != LocManager.LOC_ERROR)) {
+                setLocation = LocManager.getLocationString(getApplicationContext(), userLoc);
+            }
+        }
+        mUserLocation.setText(setLocation);
+
+
         int q_count = UserProfileManager.getInstance(getApplication()).getQuestionsPostedCount();
         int a_count = UserProfileManager.getInstance(getApplication()).getAnswerPostedCount();
 
         // Set rating bar from 0-5 with 1 star for every 5 combined total posts. Max of 5 stars
         mRatingBar.setRating(q_count + a_count < 25 ? (int) Math.floor((q_count + a_count) / 5) : 5.0f);
-           
+
         String q_string = Integer.toString(q_count);
         String a_string = Integer.toString(a_count);
 
@@ -79,6 +97,13 @@ public class ProfileActivity extends Activity implements TabListener {
                 if (((TextView)v.findViewById(R.id.profile_user_name)).getText() == "Guest"){
                     UsernameDialog.showDialog(getFragmentManager());
                 }
+            }
+        });
+
+        mUserLocation.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);                
+                startActivityForResult(intent, REQUEST_MAP_CODE);
             }
         });
 
@@ -136,7 +161,20 @@ public class ProfileActivity extends Activity implements TabListener {
         //No implementation required at present
     }
 
-
+    //gets picture as a byteArray and file name as a string from NewImageDialogFragment
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == REQUEST_MAP_CODE && resultCode == Activity.RESULT_OK) {
+            Double mLatitude = data.getDoubleExtra("latitude", LocManager.LOC_ERROR);
+            Double mLongitude = data.getDoubleExtra("longitude", LocManager.LOC_ERROR);
+            if(mLatitude != LocManager.LOC_ERROR && mLongitude != LocManager.LOC_ERROR){
+                upm.setLocation(new LatLng(mLatitude, mLongitude));
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        }
+    }
 
 
 }

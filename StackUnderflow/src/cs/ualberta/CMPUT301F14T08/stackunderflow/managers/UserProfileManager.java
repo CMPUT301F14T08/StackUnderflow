@@ -1,3 +1,4 @@
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow.managers;
 
 import java.io.IOException;
@@ -21,10 +22,14 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.UserAttributes;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.UserProfile;
+
 /**
- * UserProfileManager does exactly what the name suggests. It managers the profile manager in aspects of saving and loading to the local device
- * and checking if there is already a existing user profile. By default the user file it is saved to is user_profile.json. UserProfile should be called
- * by getInstance. Because userProfile should act like a singleton and not be called if one already exists.
+ * UserProfileManager does exactly what the name suggests. It managers the profile manager in
+ * aspects of saving and loading to the local device and checking if there is already a existing
+ * user profile. By default the user file it is saved to is user_profile.json. UserProfile should be
+ * called by getInstance. Because userProfile should act like a singleton and not be called if one
+ * already exists.
+ * 
  * @author Cmput301 Winter 2014 Group 8
  */
 public class UserProfileManager {
@@ -33,7 +38,7 @@ public class UserProfileManager {
     private UserProfile mUserProfile;
     protected Context mContext;
 
-    private UserProfileManager(Context context){
+    private UserProfileManager(Context context) {
         mContext = context;
         try {
             mUserProfile = loadFromFile();
@@ -43,49 +48,56 @@ public class UserProfileManager {
     }
 
     /**
-     * This will attempt to save the user profile to the a file called "user_profile.json" 
-     * @throws IOException will occur if for some reason the save fails. (Eg. If there is not enough memory on the device)
+     * This will attempt to save the user profile to the a file called "user_profile.json"
+     * 
+     * @throws IOException will occur if for some reason the save fails. (Eg. If there is not enough
+     *             memory on the device)
      */
-    private void sendToFile() throws IOException {	
-        Writer writer = null;	
+    private void sendToFile() throws IOException {
+        Writer writer = null;
         try {
             Gson gson = new Gson();
             OutputStream answer_out = mContext.openFileOutput(PROFILE_FILE, Context.MODE_PRIVATE);
             writer = new OutputStreamWriter(answer_out);
             gson.toJson(mUserProfile, writer);
-        } 
-        finally {
+        } finally {
             if (writer != null)
                 writer.close();
         }
     }
 
     /**
-     * LoadFromFile will attempt to load any information that is saved on the user_profile.json file on the device
-     * @return returns anything that was found in "user_profile.json" if nothing was found it will simply output a blank UserProfile
+     * LoadFromFile will attempt to load any information that is saved on the user_profile.json file
+     * on the device
+     * 
+     * @return returns anything that was found in "user_profile.json" if nothing was found it will
+     *         simply output a blank UserProfile
      * @throws IOException if the load fails it will throw an IOExecption
      */
-    private UserProfile loadFromFile() throws IOException{
+    private UserProfile loadFromFile() throws IOException {
         Reader reader = null;
-        UserProfile userProfile=null;
+        UserProfile userProfile = null;
         try {
             Gson gson = new Gson();
             InputStream input = mContext.openFileInput(PROFILE_FILE);
             reader = new InputStreamReader(input);
-            userProfile = gson.fromJson(reader, new TypeToken <UserProfile>() {}.getType());
+            userProfile = gson.fromJson(reader, new TypeToken<UserProfile>() {
+            }.getType());
 
-        } finally { 
+        } finally {
             if (reader != null)
                 reader.close();
         }
-        return userProfile;		
+        return userProfile;
     }
 
     /**
      * Creates a singleton of sUserProfileManager. THIS IS HOW YOU CREATE A USERPROFILEMANAGER
-     * @return the current user profile or a new UserProfileManager when no UserProfileManager can be found
+     * 
+     * @return the current user profile or a new UserProfileManager when no UserProfileManager can
+     *         be found
      */
-    public static UserProfileManager getInstance(Context context){
+    public static UserProfileManager getInstance(Context context) {
         if (sUserProfileManager == null) {
             sUserProfileManager = new UserProfileManager(context.getApplicationContext());
         }
@@ -94,9 +106,10 @@ public class UserProfileManager {
 
     /**
      * Attempt to save to a file locally on the device called user_profile.json
+     * 
      * @return true if was able to load, false if it failed
      */
-    public boolean save(){
+    public boolean save() {
         try {
             sendToFile();
             return true;
@@ -113,7 +126,7 @@ public class UserProfileManager {
         else
             return attributes.getIsUpvoted();
     }
-    
+
     public void toggleIsUpvoted(Post post) {
         UUID id = post.getID();
         UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
@@ -140,17 +153,16 @@ public class UserProfileManager {
         UserAttributes newAttribs = new UserAttributes();
         newAttribs.setIsUsers(true);
         mUserProfile.addToMap(id, newAttribs);
-        
-        
+
         if (post instanceof Question)
             mUserProfile.incrementQuestionsPostedCount();
         else
             mUserProfile.incrementAnswersPostedCount();
-        
+
         save();
     }
-    
-    public boolean getIsFavorite(Post post){
+
+    public boolean getIsFavorite(Post post) {
         UUID id = post.getID();
         UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
         if (attributes == null)
@@ -158,7 +170,7 @@ public class UserProfileManager {
         else
             return attributes.getIsFavorited();
     }
-    
+
     public void toggleIsFavorited(Post post) {
         UUID id = post.getID();
         UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
@@ -169,8 +181,8 @@ public class UserProfileManager {
         attributes.toggleIsFavorited();
         save();
     }
-    
-    public boolean getIsReadLater(Post post){
+
+    public boolean getIsReadLater(Post post) {
         UUID id = post.getID();
         UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
         if (attributes == null)
@@ -178,42 +190,41 @@ public class UserProfileManager {
         else
             return attributes.getIsReadLater();
     }
-    
+
     public void setIsReadLater(Post post) {
         UUID id = post.getID();
         UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
-        
+
         if (attributes == null) {
             attributes = new UserAttributes();
             attributes.setIsReadLater(true);
             mUserProfile.addToMap(id, attributes);
             return;
         }
-             
+
         attributes.setIsReadLater(true);
         save();
     }
 
-    public void setRead(Post post){
+    public void setRead(Post post) {
         UUID id = post.getID();
         UserAttributes attributes = mUserProfile.getUserAttributesForId(id);
-        
+
         if (attributes == null) {
             attributes = new UserAttributes();
             mUserProfile.addToMap(id, attributes);
             return;
         }
-        
+
         attributes.setIsReadLater(false);
         save();
-    }    
+    }
 
-
-    public String getUsername(){
+    public String getUsername() {
         return mUserProfile.getUsername();
     }
 
-    public void setUsername(String username){
+    public void setUsername(String username) {
         mUserProfile.setUsername(username);
         save();
     }
@@ -221,16 +232,16 @@ public class UserProfileManager {
     public int getAnswerPostedCount() {
         return mUserProfile.getAnswerPostedCount();
     }
-    
+
     public int getQuestionsPostedCount() {
         return mUserProfile.getQuestionsPostedCount();
     }
-    
-    public void setLocation(LatLng loc){
+
+    public void setLocation(LatLng loc) {
         mUserProfile.setLocation(loc);
         save();
     }
-    
+
     public LatLng getLocation() {
         return mUserProfile.getLocation();
     }

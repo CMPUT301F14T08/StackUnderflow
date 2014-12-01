@@ -12,8 +12,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+
 /**
- * BaseFragmentActivity simply a basic background fragment used to check if a fragment exists and if not create one. 
+ * BaseFragmentActivity simply a basic background fragment used to check if a fragment exists and if
+ * not create one.
+ * 
  * @author Cmput301 Winter 2014 Group 8
  */
 public abstract class BaseFragmentActivity extends Activity {
@@ -33,16 +36,17 @@ public abstract class BaseFragmentActivity extends Activity {
 
         if (saved_state == null) {
             fragment = newFragmentType();
-            UUID uuid = (UUID)getIntent().getSerializableExtra(PostFragment.EXTRA_POST_ID);
-            int cameFrom = getIntent().getIntExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_OTHER);
-            if(uuid != null){
+            UUID uuid = (UUID) getIntent().getSerializableExtra(PostFragment.EXTRA_POST_ID);
+            int cameFrom = getIntent().getIntExtra(PostFragment.EXTRA_CAME_FROM,
+                    PostFragment.FROM_OTHER);
+            if (uuid != null) {
                 Bundle args = new Bundle();
                 args.putSerializable(PostFragment.EXTRA_POST_ID, uuid);
                 args.putInt(PostFragment.EXTRA_CAME_FROM, cameFrom);
                 fragment.setArguments(args);
             }
             fragment_manager.beginTransaction()
-            .add(R.id.base_container, fragment).commit();
+                    .add(R.id.base_container, fragment).commit();
         }
     }
 }

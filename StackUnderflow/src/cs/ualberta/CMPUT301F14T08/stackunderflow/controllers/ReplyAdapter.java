@@ -1,5 +1,4 @@
 
-
 package cs.ualberta.CMPUT301F14T08.stackunderflow.controllers;
 
 import java.util.ArrayList;
@@ -16,16 +15,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 /**
- * An adaptor to return the desired view of a post, for use in a list view.
- * Called by profile fragment and main fragment to populate the list views.
+ * An adaptor to return the desired view of a post, for use in a list view. Called by profile
+ * fragment and main fragment to populate the list views.
+ * 
  * @author Cmput301 Winter 2014 Group 8
  */
 public class ReplyAdapter extends ArrayAdapter<Reply> {
 
-
-    /* uses the passed in controller to create an ArrayAdapter of Posts
-     * Once merged with PostController, edit out ArrayList<Post> for
-     * PostController, and add controller.getPostManager().getPosts());
+    /*
+     * uses the passed in controller to create an ArrayAdapter of Posts Once merged with
+     * PostController, edit out ArrayList<Post> for PostController, and add
+     * controller.getPostManager().getPosts());
      */
     // TODO: read above
     public ReplyAdapter(Context context, ArrayList<Reply> replies) {
@@ -44,7 +44,9 @@ public class ReplyAdapter extends ArrayAdapter<Reply> {
         // If the view is null, inflate one
         if (view == null) {
             LayoutInflater inflator = LayoutInflater.from(getContext());
-            view = inflator.inflate(R.layout.fragment_reply_list_item, parent, false); //list_item_post, parent, false);
+            view = inflator.inflate(R.layout.fragment_reply_list_item, parent, false); // list_item_post,
+                                                                                       // parent,
+                                                                                       // false);
         }
 
         replyText = (TextView) view.findViewById(R.id.reply_text);

@@ -19,8 +19,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 /**
- * AnswerFragment called from AnswerActivity. This is called when the user attempts to view and answer.
+ * AnswerFragment called from AnswerActivity. This is called when the user attempts to view and
+ * answer.
+ * 
  * @author Cmput301 Winter 2014 Group 8
  */
 public class AnswerFragment extends PostFragment {
@@ -29,11 +32,11 @@ public class AnswerFragment extends PostFragment {
     private Question mParent;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.answer_title);
-        mAnswer = (Answer)mPost;
-        mParent = (Question)sPostController.getPostManager().getPost(mAnswer.getParentID());
+        mAnswer = (Answer) mPost;
+        mParent = (Question) sPostController.getPostManager().getPost(mAnswer.getParentID());
         mFragment = this;
     }
 
@@ -68,116 +71,125 @@ public class AnswerFragment extends PostFragment {
     }
 
     /**
-     * This is called when the user expands the option menu and choose an option
-     * In the case of the option being "Back to Question" The user will be returned to the question page   
+     * This is called when the user expands the option menu and choose an option In the case of the
+     * option being "Back to Question" The user will be returned to the question page
+     * 
      * @param which ever menu item is chosen.
      * @return true if menu option one is selected.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.menu_item_back_to_question:
-            if(mCameFrom == FROM_QUESTION){
-                getActivity().onBackPressed();
-            }
-            else{
-                getActivity().finish();
-                Intent i = new Intent(getActivity(), QuestionActivity.class);
-                i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
-                i.putExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_OTHER);
-                startActivity(i);	
-            }
-            return true;
-        default:
-            // Call PostFragment onOptionItemSelected to get the rest of the menu
-            return super.onOptionsItemSelected(item);
-        } 
+            case R.id.menu_item_back_to_question:
+                if (mCameFrom == FROM_QUESTION) {
+                    getActivity().onBackPressed();
+                }
+                else {
+                    getActivity().finish();
+                    Intent i = new Intent(getActivity(), QuestionActivity.class);
+                    i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
+                    i.putExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_OTHER);
+                    startActivity(i);
+                }
+                return true;
+            default:
+                // Call PostFragment onOptionItemSelected to get the rest of the menu
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
-     * When the view is created this works with the listeners work with buttons and edit text fields.
+     * When the view is created this works with the listeners work with buttons and edit text
+     * fields.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Call PostFragment onCreateView
         super.setPost(mAnswer);
         View v = super.onCreateView(inflater, parent, savedInstanceState);
 
         // Logic unique to the Answer Fragment
-        LinearLayout linearLayout = (LinearLayout)v.findViewById(R.id.post_fragment_top_linearlayout);
+        LinearLayout linearLayout = (LinearLayout) v
+                .findViewById(R.id.post_fragment_top_linearlayout);
         linearLayout.setBackgroundColor(mTextColor);
 
-        mQuestionTitle = (TextView)v.findViewById(R.id.post_fragment_textview_title);
+        mQuestionTitle = (TextView) v.findViewById(R.id.post_fragment_textview_title);
         mQuestionTitle.setVisibility(View.GONE);
 
-        mAnswersButton = (Button)v.findViewById(R.id.post_fragment_button_answers);
+        mAnswersButton = (Button) v.findViewById(R.id.post_fragment_button_answers);
 
         final int position = sPostController.getPostManager().getPositionOfAnswer(mParent, mAnswer);
         final int remainingAnswers = mParent.countAnswers() - position - 1;
 
         v.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
             public void onSwipeLeft() {
-                if(remainingAnswers > 0){
-                    mAnswer = mParent.getAnswers().get(position+1);
-                    getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+                if (remainingAnswers > 0) {
+                    mAnswer = mParent.getAnswers().get(position + 1);
+                    getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment)
+                            .commit();
                 }
             }
 
             public void onSwipeRight() {
 
-                if(position==0){
-                    if(mCameFrom == FROM_QUESTION){
+                if (position == 0) {
+                    if (mCameFrom == FROM_QUESTION) {
                         getActivity().setResult(0);
                         getActivity().onBackPressed();
                     }
-                    else{
+                    else {
                         getActivity().finish();
                         Intent i = new Intent(getActivity(), QuestionActivity.class);
                         i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
                         i.putExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_OTHER);
-                        startActivity(i);	
-                    }   
+                        startActivity(i);
+                    }
                 }
-                else{
-                    mAnswer = mParent.getAnswers().get(position-1);
-                    getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+                else {
+                    mAnswer = mParent.getAnswers().get(position - 1);
+                    getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment)
+                            .commit();
                 }
             }
         });
 
         mListView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
             public void onSwipeLeft() {
-                if(remainingAnswers > 0){
-                    mAnswer = mParent.getAnswers().get(position+1);
-                    getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+                if (remainingAnswers > 0) {
+                    mAnswer = mParent.getAnswers().get(position + 1);
+                    getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment)
+                            .commit();
                 }
             }
+
             /**
-             * Called when the user swipes right. will move to the next answers until there are no more answers. 
-             */	
+             * Called when the user swipes right. will move to the next answers until there are no
+             * more answers.
+             */
             public void onSwipeRight() {
 
-                if(position==0){
-                    if(mCameFrom == FROM_QUESTION){
+                if (position == 0) {
+                    if (mCameFrom == FROM_QUESTION) {
                         getActivity().setResult(0);
                         getActivity().onBackPressed();
                     }
-                    else{
+                    else {
                         getActivity().finish();
                         Intent i = new Intent(getActivity(), QuestionActivity.class);
                         i.putExtra(PostFragment.EXTRA_POST_ID, mAnswer.getParentID());
                         i.putExtra(PostFragment.EXTRA_CAME_FROM, PostFragment.FROM_OTHER);
-                        startActivity(i);	
-                    }   
+                        startActivity(i);
+                    }
                 }
-                else{
-                    mAnswer = mParent.getAnswers().get(position-1);
-                    getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+                else {
+                    mAnswer = mParent.getAnswers().get(position - 1);
+                    getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment)
+                            .commit();
                 }
             }
         });
 
-        if(remainingAnswers > 0){
+        if (remainingAnswers > 0) {
 
             mAnswersButton.setEnabled(true);
             mAnswersButton.setVisibility(View.VISIBLE);
@@ -185,16 +197,17 @@ public class AnswerFragment extends PostFragment {
 
             mAnswersButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    mAnswer = mParent.getAnswers().get(position+1);
-                    getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
+                    mAnswer = mParent.getAnswers().get(position + 1);
+                    getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment)
+                            .commit();
                 }
             });
         }
-        else{
+        else {
             mAnswersButton.setEnabled(false);
             mAnswersButton.setVisibility(View.GONE);
         }
 
-        return v;		
+        return v;
     }
 }

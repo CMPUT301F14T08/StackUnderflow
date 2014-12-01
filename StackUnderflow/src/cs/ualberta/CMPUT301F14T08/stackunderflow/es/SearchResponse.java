@@ -1,10 +1,10 @@
 
 package cs.ualberta.CMPUT301F14T08.stackunderflow.es;
+
 /**
- * Taken from https://github.com/dfserrano/AndroidElasticSearch/ used to add and remove information from elastic search online.
- * 
- * These are recourse files used for implementing elastic search. 
- * Deals with searching and if hits are made from searches. Also deals with shard's.
+ * Taken from https://github.com/dfserrano/AndroidElasticSearch/ used to add and remove information
+ * from elastic search online. These are recourse files used for implementing elastic search. Deals
+ * with searching and if hits are made from searches. Also deals with shard's.
  */
 public class SearchResponse<T> {
 
@@ -13,7 +13,8 @@ public class SearchResponse<T> {
     private Shard _shards;
     private SearchHits<T> hits;
 
-    public SearchResponse() {}
+    public SearchResponse() {
+    }
 
     public int getTook() {
         return took;
@@ -45,33 +46,37 @@ public class SearchResponse<T> {
 
     public void setHits(SearchHits<T> hits) {
         this.hits = hits;
-    }      
+    }
 }
-
-
 
 class Shard {
     private int total;
     private int successful;
     private int failed;
 
-    public Shard() {}
+    public Shard() {
+    }
 
     public int getTotal() {
         return total;
     }
+
     public void setTotal(int total) {
         this.total = total;
     }
+
     public int getSuccessful() {
         return successful;
     }
+
     public void setSuccessful(int successful) {
         this.successful = successful;
     }
+
     public int getFailed() {
         return failed;
     }
+
     public void setFailed(int failed) {
         this.failed = failed;
     }

@@ -1,5 +1,4 @@
 
-
 package cs.ualberta.CMPUT301F14T08.stackunderflow.managers;
 
 import java.io.IOException;
@@ -23,14 +22,17 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
+
 /**
- * CachedPostManager manages anything a user enters when they are offline. Also only post manager uses one of these to hold posts
- * sendToFile allows for local saving of posts that can be pushed later to online to a Gson file on their device
- * loadToFile allows for users to load all local data that they already have saved inside their Gson file on their device
- * toggleUpove changes the upvote status from that user in the local cache
+ * CachedPostManager manages anything a user enters when they are offline. Also only post manager
+ * uses one of these to hold posts sendToFile allows for local saving of posts that can be pushed
+ * later to online to a Gson file on their device loadToFile allows for users to load all local data
+ * that they already have saved inside their Gson file on their device toggleUpove changes the
+ * upvote status from that user in the local cache
+ * 
  * @author Cmput301 Winter 2014 Group 8
  */
-public class CachedPostManager extends PostManager{
+public class CachedPostManager extends PostManager {
     private String QUESTION_CACHE_FILE = "cached_questions.json";
     protected static CachedPostManager sPostManager;
     protected boolean addedOffline;
@@ -44,13 +46,13 @@ public class CachedPostManager extends PostManager{
         } catch (Exception e) {
             mQuestions = new ArrayList<Post>();
         }
-        //loadTestQuestions();
+        // loadTestQuestions();
         addedOffline = true;
     }
 
-    //TODO: Delete this later!
+    // TODO: Delete this later!
     private void loadTestQuestions() {
-        Question q1 = new Question(  
+        Question q1 = new Question(
                 "Is anyone able to give me a demo please!",
                 "gregthegreg",
                 "How does this app work?");
@@ -58,7 +60,9 @@ public class CachedPostManager extends PostManager{
 
         Answer a1 = new Answer("OH wait, just look at the demo vid on youtube!", "gregthegreg");
         a1.setExistsOnline(true);
-        Answer a2 = new Answer("Confirmed, video does an excellent job of explaining how the app works", "djhindle");
+        Answer a2 = new Answer(
+                "Confirmed, video does an excellent job of explaining how the app works",
+                "djhindle");
         a2.setExistsOnline(true);
 
         q1.addAnswer(a1);
@@ -68,7 +72,7 @@ public class CachedPostManager extends PostManager{
         Question q2 = new Question(
                 "What is the difference between a UML class diagram,"
                         + "a UML Sequence diagram, and a UML state diagram?",
-                        "djhindle", 
+                "djhindle",
                 "UML Diagrams Question");
         q2.incrementVotes();
         q2.incrementVotes();
@@ -82,16 +86,17 @@ public class CachedPostManager extends PostManager{
                         + "but now I'm getting this weird blue screen when I start"
                         + "my computer??? What's going on? How do I fix it. Is this a"
                         + "virus or what?",
-                        "gregthegreg", 
-                        "What is this weird blue screen??");
+                "gregthegreg",
+                "What is this weird blue screen??");
         q2.setLocation(new LatLng(53.5333, -113.5000));
         q2.setVotes(5);
         q3.setVotes(15);
-        
-        Question q4 = new Question("Just FYI I've been using StackUnderflow since before it was even a thing so...", "hipSTAR", "DAE use this app?");
+
+        Question q4 = new Question(
+                "Just FYI I've been using StackUnderflow since before it was even a thing so...",
+                "hipSTAR", "DAE use this app?");
         cal.set(2014, Calendar.AUGUST, 1);
         q4.setDate(cal.getTime());
-
 
         Answer a3 = new Answer("Don't call me DJ Hindle :/", "djhindle");
         a3.setExistsOnline(true);
@@ -109,6 +114,7 @@ public class CachedPostManager extends PostManager{
 
     /**
      * Save Questions using Gson
+     * 
      * @throws IOException if it cannot save to gson file
      */
     private void sendToFile() throws IOException {
@@ -120,10 +126,11 @@ public class CachedPostManager extends PostManager{
 
         try {
             Gson gson = new Gson();
-            OutputStream answer_out = mContext.openFileOutput(QUESTION_CACHE_FILE, Context.MODE_PRIVATE);
+            OutputStream answer_out = mContext.openFileOutput(QUESTION_CACHE_FILE,
+                    Context.MODE_PRIVATE);
             writer = new OutputStreamWriter(answer_out);
             gson.toJson(mQuestions, writer);
-        } 
+        }
         // Cleanup our writers if anything fails
         finally {
             if (writer != null)
@@ -132,11 +139,13 @@ public class CachedPostManager extends PostManager{
     }
 
     /**
-     *  Load posts from file using GSON
-     * @return Posts a Array List of Posts that the device pulls from a local gson file from the device. Will return a blank list if there is no gson file
-     * @throws IOException if there is a error preventing the gson file from being loaded. 
+     * Load posts from file using GSON
+     * 
+     * @return Posts a Array List of Posts that the device pulls from a local gson file from the
+     *         device. Will return a blank list if there is no gson file
+     * @throws IOException if there is a error preventing the gson file from being loaded.
      */
-    public ArrayList<Post> loadFromFile() throws IOException{
+    public ArrayList<Post> loadFromFile() throws IOException {
 
         Reader reader = null;
         ArrayList<Question> questions = new ArrayList<Question>();
@@ -144,7 +153,8 @@ public class CachedPostManager extends PostManager{
             Gson gson = new Gson();
             InputStream input = mContext.openFileInput(QUESTION_CACHE_FILE);
             reader = new InputStreamReader(input);
-            questions = gson.fromJson(reader, new TypeToken <ArrayList<Question>>() {}.getType());
+            questions = gson.fromJson(reader, new TypeToken<ArrayList<Question>>() {
+            }.getType());
 
         } finally {
             if (reader != null)
@@ -156,25 +166,27 @@ public class CachedPostManager extends PostManager{
         return posts;
     }
 
-
-    /** Static initializer, use this to get the active instance.
-     * This insures we only ever have one copy going at once!
-     * @return a singleton post manager. 
+    /**
+     * Static initializer, use this to get the active instance. This insures we only ever have one
+     * copy going at once!
+     * 
+     * @return a singleton post manager.
      */
     public static CachedPostManager getInstance(Context context) {
         if (sPostManager == null) {
             sPostManager = new CachedPostManager(context.getApplicationContext());
-            sPostManager.mProfileManager =  UserProfileManager.getInstance(context);
+            sPostManager.mProfileManager = UserProfileManager.getInstance(context);
         }
 
         return sPostManager;
     }
 
     /**
-     *  Public save method
+     * Public save method
+     * 
      * @return true if successful
      */
-    public boolean save(){
+    public boolean save() {
         try {
             sendToFile();
             return true;
@@ -186,8 +198,8 @@ public class CachedPostManager extends PostManager{
     @Override
     public void addQuestion(Question newQuestion) {
         addedOffline = true;
-    	mProfileManager.saveNewPostAttributes(newQuestion);
-    	
+        mProfileManager.saveNewPostAttributes(newQuestion);
+
         this.mQuestions.add(newQuestion);
         save();
     }
@@ -196,7 +208,7 @@ public class CachedPostManager extends PostManager{
     public void addAnswer(Question parent, Answer newAnswer) {
         addedOffline = true;
         mProfileManager.saveNewPostAttributes(newAnswer);
-        
+
         parent.addAnswer(newAnswer);
         save();
     }
@@ -211,7 +223,7 @@ public class CachedPostManager extends PostManager{
     @Override
     public void toggleUpvote(Post post) {
         addedOffline = true;
-        
+
         // if the user has already upvoted the post
         // then we are subtracting votes from the post when we toggle it
         int incrementVotes = 1;
@@ -222,14 +234,15 @@ public class CachedPostManager extends PostManager{
         else {
             post.incrementVotes();
         }
-        
+
         mProfileManager.toggleIsUpvoted(post);
         post.setUpvotesChangedOffline(incrementVotes);
         save();
     }
-    
+
     /**
      * sets as a users favorite which if is called again this favorite is removed.
+     * 
      * @param post that will be set or removed as a favorite
      */
     @Override
@@ -237,7 +250,6 @@ public class CachedPostManager extends PostManager{
         addedOffline = true;
         mProfileManager.toggleIsFavorited(post);
     }
-    
 
     public boolean hasAddedOffline() {
         return addedOffline;

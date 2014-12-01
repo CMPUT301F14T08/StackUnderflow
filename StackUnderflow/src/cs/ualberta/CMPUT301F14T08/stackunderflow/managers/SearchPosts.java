@@ -1,3 +1,4 @@
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow.managers;
 
 import java.io.BufferedReader;
@@ -39,9 +40,10 @@ public class SearchPosts {
     }
 
     /**
-     * 1. Gets questions from online using search terms
-     * 2. Returns a list of posts to the calling fragment
-     * @param searchLoc 
+     * 1. Gets questions from online using search terms 2. Returns a list of posts to the calling
+     * fragment
+     * 
+     * @param searchLoc
      * @return status a String that tells us if the files were successfully loaded from the server
      */
     public ArrayList<Post> loadFromServer(int type, boolean pics, String terms, boolean searchLoc) {
@@ -50,7 +52,8 @@ public class SearchPosts {
         String status = null;
 
         try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll()
+                    .build();
             StrictMode.setThreadPolicy(policy);
 
             HttpPost request = new HttpPost(SEARCH_URL);
@@ -68,7 +71,7 @@ public class SearchPosts {
 
             if (searchHits != null && searchHits.getHits() != null) {
                 for (Hit<Question> hit : searchHits.getHits()) {
-                    posts.add((Question)hit.getSource());
+                    posts.add((Question) hit.getSource());
                 }
             }
 
@@ -77,52 +80,52 @@ public class SearchPosts {
             Log.d("Debug", status);
         }
 
-        //httpClient.getConnectionManager().shutdown();
-        if(searchLoc){
-        	LatLng myLatLng = UserProfileManager.getInstance(null).getLocation();
-        	if(myLatLng == null){
-            	posts.clear();
-        	}
-        	else{
-        		Location myLoc = new Location("");
-        		myLoc.setLatitude(myLatLng.latitude);
-        		myLoc.setLongitude(myLatLng.longitude);
-        		ArrayList<Post> temp = new ArrayList<Post>();
-        		for(Post post : posts){
-        			boolean questionFound = false;
-        			if(type == SearchObject.SEARCH_QUESTIONS || type == SearchObject.SEARCH_BOTH){
-		        		if(post.hasLocation()){
-		        			Location postLoc = new Location("");
-		        			postLoc.setLatitude(post.getLocation().latitude);
-		        			postLoc.setLongitude(post.getLocation().longitude);
-		        			float distance = myLoc.distanceTo(postLoc);
-			        			if(distance <= 100000){
-			        				temp.add(post);
-			        				questionFound = true;
-			        			}
-		        		}
-        			}
-        			if((type == SearchObject.SEARCH_ANSWERS || type == SearchObject.SEARCH_BOTH) && !questionFound){
-        				boolean answerFound = false;
-        				for(Answer answer : ((Question)post).getAnswers()){	
-        					if(!answerFound){
-				        		if(answer.hasLocation()){
-				        			Location postLoc = new Location("");
-				        			postLoc.setLatitude(answer.getLocation().latitude);
-				        			postLoc.setLongitude(answer.getLocation().longitude);
-				        			float distance = myLoc.distanceTo(postLoc);
-					        			if(distance <= 100000){
-					        				temp.add(post);
-					        				answerFound = true;
-					        			}
-				        		}
-        					}
-        				}
-        			}
-        			
-        		}
-        		posts = temp;
-        	}
+        if (searchLoc) {
+            LatLng myLatLng = UserProfileManager.getInstance(null).getLocation();
+            if (myLatLng == null) {
+                posts.clear();
+            }
+            else {
+                Location myLoc = new Location("");
+                myLoc.setLatitude(myLatLng.latitude);
+                myLoc.setLongitude(myLatLng.longitude);
+                ArrayList<Post> temp = new ArrayList<Post>();
+                for (Post post : posts) {
+                    boolean questionFound = false;
+                    if (type == SearchObject.SEARCH_QUESTIONS || type == SearchObject.SEARCH_BOTH) {
+                        if (post.hasLocation()) {
+                            Location postLoc = new Location("");
+                            postLoc.setLatitude(post.getLocation().latitude);
+                            postLoc.setLongitude(post.getLocation().longitude);
+                            float distance = myLoc.distanceTo(postLoc);
+                            if (distance <= 100000) {
+                                temp.add(post);
+                                questionFound = true;
+                            }
+                        }
+                    }
+                    if ((type == SearchObject.SEARCH_ANSWERS || type == SearchObject.SEARCH_BOTH)
+                            && !questionFound) {
+                        boolean answerFound = false;
+                        for (Answer answer : ((Question) post).getAnswers()) {
+                            if (!answerFound) {
+                                if (answer.hasLocation()) {
+                                    Location postLoc = new Location("");
+                                    postLoc.setLatitude(answer.getLocation().latitude);
+                                    postLoc.setLongitude(answer.getLocation().longitude);
+                                    float distance = myLoc.distanceTo(postLoc);
+                                    if (distance <= 100000) {
+                                        temp.add(post);
+                                        answerFound = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+                posts = temp;
+            }
         }
 
         return posts;
@@ -132,7 +135,8 @@ public class SearchPosts {
         String json;
         json = getHttpResponseContent(response);
 
-        Type parsedResponseType = new TypeToken<SearchResponse<Question>>() {}.getType();
+        Type parsedResponseType = new TypeToken<SearchResponse<Question>>() {
+        }.getType();
         SearchResponse<Question> parsedResponse = gson.fromJson(json, parsedResponseType);
 
         return parsedResponse;
@@ -140,7 +144,8 @@ public class SearchPosts {
 
     // Gets content from an HTTP response
     private String getHttpResponseContent(HttpResponse response) throws IOException {
-        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity()
+                .getContent()));
 
         StringBuffer result = new StringBuffer();
         String line = "";

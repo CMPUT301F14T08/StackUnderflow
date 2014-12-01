@@ -4,16 +4,16 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.es;
 import java.util.List;
 
 /**
- * Taken from https://github.com/dfserrano/AndroidElasticSearch/ used to add and remove information from elastic search online.
- * 
- * These are recourse files used for implementing elastic search. 
+ * Taken from https://github.com/dfserrano/AndroidElasticSearch/ used to add and remove information
+ * from elastic search online. These are recourse files used for implementing elastic search.
  */
 public class SearchHits<T> {
     private int total;
     private float max_score;
     private List<Hit<T>> hits;
 
-    public SearchHits() {}
+    public SearchHits() {
+    }
 
     public int getTotal() {
         return total;

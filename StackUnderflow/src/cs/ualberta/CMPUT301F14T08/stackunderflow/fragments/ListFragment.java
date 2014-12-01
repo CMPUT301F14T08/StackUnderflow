@@ -1,3 +1,4 @@
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
 import java.util.ArrayList;
@@ -30,17 +31,17 @@ public class ListFragment extends Fragment {
     protected View loadingPanel;
     public PostController sPostController;
     protected String currFrag = "main";
-    
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {       
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -48,13 +49,13 @@ public class ListFragment extends Fragment {
         View view = inflater.inflate(R.layout.list_fragment, null);
         listview = (ListView) view.findViewById(R.id.list_view);
         loadingPanel = view.findViewById(R.id.loadingPanel);
-        
+
         listview.setOnItemLongClickListener(new OnItemLongClickListener() {
 
             @Override
             public boolean onItemLongClick(AdapterView<?> l, View v, int position, long id) {
-                Post p = ((PostAdapter)adapter).getItem(position);
-                
+                Post p = ((PostAdapter) adapter).getItem(position);
+
                 if (currFrag == "search") {
                     sPostController.getPostManager().getPost(p.getID()).toggleIsSelected();
                 }
@@ -69,12 +70,12 @@ public class ListFragment extends Fragment {
 
         listview.setOnItemClickListener(new OnItemClickListener() {
 
-            // Opens Question or Answer Fragment based upon list item clicked 
+            // Opens Question or Answer Fragment based upon list item clicked
             @Override
             public void onItemClick(AdapterView<?> l, View v, int position, long id) {
                 Intent i;
 
-                Post p = ((PostAdapter)adapter).getItem(position);
+                Post p = ((PostAdapter) adapter).getItem(position);
                 // Move the putExtra & startActivity out once AnswerActivity is created
                 if (p instanceof Question) {
                     Log.d("Debug", "Question Clicked: " + p.getID());
@@ -91,7 +92,7 @@ public class ListFragment extends Fragment {
 
             }
 
-        });     
+        });
 
         return view;
 

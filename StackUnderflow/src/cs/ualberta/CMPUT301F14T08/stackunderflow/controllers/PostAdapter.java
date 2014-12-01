@@ -1,3 +1,4 @@
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow.controllers;
 
 import java.text.SimpleDateFormat;
@@ -17,17 +18,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 /**
- * An adaptor to return the desired view of a post, for use in a list view.
- * Called by profile fragment and main fragment to populate the list views.
+ * An adaptor to return the desired view of a post, for use in a list view. Called by profile
+ * fragment and main fragment to populate the list views.
+ * 
  * @author Cmput301 Winter 2014 Group 8
  */
 public class PostAdapter extends ArrayAdapter<Post> {
 
-
-    /* uses the passed in controller to create an ArrayAdapter of Posts
-     * Once merged with PostController, edit out ArrayList<Post> for
-     * PostController, and add controller.getPostManager().getPosts());
+    /*
+     * uses the passed in controller to create an ArrayAdapter of Posts Once merged with
+     * PostController, edit out ArrayList<Post> for PostController, and add
+     * controller.getPostManager().getPosts());
      */
     // TODO: read above
     public PostAdapter(Context context, ArrayList<Post> list) {
@@ -51,32 +54,35 @@ public class PostAdapter extends ArrayAdapter<Post> {
         // If the view is null, inflate one
         if (view == null) {
             LayoutInflater inflator = LayoutInflater.from(this.getContext());
-            view = inflator.inflate(R.layout.main_fragment_list_item, parent, false); //list_item_post, parent, false);
+            view = inflator.inflate(R.layout.main_fragment_list_item, parent, false); // list_item_post,
+                                                                                      // parent,
+                                                                                      // false);
         }
 
         currPost = getItem(position);
         postTitle = (TextView) view.findViewById(R.id.main_question_text);
         postDetails = (TextView) view.findViewById(R.id.main_question_subtitle_text);
         answerBoxText = (TextView) view.findViewById(R.id.main_answer_count_text);
-        postTitle.setEllipsize(TextUtils.TruncateAt.END); //Add ellipses if whole title doesn't fit
+        postTitle.setEllipsize(TextUtils.TruncateAt.END); // Add ellipses if whole title doesn't fit
         view.setBackgroundResource(R.color.off_white);
 
         if (isQuestion) {
-            Question tmp = (Question)currPost;
+            Question tmp = (Question) currPost;
 
-            postTitle.setText("Q: "+ tmp.getTitle());
+            postTitle.setText("Q: " + tmp.getTitle());
 
             String answer = tmp.countAnswers() == 1 ? "\u0020Answer\u0020" : "Answers";
-            String string = String.format("%s\n"+answer, String.valueOf(tmp.countAnswers()));		
+            String string = String.format("%s\n" + answer, String.valueOf(tmp.countAnswers()));
             Spannable formattedString = new SpannableString(string);
-            formattedString.setSpan(new RelativeSizeSpan(0.4f), tmp.countAnswers()/10+1, formattedString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            formattedString.setSpan(new RelativeSizeSpan(0.4f), tmp.countAnswers() / 10 + 1,
+                    formattedString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             answerBoxText.setText(formattedString);
             answerBoxText.setEnabled(true);
             answerBoxText.setVisibility(View.VISIBLE);
 
         }
         else {
-            postTitle.setText("A: "+ currPost.getText());
+            postTitle.setText("A: " + currPost.getText());
 
             answerBoxText.setEnabled(false);
             answerBoxText.setVisibility(View.GONE);
@@ -89,9 +95,11 @@ public class PostAdapter extends ArrayAdapter<Post> {
     }
 
     /**
-     *  Details about the amount of votes, author and a format of the date. The output will be in format of : "by "+ author + " | " + date + " | " + votes + " votes"
-     *  @param post a post that will contain the information for the output string 
-     *  @return a properly formatted string for displaying post details
+     * Details about the amount of votes, author and a format of the date. The output will be in
+     * format of : "by "+ author + " | " + date + " | " + votes + " votes"
+     * 
+     * @param post a post that will contain the information for the output string
+     * @return a properly formatted string for displaying post details
      */
     private String templateDetails(Post post) {
         String author = post.getSignature();
@@ -99,8 +107,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         String date = format.format(post.getDate());
         Integer votes = post.getVotes();
 
-        return "by "+ author + " | " + date + " | " + votes + " votes";
+        return "by " + author + " | " + date + " | " + votes + " votes";
     }
-
 
 }

@@ -36,10 +36,14 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Reply;
+
 /**
- * This Fragment will help display all questions (Questions and Answers) When a user wants to view a question they are shown this screen. Here the user 
- * may view and modify the upvote's as well as favorite or unfavorite the post. The user may also view the post body, username of the author of the post and 
- * view a picture of the users problem if there is one as well as view how ever many answers there are to a given question.
+ * This Fragment will help display all questions (Questions and Answers) When a user wants to view a
+ * question they are shown this screen. Here the user may view and modify the upvote's as well as
+ * favorite or unfavorite the post. The user may also view the post body, username of the author of
+ * the post and view a picture of the users problem if there is one as well as view how ever many
+ * answers there are to a given question.
+ * 
  * @author Cmput301 Winter 2014 Group 81
  */
 public abstract class PostFragment extends Fragment {
@@ -89,20 +93,19 @@ public abstract class PostFragment extends Fragment {
     protected View postView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mPostId = (UUID)getArguments().getSerializable(EXTRA_POST_ID);
+        mPostId = (UUID) getArguments().getSerializable(EXTRA_POST_ID);
         mCameFrom = getArguments().getInt(EXTRA_CAME_FROM);
 
         // Don't let HTTP run in the background, we're just waiting for updates on
         // one Post, not a list so we can wait until we receive them before rendering the view
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        sPostController = PostController.getInstanceNoRefresh(getActivity());   
+        sPostController = PostController.getInstanceNoRefresh(getActivity());
 
-        mPost = sPostController.getPostManager().getPost(mPostId);       
-        
+        mPost = sPostController.getPostManager().getPost(mPostId);
 
         // Set variables according to the resource IDs provided in subclasses
         mTextColor = getResources().getColor(getTextColor());
@@ -116,24 +119,27 @@ public abstract class PostFragment extends Fragment {
         mUpvoteFull.setBounds(0, 0, mUpvoteFull.getMinimumHeight(), mUpvoteFull.getMinimumWidth());
 
         mUpvoteEmpty = context.getResources().getDrawable(getUpvoteEmptyID());
-        mUpvoteEmpty.setBounds(0, 0, mUpvoteEmpty.getMinimumHeight(), mUpvoteEmpty.getMinimumWidth());
+        mUpvoteEmpty.setBounds(0, 0, mUpvoteEmpty.getMinimumHeight(),
+                mUpvoteEmpty.getMinimumWidth());
 
         mFavoriteFull = context.getResources().getDrawable(getFavoriteFullID());
-        mFavoriteFull.setBounds(0, 0, mFavoriteFull.getMinimumHeight(), mFavoriteFull.getMinimumWidth());
+        mFavoriteFull.setBounds(0, 0, mFavoriteFull.getMinimumHeight(),
+                mFavoriteFull.getMinimumWidth());
 
         mFavoriteEmpty = context.getResources().getDrawable(getFavoriteEmptyID());
-        mFavoriteEmpty.setBounds(0, 0, mFavoriteEmpty.getMinimumHeight(), mFavoriteEmpty.getMinimumWidth());
+        mFavoriteEmpty.setBounds(0, 0, mFavoriteEmpty.getMinimumHeight(),
+                mFavoriteEmpty.getMinimumWidth());
 
         mImageIcon = context.getResources().getDrawable(getImageIconID());
         mImageIcon.setBounds(0, 0, mImageIcon.getMinimumHeight(), mImageIcon.getMinimumWidth());
 
-        if(sPostController.getPostManager().isQuestion(mPost)) {
-            sPostController.addToCache((Question)mPost);
+        if (sPostController.getPostManager().isQuestion(mPost)) {
+            sPostController.addToCache((Question) mPost);
             sPostController.mProfileManager.setRead(mPost);
         }
-        else{
-            Question parent = sPostController.getQuestion( ((Answer)mPost).getParentID() );
-            sPostController.addToCache((Question)parent);
+        else {
+            Question parent = sPostController.getQuestion(((Answer) mPost).getParentID());
+            sPostController.addToCache((Question) parent);
             sPostController.mProfileManager.setRead(parent);
         }
 
@@ -142,83 +148,89 @@ public abstract class PostFragment extends Fragment {
     // Subclasses (Question/Answer) will implement these to tell
     // the super class what resources to use when drawing the view
     abstract protected int getUpvoteFullID();
+
     abstract protected int getUpvoteEmptyID();
+
     abstract protected int getFavoriteFullID();
+
     abstract protected int getFavoriteEmptyID();
+
     abstract protected int getImageIconID();
+
     abstract protected int getTextColor();
 
     /**
      * Sets flag to hid the reply EditText view upon returning to the fragment from elsewhere
      */
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         showReplyEdit = false;
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.post_menu, menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
         // Both Question/Answer have these menuItems
         switch (menuItem.getItemId()) {
 
-        case R.id.menu_item_new_answer:
-            Intent i = new Intent(getActivity(), NewAnswerActivity.class);
-            i.putExtra(PostFragment.EXTRA_POST_ID, mPost.getID()); 
-            startActivityForResult(i, 0);
-            break;
+            case R.id.menu_item_new_answer:
+                Intent i = new Intent(getActivity(), NewAnswerActivity.class);
+                i.putExtra(PostFragment.EXTRA_POST_ID, mPost.getID());
+                startActivityForResult(i, 0);
+                break;
 
-        case R.id.menu_item_new_reply:
-        	//Refresh the fragment to redraw the view with the reply EditText view visible
-            showReplyEdit=true;
-            getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
-            mReplyAdapter.notifyDataSetChanged();
-            break;
+            case R.id.menu_item_new_reply:
+                // Refresh the fragment to redraw the view with the reply EditText view visible
+                showReplyEdit = true;
+                getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment)
+                        .commit();
+                mReplyAdapter.notifyDataSetChanged();
+                break;
 
-        default:
-            return super.onOptionsItemSelected(menuItem);
+            default:
+                return super.onOptionsItemSelected(menuItem);
         }
         return false;
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)  
-    {  
-        super.onActivityResult(requestCode, resultCode, data);  
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
         // Request code should be 0 and should reload fragment to update info
-        if(requestCode==0){  
+        if (requestCode == 0) {
             getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
-        }   
-    } 
+        }
+    }
 
     // Set all the stuff relevant to both Question and Answer Fragments here
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         postView = inflater.inflate(R.layout.post_fragment, parent, false);
 
         // Post Body
-        mPostBody = (TextView)postView.findViewById(R.id.post_fragment_textview_body);
+        mPostBody = (TextView) postView.findViewById(R.id.post_fragment_textview_body);
         mPostBody.setText(mPost.getText());
 
         // Author + Date
-        mUsername = (TextView)postView.findViewById(R.id.post_fragment_textview_username);
+        mUsername = (TextView) postView.findViewById(R.id.post_fragment_textview_username);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
         String date = "(" + sdf.format(mPost.getDate()) + ")";
         mUsername.setText("- " + mPost.getSignature() + " " + date);
-        
-        mLocation = (TextView)postView.findViewById(R.id.post_fragment_textview_location);
-        if(mPost.hasLocation() && PostController.getInstanceNoRefresh(getActivity()).isOnline())
-        	mLocation.setText(mPost.getLocationString(getActivity()));
+
+        mLocation = (TextView) postView.findViewById(R.id.post_fragment_textview_location);
+        if (mPost.hasLocation() && PostController.getInstanceNoRefresh(getActivity()).isOnline())
+            mLocation.setText(mPost.getLocationString(getActivity()));
         else
-        	mLocation.setVisibility(View.GONE);
+            mLocation.setVisibility(View.GONE);
 
         // Upvote Button
-        mUpvoteButton = (Button)postView.findViewById(R.id.post_fragment_button_upvote);
+        mUpvoteButton = (Button) postView.findViewById(R.id.post_fragment_button_upvote);
         setVoteText(mPost, mUpvoteButton);
         mUpvoteButton.setTextColor(mTextColor);
         setIconUpvote(mPost, mUpvoteButton);
@@ -233,7 +245,7 @@ public abstract class PostFragment extends Fragment {
         });
 
         // Favorite Button
-        mFavoriteButton = (Button)postView.findViewById(R.id.post_fragment_button_favorite);
+        mFavoriteButton = (Button) postView.findViewById(R.id.post_fragment_button_favorite);
         mFavoriteButton.setTextColor(mTextColor);
         setIconFavorited(mPost, mFavoriteButton);
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
@@ -245,13 +257,12 @@ public abstract class PostFragment extends Fragment {
             }
         });
 
-
         // Picture Button
-        mPictureButton = (Button)postView.findViewById(R.id.post_fragment_button_photo);
+        mPictureButton = (Button) postView.findViewById(R.id.post_fragment_button_photo);
         mPictureButton.setCompoundDrawables(mImageIcon, null, null, null);
         mPictureButton.setTextColor(mTextColor);
 
-        if(mPost.hasPicture()){
+        if (mPost.hasPicture()) {
             mPictureButton.setEnabled(true);
             mPictureButton.setVisibility(View.VISIBLE);
             mPictureButton.setOnClickListener(new View.OnClickListener() {
@@ -259,28 +270,29 @@ public abstract class PostFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     FragmentManager fm = getActivity().getFragmentManager();
-                    ViewImageDialogFragment dialog = ViewImageDialogFragment.newInstance(mPost.getPicture());
+                    ViewImageDialogFragment dialog = ViewImageDialogFragment.newInstance(mPost
+                            .getPicture());
                     dialog.setTargetFragment(PostFragment.this, REQUEST_IMAGE);
-                    dialog.show(fm, DIALOG_IMAGE); 
+                    dialog.show(fm, DIALOG_IMAGE);
                 }
             });
         }
-        else{
+        else {
             mPictureButton.setEnabled(false);
             mPictureButton.setVisibility(View.GONE);
         }
 
-        //Reply list
+        // Reply list
         mReplyAdapter = new ReplyAdapter(getActivity().getApplicationContext(), mPost.getReplies());
-        mListView = (ListView)postView.findViewById(R.id.post_fragment_listview_replies);
+        mListView = (ListView) postView.findViewById(R.id.post_fragment_listview_replies);
         mListView.setAdapter(mReplyAdapter);
 
-        //Reply EditText and submit button
-        mReplyEditText = (EditText)postView.findViewById(R.id.post_fragment_replies_editText);
-        mReplySubmitButton = (ImageButton)postView.findViewById(R.id.post_fragment_reply_submit);
-        
-        //Only show if flag is set to true (via the menu option)
-        if(showReplyEdit){
+        // Reply EditText and submit button
+        mReplyEditText = (EditText) postView.findViewById(R.id.post_fragment_replies_editText);
+        mReplySubmitButton = (ImageButton) postView.findViewById(R.id.post_fragment_reply_submit);
+
+        // Only show if flag is set to true (via the menu option)
+        if (showReplyEdit) {
             mReplyEditText.setVisibility(View.VISIBLE);
             mReplySubmitButton.setVisibility(View.VISIBLE);
 
@@ -289,40 +301,43 @@ public abstract class PostFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     String replyText = mReplyEditText.getText().toString();
-                    
-                    //Hide the keyboard once the submit button is pressed
-                    InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                    // Hide the keyboard once the submit button is pressed
+                    InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(
+                            Context.INPUT_METHOD_SERVICE);
                     mgr.hideSoftInputFromWindow(mReplyEditText.getWindowToken(), 0);
-                    
-                    //Ensure the reply is not blank
-                    if(!replyText.replace(" ", "").equalsIgnoreCase("")){
+
+                    // Ensure the reply is not blank
+                    if (!replyText.replace(" ", "").equalsIgnoreCase("")) {
                         String name = UserProfileManager.getInstance(getActivity()).getUsername();
                         Reply reply = new Reply(mReplyEditText.getText().toString(), name);
                         mReplyEditText.setText("");
                         sPostController.getPostManager().addReply(mPost, reply);
-                        showReplyEdit=false;
-                        getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment).commit();
-                        mReplyAdapter.notifyDataSetChanged();	
+                        showReplyEdit = false;
+                        getFragmentManager().beginTransaction().detach(mFragment).attach(mFragment)
+                                .commit();
+                        mReplyAdapter.notifyDataSetChanged();
                     }
-                    else{
+                    else {
                         String toastString = "No text entered";
-                        Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                                toastString, Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 }
             });
         }
-        else{
+        else {
             mReplyEditText.setVisibility(View.GONE);
             mReplySubmitButton.setVisibility(View.GONE);
         }
 
         // Set Backbutton/Forward Button invisible for now, Answer/Question can
         // Choose to show them based on their individual requirements
-        mBackButton = (Button)postView.findViewById(R.id.post_fragment_button_back);
+        mBackButton = (Button) postView.findViewById(R.id.post_fragment_button_back);
         mBackButton.setVisibility(View.GONE);
 
-        mAnswersButton = (Button)postView.findViewById(R.id.post_fragment_button_answers);
+        mAnswersButton = (Button) postView.findViewById(R.id.post_fragment_button_answers);
         mAnswersButton.setVisibility(View.GONE);
 
         return postView;

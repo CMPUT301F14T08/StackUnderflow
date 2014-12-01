@@ -27,9 +27,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+
 /**
- * ProfileFragment: This is where the list of posts appear which the user has created, favorited, or marked for read-later.
- * The user name, post ratings bar, and total user questions and answers posted are also displayed.
+ * ProfileFragment: This is where the list of posts appear which the user has created, favorited, or
+ * marked for read-later. The user name, post ratings bar, and total user questions and answers
+ * posted are also displayed.
+ * 
  * @author Cmput301 Winter 2014 Group 8
  */
 public class ProfileFragment extends ListFragment {
@@ -46,23 +49,26 @@ public class ProfileFragment extends ListFragment {
     /**
      * Called when the user profile view is opened. gets the data that is stored in the app. 
      */
-    public void onCreate(Bundle savedInstanceState) {		
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle data = getArguments();
         index = data.getInt("idx");
     }
 
     /**
-     * Called when the app returns from being paused. make sure to use the last sorted choice that the user selected.
+     * Called when the app returns from being paused. make sure to use the last sorted choice that
+     * the user selected.
      */
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         createView(lastSort);
     }
+
     /**
-     * creates the view. Manages which option was selected Read later, My questions and favorites. 
-     * Also manages the views so that when an answer or questions pressed the user is brought to the correct page.
+     * creates the view. Manages which option was selected Read later, My questions and favorites.
+     * Also manages the views so that when an answer or questions pressed the user is brought to the
+     * correct page.
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,26 +76,27 @@ public class ProfileFragment extends ListFragment {
 
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        // Implements tab-switching between sorted list views for "Newest" and "Popular" Main Activity tabs
-        switch(index){
-        case 0:
-            createView(FILTER_MY_POSTS);
-            lastSort = FILTER_MY_POSTS;
-            break;
+        // Implements tab-switching between sorted list views for "Newest" and "Popular" Main
+        // Activity tabs
+        switch (index) {
+            case 0:
+                createView(FILTER_MY_POSTS);
+                lastSort = FILTER_MY_POSTS;
+                break;
 
-        case 1:
-            createView(FILTER_MY_FAVORITES);
-            lastSort = FILTER_MY_FAVORITES;
-            break;
-        case 2:
-            createView(FILTER_READ_LATER);
-            lastSort = FILTER_READ_LATER;
-            break;
+            case 1:
+                createView(FILTER_MY_FAVORITES);
+                lastSort = FILTER_MY_FAVORITES;
+                break;
+            case 2:
+                createView(FILTER_READ_LATER);
+                lastSort = FILTER_READ_LATER;
+                break;
 
-        default:
-            break;
+            default:
+                break;
 
-        }		
+        }
 
         return view;
 
@@ -101,7 +108,6 @@ public class ProfileFragment extends ListFragment {
         adapter = new PostAdapter(getActivity(), new ArrayList<Post>());
         listview.setAdapter(adapter);
     }
-
 
     private class DownloadPostsTask extends AsyncTask<Void, PostController, PostController> {
 
@@ -132,11 +138,11 @@ public class ProfileFragment extends ListFragment {
             for (Post post : sPostController.getPostManager().getQuestions()) {
                 if (lastSort.equals(FILTER_MY_POSTS) && upm.getIsUsers(post)
                         || lastSort.equals(FILTER_MY_FAVORITES) && upm.getIsFavorite(post)
-                        || lastSort.equals(FILTER_READ_LATER) && upm.getIsReadLater(post)){
+                        || lastSort.equals(FILTER_READ_LATER) && upm.getIsReadLater(post)) {
                     adapter.add(post);
                 }
 
-                for (Answer answer : ((Question)post).getAnswers()) {
+                for (Answer answer : ((Question) post).getAnswers()) {
                     if (lastSort.equals(FILTER_MY_POSTS) && upm.getIsUsers(answer)
                             || lastSort.equals(FILTER_MY_FAVORITES) && upm.getIsFavorite(answer)
                             || lastSort.equals(FILTER_READ_LATER) && upm.getIsReadLater(answer)) {

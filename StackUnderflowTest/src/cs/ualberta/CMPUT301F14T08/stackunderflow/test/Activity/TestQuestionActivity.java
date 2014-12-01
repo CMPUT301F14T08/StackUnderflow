@@ -1,3 +1,4 @@
+
 package cs.ualberta.CMPUT301F14T08.stackunderflow.test.Activity;
 
 import android.app.Activity;
@@ -10,15 +11,13 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.NewAnswerActivity;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.NewQuestionActivity;
 
 public class TestQuestionActivity extends ActivityInstrumentationTestCase2<MainActivity> {
-	
-	public TestQuestionActivity() {
-		super(MainActivity.class);
-	}
 
-	
-	
-	/*
-	 * TODO: UI Tests to come
-	 */
+    public TestQuestionActivity() {
+        super(MainActivity.class);
+    }
+
+    /*
+     * TODO: UI Tests to come
+     */
 
 }

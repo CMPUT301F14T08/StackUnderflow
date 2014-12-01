@@ -53,6 +53,7 @@ public class NewAnswerFragment extends NewPostFragment {
                 // TODO: Change this to use usernames after implementing user profile
                 String author = UserProfileManager.getInstance(getActivity()).getUsername();
                 String body = mPostBody.getText().toString();
+                LatLng location = null;
 
                 //Checks if fields are left blank
                 if(body.equalsIgnoreCase("")){
@@ -72,11 +73,14 @@ public class NewAnswerFragment extends NewPostFragment {
                         mAnswer = new Answer(body, author);  
                     }
 
-                    if(mLatitude != LocManager.LOC_ERROR && mLongitude != LocManager.LOC_ERROR)
-                    	mAnswer.setLocation(new LatLng(mLatitude, mLongitude));
+                    if(mLatitude != LocManager.LOC_ERROR && mLongitude != LocManager.LOC_ERROR) {
+                        location = new LatLng(mLatitude, mLongitude);
+                    	mAnswer.setLocation(location);
+                    }
 
                     Question qparent = (Question) sPostController.getQuestion(mPostId);
                     sPostController.getPostManager().addAnswer(qparent, mAnswer);
+                    sPostController.getPostManager().setUserLocation(location);
                     getActivity().setResult(0);
                     getActivity().finish();
                 }

@@ -40,7 +40,8 @@ public class SearchFragment extends Fragment {
 
     private int searchType = 2;
     private boolean searchPics = false;
-    private String searchTerms = "question";
+    private boolean searchLoc = false;
+    private String searchTerms = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {		
@@ -51,6 +52,7 @@ public class SearchFragment extends Fragment {
         searchType = b.getInt(SearchObject.SEARCH_TYPE);
         searchPics = b.getBoolean(SearchObject.SEARCH_PICS); //getArguments().getBoolean(SearchObject.SEARCH_PICS);
         searchTerms = b.getString(SearchObject.SEARCH_STRING); //getArguments().getString(SearchObject.SEARCH_STRING);
+        searchLoc = b.getBoolean(SearchObject.SEARCH_LOCATION);
     }
 
     @Override
@@ -119,7 +121,7 @@ public class SearchFragment extends Fragment {
 
         @Override
         protected void onPostExecute(SearchPosts result) {
-            searchResult = result.loadFromServer(searchType, searchPics, searchTerms);
+            searchResult = result.loadFromServer(searchType, searchPics, searchTerms, searchLoc);
 
             if(searchResult.size() == 0){
             	Toast toast = Toast.makeText(getActivity(), "No results found", Toast.LENGTH_LONG);

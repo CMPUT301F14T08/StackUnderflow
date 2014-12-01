@@ -13,6 +13,7 @@ import java.util.UUID;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -211,7 +212,6 @@ public class UserProfileManager {
     public String getUsername(){
         return mUserProfile.getUsername();
     }
-    
 
     public void setUsername(String username){
         mUserProfile.setUsername(username);
@@ -224,5 +224,14 @@ public class UserProfileManager {
     
     public int getQuestionsPostedCount() {
         return mUserProfile.getQuestionsPostedCount();
+    }
+    
+    public void setLocation(LatLng loc){
+        mUserProfile.setLocation(loc);
+        save();
+    }
+    
+    public LatLng getLocation() {
+        return mUserProfile.getLocation();
     }
 }

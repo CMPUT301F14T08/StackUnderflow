@@ -67,6 +67,7 @@
     <string name="search_only_pic">Only Posts with Pictures</string>
     <string name="search_text">Text:</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="location_search">Nearby Posts</string>
     
     <!-- Map -->
     <string name="map_title">Map</string>

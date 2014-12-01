@@ -34,8 +34,8 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
 
 public class MainActivity extends Activity implements TabListener {
 
-    private List<Fragment> fragmentList = new ArrayList<Fragment>();
-    protected MainFragment tf = null;
+    protected List<Fragment> fragmentList = new ArrayList<Fragment>();
+    private MainFragment tf = null;
     static final int PICK_QUESTION = 0;
     static final int PICK_ANSWER = 1;
 
@@ -179,6 +179,7 @@ public class MainActivity extends Activity implements TabListener {
                 String author = data.getStringExtra("question.author");
                 Double latitude = data.getDoubleExtra("question.latitude", LocManager.LOC_ERROR);
                 Double longitude = data.getDoubleExtra("question.longitude", LocManager.LOC_ERROR);
+                LatLng location = null;
                 String picture = null;
                 if (data.getByteArrayExtra("question.picture") != null) {
                 	//Encode byte array as a string to faster storage online
@@ -192,10 +193,13 @@ public class MainActivity extends Activity implements TabListener {
                 else {
                     q = new Question(body, author, title);
                 }
-                if(latitude != LocManager.LOC_ERROR && longitude != LocManager.LOC_ERROR)
-                	q.setLocation(new LatLng(latitude, longitude));
+                if(latitude != LocManager.LOC_ERROR && longitude != LocManager.LOC_ERROR) {
+                    location = new LatLng(latitude, longitude);
+                	q.setLocation(location);
+                }
 
                 tf.sPostController.getPostManager().addQuestion(q);
+                tf.sPostController.getPostManager().setUserLocation(location);
                 tf.onResume();
             }
         }

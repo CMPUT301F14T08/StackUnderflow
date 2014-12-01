@@ -39,9 +39,10 @@ public class SearchPosts {
     /**
      * 1. Gets questions from online using search terms
      * 2. Returns a list of posts to the calling fragment
+     * @param searchLoc 
      * @return status a String that tells us if the files were successfully loaded from the server
      */
-    public ArrayList<Post> loadFromServer(int type, boolean pics, String terms) {
+    public ArrayList<Post> loadFromServer(int type, boolean pics, String terms, boolean searchLoc) {
         ArrayList<Post> posts = new ArrayList<Post>();
         HttpClient httpClient = new DefaultHttpClient();
         String status = null;
@@ -51,7 +52,7 @@ public class SearchPosts {
             StrictMode.setThreadPolicy(policy);
 
             HttpPost request = new HttpPost(SEARCH_URL);
-            ElasticSearchCommand command = new MatchSearchCommand(type, pics, terms);
+            ElasticSearchCommand command = new MatchSearchCommand(type, pics, terms, searchLoc);
 
             request.setHeader("Accept", "application/json");
             request.setEntity(new StringEntity(command.getJsonCommand()));

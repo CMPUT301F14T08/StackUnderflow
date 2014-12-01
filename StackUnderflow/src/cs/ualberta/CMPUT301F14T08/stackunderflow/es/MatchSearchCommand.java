@@ -13,21 +13,40 @@ public class MatchSearchCommand implements ElasticSearchCommand {
     private int searchType;
     private boolean searchPics;
     private String searchTerms;
+    private boolean searchLoc;
 
-    public MatchSearchCommand(int type, boolean pics, String terms) {
+    public MatchSearchCommand(int type, boolean pics, String terms, boolean location) {
         searchType = type;
         searchPics = pics;		
         searchTerms = parseKeywords(terms);
+        searchLoc = location;
     }
 
     public String getJsonCommand() {
-        StringBuffer query = new StringBuffer("{\"query\" : {\"query_string\" : {\"query\" : \"" 
+        /*StringBuffer query = new StringBuffer("{\"query\" : {\"query_string\" : {\"query\" : \"" 
                 + searchTerms + "\", \"fields\": [");
         if (searchType == SearchObject.SEARCH_QUESTIONS) query.append("\"mTitle\", \"mText\"");
         if (searchType == SearchObject.SEARCH_ANSWERS) query.append("\"mAnswers.mText\"");
         if (searchType == SearchObject.SEARCH_BOTH) query.append("\"mTitle\", \"mText\", \"mAnswers.mText\"");
-        query.append("]}}}");
-        //String query = "{\"query\" : {\"match_all\" : {}}}";
+        query.append("]}}}");*/
+        StringBuffer query;
+        //if (searchLoc) {
+        // = new StringBuffer();
+        //}
+        //else {
+            query = new StringBuffer("{\"query\": {\"filtered\": {\"query\":" +
+                    " {\"query_string\": {\"query\": \"" + searchTerms + "\",\"fields\": [");
+            if (searchType == SearchObject.SEARCH_QUESTIONS) query.append("\"mTitle\", \"mText\"");
+            if (searchType == SearchObject.SEARCH_ANSWERS) query.append("\"mAnswers.mText\"");
+            if (searchType == SearchObject.SEARCH_BOTH) query.append("\"mTitle\", \"mText\", \"mAnswers.mText\"");
+            query.append("]}}");
+            if (searchPics) {
+                query.append(",\"filter\": {\"or\": [{ \"exists\": { \"field\" : \"mPicture\" }}," +
+                        "{ \"exists\": { \"field\" : \"mAnswers.mPicture\"}}]}");
+            }
+            query.append("}}}");
+        //}
+
         return query.toString();
     }
 

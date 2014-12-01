@@ -10,7 +10,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="15dp"        
+        android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp" >
 
@@ -58,21 +58,33 @@
         android:drawablePadding="8dp"
         android:text="@string/search_only_pic" />
 
+    <CheckBox
+        android:id="@+id/MyLocationBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/searchTextTitle"
+        android:layout_below="@+id/search_picture_button"
+        android:layout_marginTop="10dp"
+        android:button="@null"
+        android:drawableLeft="@drawable/checkbox_button"
+        android:drawablePadding="8dp"
+        android:text="@string/location_search" />
+
+
     <TextView
         android:id="@+id/searchTextTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/search_picture_button"
-        android:layout_below="@+id/search_picture_button"
-        android:layout_marginTop="14dp"
+        android:layout_alignLeft="@+id/searchEnteredText"
+        android:layout_below="@+id/MyLocationBox"
+        android:layout_marginTop="10dp"
         android:text="@string/search_text" />
 
     <EditText
         android:id="@+id/searchEnteredText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/searchTextTitle"
-        android:layout_alignRight="@+id/search_picture_button"
+        android:layout_alignLeft="@+id/search_picture_button"
         android:layout_below="@+id/searchTextTitle"
         android:ems="10"
         android:hint="@string/search" >

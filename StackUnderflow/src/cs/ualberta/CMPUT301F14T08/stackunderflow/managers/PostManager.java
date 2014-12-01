@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import cs.ualberta.CMPUT301F14T08.stackunderflow.exceptions.InvalidPostTypeException;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
@@ -189,6 +191,10 @@ public abstract class PostManager {
 
     public int getPositionOfAnswer(Question question, Answer answer) {
         return question.getPositionOfAnswer(answer.getID());
+    }
+    
+    public void setUserLocation(LatLng loc) {
+        mProfileManager.setLocation(loc);
     }
     
     // abstract methods

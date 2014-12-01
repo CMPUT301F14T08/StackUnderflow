@@ -76,11 +76,11 @@ public class NewAnswerFragment extends NewPostFragment {
                     if(mLatitude != LocManager.LOC_ERROR && mLongitude != LocManager.LOC_ERROR) {
                         location = new LatLng(mLatitude, mLongitude);
                     	mAnswer.setLocation(location);
+                    	sPostController.getPostManager().setUserLocation(location);
                     }
 
                     Question qparent = (Question) sPostController.getQuestion(mPostId);
                     sPostController.getPostManager().addAnswer(qparent, mAnswer);
-                    sPostController.getPostManager().setUserLocation(location);
                     getActivity().setResult(0);
                     getActivity().finish();
                 }

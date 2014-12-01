@@ -10,10 +10,12 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import android.content.Context;
-import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -48,13 +50,14 @@ public class CachedPostManager extends PostManager{
     //TODO: Delete this later!
     private void loadTestQuestions() {
         Question q1 = new Question(  
-                "LOL I don't actually have a question, I just wanted to post.",
+                "Is anyone able to give me a demo please!",
                 "gregthegreg",
-                "MY FIRST QUESTION GUIS!!!11");
+                "How does this app work?");
+        q1.setLocation(new LatLng(53.633033467692506, -113.62990535795689));
 
-        Answer a1 = new Answer("LOL I AM ANSWERING MY OWN QUESTION!", "gregthegreg");
+        Answer a1 = new Answer("OH wait, just look at the demo vid on youtube!", "gregthegreg");
         a1.setExistsOnline(true);
-        Answer a2 = new Answer("Please just stop posting.", "djhindle");
+        Answer a2 = new Answer("Confirmed, video does an excellent job of explaining how the app works", "djhindle");
         a2.setExistsOnline(true);
 
         q1.addAnswer(a1);
@@ -65,9 +68,12 @@ public class CachedPostManager extends PostManager{
                 "What is the difference between a UML class diagram,"
                         + "a UML Sequence diagram, and a UML state diagram?",
                         "djhindle", 
-                "UML Diagrams");
+                "UML Diagrams Question");
         q2.incrementVotes();
         q2.incrementVotes();
+        Calendar cal = Calendar.getInstance();
+        cal.set(2014, Calendar.NOVEMBER, 21);
+        q2.setDate(cal.getTime());
 
         // Q3 tests the concatenating of long titles/text
         Question q3 = new Question(
@@ -76,15 +82,19 @@ public class CachedPostManager extends PostManager{
                         + "my computer??? What's going on? How do I fix it. Is this a"
                         + "virus or what?",
                         "gregthegreg", 
-                        "Weird Blue ScreenWeird Blue ScreenWeird Blue ScreenWeird "
-                                +" Blue ScreenWeird Blue ScreenWeird Blue Screen");
+                        "What is this weird blue screen??");
+        q2.setLocation(new LatLng(53.5333, -113.5000));
         q2.setVotes(5);
         q3.setVotes(15);
+        
+        Question q4 = new Question("Just FYI I've been using StackUnderflow since before it was even a thing so...", "hipSTAR", "DAE use this app?");
+        cal.set(2014, Calendar.AUGUST, 1);
+        q4.setDate(cal.getTime());
 
 
         Answer a3 = new Answer("Don't call me DJ Hindle :/", "djhindle");
         a3.setExistsOnline(true);
-        Answer a4 = new Answer("Attached is a picture of how much I don't want you to call me DJ Hindle", "djhindle");
+        Answer a4 = new Answer("It's a virus LOL", "marco-yolo");
         a4.setExistsOnline(true);
 
         q3.addAnswer(a3);
@@ -93,6 +103,7 @@ public class CachedPostManager extends PostManager{
         mQuestions.add(q1);
         mQuestions.add(q2);
         mQuestions.add(q3);
+        mQuestions.add(q4);
     }
 
     /**

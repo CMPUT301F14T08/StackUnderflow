@@ -3,16 +3,20 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 
 import java.util.ArrayList;
 
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostAdapter;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.SearchPosts;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.SearchObject;
 /**
@@ -71,15 +75,28 @@ public class SearchFragment extends ListFragment {
         protected void onPostExecute(SearchPosts result) {
             searchResult = result.loadFromServer(searchType, searchPics, searchTerms, searchLoc);
 
-            if(searchResult.size() == 0){
+            adapter.clear();
+            
+            boolean errorShown = false;
+            if(searchLoc){
+            	LatLng myLatLng = UserProfileManager.getInstance(getActivity()).getLocation();
+            	if(myLatLng == null){
+	            	Toast toast = Toast.makeText(getActivity(), "Cannot find your location\nSet location in User Profile", Toast.LENGTH_LONG);
+	            	toast.setGravity(Gravity.CENTER, 0, 0);
+	            	toast.show();
+	            	searchResult.clear();
+	            	errorShown = true;
+            	}
+            }
+            
+            for (Post post : searchResult) {
+	                adapter.add(post);
+	            }
+            
+            if(adapter.getCount() == 0 && !errorShown){
             	Toast toast = Toast.makeText(getActivity(), "No results found", Toast.LENGTH_LONG);
             	toast.setGravity(Gravity.CENTER, 0, 0);
             	toast.show();
-            }
-
-            adapter.clear();
-            for (Post post : searchResult) {
-                adapter.add(post);
             }
 
             adapter.notifyDataSetChanged();

@@ -3,11 +3,10 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -38,7 +37,6 @@ public class MapActivity extends Activity {
 
 		mGoogleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		mGoogleMap.setMyLocationEnabled(true);
-		mGoogleMap.getMyLocation();
 		mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
 			@Override

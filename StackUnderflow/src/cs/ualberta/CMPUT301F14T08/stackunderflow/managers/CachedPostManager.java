@@ -44,6 +44,7 @@ public class CachedPostManager extends PostManager{
         } catch (Exception e) {
             mQuestions = new ArrayList<Post>();
         }
+        //loadTestQuestions();
         addedOffline = true;
     }
 

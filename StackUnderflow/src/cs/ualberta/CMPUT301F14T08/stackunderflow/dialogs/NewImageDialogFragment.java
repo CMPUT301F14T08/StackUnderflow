@@ -22,7 +22,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +34,9 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
  */
 public class NewImageDialogFragment extends DialogFragment {
 
+    private static final int CAMERA_IMAGE_REQUEST_CODE = 12345;
+    private static final int GALLERY = 12634;
+    
     protected Uri mJPEGFileUri;
     protected String mJPEGFileName;
     protected byte mJPEGByteArray[];
@@ -42,9 +44,8 @@ public class NewImageDialogFragment extends DialogFragment {
     protected Button mCameraButton;
     protected Button mGalleryButton;
     protected TextView mTextView;
-    //protected File mJPEGFile;
-    private static final int CAMERA_IMAGE_REQUEST_CODE = 12345;
-    private static final int GALLERY = 12634;
+    protected Dialog mDialog;
+    
     int getImageButtonID() {
         return R.id.image_prompt_fragment_image_button;
     }
@@ -81,9 +82,21 @@ public class NewImageDialogFragment extends DialogFragment {
         mJPEGByteArray = getArguments().getByteArray("byteArray");
         mJPEGFileName = getArguments().getString("fileName");
         
-        
         mCameraButton = (Button)v.findViewById(getCameraButtonID());
-        mCameraButton.setVisibility(View.GONE);
+        mGalleryButton = (Button)v.findViewById(getGalleryButtonID());
+        mImageButton = (ImageButton)v.findViewById(getImageButtonID());
+        
+        if(mJPEGByteArray == null){
+        	mImageButton.setVisibility(View.GONE);
+        	mCameraButton.setVisibility(View.VISIBLE);
+        	mGalleryButton.setVisibility(View.VISIBLE);
+        }
+        else{
+        	mImageButton.setVisibility(View.VISIBLE);
+        	mCameraButton.setVisibility(View.GONE);
+            mGalleryButton.setVisibility(View.GONE);
+        }
+        
         mCameraButton.setOnClickListener(new View.OnClickListener() {            
             @Override
             public void onClick(View v) {
@@ -91,40 +104,29 @@ public class NewImageDialogFragment extends DialogFragment {
             }
         });
         
-        mGalleryButton = (Button)v.findViewById(getGalleryButtonID());
-        mGalleryButton.setVisibility(View.GONE);
         mGalleryButton.setOnClickListener(new View.OnClickListener() {            
             @Override
             public void onClick(View v) {
             	Intent intent = new Intent();
             	intent.setType("image/*");
             	intent.setAction(Intent.ACTION_GET_CONTENT);
-            	startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY);
+            	startActivityForResult(Intent.createChooser(intent, "Select picture from..."), GALLERY);
             }
         });
 
-        mImageButton = (ImageButton)v.findViewById(getImageButtonID());
-        mImageButton.setVisibility(View.VISIBLE);
         mImageButton.setOnClickListener(new View.OnClickListener() {            
             @Override
             public void onClick(View v) {
-                //selectPhoto();
                 mCameraButton.setVisibility(View.VISIBLE);
                 mGalleryButton.setVisibility(View.VISIBLE);
                 mImageButton.setVisibility(View.GONE);
+                mDialog.setTitle("Select an option:");
+                mTextView.setText("Current photo: " + mJPEGFileName);
             }
         });
-        
-        mTextView = (TextView)v.findViewById(getTextViewID());
-        if (mJPEGByteArray != null){
-            showPicture();
-        }
-        else {
-            mTextView.setVisibility(View.GONE);
-        }
 
-        return new AlertDialog.Builder(getActivity())
-        .setTitle("Select a photo")
+        mDialog = new AlertDialog.Builder(getActivity())
+        .setTitle("Select an option:")
         .setView(v)
         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -141,6 +143,16 @@ public class NewImageDialogFragment extends DialogFragment {
                 getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, null);
             }
         }).create();
+        
+        mTextView = (TextView)v.findViewById(getTextViewID());
+        if (mJPEGByteArray != null){
+            showPicture();
+        }
+        else {
+            mTextView.setVisibility(View.GONE);
+        }
+        
+        return mDialog;
     }
     /**
      * Calls camera to take a picture and save it to a file with miliseconds as a name.
@@ -155,7 +167,7 @@ public class NewImageDialogFragment extends DialogFragment {
         mJPEGFileUri = Uri.fromFile(imageFile);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mJPEGFileUri);
-        startActivityForResult(Intent.createChooser(intent, "Choose photo from..."), CAMERA_IMAGE_REQUEST_CODE);
+        startActivityForResult(Intent.createChooser(intent, "Take picture using..."), CAMERA_IMAGE_REQUEST_CODE);
     }
 
     /**
@@ -163,13 +175,12 @@ public class NewImageDialogFragment extends DialogFragment {
      * file size is below 64kb. Scaling is done by converting JPEG to bitmap at half size,
      * then converted back to JPEG
      */
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-    	mCameraButton.setVisibility(View.GONE);
-        mGalleryButton.setVisibility(View.GONE);
-        mImageButton.setVisibility(View.VISIBLE);
-        
+    public void onActivityResult(int requestCode, int resultCode, Intent data){       
         if (requestCode == CAMERA_IMAGE_REQUEST_CODE || requestCode == GALLERY) {
             if (resultCode == Activity.RESULT_OK) {
+            	mImageButton.setVisibility(View.VISIBLE);
+            	mCameraButton.setVisibility(View.GONE);
+                mGalleryButton.setVisibility(View.GONE);
             	String jpegFilePath;
             	if (requestCode == CAMERA_IMAGE_REQUEST_CODE){
                     jpegFilePath = mJPEGFileUri.getPath();
@@ -178,11 +189,7 @@ public class NewImageDialogFragment extends DialogFragment {
             		mJPEGFileUri = data.getData();
             		jpegFilePath = getPath(mJPEGFileUri);
             	}
-                Log.d("URI", jpegFilePath);
                 File jpegFile = new File(jpegFilePath); 			//loads JPEG to memory
-                Log.d("FILESIZE_B", ""+jpegFile.length());
-                long kb = jpegFile.length() / 1024;
-                Log.d("FILESIZE_KB", ""+kb);
                 mJPEGFileName = jpegFile.getName();
                 long fileSize = jpegFile.length();
                 BitmapFactory.Options options = new BitmapFactory.Options();
@@ -203,33 +210,39 @@ public class NewImageDialogFragment extends DialogFragment {
 
                 Bitmap bitmap = null;
                 ByteArrayOutputStream baos = null;
+                
                 //compresses jpegByteArray
                 while(fileSize > 64*1024){
                     bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(mJPEGByteArray), null, options); //converts JPEG to bitmap at half size
                     baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);	//converts bitmap back to JPEG in baos
                     mJPEGByteArray = baos.toByteArray();					//loads baos into byte array
-                    try {baos.flush();}
-                    catch (IOException e) {e.printStackTrace();	}						
-                    fileSize = mJPEGByteArray.length;						//recalculates fileSize
-                    //Log.d("MYTAG", String.valueOf(fileSize), new Exception());
-
-                    Log.d("FILESIZE_B", ""+fileSize);
-                    long kbs = fileSize / 1024;
-                    Log.d("FILESIZE_KB", ""+kbs);
+                    try {
+                    	baos.flush();
+                    }
+                    catch (IOException e) {
+                    	e.printStackTrace();
+                    }						
+                    fileSize = mJPEGByteArray.length;						//recalculates fileSize                  
                 }
                 showPicture();				
             }  
+        }
+        else{
+        	mImageButton.setVisibility(View.GONE);
+        	mCameraButton.setVisibility(View.VISIBLE);
+        	mGalleryButton.setVisibility(View.VISIBLE);
         }
     }
     /**
      * Displays the image
      */
     public void showPicture(){
+    	mDialog.setTitle("Selected photo:");
         Bitmap bitmap = null;
         bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(mJPEGByteArray)); 	//creates bitmap from jpegByteArray
         Drawable drawable= new BitmapDrawable(getResources(), bitmap);	 				//creates drawable from bitmap
-        mImageButton.setImageDrawable(drawable);										//updates thumbnail view
+        mImageButton.setBackground(drawable);										//updates thumbnail view
         mTextView.setText(mJPEGFileName);
         mTextView.setVisibility(View.VISIBLE);
     }

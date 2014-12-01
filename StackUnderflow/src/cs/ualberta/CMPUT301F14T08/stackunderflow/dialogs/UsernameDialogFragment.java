@@ -6,11 +6,13 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.R.drawable;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R.id;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R.layout;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R.string;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.ProfileActivity;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,8 +43,12 @@ public class UsernameDialogFragment extends DialogFragment{
                         String name = edit.getText().toString();
                         
                         if (name.length() > 0) {
-                        	//Refactor this out, too many dots
                         	UserProfileManager.getInstance(getActivity()).setUsername(name);
+                        }
+                        if (getActivity().getWindow().getDecorView().findViewById(R.id.profile_questions_box) != null) {
+                            Intent i = new Intent(getActivity(), ProfileActivity.class);
+                            getActivity().finish();
+                            startActivity(i);
                         }
                     }
                 })
@@ -50,9 +56,9 @@ public class UsernameDialogFragment extends DialogFragment{
                 // Negative Button
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,    int which) {
-                        //Fix this to not close the profile page when hitting cancel
-                    	//if (getActivity().findViewById(R.id.answersTextView) != null)
-                    		getActivity().finish();
+                    	if (getActivity().getWindow().getDecorView().findViewById(R.id.profile_questions_box) == null) {
+                    	    getActivity().finish();
+                    	}
                     }
                 }).create();
     }

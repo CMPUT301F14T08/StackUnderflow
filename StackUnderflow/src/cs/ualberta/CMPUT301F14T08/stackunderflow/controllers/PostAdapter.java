@@ -66,7 +66,8 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
             postTitle.setText("Q: "+ tmp.getTitle());
 
-            String string = String.format("%s\nAnswers", String.valueOf(tmp.countAnswers()));		
+            String answer = tmp.countAnswers() == 1 ? "\u0020Answer\u0020" : "Answers";
+            String string = String.format("%s\n"+answer, String.valueOf(tmp.countAnswers()));		
             Spannable formattedString = new SpannableString(string);
             formattedString.setSpan(new RelativeSizeSpan(0.4f), tmp.countAnswers()/10+1, formattedString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             answerBoxText.setText(formattedString);

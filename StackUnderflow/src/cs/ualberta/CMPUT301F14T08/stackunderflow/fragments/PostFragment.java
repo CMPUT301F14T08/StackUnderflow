@@ -4,17 +4,14 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.fragments;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +31,6 @@ import cs.ualberta.CMPUT301F14T08.stackunderflow.activities.NewAnswerActivity;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.PostController;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.controllers.ReplyAdapter;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.ViewImageDialogFragment;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.LocManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.UserProfileManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
@@ -216,7 +212,7 @@ public abstract class PostFragment extends Fragment {
         mUsername.setText("- " + mPost.getSignature() + " " + date);
         
         mLocation = (TextView)postView.findViewById(R.id.post_fragment_textview_location);
-        if(mPost.hasLocation())
+        if(mPost.hasLocation() && PostController.getInstanceNoRefresh(getActivity()).isOnline())
         	mLocation.setText(mPost.getLocationString(getActivity()));
         else
         	mLocation.setVisibility(View.GONE);

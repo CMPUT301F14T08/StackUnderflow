@@ -58,7 +58,7 @@ public class ViewImageDialogFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
         .setView(v)
         // Positive button
-        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        .setPositiveButton("Close", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //
             }

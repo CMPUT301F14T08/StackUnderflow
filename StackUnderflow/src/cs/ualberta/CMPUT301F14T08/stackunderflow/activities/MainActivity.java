@@ -4,8 +4,6 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.activities;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
@@ -16,16 +14,18 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import cs.ualberta.CMPUT301F14T08.stackunderflow.R;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.dialogs.SearchDialogFragment;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.MainFragment;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.fragments.NewPostFragment;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.managers.LocManager;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
-import android.util.Log;
 /**
  * MainActivity is the main page. Called when the user first starts the app
  * works with the tabs on the main screen and the dialog allowing the user to navigate between the different screens.
@@ -34,8 +34,8 @@ import android.util.Log;
 
 public class MainActivity extends Activity implements TabListener {
 
-    private List<Fragment> fragmentList = new ArrayList<Fragment>();
-    protected MainFragment tf = null;
+    protected List<Fragment> fragmentList = new ArrayList<Fragment>();
+    private MainFragment tf = null;
     static final int PICK_QUESTION = 0;
     static final int PICK_ANSWER = 1;
 
@@ -99,7 +99,7 @@ public class MainActivity extends Activity implements TabListener {
             return true;
 
         case R.id.user_profile: 
-            Intent i = new Intent(this, MapActivity.class);                
+            Intent i = new Intent(this, ProfileActivity.class);                
             startActivity(i);
 
             return true;
@@ -108,6 +108,7 @@ public class MainActivity extends Activity implements TabListener {
             FragmentManager fm = getFragmentManager();
             SearchDialogFragment sdf = new SearchDialogFragment();
             sdf.show(fm, "Search Dialog Fragment");
+            return true;
 
         case R.id.mark_read:	
             if (tf.sPostController == null) {
@@ -178,6 +179,7 @@ public class MainActivity extends Activity implements TabListener {
                 String author = data.getStringExtra("question.author");
                 Double latitude = data.getDoubleExtra("question.latitude", LocManager.LOC_ERROR);
                 Double longitude = data.getDoubleExtra("question.longitude", LocManager.LOC_ERROR);
+                LatLng location = null;
                 String picture = null;
                 if (data.getByteArrayExtra("question.picture") != null) {
                 	//Encode byte array as a string to faster storage online
@@ -191,10 +193,13 @@ public class MainActivity extends Activity implements TabListener {
                 else {
                     q = new Question(body, author, title);
                 }
-                if(latitude != LocManager.LOC_ERROR && longitude != LocManager.LOC_ERROR)
-                	q.setLocation(new LatLng(latitude, longitude));
+                if(latitude != LocManager.LOC_ERROR && longitude != LocManager.LOC_ERROR) {
+                    location = new LatLng(latitude, longitude);
+                	q.setLocation(location);
+                	tf.sPostController.getPostManager().setUserLocation(location);
+                }
 
-                tf.sPostController.getPostManager().addQuestion(q);
+                tf.sPostController.getPostManager().addQuestion(q);                
                 tf.onResume();
             }
         }

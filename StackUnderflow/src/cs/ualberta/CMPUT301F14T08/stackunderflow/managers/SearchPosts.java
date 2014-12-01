@@ -12,21 +12,23 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.content.Context;
+import android.location.Location;
 import android.os.StrictMode;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.ElasticSearchCommand;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.Hit;
-import cs.ualberta.CMPUT301F14T08.stackunderflow.es.MatchAllCommand;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.MatchSearchCommand;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchHits;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.es.SearchResponse;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Answer;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Post;
 import cs.ualberta.CMPUT301F14T08.stackunderflow.model.Question;
+import cs.ualberta.CMPUT301F14T08.stackunderflow.model.SearchObject;
 
 public class SearchPosts {
     private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301f14t08/question/_search/?size=100";
@@ -39,9 +41,10 @@ public class SearchPosts {
     /**
      * 1. Gets questions from online using search terms
      * 2. Returns a list of posts to the calling fragment
+     * @param searchLoc 
      * @return status a String that tells us if the files were successfully loaded from the server
      */
-    public ArrayList<Post> loadFromServer(int type, boolean pics, String terms) {
+    public ArrayList<Post> loadFromServer(int type, boolean pics, String terms, boolean searchLoc) {
         ArrayList<Post> posts = new ArrayList<Post>();
         HttpClient httpClient = new DefaultHttpClient();
         String status = null;
@@ -51,7 +54,7 @@ public class SearchPosts {
             StrictMode.setThreadPolicy(policy);
 
             HttpPost request = new HttpPost(SEARCH_URL);
-            ElasticSearchCommand command = new MatchSearchCommand(type, pics, terms);
+            ElasticSearchCommand command = new MatchSearchCommand(type, pics, terms, searchLoc);
 
             request.setHeader("Accept", "application/json");
             request.setEntity(new StringEntity(command.getJsonCommand()));
@@ -75,6 +78,52 @@ public class SearchPosts {
         }
 
         //httpClient.getConnectionManager().shutdown();
+        if(searchLoc){
+        	LatLng myLatLng = UserProfileManager.getInstance(null).getLocation();
+        	if(myLatLng == null){
+            	posts.clear();
+        	}
+        	else{
+        		Location myLoc = new Location("");
+        		myLoc.setLatitude(myLatLng.latitude);
+        		myLoc.setLongitude(myLatLng.longitude);
+        		ArrayList<Post> temp = new ArrayList<Post>();
+        		for(Post post : posts){
+        			boolean questionFound = false;
+        			if(type == SearchObject.SEARCH_QUESTIONS || type == SearchObject.SEARCH_BOTH){
+		        		if(post.hasLocation()){
+		        			Location postLoc = new Location("");
+		        			postLoc.setLatitude(post.getLocation().latitude);
+		        			postLoc.setLongitude(post.getLocation().longitude);
+		        			float distance = myLoc.distanceTo(postLoc);
+			        			if(distance <= 100000){
+			        				temp.add(post);
+			        				questionFound = true;
+			        			}
+		        		}
+        			}
+        			if((type == SearchObject.SEARCH_ANSWERS || type == SearchObject.SEARCH_BOTH) && !questionFound){
+        				boolean answerFound = false;
+        				for(Answer answer : ((Question)post).getAnswers()){	
+        					if(!answerFound){
+				        		if(answer.hasLocation()){
+				        			Location postLoc = new Location("");
+				        			postLoc.setLatitude(answer.getLocation().latitude);
+				        			postLoc.setLongitude(answer.getLocation().longitude);
+				        			float distance = myLoc.distanceTo(postLoc);
+					        			if(distance <= 100000){
+					        				temp.add(post);
+					        				answerFound = true;
+					        			}
+				        		}
+        					}
+        				}
+        			}
+        			
+        		}
+        		posts = temp;
+        	}
+        }
 
         return posts;
     }

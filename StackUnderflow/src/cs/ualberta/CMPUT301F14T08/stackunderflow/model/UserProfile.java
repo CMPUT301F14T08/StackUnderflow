@@ -3,6 +3,8 @@ package cs.ualberta.CMPUT301F14T08.stackunderflow.model;
 import java.util.HashMap;
 import java.util.UUID;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import android.util.Log;
 /**
  * UserProfileManager allows for modification of private attributes such found in UserProfile
@@ -17,12 +19,13 @@ public class UserProfile {
     private HashMap<UUID, UserAttributes> mUserAttributesMap = new HashMap<UUID, UserAttributes>();
     private int mAnswersPostedCount;
     private int mQuestionsPostedCount;
+    private LatLng mLocation;
 
     public UserProfile(){
         mUsername ="Guest";
         mAnswersPostedCount=0;
         mQuestionsPostedCount=0;
-
+        mLocation = null;
     }
     
     public String getUsername(){
@@ -54,6 +57,14 @@ public class UserProfile {
     public void addToMap(UUID id, UserAttributes userAttributes){
         Log.d("Debug", id.toString());
         mUserAttributesMap.put(id,userAttributes);
+    }
+
+    public LatLng getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(LatLng mLocation) {
+        this.mLocation = mLocation;
     }
 
 }

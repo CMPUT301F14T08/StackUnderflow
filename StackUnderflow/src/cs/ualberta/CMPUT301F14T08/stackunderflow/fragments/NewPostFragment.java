@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,10 +14,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -46,11 +45,12 @@ public abstract class NewPostFragment extends Fragment {
     protected byte mJPEGByteArray[];
     protected Double mLatitude;
     protected Double mLongitude; 
+    protected boolean includeLocation;
 
     protected EditText mPostTitle;
     protected EditText mPostBody;
     protected Button mUploadPictureButton;
-    protected CheckBox mCheckBox;
+    protected Button mLocationButton;
     protected Button mSubmitButton;
 
     protected int mBlackColor;
@@ -61,6 +61,7 @@ public abstract class NewPostFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         checkUsername();
+        includeLocation = false;
     }
 
     protected void checkUsername(){
@@ -89,8 +90,8 @@ public abstract class NewPostFragment extends Fragment {
         mSubmitButton = (Button) v.findViewById(R.id.new_post_fragment_submit_button);
         mJPEGByteArray = null;
         mJPEGFileName = null;
-        mLatitude = null;
-        mLongitude = null;
+        mLatitude = LocManager.LOC_ERROR;
+        mLongitude = LocManager.LOC_ERROR;
 
 
         //Calls newImageDialogFragment with existing picture info (byteArray and fileName)
@@ -105,18 +106,35 @@ public abstract class NewPostFragment extends Fragment {
             }
         });
         
-        mCheckBox = (CheckBox) v.findViewById(R.id.new_post_fragment_location_checkbox);
+        mLocationButton = (Button) v.findViewById(R.id.new_post_fragment_location_button);
         
-        mCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        mLocationButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if(isChecked){
-					Intent intent = new Intent(getActivity(), MapActivity.class);                
-		            startActivityForResult(intent, REQUEST_MAP_CODE);
+			public void onClick(View v) {
+				includeLocation = !includeLocation;
+				
+				//Disable location if running on an emulator
+				if(Build.BRAND.equalsIgnoreCase("generic")){
+					Toast.makeText(getActivity(), "This feature is not supported using an emulator", Toast.LENGTH_LONG).show();
 				}
 				else{
-					mCheckBox.setText(getResources().getString(R.string.new_post_fragment_location_checkbox));
+					if(includeLocation){
+						if(PostController.getInstanceNoRefresh(getActivity()).isOnline()){
+							Intent intent = new Intent(getActivity(), MapActivity.class);                
+				            startActivityForResult(intent, REQUEST_MAP_CODE);
+						}
+						else{
+							Toast.makeText(getActivity(), "No network connection", Toast.LENGTH_LONG).show();
+						}
+					}
+					else{
+						mLocationButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mapmarker, 0, 0, 0);
+						mLocationButton.setText(getResources().getString(R.string.new_post_fragment_location_button_false));
+						mLocationButton.setTextColor(getResources().getColor(R.color.black));
+						mLatitude = LocManager.LOC_ERROR;
+						mLongitude = LocManager.LOC_ERROR;
+					}
 				}
 				
 			}
@@ -134,23 +152,31 @@ public abstract class NewPostFragment extends Fragment {
                 mJPEGByteArray = bundle.getByteArray("BYTES"); //null exception error
                 mJPEGFileName = bundle.getString("NAME");
                 if (mJPEGFileName != null) {
-                    mUploadPictureButton.setText(mJPEGFileName);
+                	mUploadPictureButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.picture_blue, 0, 0, 0);
+                    mUploadPictureButton.setText(" " + mJPEGFileName);
+                    mUploadPictureButton.setTextColor(getResources().getColor(R.color.blue));
                 }
                 else {
-                    mUploadPictureButton.setText("Upload Photo");
+                	mUploadPictureButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.picture_dark, 0, 0, 0);
+                    mUploadPictureButton.setText(getResources().getString(R.string.new_post_fragment_upload_photo_textview));
+                    mUploadPictureButton.setTextColor(getResources().getColor(R.color.black));
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 mJPEGByteArray = null;
                 mJPEGFileName = null;
-                mUploadPictureButton.setText("Upload Photo");
+                mUploadPictureButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.picture_dark, 0, 0, 0);
+                mUploadPictureButton.setText(getResources().getString(R.string.new_post_fragment_upload_photo_textview));
+                mUploadPictureButton.setTextColor(getResources().getColor(R.color.black));
             }
         }
         if (requestCode == REQUEST_MAP_CODE && resultCode == Activity.RESULT_OK) {
 			mLatitude = data.getDoubleExtra("latitude", LocManager.LOC_ERROR);
 			mLongitude = data.getDoubleExtra("longitude", LocManager.LOC_ERROR);
 			if(mLatitude != LocManager.LOC_ERROR && mLongitude != LocManager.LOC_ERROR){
-					mCheckBox.setText(getResources().getString(R.string.new_post_fragment_location_checkbox) + LocManager.getLocationString(getActivity(), new LatLng(mLatitude, mLongitude)));
+				mLocationButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.mapmarker_blue, 0, 0, 0);
+				mLocationButton.setText(getResources().getString(R.string.new_post_fragment_location_button_true) + LocManager.getLocationString(getActivity(), new LatLng(mLatitude, mLongitude)));
+				mLocationButton.setTextColor(getResources().getColor(R.color.blue));
         	}
 		}
     }

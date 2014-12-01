@@ -33,8 +33,9 @@
 
     <!-- New Post -->
     <string name="new_post_fragment_submit_button">Submit</string>
-    <string name="new_post_fragment_upload_photo_textview"> Upload Photo</string>
-    <string name="new_post_fragment_location_checkbox">Location:</string>
+    <string name="new_post_fragment_upload_photo_textview">&#160;Upload Photo?</string>
+    <string name="new_post_fragment_location_button_false">&#160;Location?</string>
+    <string name="new_post_fragment_location_button_true">&#160;Location:&#160;</string>
     
     <!-- New Question -->
     <string name="new_question_title">New Question</string>
@@ -50,10 +51,15 @@
     <string name="my_posts">My Posts</string>
     <string name="my_favorites">My Favorites</string>
 	<string name="read_later">Read Later</string>
+	<string name="location_text">Location</string>
 
     <!-- Username Dialog -->
     <string name="dialogDescText">You need to choose a username! This is the name that users will see when you post a Question, Answer, or Reply.</string>
     <string name="usernameDialog">Username:</string>
+    
+    <!-- Image Dialog -->
+    <string name="camera_choice">Camera</string>
+    <string name="gallery_choice">Gallery</string>
 
     <!-- Searching -->
     <string name="search_question">Questions Only</string>
@@ -62,9 +68,11 @@
     <string name="search_only_pic">Only Posts with Pictures</string>
     <string name="search_text">Text:</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="location_search">Nearby Posts</string>
     
-    <!-- Searching -->
+    <!-- Map -->
+    <string name="map_title">Map</string>
     <string name="use_my_location">Use My Location</string>
-    <string name="use_marker">User Marker Location</string>
+    <string name="use_marker">Use Marker Location</string>
 
 </resources>

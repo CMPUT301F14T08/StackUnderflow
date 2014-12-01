@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class NewAnswerFragment extends NewPostFragment {
                 // TODO: Change this to use usernames after implementing user profile
                 String author = UserProfileManager.getInstance(getActivity()).getUsername();
                 String body = mPostBody.getText().toString();
+                LatLng location = null;
 
                 //Checks if fields are left blank
                 if(body.equalsIgnoreCase("")){
@@ -71,9 +73,13 @@ public class NewAnswerFragment extends NewPostFragment {
                     else {
                         mAnswer = new Answer(body, author);  
                     }
-
-                    if(mLatitude != LocManager.LOC_ERROR && mLongitude != LocManager.LOC_ERROR)
-                    	mAnswer.setLocation(new LatLng(mLatitude, mLongitude));
+                    Log.d("lat", ""+mLatitude);
+                    Log.d("lon", ""+mLongitude);
+                    if(mLatitude != LocManager.LOC_ERROR && mLongitude != LocManager.LOC_ERROR) {
+                        location = new LatLng(mLatitude, mLongitude);
+                    	mAnswer.setLocation(location);
+                    	sPostController.getPostManager().setUserLocation(location);
+                    }
 
                     Question qparent = (Question) sPostController.getQuestion(mPostId);
                     sPostController.getPostManager().addAnswer(qparent, mAnswer);

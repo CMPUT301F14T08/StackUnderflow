@@ -31,7 +31,8 @@ public class SearchDialogFragment extends DialogFragment{
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         final View v = inflater.inflate(R.layout.search_prompt, null);
         final RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.SearchPostRadioButtons);
-        final CheckBox checkbox = (CheckBox) v.findViewById(R.id.search_picture_button);
+        final CheckBox picbox = (CheckBox) v.findViewById(R.id.search_picture_button);
+        final CheckBox locbox = (CheckBox) v.findViewById(R.id.MyLocationBox);
         final EditText text = (EditText) v.findViewById(R.id.searchEnteredText);
 
         return new AlertDialog.Builder(getActivity())
@@ -57,13 +58,16 @@ public class SearchDialogFragment extends DialogFragment{
                         searchType = SearchObject.SEARCH_BOTH;
                         break;
                     }
-                    boolean searchPics = checkbox.isChecked();
+                    boolean searchPics = picbox.isChecked();
+                    boolean searchLoc = locbox.isChecked();
                     String searchTerms = text.getText().toString();
 
                     Intent intent = new Intent(getActivity(), SearchActivity.class);
                     intent.putExtra(SearchObject.SEARCH_TYPE, searchType);
                     intent.putExtra(SearchObject.SEARCH_PICS, searchPics);
                     intent.putExtra(SearchObject.SEARCH_STRING, searchTerms);
+                    intent.putExtra(SearchObject.SEARCH_LOCATION, searchLoc);
+                    
                     startActivityForResult(intent, 0);
                 }
             })

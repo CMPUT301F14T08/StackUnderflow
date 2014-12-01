@@ -8,20 +8,27 @@
         android:id="@+id/image_prompt_fragment_image_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:src="@drawable/picture_dark" />
+        android:layout_margin="5dp"/>
 
     <Button
         android:id="@+id/image_prompt_fragment_camera_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Camera" />
+        android:layout_margin="5dp"
+        android:background="@drawable/rounded_corners"
+        android:textColor="@color/white"
+        android:text="@string/camera_choice" />
 
     <Button
         android:id="@+id/image_prompt_fragment_gallery_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Gallery" />
+		android:layout_marginBottom="5dp"
+		android:layout_marginLeft="5dp"
+		android:layout_marginRight="5dp"
+        android:background="@drawable/rounded_corners"
+        android:textColor="@color/white"
+        android:text="@string/gallery_choice" />
 
     <TextView
         android:id="@+id/image_prompt_fragment_textview"
@@ -29,7 +36,6 @@
         android:layout_height="wrap_content"
         android:paddingBottom="3dp"
         android:paddingLeft="5dp"
-        android:paddingTop="0dp"
-        android:text="ImageName" />
+        android:paddingTop="0dp" />
 
 </LinearLayout>

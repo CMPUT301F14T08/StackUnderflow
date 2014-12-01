@@ -6,8 +6,36 @@
     
     <fragment
         android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="5"
         class="com.google.android.gms.maps.MapFragment" />
+
+    <LinearLayout
+        android:id="@+id/map_fragment_buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/map_fragment_marker_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corners"
+            android:text="@string/use_marker"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/map_fragment_gps_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/rounded_corners"
+            android:text="@string/use_my_location"
+            android:textColor="@color/white" />
+    </LinearLayout>
     
 </LinearLayout>

@@ -81,34 +81,17 @@ public class SearchFragment extends ListFragment {
             if(searchLoc){
             	LatLng myLatLng = UserProfileManager.getInstance(getActivity()).getLocation();
             	if(myLatLng == null){
-	            	Toast toast = Toast.makeText(getActivity(), "Cannot find your location to load nearby posts", Toast.LENGTH_LONG);
+	            	Toast toast = Toast.makeText(getActivity(), "Cannot find your location\nSet location in User Profile", Toast.LENGTH_LONG);
 	            	toast.setGravity(Gravity.CENTER, 0, 0);
 	            	toast.show();
 	            	searchResult.clear();
 	            	errorShown = true;
             	}
-            	else{
-            		Location myLoc = new Location("");
-            		myLoc.setLatitude(myLatLng.latitude);
-            		myLoc.setLongitude(myLatLng.longitude);
-            		for (Post post : searchResult) {
-            			if(post.hasLocation()){
-	            			Location postLoc = new Location("");
-	            			postLoc.setLatitude(post.getLocation().latitude);
-	            			postLoc.setLongitude(post.getLocation().longitude);
-	            			float distance = myLoc.distanceTo(postLoc);
-	            			if(distance <= 100000){
-	            				adapter.add(post);
-	            			}
-            			}
-            		}
-            	}
             }
-            else{
-	            for (Post post : searchResult) {
+            
+            for (Post post : searchResult) {
 	                adapter.add(post);
 	            }
-            }
             
             if(adapter.getCount() == 0 && !errorShown){
             	Toast toast = Toast.makeText(getActivity(), "No results found", Toast.LENGTH_LONG);
